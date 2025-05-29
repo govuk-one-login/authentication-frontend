@@ -8,11 +8,7 @@ import {
   enterPasswordPost,
   enterSignInRetryBlockedGet,
 } from "../enter-password-controller.js";
-import {
-  JOURNEY_TYPE,
-  MFA_METHOD_TYPE,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants.js";
 import type { EnterPasswordServiceInterface } from "../types.js";
 import type { MfaServiceInterface } from "../../common/mfa/types.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
@@ -142,14 +138,15 @@ describe("enter password controller", () => {
           fakeMfaService
         )(req as Request, res as Response);
 
-        expect(
-          getJourneyTypeFromUserSessionSpy
-        ).to.have.been.calledOnceWithExactly(req.session.user, {
-          includeReauthentication: true,
-        });
-        expect(
-          getJourneyTypeFromUserSessionSpy.getCall(0).returnValue
-        ).to.equal(JOURNEY_TYPE.REAUTHENTICATION);
+        expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
+          req.session.user,
+          {
+            includeReauthentication: true,
+          }
+        );
+        expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
+          JOURNEY_TYPE.REAUTHENTICATION
+        );
         expect(fakeMfaService.sendMfaCode).to.have.been.calledOnceWithExactly(
           sinon.match.any,
           sinon.match.any,
@@ -234,11 +231,12 @@ describe("enter password controller", () => {
         fakeMfaService
       )(req as Request, res as Response);
 
-      expect(
-        getJourneyTypeFromUserSessionSpy
-      ).to.have.been.calledOnceWithExactly(req.session.user, {
-        includeReauthentication: true,
-      });
+      expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
+        req.session.user,
+        {
+          includeReauthentication: true,
+        }
+      );
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.REAUTHENTICATION
       );
@@ -439,10 +437,7 @@ describe("enter password controller", () => {
         }),
       } as unknown as EnterPasswordServiceInterface;
 
-      await enterPasswordPost(false, fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterPasswordPost(false, fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
       expect(req.session.user.isAccountPartCreated).to.be.eq(false);
@@ -464,10 +459,7 @@ describe("enter password controller", () => {
         }),
       } as unknown as EnterPasswordServiceInterface;
 
-      await enterPasswordPost(false, fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterPasswordPost(false, fakeService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
       expect(req.session.user.isAccountPartCreated).to.be.eq(true);
@@ -490,14 +482,9 @@ describe("enter password controller", () => {
         }),
       } as unknown as EnterPasswordServiceInterface;
 
-      await enterPasswordPost(false, fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterPasswordPost(false, fakeService)(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS
-      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS);
       expect(req.session.user.isAccountPartCreated).to.be.eq(false);
     });
 
@@ -591,9 +578,7 @@ describe("enter password controller", () => {
           fakeInterventionsService
         )(req as Request, res as Response);
 
-        expect(res.redirect).to.have.calledWith(
-          PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
-        );
+        expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
       }
     });
   });
@@ -606,10 +591,7 @@ describe("enter password controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      await enterSignInRetryBlockedGet(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterSignInRetryBlockedGet(fakeService)(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith("enter-password/index.njk");
     });
@@ -624,10 +606,7 @@ describe("enter password controller", () => {
         }),
       } as unknown as EnterEmailServiceInterface;
 
-      await enterSignInRetryBlockedGet(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterSignInRetryBlockedGet(fakeService)(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
         "enter-password/index-sign-in-retry-blocked.njk"

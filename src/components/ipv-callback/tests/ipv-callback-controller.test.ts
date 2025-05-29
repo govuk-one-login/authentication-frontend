@@ -59,8 +59,7 @@ describe("ipv callback controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
-  const { sessionId, clientSessionId, diPersistentSessionId, email } =
-    commonVariables;
+  const { sessionId, clientSessionId, diPersistentSessionId, email } = commonVariables;
 
   const AUTH_CODE = "5678";
   const STATE = "efghijk";
@@ -94,14 +93,9 @@ describe("ipv callback controller", () => {
         200,
         reverificationSuccessData
       );
-      await ipvCallbackGet(fakeServiceReturningSuccess)(
-        req as Request,
-        res as Response
-      );
+      await ipvCallbackGet(fakeServiceReturningSuccess)(req as Request, res as Response);
 
-      expect(
-        fakeServiceReturningSuccess.getReverificationResult
-      ).to.have.been.calledWith(
+      expect(fakeServiceReturningSuccess.getReverificationResult).to.have.been.calledWith(
         sessionId,
         clientSessionId,
         diPersistentSessionId,
@@ -110,42 +104,27 @@ describe("ipv callback controller", () => {
         AUTH_CODE,
         STATE
       );
-      expect(res.redirect).to.have.been.calledWith(
-        PATH_NAMES.GET_SECURITY_CODES
-      );
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.GET_SECURITY_CODES);
     });
 
     it("get should raise error when reverification result is not successful", async () => {
-      const fakeServiceReturningFailure = reverificationResultService(
-        500,
-        failureData
-      );
+      const fakeServiceReturningFailure = reverificationResultService(500, failureData);
 
       await assert.rejects(
         async () =>
-          ipvCallbackGet(fakeServiceReturningFailure)(
-            req as Request,
-            res as Response
-          ),
+          ipvCallbackGet(fakeServiceReturningFailure)(req as Request, res as Response),
         BadRequestError,
         "500:Internal error occurred in backend"
       );
 
-      expect(fakeServiceReturningFailure.getReverificationResult).to.have.been
-        .called;
+      expect(fakeServiceReturningFailure.getReverificationResult).to.have.been.called;
     });
 
     const ERROR_CODES_REDIRECTING_TO_CANNOT_CHANGE_SECURITY_CODES = [
       ["no_identity_available", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
       ["identity_check_incomplete", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
-      [
-        "identity_did_not_match",
-        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
-      ],
-      [
-        "identity_check_failed",
-        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
-      ],
+      ["identity_did_not_match", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL],
+      ["identity_check_failed", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL],
     ];
     ERROR_CODES_REDIRECTING_TO_CANNOT_CHANGE_SECURITY_CODES.forEach(
       ([errorCode, expectedPath]) => {
@@ -170,8 +149,7 @@ describe("ipv callback controller", () => {
       );
 
       await assert.rejects(
-        async () =>
-          ipvCallbackGet(fakeService)(req as Request, res as Response),
+        async () => ipvCallbackGet(fakeService)(req as Request, res as Response),
         {
           name: "Error",
           message: "this_is_an_invalid_failure_code",
@@ -200,10 +178,7 @@ describe("ipv callback controller", () => {
 
         await assert.rejects(
           async () =>
-            ipvCallbackGet(fakeServiceReturningSuccess)(
-              req as Request,
-              res as Response
-            ),
+            ipvCallbackGet(fakeServiceReturningSuccess)(req as Request, res as Response),
           BadRequestError,
           testCase.expectedMessage
         );
@@ -224,8 +199,7 @@ describe("ipv callback controller", () => {
       it("should redirect to contactUsLinkUrl when help-to-delete-account selected", () => {
         const TEST_CONTACT_US_LINK_URL = "https://example.com/contact-us";
         res.locals.contactUsLinkUrl = TEST_CONTACT_US_LINK_URL;
-        req.body.cannotChangeHowGetSecurityCodeAction =
-          "help-to-delete-account";
+        req.body.cannotChangeHowGetSecurityCodeAction = "help-to-delete-account";
 
         cannotChangeSecurityCodesPost(req as Request, res as Response);
 
@@ -251,9 +225,7 @@ describe("ipv callback controller", () => {
 
         await cannotChangeSecurityCodesPost(req as Request, res as Response);
 
-        expect(res.redirect).to.have.calledWith(
-          PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
-        );
+        expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE);
       });
     });
   });

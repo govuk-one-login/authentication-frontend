@@ -1,11 +1,7 @@
 import { afterEach, describe } from "mocha";
 import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import nock from "nock";
 import { ERROR_CODES } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
@@ -34,9 +30,7 @@ describe("Integration::enter email", () => {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
             req.session.user = {
-              journey: getPermittedJourneyForPath(
-                PATH_NAMES.ENTER_EMAIL_SIGN_IN
-              ),
+              journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_SIGN_IN),
             };
 
             if (process.env.TEST_SETUP_REAUTH_SESSION === "1") {
@@ -83,17 +77,13 @@ describe("Integration::enter email", () => {
   });
 
   it("should return enter email page with sign in analytics properties", async () => {
-    await request(app, (test) =>
-      test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200)
-    );
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200));
   });
 
   it("should return enter email page with reauth analytics properties", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     process.env.TEST_SETUP_REAUTH_SESSION = "1";
-    await request(app, (test) =>
-      test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200)
-    );
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200));
   });
 
   it("should return error when csrf not present", async () => {
@@ -120,9 +110,7 @@ describe("Integration::enter email", () => {
         })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
-          expect($("#email-error").text()).to.contains(
-            "Enter your email address"
-          );
+          expect($("#email-error").text()).to.contains("Enter your email address");
         })
         .expect(400)
     );
@@ -185,13 +173,10 @@ describe("Integration::enter email", () => {
   });
 
   it("should redirect to /enter-password page when email address exists", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.USER_EXISTS)
-      .once()
-      .reply(HTTP_STATUS_CODES.OK, {
-        email: "test@test.com",
-        doesUserExist: true,
-      });
+    nock(baseApi).post(API_ENDPOINTS.USER_EXISTS).once().reply(HTTP_STATUS_CODES.OK, {
+      email: "test@test.com",
+      doesUserExist: true,
+    });
 
     await request(app, (test) =>
       test
@@ -208,13 +193,10 @@ describe("Integration::enter email", () => {
   });
 
   it("should redirect to /account-not-found when email address not found", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.USER_EXISTS)
-      .once()
-      .reply(HTTP_STATUS_CODES.OK, {
-        email: "test@test.com",
-        doesUserExist: false,
-      });
+    nock(baseApi).post(API_ENDPOINTS.USER_EXISTS).once().reply(HTTP_STATUS_CODES.OK, {
+      email: "test@test.com",
+      doesUserExist: false,
+    });
 
     await request(app, (test) =>
       test
@@ -263,13 +245,10 @@ describe("Integration::enter email", () => {
       .once()
       .reply(HTTP_STATUS_CODES.OK);
 
-    nock(baseApi)
-      .post(API_ENDPOINTS.USER_EXISTS)
-      .once()
-      .reply(HTTP_STATUS_CODES.OK, {
-        email: "test@test.com",
-        doesUserExist: true,
-      });
+    nock(baseApi).post(API_ENDPOINTS.USER_EXISTS).once().reply(HTTP_STATUS_CODES.OK, {
+      email: "test@test.com",
+      doesUserExist: true,
+    });
 
     await request(app, (test) =>
       test
@@ -296,13 +275,10 @@ describe("Integration::enter email", () => {
         code: ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED,
       });
 
-    nock(baseApi)
-      .post(API_ENDPOINTS.USER_EXISTS)
-      .once()
-      .reply(HTTP_STATUS_CODES.OK, {
-        email: "test@test.com",
-        doesUserExist: true,
-      });
+    nock(baseApi).post(API_ENDPOINTS.USER_EXISTS).once().reply(HTTP_STATUS_CODES.OK, {
+      email: "test@test.com",
+      doesUserExist: true,
+    });
 
     await request(app, (test) =>
       test

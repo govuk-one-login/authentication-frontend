@@ -1,11 +1,7 @@
 import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import nock from "nock";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
@@ -32,9 +28,7 @@ describe("Integration::2fa auth app (in reset password flow)", () => {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
             req.session.user = {
               email: "test@test.com",
-              journey: getPermittedJourneyForPath(
-                PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP
-              ),
+              journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP),
             };
 
             next();
@@ -49,11 +43,9 @@ describe("Integration::2fa auth app (in reset password flow)", () => {
 
     nock(baseApi).persist().post("/mfa").reply(204);
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
       cookies = res.headers["set-cookie"];

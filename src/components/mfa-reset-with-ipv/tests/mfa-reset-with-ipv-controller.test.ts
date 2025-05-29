@@ -17,8 +17,7 @@ import type { Request, Response } from "express";
 import { BadRequestError } from "../../../utils/error.js";
 import { strict as assert } from "assert";
 
-const IPV_DUMMY_URL =
-  "https://test-idp-url.com/callback?code=123-4ddkk0sdkkd-ad";
+const IPV_DUMMY_URL = "https://test-idp-url.com/callback?code=123-4ddkk0sdkkd-ad";
 
 const fakeMfaResetAuthorizeService = (successfulAuthorizeResponse: boolean) => {
   return {
@@ -75,12 +74,8 @@ describe("mfa reset with ipv controller", () => {
         req as Request,
         res as Response
       );
-      expect(res.redirect).to.have.been.calledWith(
-        PATH_NAMES.OPEN_IN_WEB_BROWSER
-      );
-      expect(req.session.user.journey.nextPath).to.eq(
-        PATH_NAMES.OPEN_IN_WEB_BROWSER
-      );
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.OPEN_IN_WEB_BROWSER);
+      expect(req.session.user.journey.nextPath).to.eq(PATH_NAMES.OPEN_IN_WEB_BROWSER);
     });
 
     it("should throw a BadRequestError when the request made to the MFA Reset Authorize endpoint is not successful", async () => {

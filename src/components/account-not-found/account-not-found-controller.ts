@@ -4,10 +4,7 @@ import type { ExpressRouteFunc } from "../../types.js";
 import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
 import { BadRequestError } from "../../utils/error.js";
-import {
-  getErrorPathByCode,
-  getNextPathAndUpdateJourney,
-} from "../common/constants.js";
+import { getErrorPathByCode, getNextPathAndUpdateJourney } from "../common/constants.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import xss from "xss";
 import { getServiceSignInLink } from "../../config.js";

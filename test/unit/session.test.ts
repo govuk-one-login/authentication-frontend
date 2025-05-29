@@ -123,9 +123,7 @@ describe("session", () => {
     ];
     expectations.forEach((expectation) => {
       it(`should return ${expectation.equal} when a is ${JSON.stringify(expectation.a)} and b is ${JSON.stringify(expectation.b)}`, () => {
-        expect(isRedisConfigEqual(expectation.a, expectation.b)).to.eq(
-          expectation.equal
-        );
+        expect(isRedisConfigEqual(expectation.a, expectation.b)).to.eq(expectation.equal);
       });
     });
   });

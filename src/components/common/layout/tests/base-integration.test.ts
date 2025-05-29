@@ -101,9 +101,7 @@ describe("Integration:: base page ", () => {
       it("should render the test phase banner", async () => {
         expect($(".govuk-phase-banner").length).to.equal(1);
         expect($(".govuk-phase-banner").hasClass("test-banner")).to.be.true;
-        expect($(".govuk-phase-banner__content__tag").text().trim()).to.equal(
-          "test"
-        );
+        expect($(".govuk-phase-banner__content__tag").text().trim()).to.equal("test");
       });
       it("should render the test phase header css", async () => {
         expect($("a.govuk-header__link").length).to.equal(1);
@@ -123,9 +121,7 @@ describe("Integration:: base page ", () => {
       it("should render the beta phase banner", async () => {
         expect($(".govuk-phase-banner").length).to.equal(1);
         expect($(".govuk-phase-banner").hasClass("test-banner")).to.be.false;
-        expect($(".govuk-phase-banner__content__tag").text().trim()).to.equal(
-          "beta"
-        );
+        expect($(".govuk-phase-banner__content__tag").text().trim()).to.equal("beta");
       });
       it("should not render the test phase header css", async () => {
         expect($(".govuk-header").hasClass("test-banner")).to.be.false;

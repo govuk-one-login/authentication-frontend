@@ -4,10 +4,7 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
 
-import {
-  resendMfaCodeGet,
-  resendMfaCodePost,
-} from "../resend-mfa-code-controller.js";
+import { resendMfaCodeGet, resendMfaCodePost } from "../resend-mfa-code-controller.js";
 import type { MfaServiceInterface } from "../../common/mfa/types.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
@@ -54,9 +51,7 @@ describe("resend mfa controller", () => {
       tomorrow.setDate(tomorrow.getDate() + 1);
       req.session.user.codeRequestLock = tomorrow.toUTCString();
       resendMfaCodeGet(req as Request, res as Response);
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-wait.njk"
-      );
+      expect(res.render).to.have.calledWith("security-code-error/index-wait.njk");
     });
   });
 

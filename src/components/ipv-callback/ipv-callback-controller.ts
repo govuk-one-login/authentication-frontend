@@ -96,10 +96,7 @@ export function ipvCallbackGet(
   };
 }
 
-export function cannotChangeSecurityCodesGet(
-  req: Request,
-  res: Response
-): void {
+export function cannotChangeSecurityCodesGet(req: Request, res: Response): void {
   res.render("ipv-callback/index-cannot-change-how-get-security-codes.njk", {
     variant:
       req.path === PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL

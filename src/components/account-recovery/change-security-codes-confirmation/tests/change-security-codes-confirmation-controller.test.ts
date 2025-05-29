@@ -43,10 +43,7 @@ describe("change security codes confirmation controller", () => {
         req.session.user.email = "security.codes.changed@testtwofactorauth.org";
         req.session.user.mfaMethods = buildMfaMethods({ redactedPhoneNumber });
 
-        await changeSecurityCodesConfirmationGet()(
-          req as Request,
-          res as Response
-        );
+        await changeSecurityCodesConfirmationGet()(req as Request, res as Response);
 
         expect(res.render).to.have.been.calledWith(
           "account-recovery/change-security-codes-confirmation/index.njk",
@@ -62,10 +59,7 @@ describe("change security codes confirmation controller", () => {
   describe("changeSecurityCodesConfirmationPost", () => {
     it("should redirect to auth code after security codes confirmation ", async () => {
       req = createMockRequest(PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION);
-      await changeSecurityCodesConfirmationPost(
-        req as Request,
-        res as Response
-      );
+      await changeSecurityCodesConfirmationPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
     });

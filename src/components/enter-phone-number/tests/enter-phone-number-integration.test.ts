@@ -45,11 +45,9 @@ describe("Integration::enter phone number", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
       cookies = res.headers["set-cookie"];
@@ -184,10 +182,7 @@ describe("Integration::enter phone number", () => {
   });
 
   it("should redirect to /check-your-phone page when valid UK phone number entered", async () => {
-    nock(baseApi)
-      .post("/send-notification")
-      .once()
-      .reply(HTTP_STATUS_CODES.NO_CONTENT);
+    nock(baseApi).post("/send-notification").once().reply(HTTP_STATUS_CODES.NO_CONTENT);
 
     await request(app, (test) =>
       test
@@ -314,10 +309,7 @@ describe("Integration::enter phone number", () => {
   });
 
   it("should redirect to /check-your-phone page when valid international phone number entered", async () => {
-    nock(baseApi)
-      .post("/send-notification")
-      .once()
-      .reply(HTTP_STATUS_CODES.NO_CONTENT);
+    nock(baseApi).post("/send-notification").once().reply(HTTP_STATUS_CODES.NO_CONTENT);
 
     await request(app, (test) =>
       test
@@ -350,9 +342,7 @@ describe("Integration::enter phone number", () => {
           phoneNumber: "07738394991",
         })
         .expect((res) => {
-          res.text.includes(
-            "You asked to resend the security code too many times"
-          );
+          res.text.includes("You asked to resend the security code too many times");
         })
         .expect((res) => {
           res.text.includes("You will not be able to continue for 2 hours.");

@@ -4,19 +4,12 @@ import {
   getErrorPathByCode,
   getNextPathAndUpdateJourney,
 } from "../constants.js";
-import {
-  formatValidationError,
-  renderBadRequest,
-} from "../../../utils/validation.js";
+import { formatValidationError, renderBadRequest } from "../../../utils/validation.js";
 import { BadRequestError } from "../../../utils/error.js";
 import type { VerifyCodeInterface } from "./types.js";
 import type { ExpressRouteFunc } from "../../../types.js";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine.js";
-import {
-  JOURNEY_TYPE,
-  NOTIFICATION_TYPE,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE, PATH_NAMES } from "../../../app.constants.js";
 import { supportAccountInterventions } from "../../../config.js";
 import type { AccountInterventionsInterface } from "../../account-intervention/types.js";
 import { isSuspendedWithoutUserActions } from "../../../utils/interventions.js";
@@ -55,10 +48,7 @@ export function verifyCodePost(
 
     if (!result.success) {
       if (result.data.code === options.validationErrorCode) {
-        const error = formatValidationError(
-          "code",
-          req.t(options.validationKey)
-        );
+        const error = formatValidationError("code", req.t(options.validationKey));
         if (options.postValidationLocalsProvider) {
           return renderBadRequest(
             res,
@@ -74,11 +64,9 @@ export function verifyCodePost(
 
       if (isReauth(req)) {
         if (
-          result.data.code ===
-            ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||
+          result.data.code === ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||
           result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES ||
-          result.data.code ===
-            ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
+          result.data.code === ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
         ) {
           return res.redirect(
             req.session.client.redirectUri.concat("?error=login_required")
@@ -87,8 +75,7 @@ export function verifyCodePost(
       }
 
       if (
-        ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES ===
-          result.data.code &&
+        ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES === result.data.code &&
         req.session.user.isAccountCreationJourney
       ) {
         req.session.user.isVerifyEmailCodeResendRequired = true;
@@ -145,9 +132,7 @@ export function verifyCodePost(
           if (options.journeyType !== JOURNEY_TYPE.PASSWORD_RESET_MFA) {
             nextEvent = USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION;
           }
-        } else if (
-          isSuspendedWithoutUserActions(accountInterventionsResponse.data)
-        ) {
+        } else if (isSuspendedWithoutUserActions(accountInterventionsResponse.data)) {
           nextEvent = USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION;
         }
       }

@@ -1,7 +1,4 @@
-import {
-  isValidPhoneNumber,
-  parsePhoneNumberWithError,
-} from "libphonenumber-js/mobile";
+import { isValidPhoneNumber, parsePhoneNumberWithError } from "libphonenumber-js/mobile";
 
 const ALLOWED_TEST_NUMBERS = [
   "07700900000",
@@ -42,9 +39,7 @@ export function lengthInRangeWithoutSpaces(
   return length >= min && length <= max;
 }
 
-export function convertInternationalPhoneNumberToE164Format(
-  value: string
-): string {
+export function convertInternationalPhoneNumberToE164Format(value: string): string {
   if (value.startsWith("+")) {
     return value;
   }

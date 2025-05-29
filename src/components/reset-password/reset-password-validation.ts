@@ -20,11 +20,7 @@ export function validateResetPasswordRequest(): ValidationChainFunc {
         });
       })
       .custom((value, { req }) => {
-        if (
-          !containsNumber(value) ||
-          containsNumbersOnly(value) ||
-          value.length < 8
-        ) {
+        if (!containsNumber(value) || containsNumbersOnly(value) || value.length < 8) {
           throw new Error(
             req.t("pages.resetPassword.password.validationError.alphaNumeric")
           );
@@ -34,10 +30,9 @@ export function validateResetPasswordRequest(): ValidationChainFunc {
     body("confirm-password")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t(
-          "pages.resetPassword.confirmPassword.validationError.required",
-          { value }
-        );
+        return req.t("pages.resetPassword.confirmPassword.validationError.required", {
+          value,
+        });
       })
       .custom((value, { req }) => {
         if (value !== req.body["password"]) {
@@ -51,9 +46,7 @@ export function validateResetPasswordRequest(): ValidationChainFunc {
   ];
 }
 
-const postValidationLocals = function locals(
-  req: Request
-): Record<string, unknown> {
+const postValidationLocals = function locals(req: Request): Record<string, unknown> {
   return {
     isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
   };

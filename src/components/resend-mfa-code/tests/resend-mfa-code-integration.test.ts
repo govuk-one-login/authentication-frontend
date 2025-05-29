@@ -2,11 +2,7 @@ import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES } from "../../common/constants.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import type { NextFunction, Request, Response } from "express";
@@ -54,13 +50,11 @@ describe("Integration:: resend mfa code", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(app, (test) => test.get(PATH_NAMES.RESEND_MFA_CODE)).then(
-      (res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      }
-    );
+    await request(app, (test) => test.get(PATH_NAMES.RESEND_MFA_CODE)).then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
   });
 
   beforeEach(() => {
@@ -147,10 +141,7 @@ describe("Integration:: resend mfa code", () => {
   });
 
   it("should redirect to /enter-code when new code requested as part of sign in journey", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.MFA)
-      .once()
-      .reply(HTTP_STATUS_CODES.NO_CONTENT);
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(HTTP_STATUS_CODES.NO_CONTENT);
 
     await request(app, (test) =>
       test
@@ -166,10 +157,7 @@ describe("Integration:: resend mfa code", () => {
   });
 
   it("should redirect to /check-your-phone when new code requested as part of account creation journey", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.MFA)
-      .once()
-      .reply(HTTP_STATUS_CODES.NO_CONTENT);
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(HTTP_STATUS_CODES.NO_CONTENT);
 
     await request(app, (test) =>
       test
@@ -271,10 +259,7 @@ describe("Integration:: resend mfa code", () => {
         .send({
           _csrf: token,
         })
-        .expect(
-          "Location",
-          "/security-code-invalid-request?actionType=mfaBlocked"
-        )
+        .expect("Location", "/security-code-invalid-request?actionType=mfaBlocked")
         .expect(302)
     );
   });

@@ -100,9 +100,7 @@ describe("Integration::reset password required", () => {
         })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
-          expect($("#password-error").text()).to.contains(
-            "Enter your password"
-          );
+          expect($("#password-error").text()).to.contains("Enter your password");
         })
         .expect(400)
     );

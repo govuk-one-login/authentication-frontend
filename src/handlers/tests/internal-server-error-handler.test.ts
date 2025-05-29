@@ -34,9 +34,7 @@ describe("serverErrorHandler", () => {
 
   it("should render mid-journey-direct-navigation template if session is invalid and not a GOV.UK request", () => {
     res.statusCode = HTTP_STATUS_CODES.UNAUTHORIZED;
-    const err = new Error(
-      ERROR_MESSAGES.INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST
-    );
+    const err = new Error(ERROR_MESSAGES.INVALID_SESSION_NON_GOV_UK_EXTERNAL_REQUEST);
     const renderSpy = sinon.spy(res, "render");
     const expectedTemplate = "common/errors/mid-journey-direct-navigation.njk";
     const expectedData = {
@@ -45,10 +43,7 @@ describe("serverErrorHandler", () => {
 
     serverErrorHandler(err, req, res, next);
 
-    expect(renderSpy).to.have.been.calledOnceWith(
-      expectedTemplate,
-      expectedData
-    );
+    expect(renderSpy).to.have.been.calledOnceWith(expectedTemplate, expectedData);
     expect(res.statusCode).to.equal(HTTP_STATUS_CODES.UNAUTHORIZED);
   });
 
@@ -63,18 +58,13 @@ describe("serverErrorHandler", () => {
 
     serverErrorHandler(err, req, res, next);
 
-    expect(renderSpy).to.have.been.calledOnceWith(
-      expectedTemplate,
-      expectedData
-    );
+    expect(renderSpy).to.have.been.calledOnceWith(expectedTemplate, expectedData);
     expect(res.statusCode).to.equal(HTTP_STATUS_CODES.FORBIDDEN);
   });
 
   it("should render session-expired template if session is invalid and it is a GOV.UK request", () => {
     res.statusCode = HTTP_STATUS_CODES.UNAUTHORIZED;
-    const err = new Error(
-      ERROR_MESSAGES.INVALID_SESSION_GOV_UK_INTERNAL_REQUEST
-    );
+    const err = new Error(ERROR_MESSAGES.INVALID_SESSION_GOV_UK_INTERNAL_REQUEST);
     const renderSpy = sinon.spy(res, "render");
     const expectedTemplate = "common/errors/session-expired.njk";
 

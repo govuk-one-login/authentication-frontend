@@ -19,26 +19,19 @@ describe("send mfa controller", () => {
   let res: ResponseOutput;
 
   let getJourneyTypeFromUserSessionSpy: SinonSpy;
-  let mockSendMfaGeneric: (
-    mfaCodeService: MfaServiceInterface
-  ) => ExpressRouteFunc;
+  let mockSendMfaGeneric: (mfaCodeService: MfaServiceInterface) => ExpressRouteFunc;
 
   beforeEach(async () => {
     req = createMockRequest(PATH_NAMES.CHECK_YOUR_PHONE);
     res = mockResponse();
 
-    getJourneyTypeFromUserSessionSpy = sinon.spy(
-      journey.getJourneyTypeFromUserSession
-    );
+    getJourneyTypeFromUserSessionSpy = sinon.spy(journey.getJourneyTypeFromUserSession);
 
-    ({ sendMfaGeneric: mockSendMfaGeneric } = await esmock(
-      "../send-mfa-controller.js",
-      {
-        "../../journey/journey.js": {
-          getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
-        },
-      }
-    ));
+    ({ sendMfaGeneric: mockSendMfaGeneric } = await esmock("../send-mfa-controller.js", {
+      "../../journey/journey.js": {
+        getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
+      },
+    }));
   });
 
   afterEach(() => {
@@ -64,11 +57,12 @@ describe("send mfa controller", () => {
 
       await mockSendMfaGeneric(fakeService)(req as Request, res as Response);
 
-      expect(
-        getJourneyTypeFromUserSessionSpy
-      ).to.have.been.calledOnceWithExactly(req.session.user, {
-        includeReauthentication: true,
-      });
+      expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
+        req.session.user,
+        {
+          includeReauthentication: true,
+        }
+      );
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.REAUTHENTICATION
       );
@@ -109,13 +103,13 @@ describe("send mfa controller", () => {
 
       mockSendMfaGeneric(fakeService)(req as Request, res as Response);
 
-      expect(
-        getJourneyTypeFromUserSessionSpy
-      ).to.have.been.calledOnceWithExactly(req.session.user, {
-        includeReauthentication: true,
-      });
-      expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.be
-        .undefined;
+      expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
+        req.session.user,
+        {
+          includeReauthentication: true,
+        }
+      );
+      expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.be.undefined;
       expect(fakeService.sendMfaCode).to.have.been.calledOnceWithExactly(
         sinon.match.any,
         sinon.match.any,
@@ -152,11 +146,12 @@ describe("send mfa controller", () => {
 
       await mockSendMfaGeneric(fakeService)(req as Request, res as Response);
 
-      expect(
-        getJourneyTypeFromUserSessionSpy
-      ).to.have.been.calledOnceWithExactly(req.session.user, {
-        includeReauthentication: true,
-      });
+      expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
+        req.session.user,
+        {
+          includeReauthentication: true,
+        }
+      );
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.REAUTHENTICATION
       );

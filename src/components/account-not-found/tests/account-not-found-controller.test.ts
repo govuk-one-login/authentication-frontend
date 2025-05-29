@@ -29,27 +29,21 @@ describe("account not found controller", () => {
       it("should render the account not found mandatory view when serviceType undefined", () => {
         accountNotFoundGet(req, res);
 
-        expect(res.render).to.have.calledWith(
-          "account-not-found/index-mandatory.njk"
-        );
+        expect(res.render).to.have.calledWith("account-not-found/index-mandatory.njk");
       });
 
       it("should render the account not found optional view when serviceType optional", () => {
         req.session.client.serviceType = SERVICE_TYPE.OPTIONAL;
         accountNotFoundGet(req, res);
 
-        expect(res.render).to.have.calledWith(
-          "account-not-found/index-optional.njk"
-        );
+        expect(res.render).to.have.calledWith("account-not-found/index-optional.njk");
       });
 
       it("should render the account not found optional view when the service is part of One Login", () => {
         req.session.client.isOneLoginService = true;
         accountNotFoundGet(req, res);
 
-        expect(res.render).to.have.calledWith(
-          "account-not-found/index-one-login.njk"
-        );
+        expect(res.render).to.have.calledWith("account-not-found/index-one-login.njk");
       });
     });
 
@@ -61,27 +55,21 @@ describe("account not found controller", () => {
       it("should render the account not found mandatory view when serviceType undefined", () => {
         accountNotFoundGet(req, res);
 
-        expect(res.render).to.have.calledWith(
-          "account-not-found/index-mandatory.njk"
-        );
+        expect(res.render).to.have.calledWith("account-not-found/index-mandatory.njk");
       });
 
       it("should render the account not found optional view when serviceType optional", () => {
         req.session.client.serviceType = SERVICE_TYPE.OPTIONAL;
         accountNotFoundGet(req, res);
 
-        expect(res.render).to.have.calledWith(
-          "account-not-found/index-optional.njk"
-        );
+        expect(res.render).to.have.calledWith("account-not-found/index-optional.njk");
       });
 
       it("should render the account not found optional view when the service is part of One Login", () => {
         req.session.client.isOneLoginService = true;
         accountNotFoundGet(req, res);
 
-        expect(res.render).to.have.calledWith(
-          "account-not-found/index-one-login.njk"
-        );
+        expect(res.render).to.have.calledWith("account-not-found/index-one-login.njk");
       });
     });
 
@@ -93,9 +81,7 @@ describe("account not found controller", () => {
       it("should render the account not found mandatory view when serviceType undefined", () => {
         accountNotFoundGet(req, res);
 
-        expect(res.render).to.have.calledWith(
-          "account-not-found/index-mobile.njk"
-        );
+        expect(res.render).to.have.calledWith("account-not-found/index-mobile.njk");
       });
 
       it("should render the account not found optional view when serviceType optional", () => {
@@ -103,9 +89,7 @@ describe("account not found controller", () => {
 
         accountNotFoundGet(req, res);
 
-        expect(res.render).to.have.calledWith(
-          "account-not-found/index-mobile.njk"
-        );
+        expect(res.render).to.have.calledWith("account-not-found/index-mobile.njk");
       });
 
       it("should render the account not found optional view when the service is part of One Login", () => {
@@ -113,9 +97,7 @@ describe("account not found controller", () => {
 
         accountNotFoundGet(req, res);
 
-        expect(res.render).to.have.calledWith(
-          "account-not-found/index-mobile.njk"
-        );
+        expect(res.render).to.have.calledWith("account-not-found/index-mobile.njk");
       });
     });
   });
@@ -152,9 +134,7 @@ describe("account not found controller", () => {
 
       await accountNotFoundPost(fakeService)(req, res);
 
-      expect(res.redirect).to.have.been.calledWith(
-        "https://www.gov.uk/sign-in"
-      );
+      expect(res.redirect).to.have.been.calledWith("https://www.gov.uk/sign-in");
       expect(fakeService.sendNotification).to.have.not.been.called;
     });
   });

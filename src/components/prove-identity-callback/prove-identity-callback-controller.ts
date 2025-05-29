@@ -3,11 +3,7 @@ import type { ExpressRouteFunc } from "../../types.js";
 import type { ProveIdentityCallbackServiceInterface } from "./types.js";
 import { IdentityProcessingStatus } from "./types.js";
 import { proveIdentityCallbackService } from "./prove-identity-callback-service.js";
-import {
-  HTTP_STATUS_CODES,
-  IPV_ERROR_CODES,
-  OIDC_ERRORS,
-} from "../../app.constants.js";
+import { HTTP_STATUS_CODES, IPV_ERROR_CODES, OIDC_ERRORS } from "../../app.constants.js";
 import { createServiceRedirectErrorUrl } from "../../utils/error.js";
 import { supportNewIpvSpinner } from "../../config.js";
 export function proveIdentityCallbackGetOrPost(

@@ -6,10 +6,7 @@ import {
 } from "../../app.constants.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import { enterEmailService } from "./enter-email-service.js";
-import type {
-  EnterEmailServiceInterface,
-  LockoutInformation,
-} from "./types.js";
+import type { EnterEmailServiceInterface, LockoutInformation } from "./types.js";
 import type { SecurityCodeErrorType } from "../common/constants.js";
 import {
   ERROR_CODES,
@@ -24,21 +21,16 @@ import xss from "xss";
 import type { CheckReauthServiceInterface } from "../check-reauth-users/types.js";
 import { checkReauthUsersService } from "../check-reauth-users/check-reauth-users-service.js";
 import { supportReauthentication } from "../../config.js";
-import {
-  formatValidationError,
-  renderBadRequest,
-} from "../../utils/validation.js";
+import { formatValidationError, renderBadRequest } from "../../utils/validation.js";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import { isLocked, timestampNSecondsFromNow } from "../../utils/lock-helper.js";
 import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message.js";
 import { isReauth } from "../../utils/request.js";
 import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
-export const RE_ENTER_EMAIL_TEMPLATE =
-  "enter-email/index-re-enter-email-account.njk";
+export const RE_ENTER_EMAIL_TEMPLATE = "enter-email/index-re-enter-email-account.njk";
 const ENTER_EMAIL_TEMPLATE = "enter-email/index-existing-account.njk";
-const BLOCKED_TEMPLATE =
-  "enter-email/index-sign-in-details-entered-too-many-times.njk";
+const BLOCKED_TEMPLATE = "enter-email/index-sign-in-details-entered-too-many-times.njk";
 const EMAIL_ERROR_KEY = "pages.reEnterEmailAccount.enterYourEmailAddressError";
 
 export function enterEmailGet(req: Request, res: Response): void {
@@ -105,10 +97,9 @@ async function getExistingUserAndPopulateSessionData(
   }
 
   req.session.user.enterEmailMfaType = result.data.mfaMethodType;
-  req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
-    req.session.user.mfaMethods,
-    { redactedPhoneNumber: result.data.phoneNumberLastThree }
-  );
+  req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(req.session.user.mfaMethods, {
+    redactedPhoneNumber: result.data.phoneNumberLastThree,
+  });
   req.session.user.isAccountCreationJourney = !result.data.doesUserExist;
 
   return result.data.doesUserExist;
@@ -175,13 +166,7 @@ export function enterEmailPost(
       : USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND;
 
     return res.redirect(
-      await getNextPathAndUpdateJourney(
-        req,
-        req.path,
-        nextState,
-        null,
-        sessionId
-      )
+      await getNextPathAndUpdateJourney(req, req.path, nextState, null, sessionId)
     );
   };
 }
@@ -231,14 +216,9 @@ export function enterEmailCreatePost(
     );
 
     if (!sendNotificationResponse.success) {
-      if (
-        sendNotificationResponse.data.code ==
-        ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT
-      ) {
+      if (sendNotificationResponse.data.code == ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT) {
         return res.render("security-code-error/index-wait.njk", {
-          newCodeLink: getNewCodePath(
-            req.query.actionType as SecurityCodeErrorType
-          ),
+          newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
           isAccountCreationJourney: true,
           contentId: "",
         });
@@ -266,11 +246,7 @@ export function enterEmailCreatePost(
     );
   };
 }
-function handleBadRequest(
-  req: Request,
-  res: Response,
-  errorMessageKey: string
-) {
+function handleBadRequest(req: Request, res: Response, errorMessageKey: string) {
   const error = formatValidationError("email", req.t(errorMessageKey));
   return renderBadRequest(res, req, RE_ENTER_EMAIL_TEMPLATE, error);
 }
@@ -278,9 +254,7 @@ function handleBadRequest(
 function setUpAuthAppLocks(req: Request, lockoutArray: LockoutInformation[]) {
   lockoutArray.forEach(function (lockoutInformation) {
     if (lockoutInformation.lockType == "codeBlock") {
-      const lockTime = timestampNSecondsFromNow(
-        parseInt(lockoutInformation.lockTTL)
-      );
+      const lockTime = timestampNSecondsFromNow(parseInt(lockoutInformation.lockTTL));
       switch (lockoutInformation.journeyType) {
         case JOURNEY_TYPE.SIGN_IN:
           req.session.user.wrongCodeEnteredLock = lockTime;

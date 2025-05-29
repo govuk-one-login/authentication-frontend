@@ -9,9 +9,7 @@ import type { CheckReauthServiceInterface } from "./types.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
 import type { Request } from "express";
 
-export function checkReauthUsersService(
-  axios: Http = http
-): CheckReauthServiceInterface {
+export function checkReauthUsersService(axios: Http = http): CheckReauthServiceInterface {
   const checkReauthUsers = async function (
     sessionId: string,
     emailAddress: string,

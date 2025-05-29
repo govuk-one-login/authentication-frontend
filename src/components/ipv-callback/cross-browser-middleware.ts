@@ -5,11 +5,7 @@ import type { ExpressRouteFunc } from "../../types.js";
 export const crossBrowserMiddleware = (
   crossBrowserService: CrossBrowserService
 ): ExpressRouteFunc => {
-  return async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     if (!sessionIsValid(req) && crossBrowserService.isCrossBrowserIssue(req)) {
       const orchestrationRedirectUrl =
         await crossBrowserService.getOrchestrationRedirectUrl(req);

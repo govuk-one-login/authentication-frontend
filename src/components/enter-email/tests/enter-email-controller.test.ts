@@ -10,10 +10,7 @@ import {
   enterEmailGet,
   enterEmailPost,
 } from "../enter-email-controller.js";
-import type {
-  EnterEmailServiceInterface,
-  LockoutInformation,
-} from "../types.js";
+import type { EnterEmailServiceInterface, LockoutInformation } from "../types.js";
 import { JOURNEY_TYPE, ERROR_CODES } from "../../common/constants.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
@@ -60,9 +57,7 @@ describe("enter email controller", () => {
 
       enterEmailCreateGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "enter-email/index-create-account.njk"
-      );
+      expect(res.render).to.have.calledWith("enter-email/index-create-account.njk");
     });
 
     it("should render enter email view when supportReauthentication flag is switched off", async () => {
@@ -70,9 +65,7 @@ describe("enter email controller", () => {
 
       await enterEmailGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "enter-email/index-existing-account.njk"
-      );
+      expect(res.render).to.have.calledWith("enter-email/index-existing-account.njk");
     });
 
     it("should render enter email view when isReautheticationRequired is false", async () => {
@@ -80,17 +73,13 @@ describe("enter email controller", () => {
 
       await enterEmailGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "enter-email/index-existing-account.njk"
-      );
+      expect(res.render).to.have.calledWith("enter-email/index-existing-account.njk");
     });
 
     it("should render sign-in details entered too many times page view when reauthentication is required and user has been blocked from entering email", async () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
       const date = new Date();
-      const futureDate = new Date(
-        date.setDate(date.getDate() + 6)
-      ).toUTCString();
+      const futureDate = new Date(date.setDate(date.getDate() + 6)).toUTCString();
 
       req.session.user = {
         email,
@@ -128,9 +117,7 @@ describe("enter email controller", () => {
     it("should render enter email create account view when user selected sign in", () => {
       enterEmailGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "enter-email/index-existing-account.njk"
-      );
+      expect(res.render).to.have.calledWith("enter-email/index-existing-account.njk");
     });
   });
 
@@ -138,9 +125,7 @@ describe("enter email controller", () => {
     it(`should redirect to ${PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT} when accessed`, async () => {
       req = createMockRequest(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST);
       await enterEmailCreateRequestGet(req as Request, res as Response);
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT
-      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT);
     });
   });
 
@@ -224,8 +209,7 @@ describe("enter email controller", () => {
       };
 
       await assert.rejects(
-        async () =>
-          enterEmailPost(fakeService)(req as Request, res as Response),
+        async () => enterEmailPost(fakeService)(req as Request, res as Response),
         Error,
         "Internal server error"
       );
@@ -240,8 +224,7 @@ describe("enter email controller", () => {
       req.session.user = undefined;
 
       await assert.rejects(
-        async () =>
-          enterEmailPost(fakeService)(req as Request, res as Response),
+        async () => enterEmailPost(fakeService)(req as Request, res as Response),
         TypeError,
         "Cannot set properties of undefined (setting 'email')"
       );
@@ -390,9 +373,7 @@ describe("enter email controller", () => {
       process.env.SUPPORT_REAUTHENTICATION = "1";
 
       const date = new Date();
-      const futureDate = new Date(
-        date.setDate(date.getDate() + 6)
-      ).toUTCString();
+      const futureDate = new Date(date.setDate(date.getDate() + 6)).toUTCString();
 
       req.session.user = {
         email,
@@ -469,9 +450,7 @@ describe("enter email controller", () => {
       await enterEmailCreatePost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.userExists).to.have.been.calledOnce;
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS
-      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS);
     });
 
     it("should redirect to /check-your-email when no account exists", async () => {
@@ -519,9 +498,7 @@ describe("enter email controller", () => {
         res as Response
       );
 
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-wait.njk"
-      );
+      expect(res.render).to.have.calledWith("security-code-error/index-wait.njk");
     });
   });
 });

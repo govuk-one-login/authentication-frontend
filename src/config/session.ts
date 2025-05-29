@@ -62,7 +62,5 @@ export function isRedisConfigEqual(a: RedisConfig, b: RedisConfig): boolean {
   const keys = new Set<keyof typeof a & keyof typeof b>();
   (Object.keys(a) as (keyof typeof a)[]).forEach((k) => keys.add(k));
   (Object.keys(b) as (keyof typeof b)[]).forEach((k) => keys.add(k));
-  return (
-    Array.from(keys).reduce((acc, k) => acc + (a[k] === b[k] ? 0 : 1), 0) === 0
-  );
+  return Array.from(keys).reduce((acc, k) => acc + (a[k] === b[k] ? 0 : 1), 0) === 0;
 }

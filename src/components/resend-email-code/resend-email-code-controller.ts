@@ -1,10 +1,7 @@
 import type { Request, Response } from "express";
 import type { ExpressRouteFunc } from "../../types.js";
 import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
-import {
-  getErrorPathByCode,
-  getNextPathAndUpdateJourney,
-} from "../common/constants.js";
+import { getErrorPathByCode, getNextPathAndUpdateJourney } from "../common/constants.js";
 import { BadRequestError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
@@ -22,26 +19,19 @@ export function resendEmailCodeGet(req: Request, res: Response): void {
       : "/security-code-check-time-limit";
 
     let show2HrScreen = false;
-    if (
-      req.session.user.isPasswordResetJourney ||
-      isAccountRecoveryJourney(req)
-    ) {
+    if (req.session.user.isPasswordResetJourney || isAccountRecoveryJourney(req)) {
       show2HrScreen = true;
     }
 
-    return res.render(
-      "security-code-error/index-security-code-entered-exceeded.njk",
-      {
-        newCodeLink,
-        show2HrScreen: show2HrScreen,
-      }
-    );
+    return res.render("security-code-error/index-security-code-entered-exceeded.njk", {
+      newCodeLink,
+      show2HrScreen: show2HrScreen,
+    });
   }
 
   res.render("resend-email-code/index.njk", {
     emailAddress: req.session.user.email,
-    requestNewCode:
-      req.query.requestNewCode && req.query.requestNewCode === "true",
+    requestNewCode: req.query.requestNewCode && req.query.requestNewCode === "true",
   });
 }
 

@@ -144,9 +144,7 @@ describe("phone-number", () => {
     });
 
     it("should return true with numbers and spaces in range", () => {
-      expect(lengthInRangeWithoutSpaces(" 123 45 678 901 ", 11, 11)).to.equal(
-        true
-      );
+      expect(lengthInRangeWithoutSpaces(" 123 45 678 901 ", 11, 11)).to.equal(true);
     });
   });
 
@@ -172,9 +170,7 @@ describe("phone-number", () => {
     });
 
     it("should return true with valid uk mobile without lib country code", () => {
-      expect(containsInternationalMobileNumber("00447911123456")).to.equal(
-        true
-      );
+      expect(containsInternationalMobileNumber("00447911123456")).to.equal(true);
     });
 
     it("should return true with valid uk mobile in E164 without lib country code", () => {
@@ -182,9 +178,7 @@ describe("phone-number", () => {
     });
 
     it("should return true with valid uk mobile in E164 without lib country code with zero", () => {
-      expect(containsInternationalMobileNumber("+4407911123456")).to.equal(
-        true
-      );
+      expect(containsInternationalMobileNumber("+4407911123456")).to.equal(true);
     });
   });
 
@@ -222,21 +216,21 @@ describe("phone-number", () => {
 
   describe("convertInternationalPhoneNumberToE164Format", () => {
     it("should prepend + to an international number without the prefix", () => {
-      expect(
-        convertInternationalPhoneNumberToE164Format("34608453322")
-      ).to.equal("+34608453322");
+      expect(convertInternationalPhoneNumberToE164Format("34608453322")).to.equal(
+        "+34608453322"
+      );
     });
 
     it("should not prepend + to an international number with the prefix", () => {
-      expect(
-        convertInternationalPhoneNumberToE164Format("+34608453322")
-      ).to.equal("+34608453322");
+      expect(convertInternationalPhoneNumberToE164Format("+34608453322")).to.equal(
+        "+34608453322"
+      );
     });
 
     it("should swap out a 00 for a + when the input uses this format", () => {
-      expect(
-        convertInternationalPhoneNumberToE164Format("0034608453322")
-      ).to.equal("+34608453322");
+      expect(convertInternationalPhoneNumberToE164Format("0034608453322")).to.equal(
+        "+34608453322"
+      );
     });
   });
 
@@ -246,9 +240,7 @@ describe("phone-number", () => {
     });
     it("should return a string of length equal to the limit set", () => {
       [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach((i) => {
-        expect(
-          returnLastCharactersOnly("1234567890", { limit: i }).length
-        ).to.equal(i);
+        expect(returnLastCharactersOnly("1234567890", { limit: i }).length).to.equal(i);
       });
     });
     it("should return an empty string if passed empty string", () => {

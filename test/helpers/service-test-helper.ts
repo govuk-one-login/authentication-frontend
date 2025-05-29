@@ -37,15 +37,11 @@ export function checkApiCallMadeWithExpectedBodyAndHeaders<T>(
     : {};
 
   expect(
-    stub.calledOnceWithExactly(
-      expectations.expectedPath,
-      expectations.expectedBody,
-      {
-        headers: expectations.expectedHeaders,
-        proxy: sinon.match.bool,
-        ...expectedValidateStatus,
-      }
-    )
+    stub.calledOnceWithExactly(expectations.expectedPath, expectations.expectedBody, {
+      headers: expectations.expectedHeaders,
+      proxy: sinon.match.bool,
+      ...expectedValidateStatus,
+    })
   ).to.be.true;
 }
 

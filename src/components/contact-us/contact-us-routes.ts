@@ -26,10 +26,7 @@ router.post(
 router.get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION, furtherInformationGet);
 router.post(
   PATH_NAMES.CONTACT_US_FURTHER_INFORMATION,
-  validateContactUsRequest(
-    "contact-us/further-information/index.njk",
-    "subtheme"
-  ),
+  validateContactUsRequest("contact-us/further-information/index.njk", "subtheme"),
   furtherInformationPost
 );
 

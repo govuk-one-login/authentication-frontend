@@ -3,10 +3,7 @@ import { describe } from "mocha";
 
 import { sinon } from "../../../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
-import {
-  createPasswordPost,
-  createPasswordGet,
-} from "../create-password-controller.js";
+import { createPasswordPost, createPasswordGet } from "../create-password-controller.js";
 import type { CreatePasswordServiceInterface } from "../types.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
@@ -61,8 +58,7 @@ describe("create-password controller", () => {
         req.session.user = undefined;
 
         await assert.rejects(
-          async () =>
-            createPasswordPost(fakeService)(req as Request, res as Response),
+          async () => createPasswordPost(fakeService)(req as Request, res as Response),
           TypeError,
           "Cannot read properties of undefined (reading 'email')"
         );
@@ -78,8 +74,7 @@ describe("create-password controller", () => {
         req.session.user.email = "joe.bloggs@test.com";
 
         await assert.rejects(
-          async () =>
-            createPasswordPost(fakeService)(req as Request, res as Response),
+          async () => createPasswordPost(fakeService)(req as Request, res as Response),
           TypeError,
           "Cannot read properties of undefined (reading 'password')"
         );
@@ -96,8 +91,7 @@ describe("create-password controller", () => {
         req.session.user.email = "joe.bloggs@test.com";
 
         await assert.rejects(
-          async () =>
-            createPasswordPost(fakeService)(req as Request, res as Response),
+          async () => createPasswordPost(fakeService)(req as Request, res as Response),
           Error,
           "Internal server error"
         );

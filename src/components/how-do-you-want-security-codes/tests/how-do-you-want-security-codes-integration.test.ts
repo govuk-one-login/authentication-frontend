@@ -1,10 +1,6 @@
 import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import esmock from "esmock";
 import type { NextFunction, Request, Response } from "express";
 import type express from "express";
@@ -17,13 +13,9 @@ import nock from "nock";
 
 const getTokenAndCookies = async (app: express.Application) => {
   let cookies, token;
-  await request(
-    app,
-    (test) => test.get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
-    {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    }
-  ).then((res) => {
+  await request(app, (test) => test.get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES), {
+    expectAnalyticsPropertiesMatchSnapshot: false,
+  }).then((res) => {
     const $ = cheerio.load(res.text);
     token = $("[name=_csrf]").val();
     cookies = res.headers["set-cookie"];
@@ -121,8 +113,7 @@ describe("Integration::how do you want security codes", () => {
               validateSessionMiddleware: mockSessionMiddleware(
                 builtMfaMethods,
                 builtMfaMethods.find(
-                  (mfaMethod) =>
-                    mfaMethod.priority === MfaMethodPriority.DEFAULT
+                  (mfaMethod) => mfaMethod.priority === MfaMethodPriority.DEFAULT
                 ).id
               ),
             },
@@ -149,10 +140,7 @@ describe("Integration::how do you want security codes", () => {
               ).to.be.eq(true, "mfa reset link presence");
 
               const form = $(`form[action="/how-do-you-want-security-codes"]`);
-              expect(form.toArray().some(Boolean)).to.be.eq(
-                true,
-                "form presence"
-              );
+              expect(form.toArray().some(Boolean)).to.be.eq(true, "form presence");
               expect(
                 form
                   .first()
@@ -161,10 +149,7 @@ describe("Integration::how do you want security codes", () => {
                   .some((link) => $(link).text().trim() === "Continue")
               ).to.be.eq(true, "submit button presence");
 
-              const radioArray = form
-                .first()
-                .find("input[type=radio]")
-                .toArray();
+              const radioArray = form.first().find("input[type=radio]").toArray();
               expect(radioArray.length).to.be.eq(2);
               expectedRadioValues.forEach((name, index) => {
                 expect($(radioArray[index]).val()).to.be.eq(
@@ -183,13 +168,9 @@ describe("Integration::how do you want security codes", () => {
       const app = await createDefaultSmsBackupAppExpressApp();
       const { token, cookies } = await getTokenAndCookies(app);
 
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
+      await request(app, (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES), {
+        expectAnalyticsPropertiesMatchSnapshot: false,
+      })
         .type("form")
         .set("Cookie", cookies)
         .send({
@@ -229,20 +210,13 @@ describe("Integration::how do you want security codes", () => {
 
       app = await createApp();
 
-      nock(baseApi)
-        .post(API_ENDPOINTS.MFA)
-        .once()
-        .reply(HTTP_STATUS_CODES.NO_CONTENT);
+      nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(HTTP_STATUS_CODES.NO_CONTENT);
 
       const { token, cookies } = await getTokenAndCookies(app);
 
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
+      await request(app, (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES), {
+        expectAnalyticsPropertiesMatchSnapshot: false,
+      })
         .type("form")
         .set("Cookie", cookies)
         .send({
@@ -256,13 +230,9 @@ describe("Integration::how do you want security codes", () => {
       const app = await createDefaultSmsBackupAppExpressApp();
       const { token, cookies } = await getTokenAndCookies(app);
 
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
+      await request(app, (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES), {
+        expectAnalyticsPropertiesMatchSnapshot: false,
+      })
         .type("form")
         .set("Cookie", cookies)
         .send({

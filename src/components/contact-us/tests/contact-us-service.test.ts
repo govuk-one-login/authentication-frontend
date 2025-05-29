@@ -29,8 +29,7 @@ describe("contact-us-service", () => {
       },
       {
         securityCodeSentMethod: "text_message_uk_number",
-        expectedSecurityCodeSentMethodTitle:
-          "Text message to a UK phone number",
+        expectedSecurityCodeSentMethodTitle: "Text message to a UK phone number",
       },
       {
         securityCodeSentMethod: "text_message_international_number",
@@ -45,18 +44,16 @@ describe("contact-us-service", () => {
         securityCodeSentMethod: "unknown",
         expectedSecurityCodeSentMethodTitle: "",
       },
-    ].forEach(
-      ({ securityCodeSentMethod, expectedSecurityCodeSentMethodTitle }) => {
-        it(`should return '${expectedSecurityCodeSentMethodTitle}' for security code method '${securityCodeSentMethod}'`, () => {
-          const actualSecurityCodeSentMethodTitle =
-            prepareSecurityCodeSendMethodTitle(securityCodeSentMethod);
+    ].forEach(({ securityCodeSentMethod, expectedSecurityCodeSentMethodTitle }) => {
+      it(`should return '${expectedSecurityCodeSentMethodTitle}' for security code method '${securityCodeSentMethod}'`, () => {
+        const actualSecurityCodeSentMethodTitle =
+          prepareSecurityCodeSendMethodTitle(securityCodeSentMethod);
 
-          expect(actualSecurityCodeSentMethodTitle).to.equal(
-            expectedSecurityCodeSentMethodTitle
-          );
-        });
-      }
-    );
+        expect(actualSecurityCodeSentMethodTitle).to.equal(
+          expectedSecurityCodeSentMethodTitle
+        );
+      });
+    });
   });
 
   describe("prepareIdentityDocumentTitle", () => {
@@ -82,9 +79,7 @@ describe("contact-us-service", () => {
         const actualIdentityDocumentTitle =
           prepareIdentityDocumentTitle(identityDocumentUsed);
 
-        expect(actualIdentityDocumentTitle).to.equal(
-          expectedIdentityDocumentTitle
-        );
+        expect(actualIdentityDocumentTitle).to.equal(expectedIdentityDocumentTitle);
       });
     });
   });
@@ -286,16 +281,13 @@ describe("contact-us-service", () => {
         await contactUsService.contactUsSubmitFormSmartAgent(contactForm);
 
         // assert
-        const actualPayload =
-          mockSmartAgentService.createTicket.getCall(0).args[0];
+        const actualPayload = mockSmartAgentService.createTicket.getCall(0).args[0];
 
         expect(actualPayload.customAttributes["sa-tag-theme"]).equal(
           "auth_suspect_unauthorised_access"
         );
         expect(
-          actualPayload.customAttributes[
-            "sa-tag-has-received-unwarranted-security-code"
-          ]
+          actualPayload.customAttributes["sa-tag-has-received-unwarranted-security-code"]
         ).equal("yes");
         expect(
           actualPayload.customAttributes["sa-tag-has-unknown-activity-history"]

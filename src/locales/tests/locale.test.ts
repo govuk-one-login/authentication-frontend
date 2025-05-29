@@ -62,9 +62,7 @@ describe("locale file structure", () => {
   });
 
   it("should be that locale files have the same number of keys", () => {
-    expect(englishTranslationFileKeys.length).to.equal(
-      welshTranslationFileKeys.length
-    );
+    expect(englishTranslationFileKeys.length).to.equal(welshTranslationFileKeys.length);
   });
 
   it("should be that locale files have the same keys when sorted", () => {

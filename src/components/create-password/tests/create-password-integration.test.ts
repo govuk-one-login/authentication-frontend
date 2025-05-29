@@ -2,11 +2,7 @@ import { after, describe } from "mocha";
 import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import esmock from "esmock";
@@ -31,9 +27,7 @@ describe("Integration::register create password", () => {
 
             req.session.user = {
               email: "test@test.com",
-              journey: getPermittedJourneyForPath(
-                PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD
-              ),
+              journey: getPermittedJourneyForPath(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD),
             };
 
             next();
@@ -45,11 +39,9 @@ describe("Integration::register create password", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
       cookies = res.headers["set-cookie"];
@@ -97,9 +89,7 @@ describe("Integration::register create password", () => {
         })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
-          expect($("#password-error").text()).to.contains(
-            "Enter your password"
-          );
+          expect($("#password-error").text()).to.contains("Enter your password");
           expect($("#confirm-password-error").text()).to.contains(
             "Re-type your password"
           );
@@ -193,10 +183,7 @@ describe("Integration::register create password", () => {
   });
 
   it("should return validation error when password is amongst most common passwords", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.SIGNUP_USER)
-      .once()
-      .reply(400, { code: 1040 });
+    nock(baseApi).post(API_ENDPOINTS.SIGNUP_USER).once().reply(400, { code: 1040 });
 
     await request(app, (test) =>
       test
@@ -219,10 +206,7 @@ describe("Integration::register create password", () => {
   });
 
   it("should redirect to get security codes when valid password entered", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.SIGNUP_USER)
-      .once()
-      .reply(HTTP_STATUS_CODES.OK, {});
+    nock(baseApi).post(API_ENDPOINTS.SIGNUP_USER).once().reply(HTTP_STATUS_CODES.OK, {});
 
     await request(app, (test) =>
       test

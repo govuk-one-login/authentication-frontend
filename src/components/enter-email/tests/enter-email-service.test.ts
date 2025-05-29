@@ -11,11 +11,7 @@ import {
 import type { EnterEmailServiceInterface } from "../types.js";
 import { enterEmailService } from "../enter-email-service.js";
 import { Http } from "../../../utils/http.js";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("enter email service", () => {
@@ -40,8 +36,7 @@ describe("enter email service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { email, sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
+    const { email, sessionId, clientSessionId, diPersistentSessionId } = commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });

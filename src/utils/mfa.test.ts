@@ -44,8 +44,7 @@ describe("mfa", () => {
         ] as MfaMethod[],
       },
       {
-        title:
-          "redactedPhoneNumber does not reset phoneNumber with existing SMS DEFAULT",
+        title: "redactedPhoneNumber does not reset phoneNumber with existing SMS DEFAULT",
         initialMfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,
@@ -98,8 +97,7 @@ describe("mfa", () => {
         ] as MfaMethod[],
       },
       {
-        title:
-          "phoneNumber does not reset redactedPhoneNumber with existing SMS DEFAULT",
+        title: "phoneNumber does not reset redactedPhoneNumber with existing SMS DEFAULT",
         initialMfaMethods: [
           {
             type: MFA_METHOD_TYPE.SMS,

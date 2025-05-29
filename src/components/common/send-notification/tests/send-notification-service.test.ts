@@ -27,8 +27,7 @@ describe("send notification service", () => {
     status: 200,
     statusText: "OK",
   });
-  const { sessionId, clientSessionId, email, diPersistentSessionId } =
-    commonVariables;
+  const { sessionId, clientSessionId, email, diPersistentSessionId } = commonVariables;
   const req = createMockRequest(PATH_NAMES.RESEND_MFA_CODE, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });

@@ -2,11 +2,7 @@ import { describe } from "mocha";
 import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
@@ -45,13 +41,11 @@ describe("Integration:: check your phone", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(app, (test) => test.get(PATH_NAMES.CHECK_YOUR_PHONE)).then(
-      (res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      }
-    );
+    await request(app, (test) => test.get(PATH_NAMES.CHECK_YOUR_PHONE)).then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
   });
 
   beforeEach(() => {
@@ -64,9 +58,7 @@ describe("Integration:: check your phone", () => {
   });
 
   it("should return check your phone page", async () => {
-    await request(app, (test) =>
-      test.get(PATH_NAMES.CHECK_YOUR_PHONE).expect(200)
-    );
+    await request(app, (test) => test.get(PATH_NAMES.CHECK_YOUR_PHONE).expect(200));
   });
 
   it("should return error when csrf not present", async () => {

@@ -7,11 +7,7 @@ import type {
   CreateAxiosDefaults,
 } from "axios";
 import axios from "axios";
-import {
-  getApiKey,
-  getFrontendApiBaseUrl,
-  supportHttpKeepAlive,
-} from "../config.js";
+import { getApiKey, getFrontendApiBaseUrl, supportHttpKeepAlive } from "../config.js";
 import type { ApiResponseResult } from "../types.js";
 import { HTTP_STATUS_CODES } from "../app.constants.js";
 import { ApiError } from "./error.js";
@@ -121,11 +117,7 @@ export class Http {
     let apiError;
 
     if (error.response && error.response.data) {
-      apiError = new ApiError(
-        error.message,
-        error.response.status,
-        error.response.data
-      );
+      apiError = new ApiError(error.message, error.response.status, error.response.data);
     } else {
       apiError = new ApiError(error.message);
     }
@@ -138,10 +130,7 @@ export class Http {
       baseURL: getFrontendApiBaseUrl(),
       headers: headers,
       validateStatus: (status) => {
-        return (
-          status >= HTTP_STATUS_CODES.OK &&
-          status <= HTTP_STATUS_CODES.BAD_REQUEST
-        );
+        return status >= HTTP_STATUS_CODES.OK && status <= HTTP_STATUS_CODES.BAD_REQUEST;
       },
       ...getAdditionalAxiosConfig(),
     });
@@ -157,9 +146,7 @@ export class Http {
 }
 
 export function getAdditionalAxiosConfig(): CreateAxiosDefaults {
-  return supportHttpKeepAlive()
-    ? { httpsAgent: new Agent({ keepAlive: true }) }
-    : {};
+  return supportHttpKeepAlive() ? { httpsAgent: new Agent({ keepAlive: true }) } : {};
 }
 
 export const http = new Http();

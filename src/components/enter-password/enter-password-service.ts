@@ -6,16 +6,11 @@ import {
 } from "../../utils/http.js";
 import type { JOURNEY_TYPE } from "../../app.constants.js";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants.js";
-import type {
-  EnterPasswordServiceInterface,
-  UserLoginResponse,
-} from "./types.js";
+import type { EnterPasswordServiceInterface, UserLoginResponse } from "./types.js";
 import type { ApiResponseResult } from "../../types.js";
 import type { Request } from "express";
 
-export function enterPasswordService(
-  axios: Http = http
-): EnterPasswordServiceInterface {
+export function enterPasswordService(axios: Http = http): EnterPasswordServiceInterface {
   const loginUser = async function (
     sessionId: string,
     emailAddress: string,

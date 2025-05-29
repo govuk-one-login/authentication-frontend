@@ -4,8 +4,7 @@ import { saveSessionState } from "../components/common/constants.js";
 export function transitionForbidden(req: Request): boolean {
   const nextPath = req.session.user.journey.nextPath;
   return (
-    nextPath !== req.path &&
-    !req.session.user.journey.optionalPaths.includes(req.path)
+    nextPath !== req.path && !req.session.user.journey.optionalPaths.includes(req.path)
   );
 }
 

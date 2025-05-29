@@ -2,15 +2,8 @@ import xss from "xss";
 import type { Request, Response } from "express";
 
 import type { ExpressRouteFunc } from "../../../types.js";
-import {
-  JOURNEY_TYPE,
-  NOTIFICATION_TYPE,
-  PATH_NAMES,
-} from "../../../app.constants.js";
-import {
-  getErrorPathByCode,
-  pathWithQueryParam,
-} from "../../common/constants.js";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE, PATH_NAMES } from "../../../app.constants.js";
+import { getErrorPathByCode, pathWithQueryParam } from "../../common/constants.js";
 import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
 import { sendNotificationService } from "../../common/send-notification/send-notification-service.js";
 import { BadRequestError } from "../../../utils/error.js";

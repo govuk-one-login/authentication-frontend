@@ -3,11 +3,7 @@ import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import type { AxiosResponse } from "axios";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type {
   AccountRecoveryInterface,
@@ -77,29 +73,25 @@ describe("Integration:: enter authenticator app code", () => {
                 status: HTTP_STATUS_CODES.OK,
               } as AxiosResponse;
 
-              return createApiResponse<AccountRecoveryResponse>(
-                fakeAxiosResponse
-              );
+              return createApiResponse<AccountRecoveryResponse>(fakeAxiosResponse);
             }
 
             return { accountRecovery };
           }),
         },
         "../../common/send-notification/send-notification-service.js": {
-          sendNotificationService: sinon.fake(
-            (): SendNotificationServiceInterface => {
-              async function sendNotification() {
-                const fakeAxiosResponse: AxiosResponse = {
-                  data: "test",
-                  status: HTTP_STATUS_CODES.OK,
-                } as AxiosResponse;
+          sendNotificationService: sinon.fake((): SendNotificationServiceInterface => {
+            async function sendNotification() {
+              const fakeAxiosResponse: AxiosResponse = {
+                data: "test",
+                status: HTTP_STATUS_CODES.OK,
+              } as AxiosResponse;
 
-                return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
-              }
-
-              return { sendNotification };
+              return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
             }
-          ),
+
+            return { sendNotification };
+          }),
         },
       }
     );
@@ -107,11 +99,9 @@ describe("Integration:: enter authenticator app code", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
       cookies = res.headers["set-cookie"];
@@ -200,8 +190,7 @@ describe("Integration:: enter authenticator app code", () => {
                   .some(
                     (link) =>
                       $(link).attr("href") === PATH_NAMES.MFA_RESET_WITH_IPV ||
-                      $(link).attr("href") ===
-                        PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
+                      $(link).attr("href") === PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
                   )
               ).to.be.false;
             }

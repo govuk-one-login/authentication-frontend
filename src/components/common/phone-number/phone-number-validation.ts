@@ -57,15 +57,10 @@ export const ukPhoneNumberMustHaveLengthWithoutSpacesInRange = (
   );
 };
 
-export const ukPhoneNumberMustBeValid = (
-  value: string,
-  { req }: Meta
-): boolean => {
+export const ukPhoneNumberMustBeValid = (value: string, { req }: Meta): boolean => {
   if (!containsUKMobileNumber(value)) {
     throw new Error(
-      req.t(
-        "sharedFields.phoneNumber.ukPhoneNumber.validationError.international"
-      )
+      req.t("sharedFields.phoneNumber.ukPhoneNumber.validationError.international")
     );
   }
   return true;
@@ -73,14 +68,16 @@ export const ukPhoneNumberMustBeValid = (
 //endregion
 
 //region International phone number validators
-export const internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly =
-  (value: string, meta: Meta): boolean => {
-    return phoneNumberMustContainLeadingPlusNumbersOrSpacesOnly(
-      value,
-      meta,
-      "sharedFields.phoneNumber.internationalPhoneNumber.validationError.plusNumericOnly"
-    );
-  };
+export const internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly = (
+  value: string,
+  meta: Meta
+): boolean => {
+  return phoneNumberMustContainLeadingPlusNumbersOrSpacesOnly(
+    value,
+    meta,
+    "sharedFields.phoneNumber.internationalPhoneNumber.validationError.plusNumericOnly"
+  );
+};
 
 export const internationalPhoneNumberMustHaveLengthWithoutSpacesInRange = (
   value: string,

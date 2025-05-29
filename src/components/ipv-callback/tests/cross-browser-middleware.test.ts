@@ -17,8 +17,7 @@ const mockCrossBrowserService = (result: boolean) =>
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isCrossBrowserIssue: (_: Request) => result,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getOrchestrationRedirectUrl: (_: Request) =>
-      Promise.resolve(expectedRedirect),
+    getOrchestrationRedirectUrl: (_: Request) => Promise.resolve(expectedRedirect),
   }) as any as CrossBrowserService;
 
 describe("CrossBrowserMiddleware", () => {
@@ -43,11 +42,7 @@ describe("CrossBrowserMiddleware", () => {
   it("should call next when no cookies are present but it is not cross browser", async () => {
     req.cookies = {};
 
-    await crossBrowserMiddleware(mockCrossBrowserService(false))(
-      req,
-      res,
-      next
-    );
+    await crossBrowserMiddleware(mockCrossBrowserService(false))(req, res, next);
 
     expect(next).to.have.been.calledOnce;
   });

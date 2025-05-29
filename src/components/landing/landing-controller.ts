@@ -6,13 +6,7 @@ import {
 } from "../../app.constants.js";
 import { ErrorWithLevel } from "../../utils/error.js";
 
-export function landingGet(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void {
+export function landingGet(req: Request, res: Response, next: NextFunction): void {
   res.status(HTTP_STATUS_CODES.FORBIDDEN);
-  return next(
-    new ErrorWithLevel(ERROR_MESSAGES.FORBIDDEN, ERROR_LOG_LEVEL.INFO)
-  );
+  return next(new ErrorWithLevel(ERROR_MESSAGES.FORBIDDEN, ERROR_LOG_LEVEL.INFO));
 }

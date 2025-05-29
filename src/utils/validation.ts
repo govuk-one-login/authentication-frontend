@@ -17,23 +17,20 @@ interface RequestBody {
 const convertStringBooleanPropertiesToJavaScriptBoolean = (
   reqBody: RequestBody
 ): RequestBody => {
-  return Object.keys(reqBody).reduce<RequestBody>(
-    (reducedObject, reqBodyObjectKey) => {
-      const valueInOriginalReqBody = reqBody[reqBodyObjectKey];
-      if (valueInOriginalReqBody === "true") {
-        reducedObject[reqBodyObjectKey] = true;
-      }
+  return Object.keys(reqBody).reduce<RequestBody>((reducedObject, reqBodyObjectKey) => {
+    const valueInOriginalReqBody = reqBody[reqBodyObjectKey];
+    if (valueInOriginalReqBody === "true") {
+      reducedObject[reqBodyObjectKey] = true;
+    }
 
-      if (valueInOriginalReqBody === "false") {
-        reducedObject[reqBodyObjectKey] = false;
-      }
+    if (valueInOriginalReqBody === "false") {
+      reducedObject[reqBodyObjectKey] = false;
+    }
 
-      reducedObject[reqBodyObjectKey] = valueInOriginalReqBody;
+    reducedObject[reqBodyObjectKey] = valueInOriginalReqBody;
 
-      return reducedObject;
-    },
-    {}
-  );
+    return reducedObject;
+  }, {});
 };
 
 export function formatValidationError(

@@ -2,11 +2,7 @@ import { describe } from "mocha";
 import { request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
@@ -47,13 +43,11 @@ describe("Integration:: resend email code", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(app, (test) => test.get(PATH_NAMES.RESEND_EMAIL_CODE)).then(
-      (res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      }
-    );
+    await request(app, (test) => test.get(PATH_NAMES.RESEND_EMAIL_CODE)).then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
   });
 
   beforeEach(() => {
@@ -66,9 +60,7 @@ describe("Integration:: resend email code", () => {
   });
 
   it("should return resend email code page", async () => {
-    await request(app, (test) =>
-      test.get(PATH_NAMES.RESEND_EMAIL_CODE).expect(200)
-    );
+    await request(app, (test) => test.get(PATH_NAMES.RESEND_EMAIL_CODE).expect(200));
   });
 
   it("should return error when csrf not present", async () => {
@@ -145,10 +137,7 @@ describe("Integration:: resend email code", () => {
         .send({
           _csrf: token,
         })
-        .expect(
-          "Location",
-          "/security-code-invalid-request?actionType=emailMaxCodesSent"
-        )
+        .expect("Location", "/security-code-invalid-request?actionType=emailMaxCodesSent")
         .expect(302)
     );
   });

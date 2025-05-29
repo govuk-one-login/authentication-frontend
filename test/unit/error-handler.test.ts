@@ -46,9 +46,7 @@ describe("Error handlers", () => {
 
       serverErrorHandler(err, req as Request, res as Response, next);
 
-      expect(res.render).to.have.been.calledOnceWith(
-        "common/errors/session-expired.njk"
-      );
+      expect(res.render).to.have.been.calledOnceWith("common/errors/session-expired.njk");
     });
   });
 });

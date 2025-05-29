@@ -10,11 +10,7 @@ import {
   pathWithQueryParam,
 } from "../common/constants.js";
 import { BadRequestError } from "../../utils/error.js";
-import {
-  JOURNEY_TYPE,
-  NOTIFICATION_TYPE,
-  PATH_NAMES,
-} from "../../app.constants.js";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants.js";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
 import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
@@ -39,19 +35,14 @@ export function resetPassword2FASmsGet(
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     if (isLocked(req.session.user.wrongCodeEnteredLock)) {
-      return res.render(
-        "security-code-error/index-security-code-entered-exceeded.njk",
-        {
-          newCodeLink: PATH_NAMES.RESET_PASSWORD_2FA_SMS,
-          show2HrScreen: true,
-        }
-      );
+      return res.render("security-code-error/index-security-code-entered-exceeded.njk", {
+        newCodeLink: PATH_NAMES.RESET_PASSWORD_2FA_SMS,
+        show2HrScreen: true,
+      });
     }
     if (isLocked(req.session.user.codeRequestLock)) {
       return res.render("security-code-error/index-wait.njk", {
-        newCodeLink: getNewCodePath(
-          req.query.actionType as SecurityCodeErrorType
-        ),
+        newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
         isAccountCreationJourney: false,
       });
     }
@@ -70,9 +61,7 @@ export function resetPassword2FASmsGet(
     if (!mfaResponse.success) {
       if (mfaResponse.data.code == ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
         return res.render("security-code-error/index-wait.njk", {
-          newCodeLink: getNewCodePath(
-            req.query.actionType as SecurityCodeErrorType
-          ),
+          newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
           isAccountCreationJourney: false,
         });
       }
@@ -80,9 +69,7 @@ export function resetPassword2FASmsGet(
         return res.render(
           "security-code-error/index-security-code-entered-exceeded.njk",
           {
-            newCodeLink: getNewCodePath(
-              req.query.actionType as SecurityCodeErrorType
-            ),
+            newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
             show2HrScreen: true,
             isAccountCreationJourney: false,
           }
@@ -92,10 +79,7 @@ export function resetPassword2FASmsGet(
       if (path) {
         return res.redirect(path);
       }
-      throw new BadRequestError(
-        mfaResponse.data.message,
-        mfaResponse.data.code
-      );
+      throw new BadRequestError(mfaResponse.data.message, mfaResponse.data.code);
     }
 
     const { mfaMethods } = req.session.user;

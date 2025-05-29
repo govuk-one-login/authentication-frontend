@@ -10,9 +10,7 @@ import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
 import type { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types.js";
 import type { Request } from "express";
 
-export function verifyMfaCodeService(
-  axios: Http = http
-): VerifyMfaCodeInterface {
+export function verifyMfaCodeService(axios: Http = http): VerifyMfaCodeInterface {
   const verifyMfaCode = async function (
     methodType: MFA_METHOD_TYPE,
     code: string,

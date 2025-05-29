@@ -1,10 +1,6 @@
 import type { Request } from "express";
 import { supportReauthentication } from "../config.js";
-import {
-  CONTACT_US_THEMES,
-  SERVICE_TYPE,
-  SUPPORT_TYPE,
-} from "../app.constants.js";
+import { CONTACT_US_THEMES, SERVICE_TYPE, SUPPORT_TYPE } from "../app.constants.js";
 export const isReauth = (req: Request): boolean =>
   supportReauthentication() && Boolean(req.session?.user?.reauthenticate);
 

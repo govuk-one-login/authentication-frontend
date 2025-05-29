@@ -23,10 +23,7 @@ describe("validation", () => {
       ];
 
       expect(
-        replaceErrorMessagePlaceholders(
-          errorsWithPlaceholders,
-          PLACEHOLDER_REPLACEMENTS
-        )
+        replaceErrorMessagePlaceholders(errorsWithPlaceholders, PLACEHOLDER_REPLACEMENTS)
       ).to.eql(expected);
     });
   });

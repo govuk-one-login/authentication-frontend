@@ -1,9 +1,5 @@
 import { describe } from "mocha";
-import {
-  expect,
-  sinon,
-  request,
-} from "../../../../../test/utils/test-utils.js";
+import { expect, sinon, request } from "../../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
 import { PATH_NAMES, ANALYTICS_COOKIES } from "../../../../app.constants.js";
 import esmock from "esmock";
@@ -19,17 +15,13 @@ describe("Integration:: cookies controller", () => {
 
       app = await createApp();
 
-      await request(app, (test) => test.get(PATH_NAMES.COOKIES_POLICY)).then(
-        (res) => {
-          $ = cheerio.load(res.text);
-          $("table#analytics-cookies tbody td:first-child").each(
-            (i: any, elem: any) => {
-              const cookieName = $(elem).text();
-              analyticsCookieNamesListedInCookieNotice.push(cookieName);
-            }
-          );
-        }
-      );
+      await request(app, (test) => test.get(PATH_NAMES.COOKIES_POLICY)).then((res) => {
+        $ = cheerio.load(res.text);
+        $("table#analytics-cookies tbody td:first-child").each((i: any, elem: any) => {
+          const cookieName = $(elem).text();
+          analyticsCookieNamesListedInCookieNotice.push(cookieName);
+        });
+      });
     });
 
     after(() => {
@@ -57,9 +49,10 @@ describe("Integration:: cookies controller", () => {
     describe("the ANALYTICS_COOKIES array", () => {
       describe("when the dynamic Google Analytics cookie name is added", () => {
         it("should include all measurement cookies listed the cookie policy page", () => {
-          expect(analyticsCookieNamesListedInCookieNotice).to.have.same.members(
-            [...ANALYTICS_COOKIES, dynamicGACookieName]
-          );
+          expect(analyticsCookieNamesListedInCookieNotice).to.have.same.members([
+            ...ANALYTICS_COOKIES,
+            dynamicGACookieName,
+          ]);
         });
       });
     });

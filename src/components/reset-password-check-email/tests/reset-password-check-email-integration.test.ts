@@ -1,11 +1,7 @@
 import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import nock from "nock";
 import { ERROR_CODES } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
@@ -35,9 +31,7 @@ describe("Integration::reset password check email ", () => {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
             req.session.user = {
               email: sessionEmail,
-              journey: getPermittedJourneyForPath(
-                PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
-              ),
+              journey: getPermittedJourneyForPath(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL),
             };
             req.session.user.enterEmailMfaType = "SMS";
             next();
@@ -56,11 +50,9 @@ describe("Integration::reset password check email ", () => {
       .once()
       .reply(200, { mfaMethods: [] });
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
       cookies = res.headers["set-cookie"];
@@ -191,10 +183,7 @@ describe("Integration::reset password check email ", () => {
   });
 
   it("should return internal server error when /reset-password-request API call response is 500", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.RESET_PASSWORD_REQUEST)
-      .once()
-      .reply(500, {});
+    nock(baseApi).post(API_ENDPOINTS.RESET_PASSWORD_REQUEST).once().reply(500, {});
     await request(app, (test) =>
       test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL).expect(500)
     );

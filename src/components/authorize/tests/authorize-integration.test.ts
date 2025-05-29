@@ -10,12 +10,7 @@ import type {
 } from "../types.js";
 import { createApiResponse } from "../../../utils/http.js";
 import type { AxiosResponse } from "axios";
-import {
-  createJwt,
-  createMockClaims,
-  getPrivateKey,
-  getPublicKey,
-} from "./test-data.js";
+import { createJwt, createMockClaims, getPrivateKey, getPublicKey } from "./test-data.js";
 import { JwtService } from "../jwt-service.js";
 import { getOrchToAuthExpectedClientId } from "../../../config.js";
 import esmock from "esmock";
@@ -46,14 +41,12 @@ describe("Integration:: authorize", () => {
           }),
         },
         "../kms-decryption-service.js": {
-          KmsDecryptionService: sinon.fake(
-            (): KmsDecryptionServiceInterface => {
-              async function decrypt() {
-                return Promise.resolve(jwt);
-              }
-              return { decrypt };
+          KmsDecryptionService: sinon.fake((): KmsDecryptionServiceInterface => {
+            async function decrypt() {
+              return Promise.resolve(jwt);
             }
-          ),
+            return { decrypt };
+          }),
         },
         "../jwt-service.js": {
           JwtService: sinon.fake((): JwtServiceInterface => {
@@ -114,10 +107,7 @@ describe("Integration:: authorize", () => {
           request: "SomeJWE",
           result: "test-result",
         })
-        .expect(
-          "Location",
-          PATH_NAMES.SIGN_IN_OR_CREATE + "?result=test-result"
-        )
+        .expect("Location", PATH_NAMES.SIGN_IN_OR_CREATE + "?result=test-result")
         .expect(302)
     );
   });

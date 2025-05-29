@@ -29,9 +29,7 @@ describe("Integration::select-mfa-options", () => {
 
             req.session.user = {
               email: "test@test.com",
-              journey: getPermittedJourneyForPath(
-                PATH_NAMES.GET_SECURITY_CODES
-              ),
+              journey: getPermittedJourneyForPath(PATH_NAMES.GET_SECURITY_CODES),
             };
 
             next();
@@ -42,13 +40,11 @@ describe("Integration::select-mfa-options", () => {
 
     app = await createApp();
 
-    await request(app, (test) => test.get(PATH_NAMES.GET_SECURITY_CODES)).then(
-      (res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      }
-    );
+    await request(app, (test) => test.get(PATH_NAMES.GET_SECURITY_CODES)).then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
   });
 
   beforeEach(() => {
@@ -61,9 +57,7 @@ describe("Integration::select-mfa-options", () => {
   });
 
   it("should return get security codes page", async () => {
-    await request(app, (test) =>
-      test.get(PATH_NAMES.GET_SECURITY_CODES).expect(200)
-    );
+    await request(app, (test) => test.get(PATH_NAMES.GET_SECURITY_CODES).expect(200));
   });
 
   it("should return error when csrf not present", async () => {

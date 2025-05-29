@@ -106,14 +106,10 @@ describe("authentication auth code service", () => {
       );
 
       expect(
-        postStub.calledOnceWithExactly(
-          API_ENDPOINTS.ORCH_AUTH_CODE,
-          expectedBody,
-          {
-            headers: expectedHeaders,
-            proxy: sinon.match.bool,
-          }
-        )
+        postStub.calledOnceWithExactly(API_ENDPOINTS.ORCH_AUTH_CODE, expectedBody, {
+          headers: expectedHeaders,
+          proxy: sinon.match.bool,
+        })
       ).to.be.true;
       expect(getStub.notCalled).to.be.true;
       expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);
@@ -163,14 +159,10 @@ describe("authentication auth code service", () => {
       };
 
       expect(
-        postStub.calledOnceWithExactly(
-          API_ENDPOINTS.ORCH_AUTH_CODE,
-          expectedBody,
-          {
-            headers: expectedHeaders,
-            proxy: sinon.match.bool,
-          }
-        )
+        postStub.calledOnceWithExactly(API_ENDPOINTS.ORCH_AUTH_CODE, expectedBody, {
+          headers: expectedHeaders,
+          proxy: sinon.match.bool,
+        })
       ).to.be.true;
       expect(getStub.notCalled).to.be.true;
       expect(result.data.location).to.deep.eq(redirectUriReturnedFromResponse);

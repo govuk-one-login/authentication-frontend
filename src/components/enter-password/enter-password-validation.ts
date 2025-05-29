@@ -26,11 +26,8 @@ export function validateEnterPasswordAccountExistsRequest(): ValidationChainFunc
           }
         );
       }),
-    validateBodyMiddleware(
-      "enter-password/index-account-exists.njk",
-      (req) => ({
-        email: req.session.user.email,
-      })
-    ),
+    validateBodyMiddleware("enter-password/index-account-exists.njk", (req) => ({
+      email: req.session.user.email,
+    })),
   ];
 }

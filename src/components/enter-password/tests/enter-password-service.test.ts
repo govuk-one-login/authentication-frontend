@@ -1,10 +1,7 @@
 import { describe } from "mocha";
 import { enterPasswordService } from "../enter-password-service.js";
 import type { ApiResponseResult } from "../../../types.js";
-import type {
-  EnterPasswordServiceInterface,
-  UserLoginResponse,
-} from "../types.js";
+import type { EnterPasswordServiceInterface, UserLoginResponse } from "../types.js";
 import { expect } from "chai";
 import type { Request } from "express";
 import { Http } from "../../../utils/http.js";
@@ -16,8 +13,7 @@ import type { SinonStub } from "sinon";
 describe("enter-password-service", () => {
   let req: Partial<Request>;
   const httpInstance = new Http();
-  const service: EnterPasswordServiceInterface =
-    enterPasswordService(httpInstance);
+  const service: EnterPasswordServiceInterface = enterPasswordService(httpInstance);
   const IP_ADDRESS = "123.123.123.123";
   const API_KEY = "api-key";
 
@@ -55,16 +51,15 @@ describe("enter-password-service", () => {
       password: "password",
     };
 
-    const result: ApiResponseResult<UserLoginResponse> =
-      await service.loginUser(
-        "",
-        "email",
-        "password",
-        "",
-        "",
-        req as Request,
-        undefined
-      );
+    const result: ApiResponseResult<UserLoginResponse> = await service.loginUser(
+      "",
+      "email",
+      "password",
+      "",
+      "",
+      req as Request,
+      undefined
+    );
 
     expect(result.success).to.be.true;
     expect(result.data).to.deep.eq({});

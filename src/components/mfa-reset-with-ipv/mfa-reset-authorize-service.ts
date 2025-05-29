@@ -1,7 +1,4 @@
-import type {
-  MfaResetAuthorizeInterface,
-  MfaResetAuthorizeResponse,
-} from "./types.js";
+import type { MfaResetAuthorizeInterface, MfaResetAuthorizeResponse } from "./types.js";
 import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
@@ -12,9 +9,7 @@ import type { ApiResponseResult } from "../../types.js";
 import { API_ENDPOINTS } from "../../app.constants.js";
 import type { Request } from "express";
 
-export function mfaResetAuthorizeService(
-  axios: Http = http
-): MfaResetAuthorizeInterface {
+export function mfaResetAuthorizeService(axios: Http = http): MfaResetAuthorizeInterface {
   const ipvRedirectUrl = async function (
     sessionId: string,
     clientSessionId: string,

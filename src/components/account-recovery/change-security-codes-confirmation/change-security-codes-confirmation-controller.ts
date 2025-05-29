@@ -9,14 +9,11 @@ export function changeSecurityCodesConfirmationGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const type = req.session.user.accountRecoveryVerifiedMfaType;
     if (type === MFA_METHOD_TYPE.SMS || type === MFA_METHOD_TYPE.AUTH_APP) {
-      res.render(
-        "account-recovery/change-security-codes-confirmation/index.njk",
-        {
-          mfaMethodType: type,
-          phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
-            ?.redactedPhoneNumber,
-        }
-      );
+      res.render("account-recovery/change-security-codes-confirmation/index.njk", {
+        mfaMethodType: type,
+        phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
+          ?.redactedPhoneNumber,
+      });
     } else {
       throw new Error(
         "Attempted to access /change-security-codes-confirmation without a valid request type"

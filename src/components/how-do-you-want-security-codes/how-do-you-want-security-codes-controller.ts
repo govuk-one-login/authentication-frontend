@@ -10,18 +10,11 @@ import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import { BadRequestError } from "../../utils/error.js";
 import { handleSendMfaCodeError } from "../../utils/send-mfa-code-error-helper.js";
 
-export function sortMfaMethodsBackupFirst(
-  mfaMethods: MfaMethod[]
-): MfaMethod[] {
-  return mfaMethods
-    .slice()
-    .sort((a, b) => a.priority.localeCompare(b.priority, "en"));
+export function sortMfaMethodsBackupFirst(mfaMethods: MfaMethod[]): MfaMethod[] {
+  return mfaMethods.slice().sort((a, b) => a.priority.localeCompare(b.priority, "en"));
 }
 
-export function howDoYouWantSecurityCodesGet(
-  req: Request,
-  res: Response
-): void {
+export function howDoYouWantSecurityCodesGet(req: Request, res: Response): void {
   const { isPasswordResetJourney } = req.session.user;
   const supportMfaReset = !isPasswordResetJourney;
 

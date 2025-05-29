@@ -34,9 +34,7 @@ describe("base64DecodeToUint8Array", () => {
         assert.fail("Expected error to be thrown");
       } catch (error) {
         expect(error).to.be.an.instanceOf(InvalidBase64Error);
-        expect(error.message).to.equal(
-          `String is not valid base64: ${invalidBase64}`
-        );
+        expect(error.message).to.equal(`String is not valid base64: ${invalidBase64}`);
       }
     });
   });

@@ -16,11 +16,9 @@ import { createMockRequest } from "../../../../test/helpers/mock-request-helper.
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("account interventions service", () => {
   const httpInstance = new Http();
-  const service: AccountInterventionsInterface =
-    accountInterventionService(httpInstance);
+  const service: AccountInterventionsInterface = accountInterventionService(httpInstance);
   let postStub: SinonStub;
-  const { sessionId, clientSessionId, email, diPersistentSessionId } =
-    commonVariables;
+  const { sessionId, clientSessionId, email, diPersistentSessionId } = commonVariables;
   const req = createMockRequest(PATH_NAMES.AUTH_CODE, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });

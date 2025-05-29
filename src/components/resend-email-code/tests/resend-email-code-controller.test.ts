@@ -48,10 +48,7 @@ describe("resend email controller", () => {
       };
       req.path = PATH_NAMES.RESEND_EMAIL_CODE;
 
-      await resendEmailCodePost(fakeNotificationService)(
-        req as Request,
-        res as Response
-      );
+      await resendEmailCodePost(fakeNotificationService)(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.CHECK_YOUR_EMAIL);
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
@@ -71,10 +68,7 @@ describe("resend email controller", () => {
       };
       req.path = PATH_NAMES.RESEND_EMAIL_CODE;
 
-      await resendEmailCodePost(fakeNotificationService)(
-        req as Request,
-        res as Response
-      );
+      await resendEmailCodePost(fakeNotificationService)(req as Request, res as Response);
       expect(req.session.user.isVerifyEmailCodeResendRequired).to.be.undefined;
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.CHECK_YOUR_EMAIL);
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
@@ -91,12 +85,9 @@ describe("resend email controller", () => {
 
       await securityCodeCheckTimeLimit()(req as Request, res as Response);
 
-      expect(res.render).to.have.been.calledWith(
-        "security-code-error/index-wait.njk",
-        {
-          newCodeLink: "/security-code-check-time-limit",
-        }
-      );
+      expect(res.render).to.have.been.calledWith("security-code-error/index-wait.njk", {
+        newCodeLink: "/security-code-check-time-limit",
+      });
     });
 
     it("should redirect to /resend-email-code if codeRequestLock is set in the past", async () => {

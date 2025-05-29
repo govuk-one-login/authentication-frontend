@@ -23,11 +23,7 @@ export interface ResponseRedirect {
 
 export type ValidationChainFunc = (
   | ValidationChain
-  | ((
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction
-    ) => any)
+  | ((req: express.Request, res: express.Response, next: express.NextFunction) => any)
 )[];
 
 export interface ApiResponseResult<T> {
@@ -124,9 +120,8 @@ export type SmsMfaMethod = {
   redactedPhoneNumber?: string;
 };
 
-export const isSmsMfaMethod = (
-  mfaMethod: MfaMethod
-): mfaMethod is SmsMfaMethod => mfaMethod.type === MFA_METHOD_TYPE.SMS;
+export const isSmsMfaMethod = (mfaMethod: MfaMethod): mfaMethod is SmsMfaMethod =>
+  mfaMethod.type === MFA_METHOD_TYPE.SMS;
 
 export type AuthAppMfaMethod = {
   id?: string;

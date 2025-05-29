@@ -55,9 +55,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
 
       await resetPasswordRequestGet(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
-      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
     });
   });
 
@@ -156,9 +154,7 @@ describe("reset password controller (in 6 digit code flow)", () => {
             expect(fakeResetService.updatePassword).to.have.been.calledOnce;
             expect(fakeLoginService.loginUser).to.have.been.calledOnce;
 
-            expect(res.redirect).to.have.calledWith(
-              PATH_NAMES.GET_SECURITY_CODES
-            );
+            expect(res.redirect).to.have.calledWith(PATH_NAMES.GET_SECURITY_CODES);
           });
         }
       );

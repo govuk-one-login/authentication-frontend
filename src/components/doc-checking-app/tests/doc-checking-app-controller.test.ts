@@ -54,8 +54,7 @@ describe("doc checking app controller", () => {
       } as unknown as DocCheckingAppInterface;
 
       await assert.rejects(
-        async () =>
-          docCheckingAppGet(fakeService)(req as Request, res as Response),
+        async () => docCheckingAppGet(fakeService)(req as Request, res as Response),
         Error,
         "1222:Error occurred"
       );

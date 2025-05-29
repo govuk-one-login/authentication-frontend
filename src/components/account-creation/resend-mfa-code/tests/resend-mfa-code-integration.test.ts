@@ -48,11 +48,9 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL as string;
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
       cookies = res.headers["set-cookie"];

@@ -93,9 +93,7 @@ describe("accountInterventionsMiddleware", () => {
 
       it("should redirect to UNAVAILABLE PERMANENT", async () => {
         await callMiddleware(false, false, accountInterventionsWithBlockedTrue);
-        expect(res.redirect).to.have.been.calledWith(
-          PATH_NAMES.UNAVAILABLE_PERMANENT
-        );
+        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.UNAVAILABLE_PERMANENT);
       });
     });
 
@@ -103,32 +101,21 @@ describe("accountInterventionsMiddleware", () => {
       let accountInterventionsWithPasswordResetTrue: AccountInterventionsInterface;
 
       before(() => {
-        accountInterventionsWithPasswordResetTrue =
-          accountInterventionsFakeHelper({
-            passwordResetRequired: true,
-            blocked: false,
-            temporarilySuspended: true,
-            reproveIdentity: false,
-          });
+        accountInterventionsWithPasswordResetTrue = accountInterventionsFakeHelper({
+          passwordResetRequired: true,
+          blocked: false,
+          temporarilySuspended: true,
+          reproveIdentity: false,
+        });
       });
 
       it("should redirect to PASSWORD_RESET_REQUIRED when handlePasswordResetStatus is true", async () => {
-        await callMiddleware(
-          false,
-          true,
-          accountInterventionsWithPasswordResetTrue
-        );
-        expect(res.redirect).to.have.been.calledWith(
-          PATH_NAMES.PASSWORD_RESET_REQUIRED
-        );
+        await callMiddleware(false, true, accountInterventionsWithPasswordResetTrue);
+        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.PASSWORD_RESET_REQUIRED);
       });
 
       it("should call next when handlePasswordResetStatus is false", async () => {
-        await callMiddleware(
-          false,
-          false,
-          accountInterventionsWithPasswordResetTrue
-        );
+        await callMiddleware(false, false, accountInterventionsWithPasswordResetTrue);
         expect(res.redirect).to.not.have.been.calledWith(
           PATH_NAMES.PASSWORD_RESET_REQUIRED
         );
@@ -136,14 +123,8 @@ describe("accountInterventionsMiddleware", () => {
       });
 
       it("should redirect to PASSWORD_RESET_REQUIRED when handlePasswordResetStatus AND handleSuspendedStatus are both true", async () => {
-        await callMiddleware(
-          true,
-          true,
-          accountInterventionsWithPasswordResetTrue
-        );
-        expect(res.redirect).to.have.been.calledWith(
-          PATH_NAMES.PASSWORD_RESET_REQUIRED
-        );
+        await callMiddleware(true, true, accountInterventionsWithPasswordResetTrue);
+        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.PASSWORD_RESET_REQUIRED);
       });
 
       it("should redirect to PASSWORD_RESET_REQUIRED when handlePasswordResetStatus is true and the passwordResetTime is before the intervention appliedAt time", async () => {
@@ -168,9 +149,7 @@ describe("accountInterventionsMiddleware", () => {
           true,
           accountInterventionsWithPasswordResetTrueAndAppliedAtNow
         );
-        expect(res.redirect).to.have.been.calledWith(
-          PATH_NAMES.PASSWORD_RESET_REQUIRED
-        );
+        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.PASSWORD_RESET_REQUIRED);
       });
 
       it("should not redirect to PASSWORD_RESET_REQUIRED when handlePasswordResetStatus is true and the passwordResetTime is after the intervention appliedAt time", async () => {
@@ -202,11 +181,7 @@ describe("accountInterventionsMiddleware", () => {
       });
 
       it("should not redirect to UNAVAILABLE_TEMPORARY when handleSuspended status is true and handlePasswordResetStatus is false", async () => {
-        await callMiddleware(
-          true,
-          false,
-          accountInterventionsWithPasswordResetTrue
-        );
+        await callMiddleware(true, false, accountInterventionsWithPasswordResetTrue);
         expect(res.redirect).to.not.have.been.calledWith(
           PATH_NAMES.UNAVAILABLE_TEMPORARY
         );
@@ -218,22 +193,16 @@ describe("accountInterventionsMiddleware", () => {
       let accountIntervetionsWithReproveIdentity: AccountInterventionsInterface;
 
       before(() => {
-        accountIntervetionsWithReproveIdentity = accountInterventionsFakeHelper(
-          {
-            passwordResetRequired: false,
-            blocked: false,
-            temporarilySuspended: true,
-            reproveIdentity: true,
-          }
-        );
+        accountIntervetionsWithReproveIdentity = accountInterventionsFakeHelper({
+          passwordResetRequired: false,
+          blocked: false,
+          temporarilySuspended: true,
+          reproveIdentity: true,
+        });
       });
 
       it("should not redirect to UNAVAILABLE_TEMPORARY when handleSuspended status is true and handlePasswordResetStatus is false", async () => {
-        await callMiddleware(
-          true,
-          false,
-          accountIntervetionsWithReproveIdentity
-        );
+        await callMiddleware(true, false, accountIntervetionsWithReproveIdentity);
         expect(res.redirect).to.not.have.been.calledWith(
           PATH_NAMES.UNAVAILABLE_TEMPORARY
         );
@@ -245,13 +214,14 @@ describe("accountInterventionsMiddleware", () => {
       let accountInterventionsWithTemporarilySuspendedTrue: AccountInterventionsInterface;
 
       before(() => {
-        accountInterventionsWithTemporarilySuspendedTrue =
-          accountInterventionsFakeHelper({
+        accountInterventionsWithTemporarilySuspendedTrue = accountInterventionsFakeHelper(
+          {
             passwordResetRequired: false,
             blocked: false,
             temporarilySuspended: true,
             reproveIdentity: false,
-          });
+          }
+        );
       });
 
       it("should redirect to UNAVAILABLE_TEMPORARY when handleSuspendedStatus is true", async () => {
@@ -260,9 +230,7 @@ describe("accountInterventionsMiddleware", () => {
           false,
           accountInterventionsWithTemporarilySuspendedTrue
         );
-        expect(res.redirect).to.have.been.calledWith(
-          PATH_NAMES.UNAVAILABLE_TEMPORARY
-        );
+        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.UNAVAILABLE_TEMPORARY);
       });
 
       it("should not redirect to UNAVAILABLE_TEMPORARY when handleSuspendedStatus is false", async () => {

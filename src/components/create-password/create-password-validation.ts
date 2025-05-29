@@ -13,19 +13,12 @@ export function validateCreatePasswordRequest(): ValidationChainFunc {
       })
       .isLength({ max: 256 })
       .withMessage((value, { req }) => {
-        return req.t(
-          "pages.createPassword.password.validationError.maxLength",
-          {
-            value,
-          }
-        );
+        return req.t("pages.createPassword.password.validationError.maxLength", {
+          value,
+        });
       })
       .custom((value, { req }) => {
-        if (
-          !containsNumber(value) ||
-          containsNumbersOnly(value) ||
-          value.length < 8
-        ) {
+        if (!containsNumber(value) || containsNumbersOnly(value) || value.length < 8) {
           throw new Error(
             req.t("pages.createPassword.password.validationError.alphaNumeric")
           );
@@ -35,9 +28,7 @@ export function validateCreatePasswordRequest(): ValidationChainFunc {
       .custom((value, { req }) => {
         if (value !== req.body["confirm-password"]) {
           throw new Error(
-            req.t(
-              "pages.createPassword.confirmPassword.validationError.matches"
-            )
+            req.t("pages.createPassword.confirmPassword.validationError.matches")
           );
         }
         return true;
@@ -45,17 +36,14 @@ export function validateCreatePasswordRequest(): ValidationChainFunc {
     body("confirm-password")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t(
-          "pages.createPassword.confirmPassword.validationError.required",
-          { value }
-        );
+        return req.t("pages.createPassword.confirmPassword.validationError.required", {
+          value,
+        });
       })
       .custom((value, { req }) => {
         if (value !== req.body["password"]) {
           throw new Error(
-            req.t(
-              "pages.createPassword.confirmPassword.validationError.matches"
-            )
+            req.t("pages.createPassword.confirmPassword.validationError.matches")
           );
         }
         return true;

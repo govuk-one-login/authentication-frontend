@@ -16,9 +16,9 @@ describe("getChannelSpecificTemplate", () => {
     });
     describe("and the webTemplateAndPath is mapped", () => {
       it("should return the original webTemplateAndPath", () => {
-        expect(
-          getChannelSpecificTemplate("webTemplate.njk", false, mappings)
-        ).to.equal("webTemplate.njk");
+        expect(getChannelSpecificTemplate("webTemplate.njk", false, mappings)).to.equal(
+          "webTemplate.njk"
+        );
       });
     });
   });
@@ -33,9 +33,9 @@ describe("getChannelSpecificTemplate", () => {
     });
     describe("and the webTemplateAndPath is mapped", () => {
       it("should return the original webTemplateAndPath", () => {
-        expect(
-          getChannelSpecificTemplate("webTemplate.njk", true, mappings)
-        ).to.equal("mobileTemplate.njk");
+        expect(getChannelSpecificTemplate("webTemplate.njk", true, mappings)).to.equal(
+          "mobileTemplate.njk"
+        );
       });
     });
   });

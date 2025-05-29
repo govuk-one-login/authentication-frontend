@@ -1,10 +1,7 @@
 import type { Request, Response } from "express";
 import { MfaMethodPriority } from "../../types.js";
 import type { ExpressRouteFunc, MfaMethod } from "../../types.js";
-import {
-  formatValidationError,
-  renderBadRequest,
-} from "../../utils/validation.js";
+import { formatValidationError, renderBadRequest } from "../../utils/validation.js";
 import { enterPasswordService } from "./enter-password-service.js";
 import type { EnterPasswordServiceInterface } from "./types.js";
 import type { MfaServiceInterface } from "../common/mfa/types.js";
@@ -16,11 +13,7 @@ import {
 } from "../common/constants.js";
 import { ReauthJourneyError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
-import {
-  JOURNEY_TYPE,
-  MFA_METHOD_TYPE,
-  PATH_NAMES,
-} from "../../app.constants.js";
+import { JOURNEY_TYPE, MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants.js";
 import xss from "xss";
 import type { EnterEmailServiceInterface } from "../enter-email/types.js";
 import { enterEmailService } from "../enter-email/enter-email-service.js";
@@ -34,8 +27,7 @@ const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
   "pages.enterPassword.password.validationError.incorrectPassword";
 
-const ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE =
-  "enter-password/index-account-exists.njk";
+const ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE = "enter-password/index-account-exists.njk";
 const ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY =
   "pages.enterPasswordAccountExists.password.validationError.incorrectPassword";
 
@@ -77,19 +69,13 @@ export function enterSignInRetryBlockedGet(
   };
 }
 
-export function enterPasswordAccountLockedGet(
-  req: Request,
-  res: Response
-): void {
+export function enterPasswordAccountLockedGet(req: Request, res: Response): void {
   res.render("enter-password/index-account-locked.njk", {
     newLink: "/sign-in-retry-blocked",
   });
 }
 
-export function enterPasswordAccountExistsGet(
-  req: Request,
-  res: Response
-): void {
+export function enterPasswordAccountExistsGet(req: Request, res: Response): void {
   const { email } = req.session.user;
   res.render(ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE, {
     email: email,
@@ -251,8 +237,6 @@ export function enterPasswordPost(
         "Re-auth journey failed due to missing redirect uri in client session."
       );
     }
-    return res.redirect(
-      req.session.client.redirectUri.concat("?error=login_required")
-    );
+    return res.redirect(req.session.client.redirectUri.concat("?error=login_required"));
   }
 }

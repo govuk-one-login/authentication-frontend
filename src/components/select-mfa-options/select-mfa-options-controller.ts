@@ -16,10 +16,7 @@ export function getSecurityCodesGet(req: Request, res: Response): void {
   });
 }
 
-export async function getSecurityCodesPost(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function getSecurityCodesPost(req: Request, res: Response): Promise<void> {
   if (Object.values(MFA_METHOD_TYPE).includes(req.body.mfaOptions)) {
     req.session.user.selectedMfaOption = req.body.mfaOptions;
   }

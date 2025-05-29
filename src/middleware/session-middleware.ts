@@ -2,11 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import xss from "xss";
 import { ErrorWithLevel } from "../utils/error.js";
 import { getAppEnv } from "../config.js";
-import {
-  ERROR_LOG_LEVEL,
-  ERROR_MESSAGES,
-  PATH_NAMES,
-} from "../app.constants.js";
+import { ERROR_LOG_LEVEL, ERROR_MESSAGES, PATH_NAMES } from "../app.constants.js";
 import { logger } from "../utils/logger.js";
 import type { MfaMethod } from "../types.js";
 import { MfaMethodPriority } from "../types.js";
@@ -45,9 +41,7 @@ export function getSessionIdMiddleware(
     res.locals.clientSessionId = ids[1];
   }
   if (req.cookies && req.cookies["di-persistent-session-id"]) {
-    res.locals.persistentSessionId = xss(
-      req.cookies["di-persistent-session-id"]
-    );
+    res.locals.persistentSessionId = xss(req.cookies["di-persistent-session-id"]);
   }
   if (req.session?.client?.rpClientId) {
     res.locals.clientId = req.session.client.rpClientId;
@@ -89,11 +83,7 @@ export function requiredSessionFieldsMiddleware(
   }
 }
 
-function handleSessionError(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void {
+function handleSessionError(req: Request, res: Response, next: NextFunction): void {
   req.session.destroy((error) => {
     if (error) {
       req.log.error(`Failed to delete session: ${error}`);

@@ -6,15 +6,10 @@ import {
   http,
 } from "../../../utils/http.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
-import type {
-  AccountRecoveryInterface,
-  AccountRecoveryResponse,
-} from "./types.js";
+import type { AccountRecoveryInterface, AccountRecoveryResponse } from "./types.js";
 import type { Request } from "express";
 
-export function accountRecoveryService(
-  axios: Http = http
-): AccountRecoveryInterface {
+export function accountRecoveryService(axios: Http = http): AccountRecoveryInterface {
   const accountRecovery = async function (
     sessionId: string,
     clientSessionId: string,

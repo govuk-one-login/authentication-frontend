@@ -12,16 +12,11 @@ export function validateMultiFactorAuthenticationRequest(): ValidationChainFunc 
           value,
         });
       }),
-    validateBodyMiddleware(
-      "select-mfa-options/index.njk",
-      postValidationLocals
-    ),
+    validateBodyMiddleware("select-mfa-options/index.njk", postValidationLocals),
   ];
 }
 
-const postValidationLocals = function locals(
-  req: Request
-): Record<string, unknown> {
+const postValidationLocals = function locals(req: Request): Record<string, unknown> {
   return {
     isAccountPartCreated: req.session.user.isAccountPartCreated,
     isAccountRecoveryJourney: isAccountRecoveryJourney(req),

@@ -20,15 +20,13 @@ describe("logger", () => {
     });
 
     it("should return a longer path from a url", () => {
-      expect(
-        getRefererFrom("http://localhost:8080/hello/good/morning")
-      ).to.equal("/hello/good/morning");
+      expect(getRefererFrom("http://localhost:8080/hello/good/morning")).to.equal(
+        "/hello/good/morning"
+      );
     });
 
     it("should return path but not a query param from a url", () => {
-      expect(getRefererFrom("http://localhost:8080/hello?world=true")).to.equal(
-        "/hello"
-      );
+      expect(getRefererFrom("http://localhost:8080/hello?world=true")).to.equal("/hello");
     });
 
     it("should not return query only from a url", () => {
@@ -43,9 +41,7 @@ describe("logger", () => {
 
     it("should return a longer path but not two query params from a url", () => {
       expect(
-        getRefererFrom(
-          "http://localhost:8080/hello/good/morning?world=true&morning=good"
-        )
+        getRefererFrom("http://localhost:8080/hello/good/morning?world=true&morning=good")
       ).to.equal("/hello/good/morning");
     });
 

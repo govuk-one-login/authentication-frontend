@@ -50,12 +50,11 @@ describe("cookies controller", () => {
           req.body.cookie_preferences
         );
 
-        const consentCookieValue =
-          fakeCookieConsentService.createConsentCookieValue(
-            req.body.cookie_preferences === "true"
-              ? COOKIE_CONSENT.ACCEPT
-              : COOKIE_CONSENT.REJECT
-          );
+        const consentCookieValue = fakeCookieConsentService.createConsentCookieValue(
+          req.body.cookie_preferences === "true"
+            ? COOKIE_CONSENT.ACCEPT
+            : COOKIE_CONSENT.REJECT
+        );
 
         cookiesPost(req as Request, res as Response);
 
@@ -90,12 +89,11 @@ describe("cookies controller", () => {
           req.body.cookie_preferences
         );
 
-        const consentCookieValue =
-          fakeCookieConsentService.createConsentCookieValue(
-            req.body.cookie_preferences === "true"
-              ? COOKIE_CONSENT.ACCEPT
-              : COOKIE_CONSENT.REJECT
-          );
+        const consentCookieValue = fakeCookieConsentService.createConsentCookieValue(
+          req.body.cookie_preferences === "true"
+            ? COOKIE_CONSENT.ACCEPT
+            : COOKIE_CONSENT.REJECT
+        );
 
         cookiesPost(req as Request, res as Response);
 
@@ -119,12 +117,11 @@ describe("cookies controller", () => {
           req.body.cookie_preferences
         );
 
-        const consentCookieValue =
-          fakeCookieConsentService.createConsentCookieValue(
-            req.body.cookie_preferences === "true"
-              ? COOKIE_CONSENT.ACCEPT
-              : COOKIE_CONSENT.REJECT
-          );
+        const consentCookieValue = fakeCookieConsentService.createConsentCookieValue(
+          req.body.cookie_preferences === "true"
+            ? COOKIE_CONSENT.ACCEPT
+            : COOKIE_CONSENT.REJECT
+        );
 
         cookiesPost(req as Request, res as Response);
 

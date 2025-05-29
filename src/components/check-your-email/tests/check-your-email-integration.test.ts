@@ -2,11 +2,7 @@ import { describe } from "mocha";
 import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
@@ -66,9 +62,7 @@ describe("Integration:: check your email", () => {
   });
 
   it("should return verify email page", async () => {
-    await request(app, (test) =>
-      test.get(PATH_NAMES.CHECK_YOUR_EMAIL).expect(200)
-    );
+    await request(app, (test) => test.get(PATH_NAMES.CHECK_YOUR_EMAIL).expect(200));
   });
 
   it("should return error when csrf not present", async () => {

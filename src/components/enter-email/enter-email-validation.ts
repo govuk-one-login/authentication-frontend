@@ -11,35 +11,27 @@ export function validateEnterEmailRequest(
     body("email")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return req.t(
-          "pages.enterEmailExistingAccount.email.validationError.required",
-          {
-            value,
-          }
-        );
+        return req.t("pages.enterEmailExistingAccount.email.validationError.required", {
+          value,
+        });
       })
       .isLength({ max: 256 })
       .withMessage((value, { req }) => {
-        return req.t(
-          "pages.enterEmailExistingAccount.email.validationError.length",
-          {
-            value,
-          }
-        );
+        return req.t("pages.enterEmailExistingAccount.email.validationError.length", {
+          value,
+        });
       })
       .isEmail({ ignore_max_length: true })
       .withMessage((value, { req }) => {
-        return req.t(
-          "pages.enterEmailExistingAccount.email.validationError.email",
-          { value }
-        );
+        return req.t("pages.enterEmailExistingAccount.email.validationError.email", {
+          value,
+        });
       })
       .matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~\-]+@([^.@][^@\s]+)$/)
       .withMessage((value, { req }) => {
-        return req.t(
-          "pages.enterEmailExistingAccount.email.validationError.email",
-          { value }
-        );
+        return req.t("pages.enterEmailExistingAccount.email.validationError.email", {
+          value,
+        });
       })
       .custom((value, { req }) => {
         if (req.session.user.reauthenticate) {

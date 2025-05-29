@@ -25,19 +25,14 @@ export function enterMfaGet(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     if (isLocked(req.session.user.wrongCodeEnteredLock)) {
-      return res.render(
-        "security-code-error/index-security-code-entered-exceeded.njk",
-        {
-          newCodeLink: PATH_NAMES.ENTER_MFA,
-          show2HrScreen: true,
-        }
-      );
+      return res.render("security-code-error/index-security-code-entered-exceeded.njk", {
+        newCodeLink: PATH_NAMES.ENTER_MFA,
+        show2HrScreen: true,
+      });
     }
     if (isLocked(req.session.user.codeRequestLock)) {
       return res.render("security-code-error/index-wait.njk", {
-        newCodeLink: getNewCodePath(
-          req.query.actionType as SecurityCodeErrorType
-        ),
+        newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
         isAccountCreationJourney: false,
       });
     }
@@ -45,8 +40,11 @@ export function enterMfaGet(
       ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME
       : ENTER_MFA_DEFAULT_TEMPLATE_NAME;
 
-    req.session.user.isAccountRecoveryPermitted =
-      await isAccountRecoveryPermitted(req, res, acctRecoveryService);
+    req.session.user.isAccountRecoveryPermitted = await isAccountRecoveryPermitted(
+      req,
+      res,
+      acctRecoveryService
+    );
 
     res.render(templateName, enterMfaTemplateParametersFromRequest(req));
   };
@@ -61,20 +59,16 @@ export const enterMfaPost = (
       ? UPLIFT_REQUIRED_SMS_TEMPLATE_NAME
       : ENTER_MFA_DEFAULT_TEMPLATE_NAME;
 
-    const verifyCodeRequest = verifyCodePost(
-      service,
-      accountInterventionsService,
-      {
-        notificationType: NOTIFICATION_TYPE.MFA_SMS,
-        template: template,
-        validationKey: "pages.enterMfa.code.validationError.invalidCode",
-        validationErrorCode: ERROR_CODES.INVALID_MFA_CODE,
-        journeyType: getJourneyTypeFromUserSession(req.session.user, {
-          includeReauthentication: true,
-        }),
-        postValidationLocalsProvider: enterMfaTemplateParametersFromRequest,
-      }
-    );
+    const verifyCodeRequest = verifyCodePost(service, accountInterventionsService, {
+      notificationType: NOTIFICATION_TYPE.MFA_SMS,
+      template: template,
+      validationKey: "pages.enterMfa.code.validationError.invalidCode",
+      validationErrorCode: ERROR_CODES.INVALID_MFA_CODE,
+      journeyType: getJourneyTypeFromUserSession(req.session.user, {
+        includeReauthentication: true,
+      }),
+      postValidationLocalsProvider: enterMfaTemplateParametersFromRequest,
+    });
 
     return verifyCodeRequest(req, res);
   };
@@ -82,8 +76,7 @@ export const enterMfaPost = (
 
 export function enterMfaTemplateParametersFromRequest(req: Request): any {
   const activeMfaMethod: SmsMfaMethod = req.session.user.mfaMethods.find(
-    (mfaMethod: MfaMethod) =>
-      mfaMethod.id === req.session.user.activeMfaMethodId
+    (mfaMethod: MfaMethod) => mfaMethod.id === req.session.user.activeMfaMethodId
   );
   const hasMultipleMfaMethods = req.session.user.mfaMethods?.length > 1;
 

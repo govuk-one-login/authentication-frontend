@@ -83,15 +83,12 @@ describe("Middleware", () => {
 
   describe("appendFromUrlWhenTriagePageUrl", () => {
     it("should append when there's a match", () => {
-      const matchingUrl =
-          "https://home.account.gov.uk/contact-gov-uk-one-login",
+      const matchingUrl = "https://home.account.gov.uk/contact-gov-uk-one-login",
         fromUrl = "https://signin.account.gov.uk/enter-password";
 
       const result = appendFromUrlWhenTriagePageUrl(matchingUrl, fromUrl);
 
-      expect(result).to.equal(
-        `${matchingUrl}?fromURL=${encodeURIComponent(fromUrl)}`
-      );
+      expect(result).to.equal(`${matchingUrl}?fromURL=${encodeURIComponent(fromUrl)}`);
     });
 
     it("should not append when there isn't a match", () => {

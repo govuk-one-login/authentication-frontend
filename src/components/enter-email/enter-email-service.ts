@@ -9,9 +9,7 @@ import type { EnterEmailServiceInterface, UserExists } from "./types.js";
 import type { ApiResponseResult } from "../../types.js";
 import type { Request } from "express";
 
-export function enterEmailService(
-  axios: Http = http
-): EnterEmailServiceInterface {
+export function enterEmailService(axios: Http = http): EnterEmailServiceInterface {
   const userExists = async function (
     sessionId: string,
     emailAddress: string,

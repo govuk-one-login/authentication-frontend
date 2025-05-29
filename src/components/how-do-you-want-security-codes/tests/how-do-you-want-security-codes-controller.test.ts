@@ -33,9 +33,7 @@ describe("how do you want security codes controller", () => {
   describe("howDoYouWantSecurityCodesGet", () => {
     it("should render the how do you want security codes page", () => {
       howDoYouWantSecurityCodesGet(req as Request, res as Response);
-      expect(res.render).to.have.calledWith(
-        "how-do-you-want-security-codes/index.njk"
-      );
+      expect(res.render).to.have.calledWith("how-do-you-want-security-codes/index.njk");
     });
 
     it("should render reset password auth app view with supportMfaReset false when completing a password reset journey", () => {
@@ -43,14 +41,11 @@ describe("how do you want security codes controller", () => {
 
       howDoYouWantSecurityCodesGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "how-do-you-want-security-codes/index.njk",
-        {
-          mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
-          mfaMethods: [],
-          supportMfaReset: false,
-        }
-      );
+      expect(res.render).to.have.calledWith("how-do-you-want-security-codes/index.njk", {
+        mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
+        mfaMethods: [],
+        supportMfaReset: false,
+      });
     });
 
     it("should render reset password auth app view with supportMfaReset true when not completing a password reset journey", () => {
@@ -58,14 +53,11 @@ describe("how do you want security codes controller", () => {
 
       howDoYouWantSecurityCodesGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
-        "how-do-you-want-security-codes/index.njk",
-        {
-          mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
-          mfaMethods: [],
-          supportMfaReset: true,
-        }
-      );
+      expect(res.render).to.have.calledWith("how-do-you-want-security-codes/index.njk", {
+        mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
+        mfaMethods: [],
+        supportMfaReset: true,
+      });
     });
   });
 

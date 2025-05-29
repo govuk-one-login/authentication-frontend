@@ -1,8 +1,7 @@
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
 import type { Request } from "express";
 
-export interface ReverificationResultSuccessResponse
-  extends DefaultApiResponse {
+export interface ReverificationResultSuccessResponse extends DefaultApiResponse {
   sub: string;
   success: true;
 }

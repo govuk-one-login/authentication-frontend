@@ -110,10 +110,7 @@ describe("enter phone number controller", () => {
 
       await assert.rejects(
         async () =>
-          enterPhoneNumberPost(fakeNotificationService)(
-            req as Request,
-            res as Response
-          ),
+          enterPhoneNumberPost(fakeNotificationService)(req as Request, res as Response),
         Error,
         "Internal server error"
       );
@@ -140,9 +137,7 @@ describe("enter phone number controller", () => {
       );
 
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-wait.njk"
-      );
+      expect(res.render).to.have.calledWith("security-code-error/index-wait.njk");
     });
 
     it(
@@ -166,16 +161,12 @@ describe("enter phone number controller", () => {
           res as Response
         );
 
-        expect(fakeNotificationService.sendNotification).to.have.been
-          .calledOnce;
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-wait.njk",
-          {
-            newCodeLink: undefined,
-            isAccountCreationJourney: true,
-            contentId: "",
-          }
-        );
+        expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+        expect(res.render).to.have.calledWith("security-code-error/index-wait.njk", {
+          newCodeLink: undefined,
+          isAccountCreationJourney: true,
+          contentId: "",
+        });
       }
     );
 
@@ -200,16 +191,12 @@ describe("enter phone number controller", () => {
           res as Response
         );
 
-        expect(fakeNotificationService.sendNotification).to.have.been
-          .calledOnce;
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-wait.njk",
-          {
-            newCodeLink: undefined,
-            isAccountCreationJourney: true,
-            contentId: "",
-          }
-        );
+        expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
+        expect(res.render).to.have.calledWith("security-code-error/index-wait.njk", {
+          newCodeLink: undefined,
+          isAccountCreationJourney: true,
+          contentId: "",
+        });
       }
     );
   });

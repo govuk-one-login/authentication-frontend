@@ -49,9 +49,7 @@ function handleErrors(
       mfaFailResponse.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES ||
       mfaFailResponse.data.code === ERROR_CODES.MFA_SMS_MAX_CODES_SENT
     ) {
-      return res.redirect(
-        req.session.client.redirectUri.concat("?error=login_required")
-      );
+      return res.redirect(req.session.client.redirectUri.concat("?error=login_required"));
     }
   }
 
@@ -59,15 +57,10 @@ function handleErrors(
     res.redirect(path);
   }
 
-  throw new BadRequestError(
-    mfaFailResponse.data.message,
-    mfaFailResponse.data.code
-  );
+  throw new BadRequestError(mfaFailResponse.data.message, mfaFailResponse.data.code);
 }
 
-export function sendMfaGeneric(
-  mfaCodeService: MfaServiceInterface
-): ExpressRouteFunc {
+export function sendMfaGeneric(mfaCodeService: MfaServiceInterface): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email, activeMfaMethodId } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;

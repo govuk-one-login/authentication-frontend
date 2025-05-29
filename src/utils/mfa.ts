@@ -32,9 +32,7 @@ export function generateQRCodeValue(
   issuerName: string
 ): string {
   const issuer =
-    getAppEnv() === APP_ENV_NAME.PROD
-      ? issuerName
-      : `${issuerName} - ${getAppEnv()}`;
+    getAppEnv() === APP_ENV_NAME.PROD ? issuerName : `${issuerName} - ${getAppEnv()}`;
   return keyuri({
     accountName: email,
     secret: secret,
@@ -92,9 +90,6 @@ export function removeDefaultSmsMfaMethod(
   if (!mfaMethod) return undefined;
   return mfaMethod.filter(
     (mfaMethod) =>
-      !(
-        mfaMethod.priority === MfaMethodPriority.DEFAULT &&
-        isSmsMfaMethod(mfaMethod)
-      )
+      !(mfaMethod.priority === MfaMethodPriority.DEFAULT && isSmsMfaMethod(mfaMethod))
   );
 }

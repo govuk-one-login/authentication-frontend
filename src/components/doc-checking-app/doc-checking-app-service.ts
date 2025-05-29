@@ -12,9 +12,7 @@ import type {
 import type { ApiResponseResult } from "../../types.js";
 import type { Request } from "express";
 
-export function docCheckingAppService(
-  axios: Http = http
-): DocCheckingAppInterface {
+export function docCheckingAppService(axios: Http = http): DocCheckingAppInterface {
   const docCheckingAuthorize = async function (
     sessionId: string,
     clientSessionId: string,

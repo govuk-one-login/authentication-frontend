@@ -9,9 +9,7 @@ import type { ResetPasswordServiceInterface } from "./types.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
 import type { Request } from "express";
 
-export function resetPasswordService(
-  axios: Http = http
-): ResetPasswordServiceInterface {
+export function resetPasswordService(axios: Http = http): ResetPasswordServiceInterface {
   const updatePassword = async function (
     newPassword: string,
     sessionId: string,

@@ -3,11 +3,7 @@ import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import type { AxiosResponse } from "axios";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type {
   AccountRecoveryInterface,
@@ -74,29 +70,25 @@ describe("Integration:: enter mfa", () => {
                 status: HTTP_STATUS_CODES.OK,
               } as AxiosResponse;
 
-              return createApiResponse<AccountRecoveryResponse>(
-                fakeAxiosResponse
-              );
+              return createApiResponse<AccountRecoveryResponse>(fakeAxiosResponse);
             }
 
             return { accountRecovery };
           }),
         },
         "../../common/send-notification/send-notification-service.js": {
-          sendNotificationService: sinon.fake(
-            (): SendNotificationServiceInterface => {
-              async function sendNotification() {
-                const fakeAxiosResponse: AxiosResponse = {
-                  data: "test",
-                  status: HTTP_STATUS_CODES.OK,
-                } as AxiosResponse;
+          sendNotificationService: sinon.fake((): SendNotificationServiceInterface => {
+            async function sendNotification() {
+              const fakeAxiosResponse: AxiosResponse = {
+                data: "test",
+                status: HTTP_STATUS_CODES.OK,
+              } as AxiosResponse;
 
-                return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
-              }
-
-              return { sendNotification };
+              return createApiResponse<DefaultApiResponse>(fakeAxiosResponse);
             }
-          ),
+
+            return { sendNotification };
+          }),
         },
       }
     );
@@ -196,8 +188,7 @@ describe("Integration:: enter mfa", () => {
                   .some(
                     (link) =>
                       $(link).attr("href") === PATH_NAMES.MFA_RESET_WITH_IPV ||
-                      $(link).attr("href") ===
-                        PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
+                      $(link).attr("href") === PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES
                   )
               ).to.be.false;
             }
@@ -226,9 +217,7 @@ describe("Integration:: enter mfa", () => {
         })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
-          expect($("body").text()).to.not.contains(
-            "change how you get security codes."
-          );
+          expect($("body").text()).to.not.contains("change how you get security codes.");
         })
         .expect(400)
     );

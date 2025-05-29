@@ -54,9 +54,7 @@ export const ERROR_CODES = {
 };
 
 export const ERROR_CODE_MAPPING: { [p: string]: string } = {
-  [ERROR_CODES.ACCOUNT_LOCKED]: pathWithQueryParam(
-    PATH_NAMES["ACCOUNT_LOCKED"]
-  ),
+  [ERROR_CODES.ACCOUNT_LOCKED]: pathWithQueryParam(PATH_NAMES["ACCOUNT_LOCKED"]),
   [ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED]: pathWithQueryParam(
     PATH_NAMES["ACCOUNT_LOCKED"]
   ),
@@ -85,12 +83,11 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.OtpBlocked
   ),
-  [ERROR_CODES.ENTERED_INVALID_VERIFY_PHONE_NUMBER_CODE_MAX_TIMES]:
-    pathWithQueryParam(
-      PATH_NAMES["SECURITY_CODE_INVALID"],
-      SECURITY_CODE_ERROR,
-      SecurityCodeErrorType.OtpMaxRetries
-    ),
+  [ERROR_CODES.ENTERED_INVALID_VERIFY_PHONE_NUMBER_CODE_MAX_TIMES]: pathWithQueryParam(
+    PATH_NAMES["SECURITY_CODE_INVALID"],
+    SECURITY_CODE_ERROR,
+    SecurityCodeErrorType.OtpMaxRetries
+  ),
   [ERROR_CODES.VERIFY_EMAIL_CODE_REQUEST_BLOCKED]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_REQUEST_EXCEEDED"],
     SECURITY_CODE_ERROR,
@@ -101,12 +98,11 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.EmailMaxRetries
   ),
-  [ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES]:
-    pathWithQueryParam(
-      PATH_NAMES["SECURITY_CODE_INVALID"],
-      SECURITY_CODE_ERROR,
-      SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries
-    ),
+  [ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES]: pathWithQueryParam(
+    PATH_NAMES["SECURITY_CODE_INVALID"],
+    SECURITY_CODE_ERROR,
+    SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries
+  ),
   [ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_WAIT"],
     SECURITY_CODE_ERROR,
@@ -117,18 +113,16 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
     SECURITY_CODE_ERROR,
     SecurityCodeErrorType.AuthAppMfaMaxRetries
   ),
-  [ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_MAX_CODES_SENT]:
-    pathWithQueryParam(
-      PATH_NAMES["SECURITY_CODE_REQUEST_EXCEEDED"],
-      SECURITY_CODE_ERROR,
-      SecurityCodeErrorType.ChangeSecurityCodesEmailMaxCodesSent
-    ),
-  [ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_INVALID_CODE]:
-    pathWithQueryParam(
-      PATH_NAMES["SECURITY_CODE_INVALID"],
-      SECURITY_CODE_ERROR,
-      SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries
-    ),
+  [ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_MAX_CODES_SENT]: pathWithQueryParam(
+    PATH_NAMES["SECURITY_CODE_REQUEST_EXCEEDED"],
+    SECURITY_CODE_ERROR,
+    SecurityCodeErrorType.ChangeSecurityCodesEmailMaxCodesSent
+  ),
+  [ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_INVALID_CODE]: pathWithQueryParam(
+    PATH_NAMES["SECURITY_CODE_INVALID"],
+    SECURITY_CODE_ERROR,
+    SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries
+  ),
   [ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_CODE_REQUEST_BLOCKED]:
     pathWithQueryParam(
       PATH_NAMES["SECURITY_CODE_WAIT"],
@@ -168,13 +162,9 @@ export async function saveSessionState(req: Request): Promise<void> {
     req.session.save((error) => {
       if (error) {
         reject(new Error(error));
-        req.log.error(
-          "Session could not be saved after setting the user journey."
-        );
+        req.log.error("Session could not be saved after setting the user journey.");
       } else {
-        req.log.debug(
-          "Session was successfully saved after setting the user journey."
-        );
+        req.log.debug("Session was successfully saved after setting the user journey.");
         resolve();
       }
     });

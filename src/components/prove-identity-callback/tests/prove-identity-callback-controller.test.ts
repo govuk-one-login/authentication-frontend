@@ -4,11 +4,7 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
 
-import {
-  IPV_ERROR_CODES,
-  OIDC_ERRORS,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { IPV_ERROR_CODES, OIDC_ERRORS, PATH_NAMES } from "../../../app.constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import {
@@ -42,8 +38,7 @@ describe("prove identity callback controller", () => {
 
   describe("proveIdentityCallbackGet", () => {
     it("should redirect to the RP when identity processing complete", async () => {
-      const rpRedirectUrl =
-        "https://rp.example.com?authcode=1234&state=teststate";
+      const rpRedirectUrl = "https://rp.example.com?authcode=1234&state=teststate";
       const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
         processIdentity: sinon.fake.returns(
           Promise.resolve({
@@ -55,9 +50,7 @@ describe("prove identity callback controller", () => {
             },
           })
         ),
-        generateSuccessfulRpReturnUrl: sinon.fake.returns(
-          Promise.resolve(rpRedirectUrl)
-        ),
+        generateSuccessfulRpReturnUrl: sinon.fake.returns(Promise.resolve(rpRedirectUrl)),
       };
       await proveIdentityCallbackGetOrPost(fakeProveIdentityService)(
         req as Request,
@@ -82,24 +75,21 @@ describe("prove identity callback controller", () => {
         res as Response
       );
 
-      expect(res.render).to.have.been.calledWith(
-        "prove-identity-callback/index.njk"
-      );
+      expect(res.render).to.have.been.calledWith("prove-identity-callback/index.njk");
     });
 
     describe("when the SUPPORT_NEW_IPV_SPINNER feature flag is enabled", () => {
       it("should use the index-new-spinner template when the feature flag is enabled", async () => {
         process.env.SUPPORT_NEW_IPV_SPINNER = "1";
 
-        const fakeProveIdentityService: ProveIdentityCallbackServiceInterface =
-          {
-            processIdentity: sinon.fake.returns({
-              success: true,
-              data: {
-                status: IdentityProcessingStatus.PROCESSING,
-              },
-            }),
-          } as unknown as ProveIdentityCallbackServiceInterface;
+        const fakeProveIdentityService: ProveIdentityCallbackServiceInterface = {
+          processIdentity: sinon.fake.returns({
+            success: true,
+            data: {
+              status: IdentityProcessingStatus.PROCESSING,
+            },
+          }),
+        } as unknown as ProveIdentityCallbackServiceInterface;
 
         await proveIdentityCallbackGetOrPost(fakeProveIdentityService)(
           req as Request,

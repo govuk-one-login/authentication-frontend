@@ -15,8 +15,7 @@ describe("auth code controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
-  const AUTH_CODE_DUMMY_URL =
-    "https://test-idp-url.com/callback?code=123-4ddkk0sdkkd-ad";
+  const AUTH_CODE_DUMMY_URL = "https://test-idp-url.com/callback?code=123-4ddkk0sdkkd-ad";
 
   beforeEach(() => {
     req = mockRequest({

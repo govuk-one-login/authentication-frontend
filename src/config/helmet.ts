@@ -8,8 +8,7 @@ export const helmetConfiguration: HelmetOptions = {
       styleSrc: ["'self'"],
       scriptSrc: [
         "'self'",
-        (req: Request, res: Response): string =>
-          `'nonce-${res.locals.scriptNonce}'`,
+        (req: Request, res: Response): string => `'nonce-${res.locals.scriptNonce}'`,
         "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
         "https://*.googletagmanager.com",
         "https://www.google-analytics.com",

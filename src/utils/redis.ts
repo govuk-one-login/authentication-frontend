@@ -96,9 +96,7 @@ function getValueFromSSMResult(
   result: { Parameters?: Parameter[] },
   key: string
 ): string {
-  const maybeValue = result.Parameters?.find(
-    (p: Parameter) => p.Name === key
-  )?.Value;
+  const maybeValue = result.Parameters?.find((p: Parameter) => p.Name === key)?.Value;
   if (maybeValue === undefined) {
     throw Error(`Expected to find key ${key} in ssm parameters`);
   } else {

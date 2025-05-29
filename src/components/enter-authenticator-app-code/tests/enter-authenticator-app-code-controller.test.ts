@@ -55,14 +55,11 @@ describe("enter authenticator app code controller", () => {
         res as Response
       );
 
-      expect(res.render).to.have.calledWith(
-        "enter-authenticator-app-code/index.njk",
-        {
-          isAccountRecoveryPermitted: true,
-          hasMultipleMfaMethods: false,
-          mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
-        }
-      );
+      expect(res.render).to.have.calledWith("enter-authenticator-app-code/index.njk", {
+        isAccountRecoveryPermitted: true,
+        hasMultipleMfaMethods: false,
+        mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
+      });
     });
 
     it("should render enter mfa code view with isAccountRecoveryPermitted false when user is not permitted to perform account recovery", async () => {
@@ -71,14 +68,11 @@ describe("enter authenticator app code controller", () => {
         res as Response
       );
 
-      expect(res.render).to.have.calledWith(
-        "enter-authenticator-app-code/index.njk",
-        {
-          isAccountRecoveryPermitted: false,
-          hasMultipleMfaMethods: false,
-          mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
-        }
-      );
+      expect(res.render).to.have.calledWith("enter-authenticator-app-code/index.njk", {
+        isAccountRecoveryPermitted: false,
+        hasMultipleMfaMethods: false,
+        mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
+      });
     });
 
     it("should render 2fa service uplift view when uplift is required ", async () => {
@@ -89,14 +83,11 @@ describe("enter authenticator app code controller", () => {
         res as Response
       );
 
-      expect(res.render).to.have.calledWith(
-        UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
-        {
-          isAccountRecoveryPermitted: true,
-          hasMultipleMfaMethods: false,
-          mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
-        }
-      );
+      expect(res.render).to.have.calledWith(UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME, {
+        isAccountRecoveryPermitted: true,
+        hasMultipleMfaMethods: false,
+        mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
+      });
     });
 
     it("should render default template when uplift is not required", async () => {
@@ -107,14 +98,11 @@ describe("enter authenticator app code controller", () => {
         res as Response
       );
 
-      expect(res.render).to.have.calledWith(
-        ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME,
-        {
-          isAccountRecoveryPermitted: true,
-          hasMultipleMfaMethods: false,
-          mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
-        }
-      );
+      expect(res.render).to.have.calledWith(ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME, {
+        isAccountRecoveryPermitted: true,
+        hasMultipleMfaMethods: false,
+        mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
+      });
     });
   });
 
@@ -129,26 +117,26 @@ describe("enter authenticator app code controller", () => {
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
 
-      const {
-        enterAuthenticatorAppCodePost: mockEnterAuthenticatorAppCodePost,
-      } = await esmock("../enter-authenticator-app-code-controller.js", {
-        "../../common/journey/journey.js": {
-          getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
-        },
-      });
+      const { enterAuthenticatorAppCodePost: mockEnterAuthenticatorAppCodePost } =
+        await esmock("../enter-authenticator-app-code-controller.js", {
+          "../../common/journey/journey.js": {
+            getJourneyTypeFromUserSession: getJourneyTypeFromUserSessionSpy,
+          },
+        });
 
       await mockEnterAuthenticatorAppCodePost(fakeService)(
         req as Request,
         res as Response
       );
 
-      expect(
-        getJourneyTypeFromUserSessionSpy
-      ).to.have.been.calledOnceWithExactly(req.session.user, {
-        includeAccountRecovery: true,
-        includeReauthentication: true,
-        fallbackJourneyType: JOURNEY_TYPE.SIGN_IN,
-      });
+      expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
+        req.session.user,
+        {
+          includeAccountRecovery: true,
+          includeReauthentication: true,
+          fallbackJourneyType: JOURNEY_TYPE.SIGN_IN,
+        }
+      );
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.SIGN_IN
       );
@@ -169,19 +157,14 @@ describe("enter authenticator app code controller", () => {
       req.body.code = "123456";
       res.locals.sessionId = "123456-djjad";
 
-      await enterAuthenticatorAppCodePost(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterAuthenticatorAppCodePost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.calledWith(PATH_NAMES.AUTH_CODE);
     });
 
     it("should return error when invalid code entered", async () => {
-      const fakeService = fakeVerifyMfaCodeService(
-        ERROR_CODES.AUTH_APP_INVALID_CODE
-      );
+      const fakeService = fakeVerifyMfaCodeService(ERROR_CODES.AUTH_APP_INVALID_CODE);
 
       req.t = sinon.fake.returns("translated string");
       req.body.code = "678988";
@@ -189,10 +172,7 @@ describe("enter authenticator app code controller", () => {
       req.session.user.isAccountRecoveryPermitted = true;
       req.session.user.mfaMethods = [{}];
 
-      await enterAuthenticatorAppCodePost(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterAuthenticatorAppCodePost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(res.render).to.have.been.calledWith(
@@ -214,10 +194,7 @@ describe("enter authenticator app code controller", () => {
       req.body.code = "678988";
       res.locals.sessionId = "123456-djjad";
 
-      await enterAuthenticatorAppCodePost(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterAuthenticatorAppCodePost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.been.calledWith(
@@ -237,10 +214,7 @@ describe("enter authenticator app code controller", () => {
       req.session.user.reauthenticate = "reauth";
       req.session.client.redirectUri = "https://rp.gov.uk/redirect";
 
-      await enterAuthenticatorAppCodePost(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterAuthenticatorAppCodePost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.been.calledWith(
@@ -260,10 +234,7 @@ describe("enter authenticator app code controller", () => {
       req.session.user.reauthenticate = "reauth";
       req.session.client.redirectUri = "https://rp.gov.uk/redirect";
 
-      await enterAuthenticatorAppCodePost(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await enterAuthenticatorAppCodePost(fakeService)(req as Request, res as Response);
 
       expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(res.redirect).to.have.been.calledWith(

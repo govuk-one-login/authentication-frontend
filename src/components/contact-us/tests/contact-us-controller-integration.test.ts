@@ -134,29 +134,27 @@ describe("Integration:: contact us - public user", () => {
     });
   });
 
-  [
-    "test123",
-    "http://remotehost/something",
-    "<script>alert(123);</script>",
-  ].forEach(function (referer) {
-    it("should return contact us questions page removing invalid referer queryparam url", async () => {
-      await request(app, (test) =>
-        test
-          .get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)
-          .query("theme=account_creation")
-          .query("subtheme=sign_in_phone_number_issue")
-          .query("referer=" + referer)
-          .expect(function (res) {
-            const $ = cheerio.load(res.text);
-            expect($("input[name = referer]").val()).to.not.contains(referer);
-            expect($("input[name = referer]").val()).to.not.contains(
-              encodeURIComponent(referer)
-            );
-          })
-          .expect(200)
-      );
-    });
-  });
+  ["test123", "http://remotehost/something", "<script>alert(123);</script>"].forEach(
+    function (referer) {
+      it("should return contact us questions page removing invalid referer queryparam url", async () => {
+        await request(app, (test) =>
+          test
+            .get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)
+            .query("theme=account_creation")
+            .query("subtheme=sign_in_phone_number_issue")
+            .query("referer=" + referer)
+            .expect(function (res) {
+              const $ = cheerio.load(res.text);
+              expect($("input[name = referer]").val()).to.not.contains(referer);
+              expect($("input[name = referer]").val()).to.not.contains(
+                encodeURIComponent(referer)
+              );
+            })
+            .expect(200)
+        );
+      });
+    }
+  );
 
   [
     "",
@@ -185,10 +183,7 @@ describe("Integration:: contact us - public user", () => {
 
   it("should return contact us further information signing in page", async () => {
     await request(app, (test) =>
-      test
-        .get("/contact-us-further-information")
-        .query("theme=signing_in")
-        .expect(200)
+      test.get("/contact-us-further-information").query("theme=signing_in").expect(200)
     );
   });
 
@@ -203,10 +198,7 @@ describe("Integration:: contact us - public user", () => {
 
   it("should return contact us questions page with only a theme", async () => {
     await request(app, (test) =>
-      test
-        .get("/contact-us-questions")
-        .query("theme=something_else")
-        .expect(200)
+      test.get("/contact-us-questions").query("theme=something_else").expect(200)
     );
   });
 
@@ -369,8 +361,7 @@ describe("Integration:: contact us - public user", () => {
         const data = {
           _csrf: token,
           theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
-          suspectUnauthorisedAccessReasons:
-            "hasReceivedUnwarrantedSecurityCode",
+          suspectUnauthorisedAccessReasons: "hasReceivedUnwarrantedSecurityCode",
         };
         await expectValidationErrorOnPost(
           "/contact-us-questions",
@@ -384,8 +375,7 @@ describe("Integration:: contact us - public user", () => {
         const data = {
           _csrf: token,
           theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
-          suspectUnauthorisedAccessReasons:
-            "hasReceivedUnwarrantedSecurityCode",
+          suspectUnauthorisedAccessReasons: "hasReceivedUnwarrantedSecurityCode",
           email: "test",
         };
         await expectValidationErrorOnPost(
@@ -408,8 +398,7 @@ describe("Integration:: contact us - public user", () => {
             const data = {
               _csrf: token,
               theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
-              suspectUnauthorisedAccessReasons:
-                "hasReceivedUnwarrantedSecurityCode",
+              suspectUnauthorisedAccessReasons: "hasReceivedUnwarrantedSecurityCode",
               email: "test@example.com",
               phoneNumber: "abc",
             };
@@ -425,8 +414,7 @@ describe("Integration:: contact us - public user", () => {
             const data = {
               _csrf: token,
               theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
-              suspectUnauthorisedAccessReasons:
-                "hasReceivedUnwarrantedSecurityCode",
+              suspectUnauthorisedAccessReasons: "hasReceivedUnwarrantedSecurityCode",
               email: "test@example.com",
               phoneNumber: "12345",
             };
@@ -442,8 +430,7 @@ describe("Integration:: contact us - public user", () => {
             const data = {
               _csrf: token,
               theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
-              suspectUnauthorisedAccessReasons:
-                "hasReceivedUnwarrantedSecurityCode",
+              suspectUnauthorisedAccessReasons: "hasReceivedUnwarrantedSecurityCode",
               email: "test@example.com",
               phoneNumber: "12345",
             };
@@ -461,8 +448,7 @@ describe("Integration:: contact us - public user", () => {
             const data = {
               _csrf: token,
               theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
-              suspectUnauthorisedAccessReasons:
-                "hasReceivedUnwarrantedSecurityCode",
+              suspectUnauthorisedAccessReasons: "hasReceivedUnwarrantedSecurityCode",
               email: "test@example.com",
               hasInternationalPhoneNumber: "true",
               internationalPhoneNumber: "abc",
@@ -479,8 +465,7 @@ describe("Integration:: contact us - public user", () => {
             const data = {
               _csrf: token,
               theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
-              suspectUnauthorisedAccessReasons:
-                "hasReceivedUnwarrantedSecurityCode",
+              suspectUnauthorisedAccessReasons: "hasReceivedUnwarrantedSecurityCode",
               email: "test@example.com",
               hasInternationalPhoneNumber: "true",
               internationalPhoneNumber: "+123456789012345678901234567890",
@@ -497,8 +482,7 @@ describe("Integration:: contact us - public user", () => {
             const data = {
               _csrf: token,
               theme: CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS,
-              suspectUnauthorisedAccessReasons:
-                "hasReceivedUnwarrantedSecurityCode",
+              suspectUnauthorisedAccessReasons: "hasReceivedUnwarrantedSecurityCode",
               email: "test@example.com",
               hasInternationalPhoneNumber: "true",
               internationalPhoneNumber: "+100000000000000000000000",

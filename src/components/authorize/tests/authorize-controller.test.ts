@@ -98,12 +98,11 @@ describe("authorize controller", () => {
         req.body.cookie_preferences
       );
 
-      const consentCookieValue =
-        fakeCookieConsentService.createConsentCookieValue(
-          req.body.cookie_preferences === "true"
-            ? COOKIE_CONSENT.ACCEPT
-            : COOKIE_CONSENT.REJECT
-        );
+      const consentCookieValue = fakeCookieConsentService.createConsentCookieValue(
+        req.body.cookie_preferences === "true"
+          ? COOKIE_CONSENT.ACCEPT
+          : COOKIE_CONSENT.REJECT
+      );
 
       await authorizeGet(
         fakeAuthorizeService,
@@ -143,12 +142,11 @@ describe("authorize controller", () => {
         req.body.cookie_preferences
       );
 
-      const consentCookieValue =
-        fakeCookieConsentService.createConsentCookieValue(
-          req.body.cookie_preferences === "true"
-            ? COOKIE_CONSENT.ACCEPT
-            : COOKIE_CONSENT.REJECT
-        );
+      const consentCookieValue = fakeCookieConsentService.createConsentCookieValue(
+        req.body.cookie_preferences === "true"
+          ? COOKIE_CONSENT.ACCEPT
+          : COOKIE_CONSENT.REJECT
+      );
 
       await authorizeGet(
         fakeAuthorizeService,
@@ -201,9 +199,7 @@ describe("authorize controller", () => {
         fakeJwtService
       )(req as Request, res as Response);
 
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
-      );
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE);
     });
 
     it("should redirect to /auth-code when existing session", async () => {
@@ -279,9 +275,7 @@ describe("authorize controller", () => {
         fakeJwtService
       )(req as Request, res as Response);
 
-      expect(res.redirect).to.have.been.calledWith(
-        redirectUri + "?error=login_required"
-      );
+      expect(res.redirect).to.have.been.calledWith(redirectUri + "?error=login_required");
     });
 
     //note that this is currently the same behaviour with the feature flag on or off. This will change if we decide on a different initial page for the reauth journey
@@ -332,12 +326,11 @@ describe("authorize controller", () => {
         req.body.cookie_preferences
       );
 
-      const consentCookieValue =
-        fakeCookieConsentService.createConsentCookieValue(
-          req.body.cookie_preferences === "true"
-            ? COOKIE_CONSENT.ACCEPT
-            : COOKIE_CONSENT.REJECT
-        );
+      const consentCookieValue = fakeCookieConsentService.createConsentCookieValue(
+        req.body.cookie_preferences === "true"
+          ? COOKIE_CONSENT.ACCEPT
+          : COOKIE_CONSENT.REJECT
+      );
 
       await authorizeGet(
         fakeAuthorizeService,
@@ -443,9 +436,7 @@ describe("authorize controller", () => {
         fakeKmsDecryptionService,
         fakeJwtService
       )(req as Request, res as Response);
-      expect(req.session.user.reauthenticate).to.equal(
-        mockClaims.reauthenticate
-      );
+      expect(req.session.user.reauthenticate).to.equal(mockClaims.reauthenticate);
     });
 
     it("should not set session reauthenticate session field from jwt claims when claim is present", async () => {
@@ -468,9 +459,7 @@ describe("authorize controller", () => {
       delete mockClaims.claim;
 
       fakeJwtService = {
-        getPayloadWithValidation: sinon.fake.returns(
-          Promise.resolve(mockClaims)
-        ),
+        getPayloadWithValidation: sinon.fake.returns(Promise.resolve(mockClaims)),
       };
 
       await authorizeGet(
@@ -487,9 +476,7 @@ describe("authorize controller", () => {
       mockClaims.claim = "{}";
 
       fakeJwtService = {
-        getPayloadWithValidation: sinon.fake.returns(
-          Promise.resolve(mockClaims)
-        ),
+        getPayloadWithValidation: sinon.fake.returns(Promise.resolve(mockClaims)),
       };
 
       await authorizeGet(

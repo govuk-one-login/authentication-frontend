@@ -7,8 +7,7 @@ import supertest from "supertest";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import esmock from "esmock";
 
-const IPV_DUMMY_URL =
-  "https://test-idp-url.com/callback?code=123-4ddkk0sdkkd-ad";
+const IPV_DUMMY_URL = "https://test-idp-url.com/callback?code=123-4ddkk0sdkkd-ad";
 
 describe("Mfa reset with ipv", () => {
   const REQUEST_PATH = PATH_NAMES.MFA_RESET_WITH_IPV;
@@ -34,8 +33,7 @@ describe("Mfa reset with ipv", () => {
 
       await request(
         app,
-        (test) =>
-          test.get(REQUEST_PATH).expect(302).expect("Location", IPV_DUMMY_URL),
+        (test) => test.get(REQUEST_PATH).expect(302).expect("Location", IPV_DUMMY_URL),
         { expectAnalyticsPropertiesMatchSnapshot: false }
       );
     });
@@ -52,8 +50,7 @@ describe("Mfa reset with ipv", () => {
 
       await request(
         app,
-        (test) =>
-          test.get(REQUEST_PATH).expect(302).expect("Location", IPV_DUMMY_URL),
+        (test) => test.get(REQUEST_PATH).expect(302).expect("Location", IPV_DUMMY_URL),
         { expectAnalyticsPropertiesMatchSnapshot: false }
       );
     });
@@ -128,9 +125,7 @@ describe("Mfa reset with ipv", () => {
     });
   });
 
-  function allowCallToMfaResetAuthorizeEndpointReturningAuthorizeUrl(
-    url: string
-  ) {
+  function allowCallToMfaResetAuthorizeEndpointReturningAuthorizeUrl(url: string) {
     const baseApi = process.env.FRONTEND_API_BASE_URL;
 
     nock(baseApi).post(API_ENDPOINTS.MFA_RESET_AUTHORIZE).once().reply(200, {
@@ -160,13 +155,11 @@ describe("Mfa reset with ipv", () => {
             //set this up for the first request
             if (req.path === firstRequestPath) {
               res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-              res.locals.strategicAppChannel =
-                channel === CHANNEL.STRATEGIC_APP;
+              res.locals.strategicAppChannel = channel === CHANNEL.STRATEGIC_APP;
               res.locals.genericAppChannel = channel === CHANNEL.GENERIC_APP;
               res.locals.webChannel = channel == CHANNEL.WEB;
               res.locals.isApp =
-                channel === CHANNEL.STRATEGIC_APP ||
-                channel === CHANNEL.GENERIC_APP;
+                channel === CHANNEL.STRATEGIC_APP || channel === CHANNEL.GENERIC_APP;
 
               req.session.user = {
                 email: "test@test.com",

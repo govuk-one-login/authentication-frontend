@@ -49,8 +49,7 @@ export function getRequestTaxonomy(req: Request): Taxonomy {
   let taxonomyLevel1 = TaxonomyLevel1.BLANK;
   if (isAuthenticationTaxonomy(taxonomyLevel2))
     taxonomyLevel1 = TaxonomyLevel1.AUTHENTICATION;
-  if (isAccountTaxonomy(taxonomyLevel2))
-    taxonomyLevel1 = TaxonomyLevel1.ACCOUNTS;
+  if (isAccountTaxonomy(taxonomyLevel2)) taxonomyLevel1 = TaxonomyLevel1.ACCOUNTS;
 
   return {
     taxonomyLevel1,
@@ -66,16 +65,14 @@ function getTaxonomyLevel2(req: Request) {
 
   if (isSignInTaxonomy(req)) taxonomyLevel2 = TaxonomyLevel2.SIGN_IN;
   if (isReauthTaxonomy(req)) taxonomyLevel2 = TaxonomyLevel2.REAUTH;
-  if (isCreateAccountTaxonomy(req))
-    taxonomyLevel2 = TaxonomyLevel2.CREATE_ACCOUNT;
+  if (isCreateAccountTaxonomy(req)) taxonomyLevel2 = TaxonomyLevel2.CREATE_ACCOUNT;
   if (isFeedbackTaxonomy(req)) {
     taxonomyLevel2 = TaxonomyLevel2.FEEDBACK;
     if (isGuidanceTaxonomy(req)) {
       taxonomyLevel2 = TaxonomyLevel2.GUIDANCE;
     }
   }
-  if (isAccountRecoveryTaxonomy(req))
-    taxonomyLevel2 = TaxonomyLevel2.ACCOUNT_RECOVERY;
+  if (isAccountRecoveryTaxonomy(req)) taxonomyLevel2 = TaxonomyLevel2.ACCOUNT_RECOVERY;
   if (isAccountInterventionTaxonomy(req))
     taxonomyLevel2 = TaxonomyLevel2.ACCOUNT_INTERVENTION;
 
@@ -173,6 +170,4 @@ const isAuthenticationTaxonomy = (taxonomyLevel2: TaxonomyLevel2): boolean =>
   ].includes(taxonomyLevel2);
 
 const isAccountTaxonomy = (taxonomyLevel2: TaxonomyLevel2): boolean =>
-  [TaxonomyLevel2.ACCOUNT_INTERVENTION, TaxonomyLevel2.REAUTH].includes(
-    taxonomyLevel2
-  );
+  [TaxonomyLevel2.ACCOUNT_INTERVENTION, TaxonomyLevel2.REAUTH].includes(taxonomyLevel2);

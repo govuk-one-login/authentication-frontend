@@ -1,8 +1,4 @@
-import type {
-  ApiResponseResult,
-  UserSession,
-  UserSessionClient,
-} from "../../types.js";
+import type { ApiResponseResult, UserSession, UserSessionClient } from "../../types.js";
 import { API_ENDPOINTS } from "../../app.constants.js";
 import type { Http } from "../../utils/http.js";
 import {

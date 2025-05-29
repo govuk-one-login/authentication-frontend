@@ -132,9 +132,7 @@ describe("enter mfa controller", () => {
         res as Response
       );
 
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-wait.njk"
-      );
+      expect(res.render).to.have.calledWith("security-code-error/index-wait.njk");
     });
   });
 
@@ -165,11 +163,12 @@ describe("enter mfa controller", () => {
 
       await mockEnterMfaPost(fakeService)(req as Request, res as Response);
 
-      expect(
-        getJourneyTypeFromUserSessionSpy
-      ).to.have.been.calledOnceWithExactly(req.session.user, {
-        includeReauthentication: true,
-      });
+      expect(getJourneyTypeFromUserSessionSpy).to.have.been.calledOnceWithExactly(
+        req.session.user,
+        {
+          includeReauthentication: true,
+        }
+      );
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.REAUTHENTICATION
       );

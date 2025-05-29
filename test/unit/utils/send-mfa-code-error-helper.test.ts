@@ -1,10 +1,7 @@
 import { describe } from "mocha";
 import { mockResponse } from "mock-req-res";
 import type { Response } from "express";
-import type {
-  ApiResponseResult,
-  DefaultApiResponse,
-} from "../../../src/types.js";
+import type { ApiResponseResult, DefaultApiResponse } from "../../../src/types.js";
 import { ERROR_CODES } from "../../../src/components/common/constants.js";
 import { handleSendMfaCodeError } from "../../../src/utils/send-mfa-code-error-helper.js";
 import { expect } from "../../utils/test-utils.js";

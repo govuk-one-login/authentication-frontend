@@ -42,10 +42,7 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
   });
 }
 
-export function securityCodeTriesExceededGet(
-  req: Request,
-  res: Response
-): void {
+export function securityCodeTriesExceededGet(req: Request, res: Response): void {
   if (!isLocked(req.session.user.codeRequestLock)) {
     req.session.user.codeRequestLock = timestampNMinutesFromNow(
       getCodeRequestBlockDurationInMinutes()
@@ -62,19 +59,13 @@ export function securityCodeTriesExceededGet(
   });
 }
 
-export function securityCodeCannotRequestCodeGet(
-  req: Request,
-  res: Response
-): void {
+export function securityCodeCannotRequestCodeGet(req: Request, res: Response): void {
   res.render("security-code-error/index-too-many-requests.njk", {
     newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
   });
 }
 
-export function securityCodeEnteredExceededGet(
-  req: Request,
-  res: Response
-): void {
+export function securityCodeEnteredExceededGet(req: Request, res: Response): void {
   res.render("security-code-error/index-security-code-entered-exceeded.njk", {
     newCodeLink: isAuthApp(req.query.actionType as SecurityCodeErrorType)
       ? PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
@@ -113,11 +104,7 @@ export function getNewCodePath(
             "isResendCodeRequest",
             "true"
           )
-        : pathWithQueryParam(
-            PATH_NAMES.RESEND_MFA_CODE,
-            "isResendCodeRequest",
-            "true"
-          );
+        : pathWithQueryParam(PATH_NAMES.RESEND_MFA_CODE, "isResendCodeRequest", "true");
     case SecurityCodeErrorType.EmailMaxCodesSent:
     case SecurityCodeErrorType.EmailBlocked:
       return PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
@@ -127,11 +114,7 @@ export function getNewCodePath(
     case SecurityCodeErrorType.EmailMaxRetries:
     case SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries:
     case SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries:
-      return pathWithQueryParam(
-        PATH_NAMES.RESEND_EMAIL_CODE,
-        "requestNewCode",
-        "true"
-      );
+      return pathWithQueryParam(PATH_NAMES.RESEND_EMAIL_CODE, "requestNewCode", "true");
   }
 }
 
@@ -155,18 +138,16 @@ function setBlockDurationIfRequired(
     actionType === SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries &&
     !isLocked(req.session.user.wrongCodeEnteredAccountRecoveryLock)
   ) {
-    req.session.user.wrongCodeEnteredAccountRecoveryLock =
-      timestampNMinutesFromNow(
-        getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes()
-      );
+    req.session.user.wrongCodeEnteredAccountRecoveryLock = timestampNMinutesFromNow(
+      getAccountRecoveryCodeEnteredWrongBlockDurationInMinutes()
+    );
   } else if (
     actionType === SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries &&
     !isLocked(req.session.user.wrongCodeEnteredPasswordResetLock)
   ) {
-    req.session.user.wrongCodeEnteredPasswordResetLock =
-      timestampNMinutesFromNow(
-        getPasswordResetCodeEnteredWrongBlockDurationInMinutes()
-      );
+    req.session.user.wrongCodeEnteredPasswordResetLock = timestampNMinutesFromNow(
+      getPasswordResetCodeEnteredWrongBlockDurationInMinutes()
+    );
   }
 }
 
@@ -179,10 +160,7 @@ function isAuthApp(actionType: SecurityCodeErrorType) {
   }
 }
 
-function isReducedDurationJourney(
-  actionType: SecurityCodeErrorType,
-  user: UserSession
-) {
+function isReducedDurationJourney(actionType: SecurityCodeErrorType, user: UserSession) {
   return (
     SecurityCodeErrorType.OtpMaxRetries === actionType &&
     (user.isAccountCreationJourney || user.isAccountRecoveryJourney)
@@ -194,13 +172,10 @@ function isJourneyWhere2HourLockoutScreenShown(
   isEmailCode: boolean
 ): boolean {
   const isStandardSignInJourney =
-    user.isSignInJourney &&
-    !user.isAccountPartCreated &&
-    !user.isAccountRecoveryJourney;
+    user.isSignInJourney && !user.isAccountPartCreated && !user.isAccountRecoveryJourney;
   const isPasswordResetJourney = user.isPasswordResetJourney;
   const isAccountRecoveryEmail = isEmailCode && user.isAccountRecoveryJourney;
-  const isNonAccountCreationEmail =
-    isEmailCode && !user.isAccountCreationJourney;
+  const isNonAccountCreationEmail = isEmailCode && !user.isAccountCreationJourney;
   return (
     isStandardSignInJourney ||
     isPasswordResetJourney ||

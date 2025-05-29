@@ -21,8 +21,7 @@ import { createMockRequest } from "../../../../../test/helpers/mock-request-help
 import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
 describe("update profile service", () => {
   const httpInstance = new Http();
-  const service: UpdateProfileServiceInterface =
-    updateProfileService(httpInstance);
+  const service: UpdateProfileServiceInterface = updateProfileService(httpInstance);
   let postStub: SinonStub;
 
   beforeEach(() => {
@@ -42,8 +41,7 @@ describe("update profile service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, clientSessionId, email, diPersistentSessionId } =
-      commonVariables;
+    const { sessionId, clientSessionId, email, diPersistentSessionId } = commonVariables;
     const req = createMockRequest(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });

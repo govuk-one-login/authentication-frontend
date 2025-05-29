@@ -44,11 +44,7 @@ describe("HTML Lang middleware", () => {
 
   describe("validateBodyMiddleware", () => {
     it("should validate request", () => {
-      validateBodyMiddleware("test.html")(
-        req as Request,
-        res as Response,
-        next
-      );
+      validateBodyMiddleware("test.html")(req as Request, res as Response, next);
       expect(next).to.have.been.called;
     });
   });

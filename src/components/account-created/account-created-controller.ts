@@ -10,10 +10,7 @@ export function accountCreatedGet(req: Request, res: Response): void {
   });
 }
 
-export async function accountCreatedPost(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function accountCreatedPost(req: Request, res: Response): Promise<void> {
   const nextPath = await getNextPathAndUpdateJourney(
     req,
     req.path,

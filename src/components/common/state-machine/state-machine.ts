@@ -1,10 +1,6 @@
 import type { EventType, StateValue } from "xstate";
 import { createMachine } from "xstate";
-import {
-  MFA_METHOD_TYPE,
-  OIDC_PROMPT,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { MFA_METHOD_TYPE, OIDC_PROMPT, PATH_NAMES } from "../../../app.constants.js";
 
 const USER_JOURNEY_EVENTS = {
   AUTHENTICATED: "AUTHENTICATED",
@@ -130,18 +126,11 @@ const authStateMachine = createMachine(
       },
       [PATH_NAMES.ENTER_EMAIL_SIGN_IN]: {
         on: {
-          [USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS]: [
-            PATH_NAMES.ENTER_PASSWORD,
-          ],
-          [USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND]: [
-            PATH_NAMES.ACCOUNT_NOT_FOUND,
-          ],
+          [USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS]: [PATH_NAMES.ENTER_PASSWORD],
+          [USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND]: [PATH_NAMES.ACCOUNT_NOT_FOUND],
         },
         meta: {
-          optionalPaths: [
-            PATH_NAMES.SIGN_IN_OR_CREATE,
-            PATH_NAMES.ACCOUNT_LOCKED,
-          ],
+          optionalPaths: [PATH_NAMES.SIGN_IN_OR_CREATE, PATH_NAMES.ACCOUNT_LOCKED],
         },
       },
       [PATH_NAMES.ACCOUNT_NOT_FOUND]: {
@@ -276,9 +265,7 @@ const authStateMachine = createMachine(
       },
       [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
         on: {
-          [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [
-            PATH_NAMES.CHECK_YOUR_PHONE,
-          ],
+          [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [PATH_NAMES.CHECK_YOUR_PHONE],
         },
         meta: {
           optionalPaths: [
@@ -317,9 +304,7 @@ const authStateMachine = createMachine(
       },
       [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL]: {
         on: {
-          [USER_JOURNEY_EVENTS.ACCOUNT_CREATED]: [
-            { target: [PATH_NAMES.AUTH_CODE] },
-          ],
+          [USER_JOURNEY_EVENTS.ACCOUNT_CREATED]: [{ target: [PATH_NAMES.AUTH_CODE] }],
         },
       },
       [PATH_NAMES.ENTER_PASSWORD]: {
@@ -546,9 +531,7 @@ const authStateMachine = createMachine(
         },
         [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
           on: {
-            [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [
-              PATH_NAMES.CHECK_YOUR_PHONE,
-            ],
+            [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [PATH_NAMES.CHECK_YOUR_PHONE],
           },
           meta: {
             optionalPaths: [
@@ -587,9 +570,7 @@ const authStateMachine = createMachine(
         },
         [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
           on: {
-            [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [
-              PATH_NAMES.CHECK_YOUR_PHONE,
-            ],
+            [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [PATH_NAMES.CHECK_YOUR_PHONE],
           },
           meta: {
             optionalPaths: [
@@ -625,9 +606,7 @@ const authStateMachine = createMachine(
       },
       [PATH_NAMES.DOC_CHECKING_APP_CALLBACK]: {
         on: {
-          [USER_JOURNEY_EVENTS.DOC_CHECKING_AUTH_CALLBACK]: [
-            PATH_NAMES.AUTH_CODE,
-          ],
+          [USER_JOURNEY_EVENTS.DOC_CHECKING_AUTH_CALLBACK]: [PATH_NAMES.AUTH_CODE],
         },
         meta: {
           optionalPaths: [PATH_NAMES.DOC_CHECKING_APP],
@@ -685,10 +664,7 @@ const authStateMachine = createMachine(
       [PATH_NAMES.OPEN_IN_WEB_BROWSER]: {
         type: "final",
         meta: {
-          optionalPaths: [
-            PATH_NAMES.ENTER_MFA,
-            PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
-          ],
+          optionalPaths: [PATH_NAMES.ENTER_MFA, PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
         },
       },
       [PATH_NAMES.IPV_CALLBACK]: {
@@ -749,23 +725,19 @@ const authStateMachine = createMachine(
         context.isLatestTermsAndConditionsAccepted === false,
       requiresUplift: (context) =>
         context.requiresUplift === true && context.isAuthenticated === true,
-      isReauthenticationRequired: (context) =>
-        context.isReauthenticationRequired,
+      isReauthenticationRequired: (context) => context.isReauthenticationRequired,
       requiresAuthAppUplift: (context) =>
         context.requiresUplift === true &&
         context.isAuthenticated === true &&
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP,
-      requiresTwoFactorAuth: (context) =>
-        context.requiresTwoFactorAuth === true,
+      requiresTwoFactorAuth: (context) => context.requiresTwoFactorAuth === true,
       isAccountPartCreated: (context) => context.isMfaMethodVerified === false,
       isIdentityRequired: (context) => context.isIdentityRequired === true,
       isAuthenticated: (context) => context.isAuthenticated === true,
       requiresLogin: (context) =>
-        context.isAuthenticated === true &&
-        context.prompt === OIDC_PROMPT.LOGIN,
+        context.isAuthenticated === true && context.prompt === OIDC_PROMPT.LOGIN,
       skipAuthentication: (context) =>
-        context.skipAuthentication === true &&
-        context.isAuthenticated === false,
+        context.skipAuthentication === true && context.isAuthenticated === false,
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.requiresTwoFactorAuth === true,

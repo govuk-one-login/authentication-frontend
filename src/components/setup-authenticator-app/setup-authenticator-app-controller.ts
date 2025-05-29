@@ -1,28 +1,15 @@
 import type { Request, Response } from "express";
 import QRCode from "qrcode";
 import type { ExpressRouteFunc } from "../../types.js";
-import {
-  ERROR_CODES,
-  getNextPathAndUpdateJourney,
-} from "../common/constants.js";
+import { ERROR_CODES, getNextPathAndUpdateJourney } from "../common/constants.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
-import {
-  generateQRCodeValue,
-  removeDefaultSmsMfaMethod,
-} from "../../utils/mfa.js";
+import { generateQRCodeValue, removeDefaultSmsMfaMethod } from "../../utils/mfa.js";
 import { BadRequestError } from "../../utils/error.js";
 import { splitSecretKeyIntoFragments } from "../../utils/strings.js";
-import {
-  formatValidationError,
-  renderBadRequest,
-} from "../../utils/validation.js";
+import { formatValidationError, renderBadRequest } from "../../utils/validation.js";
 import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
-import {
-  JOURNEY_TYPE,
-  MFA_METHOD_TYPE,
-  NOTIFICATION_TYPE,
-} from "../../app.constants.js";
+import { JOURNEY_TYPE, MFA_METHOD_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
 import xss from "xss";
 import type { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types.js";
 import { verifyMfaCodeService } from "../common/verify-mfa-code/verify-mfa-code-service.js";
@@ -49,9 +36,7 @@ export async function setupAuthenticatorAppGet(
 
   res.render(TEMPLATE, {
     qrCode: req.session.user.authAppQrCodeUrl,
-    secretKeyFragmentArray: splitSecretKeyIntoFragments(
-      req.session.user.authAppSecret
-    ),
+    secretKeyFragmentArray: splitSecretKeyIntoFragments(req.session.user.authAppSecret),
   });
 }
 
@@ -101,20 +86,15 @@ export function setupAuthenticatorAppPost(
     }
 
     req.session.user.authAppSecret = null;
-    req.session.user.mfaMethods = removeDefaultSmsMfaMethod(
-      req.session.user.mfaMethods
-    );
+    req.session.user.mfaMethods = removeDefaultSmsMfaMethod(req.session.user.mfaMethods);
 
-    const accountRecoveryEnabledJourney =
-      isAccountRecoveryJourneyAndPermitted(req);
+    const accountRecoveryEnabledJourney = isAccountRecoveryJourneyAndPermitted(req);
 
     let notificationType = NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
 
     if (accountRecoveryEnabledJourney) {
-      req.session.user.accountRecoveryVerifiedMfaType =
-        MFA_METHOD_TYPE.AUTH_APP;
-      notificationType =
-        NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION;
+      req.session.user.accountRecoveryVerifiedMfaType = MFA_METHOD_TYPE.AUTH_APP;
+      notificationType = NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION;
     }
 
     await notificationService.sendNotification(

@@ -147,9 +147,7 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
         })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
-          expect($("#password-error").text()).to.contains(
-            "Enter your password"
-          );
+          expect($("#password-error").text()).to.contains("Enter your password");
         })
         .expect(400, done)
     );

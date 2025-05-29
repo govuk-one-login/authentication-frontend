@@ -80,9 +80,7 @@ describe("Verify code controller tests", () => {
       expect(noInterventionsService.accountInterventionStatus).to.not.be.called;
 
       expect(res.redirect).to.have.calledWith(
-        getErrorPathByCode(
-          ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES
-        )
+        getErrorPathByCode(ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES)
       );
     });
   });
@@ -108,8 +106,7 @@ describe("Verify code controller tests", () => {
         verifyCodePostOptions
       )(req as Request, res as Response);
 
-      expect(noInterventionsService.accountInterventionStatus).to.have.been
-        .called;
+      expect(noInterventionsService.accountInterventionStatus).to.have.been.called;
       expect(res.redirect).to.have.calledWith("/reset-password");
     });
 
@@ -126,8 +123,7 @@ describe("Verify code controller tests", () => {
         verifyCodePostOptions
       )(req as Request, res as Response);
 
-      expect(accountInterventionService.accountInterventionStatus).to.have.been
-        .called;
+      expect(accountInterventionService.accountInterventionStatus).to.have.been.called;
       expect(res.redirect).to.have.calledWith("/unavailable-temporary");
     });
 
@@ -144,8 +140,7 @@ describe("Verify code controller tests", () => {
         verifyCodePostOptions
       )(req as Request, res as Response);
 
-      expect(accountInterventionService.accountInterventionStatus).to.have.been
-        .called;
+      expect(accountInterventionService.accountInterventionStatus).to.have.been.called;
       expect(res.redirect).to.have.calledWith("/unavailable-permanent");
     });
 
@@ -162,8 +157,7 @@ describe("Verify code controller tests", () => {
         verifyCodePostOptions
       )(req as Request, res as Response);
 
-      expect(accountInterventionService.accountInterventionStatus).to.have.been
-        .called;
+      expect(accountInterventionService.accountInterventionStatus).to.have.been.called;
       expect(res.redirect).to.have.calledWith("/reset-password");
     });
   });

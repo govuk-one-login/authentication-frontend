@@ -16,8 +16,7 @@ import { createMockRequest } from "../../../../test/helpers/mock-request-helper.
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("re-authentication service", () => {
   const httpInstance = new Http();
-  const service: CheckReauthServiceInterface =
-    checkReauthUsersService(httpInstance);
+  const service: CheckReauthServiceInterface = checkReauthUsersService(httpInstance);
   const SUBJECT = "123";
   let postStub: SinonStub;
 
@@ -38,8 +37,7 @@ describe("re-authentication service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, email, clientSessionId, diPersistentSessionId } =
-      commonVariables;
+    const { sessionId, email, clientSessionId, diPersistentSessionId } = commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });

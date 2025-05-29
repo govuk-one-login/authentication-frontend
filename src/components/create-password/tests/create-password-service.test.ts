@@ -11,17 +11,12 @@ import {
 import { Http } from "../../../utils/http.js";
 import type { CreatePasswordServiceInterface } from "../types.js";
 import { createPasswordService } from "../create-password-service.js";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("create password service", () => {
   const httpInstance = new Http();
-  const service: CreatePasswordServiceInterface =
-    createPasswordService(httpInstance);
+  const service: CreatePasswordServiceInterface = createPasswordService(httpInstance);
   let postStub: SinonStub;
 
   beforeEach(() => {
@@ -44,8 +39,7 @@ describe("create password service", () => {
     const req = createMockRequest(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
-    const { email, sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
+    const { email, sessionId, clientSessionId, diPersistentSessionId } = commonVariables;
     const password = "abcdef";
 
     const expectedApiCallDetails = {

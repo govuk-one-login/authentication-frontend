@@ -9,14 +9,11 @@ describe("applyOverloadProtection", () => {
   beforeEach(async () => {
     overloadProtectionStub = sinon.stub();
 
-    ({ applyOverloadProtection } = await esmock(
-      "../overload-protection-middleware.js",
-      {
-        "overload-protection": {
-          default: overloadProtectionStub,
-        },
-      }
-    ));
+    ({ applyOverloadProtection } = await esmock("../overload-protection-middleware.js", {
+      "overload-protection": {
+        default: overloadProtectionStub,
+      },
+    }));
   });
 
   it("should call overloadProtection with correct options in production mode", () => {

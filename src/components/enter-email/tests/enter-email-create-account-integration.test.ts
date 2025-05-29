@@ -2,11 +2,7 @@ import { describe } from "mocha";
 import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import * as cheerio from "cheerio";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
@@ -32,9 +28,7 @@ describe("Integration::enter email (create account)", () => {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
 
             req.session.user = {
-              journey: getPermittedJourneyForPath(
-                PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT
-              ),
+              journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT),
             };
 
             next();
@@ -46,11 +40,9 @@ describe("Integration::enter email (create account)", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
+    await request(app, (test) => test.get(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT), {
+      expectAnalyticsPropertiesMatchSnapshot: false,
+    }).then((res) => {
       const $ = cheerio.load(res.text);
       token = $("[name=_csrf]").val();
       cookies = res.headers["set-cookie"];
@@ -96,9 +88,7 @@ describe("Integration::enter email (create account)", () => {
         })
         .expect(function (res) {
           const $ = cheerio.load(res.text);
-          expect($("#email-error").text()).to.contains(
-            "Enter your email address"
-          );
+          expect($("#email-error").text()).to.contains("Enter your email address");
         })
         .expect(400)
     );
@@ -161,13 +151,10 @@ describe("Integration::enter email (create account)", () => {
   });
 
   it("should redirect to /enter-password page when email address exists", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.USER_EXISTS)
-      .once()
-      .reply(HTTP_STATUS_CODES.OK, {
-        email: "test@test.com",
-        doesUserExist: true,
-      });
+    nock(baseApi).post(API_ENDPOINTS.USER_EXISTS).once().reply(HTTP_STATUS_CODES.OK, {
+      email: "test@test.com",
+      doesUserExist: true,
+    });
 
     await request(app, (test) =>
       test
@@ -278,9 +265,7 @@ describe("Integration::enter email (create account)", () => {
           email: "test@test.com",
         })
         .expect((res) => {
-          res.text.includes(
-            "you asked to resend the security code too many codes"
-          );
+          res.text.includes("you asked to resend the security code too many codes");
         })
         .expect(200)
     );

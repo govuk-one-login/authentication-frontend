@@ -11,17 +11,12 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper.js";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("reset password service", () => {
   const httpInstance = new Http();
-  const service: ResetPasswordServiceInterface =
-    resetPasswordService(httpInstance);
+  const service: ResetPasswordServiceInterface = resetPasswordService(httpInstance);
   let postStub: SinonStub;
 
   beforeEach(() => {
@@ -41,8 +36,7 @@ describe("reset password service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
+    const { sessionId, clientSessionId, diPersistentSessionId } = commonVariables;
     const newPassword = "abcdef";
     const isForcedPasswordReset = false;
     const req = createMockRequest(PATH_NAMES.RESET_PASSWORD, {
