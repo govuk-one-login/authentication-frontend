@@ -2,7 +2,6 @@ import type { Application } from "express";
 import express from "express";
 import "express-async-errors";
 import cookieParser from "cookie-parser";
-import csurf from "csurf";
 import type serveStatic from "serve-static";
 import { logger, loggerMiddleware } from "./utils/logger.js";
 import { sanitizeRequestMiddleware } from "./middleware/sanitize-request-middleware.js";
@@ -40,7 +39,6 @@ import { serverErrorHandler } from "./handlers/internal-server-error-handler.js"
 import { csrfMiddleware } from "./middleware/csrf-middleware.js";
 import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-routes.js";
 import { landingRouter } from "./components/landing/landing-route.js";
-import { getCSRFCookieOptions } from "./config/cookie.js";
 import { ENVIRONMENT_NAME } from "./app.constants.js";
 import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes.js";
 import { howDoYouWantSecurityCodesRouter } from "./components/how-do-you-want-security-codes/how-do-you-want-security-codes-routes.js";
@@ -103,6 +101,8 @@ import { environmentBannerMiddleware } from "./middleware/environment-banner-mid
 import UID from "uid-safe";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
+import { csrfSynchronisedProtection } from "./utils/csrf.js";
+import { catchCsrfSyncErrorMiddleware } from "./middleware/catch-csrf-sync-error-middleware.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -246,7 +246,8 @@ async function createApp(): Promise<express.Application> {
     })
   );
 
-  app.use(csurf({ cookie: getCSRFCookieOptions(isProduction) }));
+  app.use(csrfSynchronisedProtection);
+  app.use(catchCsrfSyncErrorMiddleware);
 
   app.use(channelMiddleware);
   app.use(environmentBannerMiddleware);
