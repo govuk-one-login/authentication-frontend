@@ -4,6 +4,8 @@ import { mockRequest } from "mock-req-res";
 
 export interface MockRequestOptions {
   headers?: any;
+  session?: any;
+  cookies?: any;
 }
 
 export function createMockRequest(
@@ -32,6 +34,12 @@ export function createMockRequest(
   }
   if (request.headers["x-forwarded-for"]) {
     request.ip = options?.headers["x-forwarded-for"];
+  }
+  if (options?.session) {
+    request.session = options.session;
+  }
+  if (options?.cookies) {
+    request.cookies = options.cookies;
   }
   return request;
 }
