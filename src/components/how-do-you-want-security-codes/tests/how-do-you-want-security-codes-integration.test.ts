@@ -31,7 +31,11 @@ const getTokenAndCookies = async (app: express.Application) => {
   return { token, cookies };
 };
 
-const mockSessionMiddleware = (mfaMethods: MfaMethod[], mfaMethodId: string) =>
+const mockSessionMiddleware = (
+  mfaMethods: MfaMethod[],
+  mfaMethodId: string,
+  isPasswordResetJourney: boolean
+) =>
   sinon.fake(function (req: Request, res: Response, next: NextFunction) {
     res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
     req.session.user = {
@@ -40,6 +44,7 @@ const mockSessionMiddleware = (mfaMethods: MfaMethod[], mfaMethodId: string) =>
       activeMfaMethodId: mfaMethodId,
       journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
       isAccountRecoveryPermitted: true,
+      isPasswordResetJourney,
     };
     next();
   });
@@ -48,11 +53,11 @@ describe("Integration::how do you want security codes", () => {
   let app: any;
   let baseApi: string;
   const DEFAULT_PHONE_NUMBER = "7867";
-  const DEFAULT_PHONE_NUMBER_ID = "532b14c2-a11d-4882-a83b-e8d7184e0b70";
+  const DEFAULT_PHONE_NUMBER_ID = "default-sms-mfa-method-id";
   const BACKUP_PHONE_NUMBER = "1234";
-  const BACKUP_PHONE_NUMBER_ID = "6ae3be91-708f-45b2-9374-6a595eb76bce";
-  const DEFAULT_AUTH_APP_ID = "9a51c939-3a39-4a30-b388-9543e0f87e3b";
-  const BACKUP_AUTH_APP_ID = "8f40b828-2928-492f-a277-8432d9e76d2a";
+  const BACKUP_PHONE_NUMBER_ID = "backup-sms-mfa-method-id";
+  const DEFAULT_AUTH_APP_ID = "default-auth-app-mfa-method-id";
+  const BACKUP_AUTH_APP_ID = "backup-auth-app-mfa-method-id";
 
   before(() => {
     baseApi = process.env.FRONTEND_API_BASE_URL;
@@ -123,7 +128,8 @@ describe("Integration::how do you want security codes", () => {
                 builtMfaMethods.find(
                   (mfaMethod) =>
                     mfaMethod.priority === MfaMethodPriority.DEFAULT
-                ).id
+                ).id,
+                false
               ),
             },
           }
@@ -204,7 +210,61 @@ describe("Integration::how do you want security codes", () => {
         .expect(400);
     });
 
-    it("SMS/SMS user should redirect to enter mfa page", async () => {
+    [
+      {
+        selectedMfaMethodId: DEFAULT_PHONE_NUMBER_ID,
+        isPasswordResetJourney: false,
+        expectedPath: PATH_NAMES.ENTER_MFA,
+      },
+      {
+        selectedMfaMethodId: BACKUP_AUTH_APP_ID,
+        isPasswordResetJourney: false,
+        expectedPath: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+      },
+      {
+        selectedMfaMethodId: DEFAULT_PHONE_NUMBER_ID,
+        isPasswordResetJourney: true,
+        expectedPath: PATH_NAMES.RESET_PASSWORD_2FA_SMS,
+      },
+      {
+        selectedMfaMethodId: BACKUP_AUTH_APP_ID,
+        isPasswordResetJourney: true,
+        expectedPath: PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP,
+      },
+    ].forEach(
+      ({ selectedMfaMethodId, isPasswordResetJourney, expectedPath }) => {
+        it(`redirects to ${expectedPath} when ${selectedMfaMethodId} is selected and isPasswordResetJourney is ${isPasswordResetJourney}`, async () => {
+          const app = await createDefaultSmsBackupAppExpressApp(
+            isPasswordResetJourney
+          );
+          const { token, cookies } = await getTokenAndCookies(app);
+
+          if (selectedMfaMethodId === DEFAULT_PHONE_NUMBER_ID) {
+            nock(baseApi)
+              .post(API_ENDPOINTS.MFA)
+              .once()
+              .reply(HTTP_STATUS_CODES.NO_CONTENT);
+          }
+
+          await request(app, (test) =>
+            test
+              .post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
+              .type("form")
+              .set("Cookie", cookies)
+              .send({
+                _csrf: token,
+                "mfa-method-id": selectedMfaMethodId,
+              })
+              .expect("Location", expectedPath)
+              .expect(302)
+          );
+        });
+      }
+    );
+
+    async function createDefaultSmsBackupAppExpressApp(
+      isPasswordResetJourney: boolean = false
+    ): Promise<express.Application> {
       const { createApp } = await esmock(
         "../../../app.js",
         {},
@@ -217,86 +277,18 @@ describe("Integration::how do you want security codes", () => {
                   redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
                 },
                 {
-                  id: BACKUP_PHONE_NUMBER_ID,
-                  redactedPhoneNumber: BACKUP_PHONE_NUMBER,
+                  id: BACKUP_AUTH_APP_ID,
+                  authApp: true,
                 },
               ]),
-              DEFAULT_PHONE_NUMBER_ID
+              DEFAULT_PHONE_NUMBER_ID,
+              isPasswordResetJourney
             ),
           },
         }
       );
 
-      app = await createApp();
-
-      nock(baseApi)
-        .post(API_ENDPOINTS.MFA)
-        .once()
-        .reply(HTTP_STATUS_CODES.NO_CONTENT);
-
-      const { token, cookies } = await getTokenAndCookies(app);
-
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          "mfa-method-id": BACKUP_PHONE_NUMBER_ID,
-        })
-        .expect(302);
-    });
-
-    it("redirects to the /enter-authenticator-app-code when 'authenticator app' is selected", async () => {
-      const app = await createDefaultSmsBackupAppExpressApp();
-      const { token, cookies } = await getTokenAndCookies(app);
-
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          "mfa-method-id": BACKUP_AUTH_APP_ID,
-        })
-        .expect("Location", PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
-        .expect(302);
-    });
+      return await createApp();
+    }
   });
-
-  async function createDefaultSmsBackupAppExpressApp(): Promise<express.Application> {
-    const { createApp } = await esmock(
-      "../../../app.js",
-      {},
-      {
-        "../../../middleware/session-middleware.js": {
-          validateSessionMiddleware: mockSessionMiddleware(
-            buildMfaMethods([
-              {
-                id: DEFAULT_PHONE_NUMBER_ID,
-                redactedPhoneNumber: DEFAULT_PHONE_NUMBER,
-              },
-              {
-                id: BACKUP_AUTH_APP_ID,
-                authApp: true,
-              },
-            ]),
-            DEFAULT_PHONE_NUMBER_ID
-          ),
-        },
-      }
-    );
-
-    return await createApp();
-  }
 });
