@@ -140,6 +140,7 @@ Resources:
     - EnvName
     - - authdev1
       - authdev2
+      - sandpit
     - ${EnvName}HostedZone:
         Type: AWS::Route53::HostedZone
         Condition: CreateDevHostedZone
