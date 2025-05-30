@@ -1028,10 +1028,10 @@
   dependencies:
     pino "^8.20.0"
 
-"@govuk-one-login/spinner@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@govuk-one-login/spinner/-/spinner-1.1.0.tgz#865a5f2a707dc5c47a52f1f59b1d3d491a8bda97"
-  integrity sha512-dRZGqVVNowbUTaa8xXZz3Iy5eFCBhw2TrnkE0b53L16C5MrrP5hb3rmSxAQCqgomKrrsx417uZHGFK07lZJi3A==
+"@govuk-one-login/spinner@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/spinner/-/spinner-1.1.1.tgz#0943a9b966d2253c4f8942cf41ddbf633121238d"
+  integrity sha512-qxL4RQXkkSR2D6U3bJbDPDfWgzA9l3pbBfU7hiRDsvMMEd7cCSYvVCUVgzNLVpbnMYbFYGHgvRXi9Cjnd6GEqA==
 
 "@humanfs/core@^0.19.1":
   version "0.19.1"
@@ -3288,10 +3288,10 @@ domhandler@^5.0.2, domhandler@^5.0.3:
   dependencies:
     domelementtype "^2.3.0"
 
-dompurify@3.2.5:
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.2.5.tgz#11b108656a5fb72b24d916df17a1421663d7129c"
-  integrity sha512-mLPd29uoRe9HpvwP2TxClGQBzGXeEC/we/q+bFlmPPmj2p2Ugl3r6ATu/UU1v77DXNcehiBg9zsr1dREyA/dJQ==
+dompurify@3.2.6:
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.2.6.tgz#ca040a6ad2b88e2a92dc45f38c79f84a714a1cad"
+  integrity sha512-/2GogDQlohXPZe6D6NOgQvXLPSYBqIWMnZ8zzOhn09REE4eyAzb+Hed3jhoM9OkuaJ8P6ZGTTVWQKAi8ieIzfQ==
   optionalDependencies:
     "@types/trusted-types" "^2.0.7"
 
