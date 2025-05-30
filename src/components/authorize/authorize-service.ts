@@ -84,5 +84,6 @@ function createStartBody(startRequestParameters: StartRequestParameters) {
   body["state"] = startRequestParameters.rp_state;
   body["client_name"] = startRequestParameters.client_name;
   body["service_type"] = startRequestParameters.service_type;
+  body["cookie_consent_shared"] = startRequestParameters.cookie_consent_shared;
   return body;
 }
