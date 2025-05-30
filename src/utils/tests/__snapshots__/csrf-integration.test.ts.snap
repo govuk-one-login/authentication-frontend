@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Integration:: authorize should redirect to /sign-in-or-create with Google Analytics tag if 'result' query exists 1`] = `
+exports[`Integration::csrf checks should return error when csrf token does not match that in the session 1`] = `
 Object {
   "contentId": "",
-  "taxonomyLevel1": "authentication",
+  "taxonomyLevel1": "",
   "taxonomyLevel2": "",
   "taxonomyLevel3": "",
   "taxonomyLevel4": "",

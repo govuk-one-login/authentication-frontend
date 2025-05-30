@@ -11,17 +11,6 @@ Object {
 }
 `;
 
-exports[`Integration:: enter mfa should include the correct link to change mfa methods 1`] = `
-Object {
-  "contentId": "19601dd7-be55-4ab6-aa44-a6358c4239dc",
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "sign in",
-  "taxonomyLevel3": "",
-  "taxonomyLevel4": "",
-  "taxonomyLevel5": "",
-}
-`;
-
 exports[`Integration:: enter mfa should include the correct link to change mfa methods when the user has 1 mfaMethods 1`] = `
 Object {
   "contentId": "19601dd7-be55-4ab6-aa44-a6358c4239dc",
@@ -68,12 +57,12 @@ Object {
 
 exports[`Integration:: enter mfa should return error when csrf not present 1`] = `
 Object {
-  "contentId": undefined,
-  "taxonomyLevel1": undefined,
-  "taxonomyLevel2": undefined,
-  "taxonomyLevel3": undefined,
-  "taxonomyLevel4": undefined,
-  "taxonomyLevel5": undefined,
+  "contentId": "",
+  "taxonomyLevel1": "",
+  "taxonomyLevel2": "",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
