@@ -320,6 +320,22 @@ Mappings:
     eu-west-2:
       AccountId: "652711504416"
   EnvironmentConfiguration:
+    sandpit:
+      cloudfrontDistributionStackName: "sandpit-cloudfront"
+      orchToAuthSigningPublicKey: |
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAESyWJU5s5F4jSovHsh9y133/Ogf5Px78OrfDJqiMMI2p8Warbq0ppcbWvbihK6rAXTH7bPIeOHOeU9cKAEl5NdQ==
+        -----END PUBLIC KEY-----
+      orchStubToAuthSigningPublicKey: |
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEM0ZehmrdDd89uYEFMTakbS7JgwCG
+        XK7CAYMcVvy1pP5yV4O2mnDjYmvjZpvio2ctgOPxDuBb38QP1HD9WAOR2w==
+        -----END PUBLIC KEY-----
+      migratedDomain: signin.sandpit.dev.account.gov.uk
+      UseMfaResetWithIpv: "Yes"
+      UseRouteUsersToNewIpvJourney: "Yes"
+      Enableipvspinner: "No"
+      DeviceIntelligenceEnabled: "Yes"
     authdev1:
       cloudfrontDistributionStackName: "authdev1-cloudfront"
       frontendApiBaseUrl: https://auth.authdev1.sandpit.account.gov.uk/
