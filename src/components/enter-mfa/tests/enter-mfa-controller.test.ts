@@ -21,7 +21,9 @@ import esmock from "esmock";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 const TEST_PHONE_NUMBER = "07582930495";
+const TEST_BACKUP_PHONE_NUMER = "07123456789";
 const TEST_DEFAULT_MFA_ID = "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7";
+const TEST_BACKUP_MFA_ID = "a1b2c3d4-e5f6-7890-1234-567890abcdef";
 
 const fakeAccountRecoveryPermissionCheckService = (
   desiredAccountRecoveryPermittedResponse: boolean
@@ -101,6 +103,30 @@ describe("enter mfa controller", () => {
         isAccountRecoveryPermitted: false,
         hasMultipleMfaMethods: false,
         mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
+      });
+    });
+
+    it("should render 2fa service uplift view with hasMultipleMfaMethods true when user has multiple MFAs", async () => {
+      req.session.user.activeMfaMethodId = TEST_DEFAULT_MFA_ID;
+      req.session.user.isUpliftRequired = true;
+      req.session.user.mfaMethods = buildMfaMethods([
+        { id: TEST_DEFAULT_MFA_ID, redactedPhoneNumber: TEST_PHONE_NUMBER },
+        {
+          id: TEST_BACKUP_MFA_ID,
+          redactedPhoneNumber: TEST_BACKUP_PHONE_NUMER,
+        },
+      ]);
+
+      await enterMfaGet(fakeAccountRecoveryPermissionCheckService(false))(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(UPLIFT_REQUIRED_SMS_TEMPLATE_NAME, {
+        phoneNumber: TEST_PHONE_NUMBER,
+        isAccountRecoveryPermitted: false,
+        hasMultipleMfaMethods: true,
+        mfaIssuePath: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
       });
     });
 
