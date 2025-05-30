@@ -53,6 +53,7 @@ describe("authorize service", () => {
       client_name: "test-client-name",
       service_type: "essential",
       cookie_consent_shared: false,
+      is_smoke_test: false,
     });
 
     expect(
@@ -69,6 +70,7 @@ describe("authorize service", () => {
           client_name: "test-client-name",
           service_type: "essential",
           cookie_consent_shared: false,
+          is_smoke_test: false,
         },
         {
           headers: {
@@ -94,6 +96,7 @@ describe("authorize service", () => {
       client_name: "test-client-name",
       service_type: "essential",
       cookie_consent_shared: false,
+      is_smoke_test: false,
     });
 
     expect(
@@ -109,6 +112,7 @@ describe("authorize service", () => {
           client_name: "test-client-name",
           service_type: "essential",
           cookie_consent_shared: false,
+          is_smoke_test: false,
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -130,6 +134,7 @@ describe("authorize service", () => {
       client_name: "test-client-name",
       service_type: "essential",
       cookie_consent_shared: false,
+      is_smoke_test: false,
     });
 
     expect(
@@ -145,6 +150,7 @@ describe("authorize service", () => {
           client_name: "test-client-name",
           service_type: "essential",
           cookie_consent_shared: false,
+          is_smoke_test: false,
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -168,6 +174,7 @@ describe("authorize service", () => {
       client_name: "test-client-name",
       service_type: "essential",
       cookie_consent_shared: false,
+      is_smoke_test: false,
     });
 
     expect(
@@ -184,6 +191,7 @@ describe("authorize service", () => {
           client_name: "test-client-name",
           service_type: "essential",
           cookie_consent_shared: false,
+          is_smoke_test: false,
         },
         {
           headers: {
@@ -210,6 +218,7 @@ describe("authorize service", () => {
       client_name: "test-client-name",
       service_type: "essential",
       cookie_consent_shared: false,
+      is_smoke_test: false,
     });
 
     expect(
@@ -227,6 +236,7 @@ describe("authorize service", () => {
           client_name: "test-client-name",
           service_type: "essential",
           cookie_consent_shared: false,
+          is_smoke_test: false,
         },
         {
           headers: {
@@ -255,6 +265,7 @@ describe("authorize service", () => {
       client_name: "test-client-name",
       service_type: "essential",
       cookie_consent_shared: false,
+      is_smoke_test: false,
     });
 
     expect(
@@ -273,6 +284,7 @@ describe("authorize service", () => {
           client_name: "test-client-name",
           service_type: "essential",
           cookie_consent_shared: false,
+          is_smoke_test: false,
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },

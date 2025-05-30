@@ -32,6 +32,7 @@ export function createMockClaims(): Claims {
     current_credential_strength: "MEDIUM_LEVEL",
     requested_credential_strength: "Cl.Cm",
     scope: "openid",
+    is_smoke_test: false,
   };
 }
 
