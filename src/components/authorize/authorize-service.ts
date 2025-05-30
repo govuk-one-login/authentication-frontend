@@ -85,5 +85,6 @@ function createStartBody(startRequestParameters: StartRequestParameters) {
   body["client_name"] = startRequestParameters.client_name;
   body["service_type"] = startRequestParameters.service_type;
   body["cookie_consent_shared"] = startRequestParameters.cookie_consent_shared;
+  body["is_one_login_service"] = startRequestParameters.is_one_login_service;
   return body;
 }
