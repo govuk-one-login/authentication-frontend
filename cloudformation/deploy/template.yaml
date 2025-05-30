@@ -377,8 +377,8 @@ Mappings:
       DeployServiceDownPage: "No"
       frontendAutoScalingMinCount: 4
       frontendAutoScalingMaxCount: 240
-      frontendTaskDefinitionCpu: 2048
-      frontendTaskDefinitionMemory: 4096
+      frontendTaskDefinitionCpu: 1024
+      frontendTaskDefinitionMemory: 2048
       cloudwatchLogRetentionInDays: 7
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
