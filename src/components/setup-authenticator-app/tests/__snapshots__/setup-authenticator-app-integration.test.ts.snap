@@ -2,12 +2,12 @@
 
 exports[`Integration::setup-authenticator-app should return error when csrf not present 1`] = `
 Object {
-  "contentId": undefined,
-  "taxonomyLevel1": undefined,
-  "taxonomyLevel2": undefined,
-  "taxonomyLevel3": undefined,
-  "taxonomyLevel4": undefined,
-  "taxonomyLevel5": undefined,
+  "contentId": "",
+  "taxonomyLevel1": "",
+  "taxonomyLevel2": "",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 
