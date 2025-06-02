@@ -926,6 +926,12 @@ function getQuestionFromThemes(
     id_check_app: req.t("pages.contactUsPublic.section3.idCheckApp", {
       lng: "en",
     }),
+    govUKLoginAndIdApps: req.t(
+      "pages.contactUsPublic.section3.govUKLoginAndIdApps",
+      {
+        lng: "en",
+      }
+    ),
     id_face_to_face: req.t(
       "pages.contactUsPublic.section3.provingIdentityFaceToFace",
       {

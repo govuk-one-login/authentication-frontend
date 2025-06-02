@@ -1869,6 +1869,7 @@
         "somethingElse": "Problem arall wrth ddefnyddio eich GOV.UK One Login",
         "suggestionsFeedback": "Awgrym neu adborth am ddefnyddio’ch GOV.UK One Login",
         "idCheckApp": "Problem profi eich hunaniaeth wrth ddefnyddio ap GOV.UK ID Check",
+        "govUKLoginAndIdApps": "Problem profi eich hunaniaeth wrth ddefnyddio’r ap GOV.UK One Login neu’r ap GOV.UK ID Check",
         "provingIdentityFaceToFace": "Problem profi eich hunaniaeth gyda’r Swyddfa Bost",
         "errorMessage": "Dewiswch reswm dros gysylltu â ni",
         "suspectUnauthorisedAccess": "Rydych chi’n meddwl bod rhywun arall yn defnyddio’ch gwybodaeth i gael mynediad i’ch GOV.UK One Login"
@@ -1909,6 +1910,19 @@
       "idCheckApp": {
         "title": "Problem profi eich hunaniaeth drwy ddefnyddio’r ap GOV.UK ID Check",
         "header": "Problem profi eich hunaniaeth drwy ddefnyddio’r ap GOV.UK ID Check",
+        "section1": {
+          "header": "Dywedwch wrthym beth ddigwyddodd",
+          "linkingProblem": "Roeddech wedi cael problem cysylltu’r ap gyda’ch porwr gwe",
+          "photoProblem": "Roeddech wedi cael problem tynnu llun eich dogfen hunaniaeth (er enghraifft, pasbort neu drwydded gyrru)",
+          "faceScanningProblem": "Roeddech wedi cael problem sganio eich wyneb",
+          "technicalError": "Roedd problem dechnegol (er enghraifft, fe welsoch neges gwall)",
+          "somethingElse": "Rhywbeth arall",
+          "errorMessage": "Dewiswch y broblem a gawsoch pan yn profi eich hunaniaeth drwy ddefnyddio’r ap GOV.UK ID Check"
+        }
+      },
+      "govUKLoginAndIdApps": {
+        "title": "Problem profi eich hunaniaeth wrth ddefnyddio’r ap GOV.UK One Login neu’r ap GOV.UK ID Check",
+        "header": "Problem profi eich hunaniaeth wrth ddefnyddio’r ap GOV.UK One Login neu’r ap GOV.UK ID Check",
         "section1": {
           "header": "Dywedwch wrthym beth ddigwyddodd",
           "linkingProblem": "Roeddech wedi cael problem cysylltu’r ap gyda’ch porwr gwe",
