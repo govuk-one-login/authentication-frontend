@@ -6,8 +6,8 @@ import { default as axios } from "axios";
 import url from "url";
 
 const stubUrls = {
-  authdev2: "https://orchstub-authdev2.signin.dev.account.gov.uk",
-  authdev1: "https://orchstub-authdev1.signin.dev.account.gov.uk",
+  authdev1: "https://orchstub.signin.authdev1.dev.account.gov.uk",
+  authdev2: "https://orchstub.signin.authdev2.dev.account.gov.uk",
   dev: "https://orchstub.signin.dev.account.gov.uk",
 };
 
