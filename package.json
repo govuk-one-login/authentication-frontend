@@ -100,7 +100,7 @@
     "lodash.clonedeep": "4.5.0",
     "nunjucks": "3.2.4",
     "overload-protection": "1.2.3",
-    "pino": "9.6.0",
+    "pino": "9.7.0",
     "pino-http": "10.4.0",
     "prettier": "3.5.3",
     "qrcode": "1.5.4",
