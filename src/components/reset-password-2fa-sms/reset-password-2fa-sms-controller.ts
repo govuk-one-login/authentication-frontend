@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { ExpressRouteFunc } from "src/types.js";
+import type { ExpressRouteFunc, MfaMethod } from "src/types.js";
 import xss from "xss";
 import type { MfaServiceInterface } from "../common/mfa/types.js";
 import { mfaService } from "../common/mfa/mfa-service.js";
@@ -22,7 +22,6 @@ import type { AccountInterventionsInterface } from "../account-intervention/type
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import { isLocked } from "../../utils/lock-helper.js";
-import { getDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 const TEMPLATE_NAME = "reset-password-2fa-sms/index.njk";
 const RESEND_CODE_LINK = pathWithQueryParam(
@@ -100,7 +99,10 @@ export function resetPassword2FASmsGet(
 
     const { mfaMethods } = req.session.user;
 
-    const phoneNumber = getDefaultSmsMfaMethod(mfaMethods)?.redactedPhoneNumber;
+    const phoneNumber = req.session.user.mfaMethods.find(
+      (mfaMethod: MfaMethod) =>
+        mfaMethod.id === req.session.user.activeMfaMethodId
+    )?.redactedPhoneNumber;
     const hasMultipleMfaMethods = mfaMethods?.length > 1;
     const chooseMfaMethodHref = PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES;
 

@@ -59,7 +59,7 @@ const USER_JOURNEY_EVENTS = {
   IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH:
     "IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH",
   MFA_RESET_ATTEMPTED_VIA_AUTH_APP: "MFA_RESET_ATTEMPTED_VIA_AUTH_APP",
-  SELECT_SMS_MFA_METHOD: "CHANGE_MFA",
+  SELECT_SMS_MFA_METHOD: "SELECT_SMS_MFA_METHOD",
   SELECT_AUTH_APP_MFA_METHOD: "SELECT_AUTH_APP_MFA_METHOD",
 };
 
@@ -79,6 +79,7 @@ const authStateMachine = createMachine(
       isMfaMethodVerified: true,
       isPasswordChangeRequired: false,
       isAccountRecoveryJourney: false,
+      isPasswordResetJourney: false,
       isReauthenticationRequired: false,
       requiresResetPasswordMFASmsCode: false,
       requiresResetPasswordMFAAuthAppCode: false,
@@ -736,9 +737,19 @@ const authStateMachine = createMachine(
       [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES]: {
         on: {
           [USER_JOURNEY_EVENTS.SELECT_AUTH_APP_MFA_METHOD]: [
+            {
+              target: [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP],
+              cond: "isPasswordResetJourney",
+            },
             PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           ],
-          [USER_JOURNEY_EVENTS.SELECT_SMS_MFA_METHOD]: [PATH_NAMES.ENTER_MFA],
+          [USER_JOURNEY_EVENTS.SELECT_SMS_MFA_METHOD]: [
+            {
+              target: [PATH_NAMES.RESET_PASSWORD_2FA_SMS],
+              cond: "isPasswordResetJourney",
+            },
+            PATH_NAMES.ENTER_MFA,
+          ],
         },
       },
     },
@@ -785,6 +796,7 @@ const authStateMachine = createMachine(
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.requiresTwoFactorAuth === true,
       isAccountRecoveryJourney: (context) => context.isAccountRecoveryJourney,
+      isPasswordResetJourney: (context) => context.isPasswordResetJourney,
     },
   }
 );

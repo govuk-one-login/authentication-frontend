@@ -41,9 +41,16 @@ describe("reset password 2fa SMS controller", () => {
           success: true,
         }),
       } as unknown as MfaServiceInterface;
+      const activeMfaMethodId = "active-mfa-method-id";
       req.session.user = {
         email: "joe.bloggs@test.com",
-        activeMfaMethodId: "active-mfa-method-id",
+        activeMfaMethodId,
+        mfaMethods: buildMfaMethods([
+          {
+            id: activeMfaMethodId,
+            redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER,
+          },
+        ]),
       };
 
       await resetPassword2FASmsGet(fakeService)(
@@ -63,7 +70,15 @@ describe("reset password 2fa SMS controller", () => {
         sinon.match.any
       );
 
-      expect(res.render).to.have.calledWith("reset-password-2fa-sms/index.njk");
+      expect(res.render).to.have.calledWithExactly(
+        "reset-password-2fa-sms/index.njk",
+        {
+          phoneNumber: TEST_REDACTED_PHONE_NUMBER,
+          resendCodeLink: "/resend-code?isResendCodeRequest=true",
+          hasMultipleMfaMethods: false,
+          chooseMfaMethodHref: "/how-do-you-want-security-codes",
+        }
+      );
     });
 
     it("should render index-security-code-entered-exceeded.njk view when user is account is locked from entering security codes", async () => {
