@@ -21,6 +21,7 @@ export interface StartRequestParameters {
   cookie_consent_shared: boolean;
   is_smoke_test: boolean;
   is_one_login_service: boolean;
+  subject_type: string;
 }
 
 export interface StartAuthResponse extends DefaultApiResponse {
