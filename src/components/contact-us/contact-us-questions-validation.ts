@@ -453,7 +453,7 @@ export function getErrorMessageForIdCheckAppIssueDescription(
   if (subtheme === CONTACT_US_THEMES.TAKING_PHOTO_OF_ID_PROBLEM) {
     return "pages.contactUsQuestions.whatHappened.errorMessage";
   }
-  if (subtheme === CONTACT_US_THEMES.LINKING_PROBLEM) {
+  if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_LINKING_PROBLEM) {
     return "pages.contactUsQuestions.whatHappened.errorMessage";
   }
   if (subtheme === CONTACT_US_THEMES.FACE_SCANNING_PROBLEM) {
@@ -507,7 +507,7 @@ export function getLengthExceededErrorMessageForAccountCreationIssueDescription(
 export function getLengthExceededErrorMessageForIdCheckAppIssueDescription(
   subtheme: string
 ): string | undefined {
-  if (subtheme === CONTACT_US_THEMES.LINKING_PROBLEM) {
+  if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_LINKING_PROBLEM) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.whatHappenedTooLongMessage";
   }
   if (subtheme === CONTACT_US_THEMES.TAKING_PHOTO_OF_ID_PROBLEM) {
