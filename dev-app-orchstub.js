@@ -33,9 +33,10 @@ app.get("/", async (req, res) => {
   }
 
   const channel = req.query.channel || "none";
+  const reauthenticate = req.query.reauthenticate || "";
 
   return res.redirect(
-    `${stubUrl}?auto-submit=yes&level=Cl.Cm&authenticated=no&channel=${channel}`
+    `${stubUrl}?auto-submit=yes&level=Cl.Cm&authenticated=no&channel=${channel}&reauthenticate=${reauthenticate}`
   );
 });
 
