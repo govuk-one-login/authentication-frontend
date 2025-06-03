@@ -36,7 +36,7 @@ app.get("/", async (req, res) => {
   const reauthenticate = req.query.reauthenticate || "";
 
   return res.redirect(
-    `${stubUrl}?auto-submit=yes&level=Cl.Cm&authenticated=no&channel=${channel}&reauthenticate=${reauthenticate}`
+    `${stubUrl}?auto-submit=yes&redirect-url=http%3A%2F%2Flocalhost%3A3000%2Fauthorize&level=Cl.Cm&authenticated=no&channel=${channel}&reauthenticate=${reauthenticate}`
   );
 });
 
