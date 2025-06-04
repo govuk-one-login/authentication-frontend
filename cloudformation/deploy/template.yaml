@@ -368,12 +368,8 @@ Mappings:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAESyWJU5s5F4jSovHsh9y133/Ogf5Px78OrfDJqiMMI2p8Warbq0ppcbWvbihK6rAXTH7bPIeOHOeU9cKAEl5NdQ==
-        -----END PUBLIC KEY-----
-      orchStubToAuthSigningPublicKey: |
-        -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEM0ZehmrdDd89uYEFMTakbS7JgwCG
-        XK7CAYMcVvy1pP5yV4O2mnDjYmvjZpvio2ctgOPxDuBb38QP1HD9WAOR2w==
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEyu7XCXkDyxhHrmoOfLrl6tcd9e9V
+        L1pzzWqVo1P546NLL2c1H2Qd7UNaa7oQX1/eNFDKaAZuJY3YUAPwNN4Ypg==
         -----END PUBLIC KEY-----
       migratedDomain: signin.authdev3.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
