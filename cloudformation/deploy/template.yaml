@@ -278,6 +278,29 @@ Conditions:
       ]
       - "Yes"
 
+  PrivacyNoticeRedirectEnabled:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref SubEnvironment,
+                PrivacyNoticeRedirectEnabled,
+                DefaultValue: "No",
+              ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref Environment,
+                PrivacyNoticeRedirectEnabled,
+                DefaultValue: "No",
+              ]
+              - "Yes"
+
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   ElasticLoadBalancerAccountIds:
@@ -301,6 +324,7 @@ Mappings:
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
+      PrivacyNoticeRedirectEnabled: "Yes"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       orchToAuthSigningPublicKey: |
@@ -318,6 +342,7 @@ Mappings:
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
+      PrivacyNoticeRedirectEnabled: "Yes"
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -345,6 +370,7 @@ Mappings:
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
+      PrivacyNoticeRedirectEnabled: "Yes"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -372,6 +398,7 @@ Mappings:
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
+      PrivacyNoticeRedirectEnabled: "No"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -406,6 +433,7 @@ Mappings:
       Enableipvspinner: "No"
       UseAlarmActions: "Yes"
       DeviceIntelligenceEnabled: "Yes"
+      PrivacyNoticeRedirectEnabled: "Yes"
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -434,6 +462,7 @@ Mappings:
       Enableipvspinner: "No"
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
+      PrivacyNoticeRedirectEnabled: "No"
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -464,6 +493,7 @@ Mappings:
       Enableipvspinner: "No"
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
+      PrivacyNoticeRedirectEnabled: "No"
 
 Globals:
   Function:
@@ -987,6 +1017,8 @@ Resources:
               Value: !If [UseRouteUsersToNewIpvJourney, "1", "0"]
             - Name: DEVICE_INTELLIGENCE_ENABLED
               Value: !If [DeviceIntelligenceEnabled, "1", "0"]
+            - Name: PRIVACY_NOTICE_REDIRECT_ENABLED
+              Value: !If [PrivacyNoticeRedirectEnabled, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If
