@@ -1925,6 +1925,7 @@
         "section1": {
           "header": "Tell us what happened",
           "idCheckAppLinkingProblem": "You had a problem linking the GOV.UK ID Check app to your web browser",
+          "oneLoginAppSignInProblem": "You had a problem signing in to the GOV.UK One Login app",
           "photoProblem": "You had a problem taking a photo of your identity document (for example, passport or driving licence)",
           "faceScanningProblem": "You had a problem scanning your face",
           "technicalError": "There was a technical problem (for example you saw an error message)",

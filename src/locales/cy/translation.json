@@ -1926,6 +1926,7 @@
         "section1": {
           "header": "Dywedwch wrthym beth ddigwyddodd",
           "idCheckAppLinkingProblem": "Roeddech wedi cael problem cysylltu’r ap GOV.UK ID Check gyda’ch porwr gwe",
+          "oneLoginAppSignInProblem": "Roeddech wedi cael problem mewngofnodi i’r ap GOV.UK One Login",
           "photoProblem": "Roeddech wedi cael problem tynnu llun eich dogfen hunaniaeth (er enghraifft, pasbort neu drwydded gyrru)",
           "faceScanningProblem": "Roeddech wedi cael problem sganio eich wyneb",
           "technicalError": "Roedd problem dechnegol (er enghraifft, fe welsoch neges gwall)",

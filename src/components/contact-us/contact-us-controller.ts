@@ -48,6 +48,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.linkingProblem.title",
   [CONTACT_US_THEMES.ID_CHECK_APP_LINKING_PROBLEM]:
     "pages.contactUsQuestions.idCheckAppLinkingProblem.title",
+  [CONTACT_US_THEMES.ONE_LOGIN_APP_SIGN_IN_PROBLEM]:
+    "pages.contactUsQuestions.oneLoginAppSignInProblem.title",
   [CONTACT_US_THEMES.TAKING_PHOTO_OF_ID_PROBLEM]:
     "pages.contactUsQuestions.takingPhotoOfIdProblem.title",
   [CONTACT_US_THEMES.FACE_SCANNING_PROBLEM]:
@@ -1027,6 +1029,10 @@ function getQuestionFromThemes(
     ),
     id_check_app_linking_problem: req.t(
       "pages.contactUsFurtherInformation.govUKLoginAndIdApps.section1.idCheckAppLinkingProblem",
+      { lng: "en" }
+    ),
+    one_login_app_sign_in_problem: req.t(
+      "pages.contactUsFurtherInformation.idCheckApp.section1.oneLoginAppSignInProblem",
       { lng: "en" }
     ),
     taking_photo_of_id_problem: req.t(
