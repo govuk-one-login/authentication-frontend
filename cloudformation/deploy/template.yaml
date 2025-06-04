@@ -398,7 +398,7 @@ Mappings:
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
-      PrivacyNoticeRedirectEnabled: "No"
+      PrivacyNoticeRedirectEnabled: "Yes"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -462,7 +462,7 @@ Mappings:
       Enableipvspinner: "No"
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
-      PrivacyNoticeRedirectEnabled: "No"
+      PrivacyNoticeRedirectEnabled: "Yes"
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -493,7 +493,7 @@ Mappings:
       Enableipvspinner: "No"
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
-      PrivacyNoticeRedirectEnabled: "No"
+      PrivacyNoticeRedirectEnabled: "Yes"
 
 Globals:
   Function:
