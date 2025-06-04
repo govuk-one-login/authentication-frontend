@@ -324,7 +324,7 @@ Mappings:
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
-      PrivacyNoticeRedirectEnabled: "No"
+      PrivacyNoticeRedirectEnabled: "Yes"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       orchToAuthSigningPublicKey: |
@@ -342,7 +342,7 @@ Mappings:
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
-      PrivacyNoticeRedirectEnabled: "No"
+      PrivacyNoticeRedirectEnabled: "Yes"
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -370,7 +370,7 @@ Mappings:
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
-      PrivacyNoticeRedirectEnabled: "No"
+      PrivacyNoticeRedirectEnabled: "Yes"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -433,7 +433,7 @@ Mappings:
       Enableipvspinner: "No"
       UseAlarmActions: "Yes"
       DeviceIntelligenceEnabled: "Yes"
-      PrivacyNoticeRedirectEnabled: "No"
+      PrivacyNoticeRedirectEnabled: "Yes"
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables

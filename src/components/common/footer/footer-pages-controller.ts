@@ -40,11 +40,11 @@ export function supportPost(req: Request, res: Response): void {
 function redirectToExternalPrivacyNotice(req: Request, res: Response) {
   if (req.i18n.language === "cy") {
     return res.redirect(
-      "https://gov.uk/government/publications/govuk-one-login-privacy-notice.cy"
+      "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice.cy"
     );
   }
   res.redirect(
-    "https://gov.uk/government/publications/govuk-one-login-privacy-notice"
+    "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice"
   );
 }
 

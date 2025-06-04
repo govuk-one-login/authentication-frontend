@@ -26,7 +26,7 @@ describe("Integration:: privacy notice link", () => {
       .expect(302)
       .then((res) => {
         expect(res.headers["location"]).to.equal(
-          "https://gov.uk/government/publications/govuk-one-login-privacy-notice"
+          "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice"
         );
       });
   });
@@ -44,7 +44,7 @@ describe("Integration:: privacy notice link", () => {
       .expect(302)
       .then((res) => {
         expect(res.headers["location"]).to.equal(
-          "https://gov.uk/government/publications/govuk-one-login-privacy-notice.cy"
+          "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice.cy"
         );
       });
   });
@@ -62,7 +62,7 @@ describe("Integration:: privacy notice link", () => {
       .expect(302)
       .then((res) => {
         expect(res.headers["location"]).to.equal(
-          "https://gov.uk/government/publications/govuk-one-login-privacy-notice.cy"
+          "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice.cy"
         );
       });
   });
