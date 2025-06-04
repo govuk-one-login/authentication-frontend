@@ -102,7 +102,6 @@ import UID from "uid-safe";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
 import { csrfSynchronisedProtection } from "./utils/csrf.js";
-import { catchCsrfSyncErrorMiddleware } from "./middleware/catch-csrf-sync-error-middleware.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -247,7 +246,6 @@ async function createApp(): Promise<express.Application> {
   );
 
   app.use(csrfSynchronisedProtection);
-  app.use(catchCsrfSyncErrorMiddleware);
 
   app.use(channelMiddleware);
   app.use(environmentBannerMiddleware);
