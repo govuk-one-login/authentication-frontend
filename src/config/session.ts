@@ -2,6 +2,7 @@ import type { RedisClientOptions } from "redis";
 import { createClient } from "redis";
 import { RedisStore } from "connect-redis";
 import type { RedisConfig } from "src/utils/types.js";
+import { logger } from "../utils/logger.js";
 
 let redisClient: ReturnType<typeof createClient> | undefined;
 let usedRedisConfig: RedisConfig | undefined;
@@ -27,6 +28,7 @@ export function getSessionStore(redisConfig: RedisConfig): RedisStore {
     }
 
     redisClient = createClient(config);
+    redisClient.on("error", (err) => logger.error(err, "Redis client error"));
     redisClient.connect();
     usedRedisConfig = redisConfig;
   }

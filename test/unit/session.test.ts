@@ -14,6 +14,7 @@ describe("session", () => {
 
   let connect: () => void;
   let disconnect: () => void;
+  let on: () => void;
   let redisCreateClient: () => any;
   let getSessionStore: any;
   let disconnectRedisClient: any;
@@ -21,7 +22,8 @@ describe("session", () => {
   beforeEach(async () => {
     connect = sinon.fake();
     disconnect = sinon.fake();
-    redisCreateClient = sinon.fake(() => ({ connect, disconnect }));
+    on = sinon.fake();
+    redisCreateClient = sinon.fake(() => ({ connect, disconnect, on }));
 
     ({ getSessionStore, disconnectRedisClient } = await esmock(
       "../../src/config/session.js",
@@ -38,6 +40,8 @@ describe("session", () => {
       getSessionStore(redisConfig);
       expect(redisCreateClient).to.be.callCount(1);
       expect(connect).to.be.callCount(1);
+      expect(on).to.be.callCount(1);
+      expect(on).to.be.calledWithExactly("error", sinon.match.func);
     });
 
     it("should throw error when there is already a redis client and the config is different", async () => {
