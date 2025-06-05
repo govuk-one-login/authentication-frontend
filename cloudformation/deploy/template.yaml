@@ -278,6 +278,29 @@ Conditions:
       ]
       - "Yes"
 
+  PrivacyNoticeRedirectEnabled:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref SubEnvironment,
+                PrivacyNoticeRedirectEnabled,
+                DefaultValue: "No",
+              ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref Environment,
+                PrivacyNoticeRedirectEnabled,
+                DefaultValue: "No",
+              ]
+              - "Yes"
+
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   ElasticLoadBalancerAccountIds:
@@ -301,9 +324,11 @@ Mappings:
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
+      PrivacyNoticeRedirectEnabled: "Yes"
       frontendbaseurl: "https://auth.authdev1.sandpit.account.gov.uk/"
       apibaseurl: "https://oidc.authdev1.sandpit.account.gov.uk"
       orchtoauthaudience: "https://signin.authdev1.sandpit.account.gov.uk/"
+
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       orchToAuthSigningPublicKey: |
@@ -336,6 +361,7 @@ Mappings:
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
+      PrivacyNoticeRedirectEnabled: "Yes"
       frontendbaseurl: "https://auth.authdev3.dev.account.gov.uk/"
       apibaseurl: "https://oidc.authdev3.dev.account.gov.uk"
       orchtoauthaudience: "https://signin.authdev3.dev.account.gov.uk/"
@@ -366,6 +392,7 @@ Mappings:
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
+      PrivacyNoticeRedirectEnabled: "Yes"
       frontendbaseurl: "https://auth.dev.account.gov.uk/"
       apibaseurl: "https://oidc.dev.account.gov.uk"
       orchtoauthaudience: "https://signin.dev.account.gov.uk/"
@@ -396,6 +423,7 @@ Mappings:
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
+      PrivacyNoticeRedirectEnabled: "Yes"
       frontendbaseurl: "https://auth.build.account.gov.uk/"
       apibaseurl: "https://oidc.build.account.gov.uk"
       orchtoauthaudience: "https://signin.build.account.gov.uk/"
@@ -433,6 +461,7 @@ Mappings:
       Enableipvspinner: "No"
       UseAlarmActions: "Yes"
       DeviceIntelligenceEnabled: "Yes"
+      PrivacyNoticeRedirectEnabled: "Yes"
       frontendbaseurl: "https://auth.staging.account.gov.uk/"
       apibaseurl: "https://oidc.staging.account.gov.uk"
       orchtoauthaudience: "https://signin.staging.account.gov.uk/"
@@ -464,6 +493,7 @@ Mappings:
       Enableipvspinner: "No"
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
+      PrivacyNoticeRedirectEnabled: "Yes"
       frontendbaseurl: "https://auth.integration.account.gov.uk/"
       apibaseurl: "https://oidc.integration.account.gov.uk"
       orchtoauthaudience: "https://signin.integration.account.gov.uk/"
@@ -497,6 +527,7 @@ Mappings:
       Enableipvspinner: "No"
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
+      PrivacyNoticeRedirectEnabled: "Yes"
       frontendbaseurl: "https://auth.account.gov.uk/"
       apibaseurl: "https://oidc.account.gov.uk"
       orchtoauthaudience: "https://signin.account.gov.uk/"
@@ -1032,6 +1063,8 @@ Resources:
               Value: !If [UseRouteUsersToNewIpvJourney, "1", "0"]
             - Name: DEVICE_INTELLIGENCE_ENABLED
               Value: !If [DeviceIntelligenceEnabled, "1", "0"]
+            - Name: PRIVACY_NOTICE_REDIRECT_ENABLED
+              Value: !If [PrivacyNoticeRedirectEnabled, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If

@@ -53,6 +53,8 @@ export type Claims = {
   scope: string;
   requested_level_of_confidence?: string;
   requested_credential_strength: string;
+  is_smoke_test: boolean;
+  subject_type: string;
 };
 
 export const requiredClaimsKeys = [
@@ -74,4 +76,6 @@ export const requiredClaimsKeys = [
   "authenticated",
   "scope",
   "requested_credential_strength",
+  "is_smoke_test",
+  "subject_type",
 ];

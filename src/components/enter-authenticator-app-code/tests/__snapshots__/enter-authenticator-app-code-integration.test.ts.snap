@@ -11,17 +11,6 @@ Object {
 }
 `;
 
-exports[`Integration:: enter authenticator app code should display correct link to reset mfa 1`] = `
-Object {
-  "contentId": "89461417-df3f-46a8-9c37-713b9dd78085",
-  "taxonomyLevel1": "authentication",
-  "taxonomyLevel2": "sign in",
-  "taxonomyLevel3": "",
-  "taxonomyLevel4": "",
-  "taxonomyLevel5": "",
-}
-`;
-
 exports[`Integration:: enter authenticator app code should include the correct link to change/reset mfa methods when the user has 1 mfaMethods 1`] = `
 Object {
   "contentId": "89461417-df3f-46a8-9c37-713b9dd78085",
@@ -79,12 +68,12 @@ Object {
 
 exports[`Integration:: enter authenticator app code should return error when csrf not present 1`] = `
 Object {
-  "contentId": undefined,
-  "taxonomyLevel1": undefined,
-  "taxonomyLevel2": undefined,
-  "taxonomyLevel3": undefined,
-  "taxonomyLevel4": undefined,
-  "taxonomyLevel5": undefined,
+  "contentId": "",
+  "taxonomyLevel1": "",
+  "taxonomyLevel2": "",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
 }
 `;
 

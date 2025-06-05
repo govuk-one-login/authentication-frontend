@@ -18,6 +18,10 @@ export interface StartRequestParameters {
   requested_credential_strength: string;
   client_name: string;
   service_type: string;
+  cookie_consent_shared: boolean;
+  is_smoke_test: boolean;
+  is_one_login_service: boolean;
+  subject_type: string;
 }
 
 export interface StartAuthResponse extends DefaultApiResponse {

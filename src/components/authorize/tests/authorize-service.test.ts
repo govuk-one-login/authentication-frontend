@@ -52,6 +52,10 @@ describe("authorize service", () => {
       rp_state: "1234567890",
       client_name: "test-client-name",
       service_type: "essential",
+      cookie_consent_shared: false,
+      is_smoke_test: false,
+      is_one_login_service: false,
+      subject_type: "pairwise",
     });
 
     expect(
@@ -67,6 +71,10 @@ describe("authorize service", () => {
           state: "1234567890",
           client_name: "test-client-name",
           service_type: "essential",
+          cookie_consent_shared: false,
+          is_smoke_test: false,
+          is_one_login_service: false,
+          subject_type: "pairwise",
         },
         {
           headers: {
@@ -91,6 +99,10 @@ describe("authorize service", () => {
       rp_state: "1234567890",
       client_name: "test-client-name",
       service_type: "essential",
+      cookie_consent_shared: false,
+      is_smoke_test: false,
+      is_one_login_service: false,
+      subject_type: "pairwise",
     });
 
     expect(
@@ -105,6 +117,10 @@ describe("authorize service", () => {
           state: "1234567890",
           client_name: "test-client-name",
           service_type: "essential",
+          cookie_consent_shared: false,
+          is_smoke_test: false,
+          is_one_login_service: false,
+          subject_type: "pairwise",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -125,6 +141,10 @@ describe("authorize service", () => {
       rp_state: "1234567890",
       client_name: "test-client-name",
       service_type: "essential",
+      cookie_consent_shared: false,
+      is_smoke_test: false,
+      is_one_login_service: false,
+      subject_type: "pairwise",
     });
 
     expect(
@@ -139,6 +159,10 @@ describe("authorize service", () => {
           state: "1234567890",
           client_name: "test-client-name",
           service_type: "essential",
+          cookie_consent_shared: false,
+          is_smoke_test: false,
+          is_one_login_service: false,
+          subject_type: "pairwise",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -161,6 +185,10 @@ describe("authorize service", () => {
       rp_state: "1234567890",
       client_name: "test-client-name",
       service_type: "essential",
+      cookie_consent_shared: false,
+      is_smoke_test: false,
+      is_one_login_service: false,
+      subject_type: "pairwise",
     });
 
     expect(
@@ -176,6 +204,10 @@ describe("authorize service", () => {
           state: "1234567890",
           client_name: "test-client-name",
           service_type: "essential",
+          cookie_consent_shared: false,
+          is_smoke_test: false,
+          is_one_login_service: false,
+          subject_type: "pairwise",
         },
         {
           headers: {
@@ -201,6 +233,10 @@ describe("authorize service", () => {
       rp_state: "1234567890",
       client_name: "test-client-name",
       service_type: "essential",
+      cookie_consent_shared: false,
+      is_smoke_test: false,
+      is_one_login_service: false,
+      subject_type: "pairwise",
     });
 
     expect(
@@ -217,6 +253,10 @@ describe("authorize service", () => {
           state: "1234567890",
           client_name: "test-client-name",
           service_type: "essential",
+          cookie_consent_shared: false,
+          is_smoke_test: false,
+          is_one_login_service: false,
+          subject_type: "pairwise",
         },
         {
           headers: {
@@ -244,6 +284,10 @@ describe("authorize service", () => {
       _ga: "987654321",
       client_name: "test-client-name",
       service_type: "essential",
+      cookie_consent_shared: false,
+      is_smoke_test: false,
+      is_one_login_service: false,
+      subject_type: "pairwise",
     });
 
     expect(
@@ -261,6 +305,10 @@ describe("authorize service", () => {
           _ga: "987654321",
           client_name: "test-client-name",
           service_type: "essential",
+          cookie_consent_shared: false,
+          is_smoke_test: false,
+          is_one_login_service: false,
+          subject_type: "pairwise",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
