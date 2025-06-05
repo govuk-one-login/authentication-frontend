@@ -23,6 +23,7 @@ describe("cookies controller", () => {
     req = createMockRequest(PATH_NAMES.COOKIES_POLICY);
     res = mockResponse();
     res.cookie = sinon.spy(res.cookie);
+    res.render = sinon.spy(res.render);
   });
 
   afterEach(() => {
@@ -35,9 +36,13 @@ describe("cookies controller", () => {
 
       cookiesGet(req as Request, res as Response);
 
-      expect(res.render).to.have.been.calledWith("common/cookies/index.njk");
-      expect(res.locals.updated).to.equal(false);
-      expect(res.locals.originalReferer).to.equal("/last-page");
+      expect(res.render).to.have.been.calledWith(
+        "common/cookies/index.njk",
+        sinon.match({
+          updated: false,
+          originalReferer: "/last-page",
+        })
+      );
     });
   });
 
@@ -75,10 +80,14 @@ describe("cookies controller", () => {
 
         cookiesPost(req as Request, res as Response);
 
-        expect(res.render).to.have.been.calledWith("common/cookies/index.njk");
-        expect(res.locals.analyticsConsent).to.equal(true);
-        expect(res.locals.updated).to.equal(true);
-        expect(res.locals.originalReferer).to.equal("/page-before-1");
+        expect(res.render).to.have.been.calledWith(
+          "common/cookies/index.njk",
+          sinon.match({
+            analyticsConsent: true,
+            updated: true,
+            originalReferer: "/page-before-1",
+          })
+        );
       });
     });
 
@@ -174,10 +183,14 @@ describe("cookies controller", () => {
 
         cookiesPost(req as Request, res as Response);
 
-        expect(res.render).to.have.been.calledWith("common/cookies/index.njk");
-        expect(res.locals.analyticsConsent).to.equal(false);
-        expect(res.locals.updated).to.equal(true);
-        expect(res.locals.originalReferer).to.equal("/page-before-2");
+        expect(res.render).to.have.been.calledWith(
+          "common/cookies/index.njk",
+          sinon.match({
+            analyticsConsent: false,
+            updated: true,
+            originalReferer: "/page-before-2",
+          })
+        );
       });
     });
   });
