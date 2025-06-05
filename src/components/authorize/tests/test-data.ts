@@ -33,6 +33,7 @@ export function createMockClaims(): Claims {
     requested_credential_strength: "Cl.Cm",
     scope: "openid",
     is_smoke_test: false,
+    subject_type: "pairwise",
   };
 }
 

@@ -55,6 +55,7 @@ describe("authorize service", () => {
       cookie_consent_shared: false,
       is_smoke_test: false,
       is_one_login_service: false,
+      subject_type: "pairwise",
     });
 
     expect(
@@ -73,6 +74,7 @@ describe("authorize service", () => {
           cookie_consent_shared: false,
           is_smoke_test: false,
           is_one_login_service: false,
+          subject_type: "pairwise",
         },
         {
           headers: {
@@ -100,6 +102,7 @@ describe("authorize service", () => {
       cookie_consent_shared: false,
       is_smoke_test: false,
       is_one_login_service: false,
+      subject_type: "pairwise",
     });
 
     expect(
@@ -117,6 +120,7 @@ describe("authorize service", () => {
           cookie_consent_shared: false,
           is_smoke_test: false,
           is_one_login_service: false,
+          subject_type: "pairwise",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -140,6 +144,7 @@ describe("authorize service", () => {
       cookie_consent_shared: false,
       is_smoke_test: false,
       is_one_login_service: false,
+      subject_type: "pairwise",
     });
 
     expect(
@@ -157,6 +162,7 @@ describe("authorize service", () => {
           cookie_consent_shared: false,
           is_smoke_test: false,
           is_one_login_service: false,
+          subject_type: "pairwise",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -182,6 +188,7 @@ describe("authorize service", () => {
       cookie_consent_shared: false,
       is_smoke_test: false,
       is_one_login_service: false,
+      subject_type: "pairwise",
     });
 
     expect(
@@ -200,6 +207,7 @@ describe("authorize service", () => {
           cookie_consent_shared: false,
           is_smoke_test: false,
           is_one_login_service: false,
+          subject_type: "pairwise",
         },
         {
           headers: {
@@ -228,6 +236,7 @@ describe("authorize service", () => {
       cookie_consent_shared: false,
       is_smoke_test: false,
       is_one_login_service: false,
+      subject_type: "pairwise",
     });
 
     expect(
@@ -247,6 +256,7 @@ describe("authorize service", () => {
           cookie_consent_shared: false,
           is_smoke_test: false,
           is_one_login_service: false,
+          subject_type: "pairwise",
         },
         {
           headers: {
@@ -277,6 +287,7 @@ describe("authorize service", () => {
       cookie_consent_shared: false,
       is_smoke_test: false,
       is_one_login_service: false,
+      subject_type: "pairwise",
     });
 
     expect(
@@ -297,6 +308,7 @@ describe("authorize service", () => {
           cookie_consent_shared: false,
           is_smoke_test: false,
           is_one_login_service: false,
+          subject_type: "pairwise",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
