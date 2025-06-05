@@ -168,6 +168,7 @@ export const CONTACT_US_THEMES = {
   AUTHENTICATOR_APP_PROBLEM: "authenticator_app_problem",
   ID_CHECK_APP: "id_check_app",
   LINKING_PROBLEM: "linking_problem",
+  ID_CHECK_APP_LINKING_PROBLEM: "id_check_app_linking_problem",
   TAKING_PHOTO_OF_ID_PROBLEM: "taking_photo_of_id_problem",
   FACE_SCANNING_PROBLEM: "face_scanning_problem",
   ID_CHECK_APP_TECHNICAL_ERROR: "id_check_app_technical_problem",

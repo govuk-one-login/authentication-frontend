@@ -104,6 +104,10 @@
         {% include 'contact-us/questions/_id-check-app-linking-problem.njk' %}
     {% endif %}
 
+    {% if (theme == 'id_check_app') and (subtheme == 'id_check_app_linking_problem') %}
+        {% include 'contact-us/questions/_id-check-app-linking-problem-new.njk' %}
+    {% endif %}
+
     {% if (theme == 'id_check_app') and (subtheme == 'taking_photo_of_id_problem') %}
         {% include 'contact-us/questions/_id-check-app-taking-photo-of-id-problem.njk' %}
     {% endif %}

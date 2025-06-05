@@ -1,0 +1,33 @@
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+  {{ 'pages.contactUsQuestions.idCheckAppLinkingProblem.header' | translate }}
+</h1>
+
+<form action="{{formSubmissionUrl}}" method="post" novalidate>
+
+<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="theme" value="{{theme}}"/>
+<input type="hidden" name="subtheme" value="{{subtheme}}"/>
+<input type="hidden" name="backurl" value="{{backurl}}"/>
+<input type="hidden" name="fromURL" value="{{fromURL}}"/>
+<input type="hidden" name="formType" value="idCheckApp"/>
+<input type="hidden" name="referer" value="{{referer}}"/>
+{% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
+
+{% include 'contact-us/questions/_what-happened.njk' %}
+
+{% include 'contact-us/questions/_service-trying-to-use.njk' %}
+
+{{ govukWarningText({
+    text:'pages.contactUsQuestions.personalInformation.paragraph1' | translate,
+    iconFallbackText: "Warning"
+}) }}
+
+{% include 'contact-us/questions/_reply_by_email.njk' %}
+
+{{ govukButton({
+    "text": "general.sendMessage" | translate,
+    "type": "Submit",
+    "preventDoubleClick": true
+}) }}
+
+</form>

@@ -1925,7 +1925,7 @@
         "header": "Problem profi eich hunaniaeth wrth ddefnyddio’r ap GOV.UK One Login neu’r ap GOV.UK ID Check",
         "section1": {
           "header": "Dywedwch wrthym beth ddigwyddodd",
-          "linkingProblem": "Roeddech wedi cael problem cysylltu’r ap gyda’ch porwr gwe",
+          "idCheckAppLinkingProblem": "Roeddech wedi cael problem cysylltu’r ap GOV.UK ID Check gyda’ch porwr gwe",
           "photoProblem": "Roeddech wedi cael problem tynnu llun eich dogfen hunaniaeth (er enghraifft, pasbort neu drwydded gyrru)",
           "faceScanningProblem": "Roeddech wedi cael problem sganio eich wyneb",
           "technicalError": "Roedd problem dechnegol (er enghraifft, fe welsoch neges gwall)",
@@ -2222,6 +2222,10 @@
       "linkingProblem": {
         "title": "Roeddech wedi cael problem cysylltu’r ap gyda’ch porwr gwe",
         "header": "Roeddech wedi cael problem cysylltu’r ap gyda’ch porwr gwe"
+      },
+      "idCheckAppLinkingProblem": {
+        "title": "Roeddech wedi cael problem cysylltu’r ap GOV.UK ID Check gyda’ch porwr gwe",
+        "header": "Roeddech wedi cael problem cysylltu’r ap GOV.UK ID Check gyda’ch porwr gwe"
       },
       "takingPhotoOfIdProblem": {
         "title": "Roeddech wedi cael problem tynnu llun eich dogfen hunaniaeth wrth ddefnyddio’r ap GOV.UK ID Check",
