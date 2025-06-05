@@ -18,3 +18,13 @@ confirm_changeset = true
 capabilities = "CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND"
 parameter_overrides = "Environment=\"dev\" SubEnvironment=\"authdev2\" VpcStackName=\"vpc\" CodeSigningConfigArn=\"arn:aws:lambda:eu-west-2:975050272416:code-signing-config:csc-0e7ece3a3ef748670\" DeploymentStrategy=\"None\" PermissionsBoundary=\"arn:aws:iam::975050272416:policy/authdev2-frontend-pipeline-AppProgrammaticPermissionsBoundary-064776019653\""
 image_repositories = []
+
+[authdev3.deploy.parameters]
+stack_name = "authdev3-frontend"
+resolve_s3 = false
+s3_bucket = "authdev3-frontend-pipeline-pipelinebucket-qughduahc8rv"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND"
+parameter_overrides = "Environment=\"dev\" SubEnvironment=\"authdev3\" VpcStackName=\"vpc\" CodeSigningConfigArn=\"arn:aws:lambda:eu-west-2:975050272416:code-signing-config:csc-0e7ece3a3ef748670\" DeploymentStrategy=\"None\" PermissionsBoundary=\"arn:aws:iam::975050272416:policy/authdev3-frontend-pipeline-AppProgrammaticPermissionsBoundary-0afdaa6e5089\""
+image_repositories = []
