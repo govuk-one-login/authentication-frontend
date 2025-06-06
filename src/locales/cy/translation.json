@@ -2284,6 +2284,19 @@
           "errorMessage": "Dywedwch wrthym beth ddigwyddodd"
         }
       },
+      "govUKLoginAndIdAppsSomethingElse": {
+        "title": "Problem arall gyda’r ap GOV.UK One Login neu’r ap GOV.UK ID Check",
+        "section1": {
+          "title": "Problem arall gyda’r ap GOV.UK One Login neu’r ap GOV.UK ID Check",
+          "header": "Beth oeddech chi’n ceisio ei wneud?",
+          "errorMessage": "Dywedwch wrthym beth oeddech yn ceisio ei wneud"
+        },
+        "section2": {
+          "header": "Beth ddigwyddodd?",
+          "paragraph1": "Er enghraifft, a oedd problem dechnegol?",
+          "errorMessage": "Dywedwch wrthym beth ddigwyddodd"
+        }
+      },
       "provingIdentityFaceToFaceDetails": {
         "title": "Problem rhoi eich manylion",
         "header": "Problem rhoi eich manylion",

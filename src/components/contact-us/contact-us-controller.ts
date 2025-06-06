@@ -60,6 +60,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.govUKLoginAndIdAppsTechnicalProblem.title",
   [CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
     "pages.contactUsQuestions.idCheckAppSomethingElse.title",
+  [CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_SOMETHING_ELSE]:
+    "pages.contactUsQuestions.govUKLoginAndIdAppsSomethingElse.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS]:
     "pages.contactUsQuestions.provingIdentityFaceToFaceDetails.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_LETTER]:
@@ -100,6 +102,8 @@ const somethingElseSubThemeToPageTitle = {
     "pages.contactUsQuestions.govUKLoginAndIdAppsTechnicalProblem.title",
   [CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
     "pages.contactUsQuestions.idCheckAppSomethingElse.title",
+  [CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_SOMETHING_ELSE]:
+    "pages.contactUsQuestions.govUKLoginAndIdAppsSomethingElse.title",
 };
 
 const serviceDomain = getServiceDomain();
@@ -811,6 +815,20 @@ function getQuestionsFromFormTypeForMessageBody(
     idCheckAppSomethingElse: {
       issueDescription: req.t(
         "pages.contactUsQuestions.idCheckAppSomethingElse.section1.header",
+        { lng: "en" }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.whatHappened.header",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
+    govUKLoginAndIdAppsSomethingElse: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.govUKLoginAndIdAppsSomethingElse.section1.header",
         { lng: "en" }
       ),
       additionalDescription: req.t(

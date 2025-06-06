@@ -133,6 +133,10 @@
         {% include 'contact-us/questions/_id-check-app-something-else.njk' %}
     {% endif %}
 
+    {% if (theme == 'id_check_app') and (subtheme == 'gov_uk_login_and_id_apps_something_else') %}
+        {% include 'contact-us/questions/_gov-uk-login-and-id-apps-something-else.njk' %}
+    {% endif %}
+
     {% if (theme == 'proving_identity') and (subtheme == 'proving_identity_problem_answering_security_questions') %}
         {% include 'contact-us/questions/_proving-identity-problem-answering-security-questions.njk' %}
     {% endif %}

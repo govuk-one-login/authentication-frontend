@@ -176,6 +176,8 @@ export const CONTACT_US_THEMES = {
   GOV_UK_LOGIN_AND_ID_APPS_TECHNICAL_ERROR:
     "gov_uk_login_and_id_apps_technical_problem",
   ID_CHECK_APP_SOMETHING_ELSE: "id_check_app_something_else",
+  GOV_UK_LOGIN_AND_ID_APPS_SOMETHING_ELSE:
+    "gov_uk_login_and_id_apps_something_else",
   PROVING_IDENTITY_FACE_TO_FACE: "id_face_to_face",
   PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS:
     "face_to_face_details",
