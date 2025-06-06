@@ -18,6 +18,7 @@ import * as journey from "../../common/journey/journey.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import esmock from "esmock";
 import { fakeAccountRecoveryService } from "../../common/account-recovery/tests/account-recovery-helper.test.js";
+import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 const fakeVerifyMfaCodeService = (errorCode?: number) => {
   return {
@@ -95,6 +96,28 @@ describe("enter authenticator app code controller", () => {
           isAccountRecoveryPermitted: true,
           hasMultipleMfaMethods: false,
           mfaIssuePath: PATH_NAMES.MFA_RESET_WITH_IPV,
+        }
+      );
+    });
+
+    it("should render 2fa service uplift view with hasMultipleMfaMethods true when user has multiple MFAs", async () => {
+      req.session.user.isUpliftRequired = true;
+      req.session.user.mfaMethods = buildMfaMethods([
+        { authApp: true },
+        { authApp: false },
+      ]);
+
+      await enterAuthenticatorAppCodeGet(fakeAccountRecoveryService(true))(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.calledWith(
+        UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME,
+        {
+          isAccountRecoveryPermitted: true,
+          hasMultipleMfaMethods: true,
+          mfaIssuePath: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
         }
       );
     });

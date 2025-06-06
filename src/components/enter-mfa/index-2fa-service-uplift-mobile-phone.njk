@@ -50,7 +50,13 @@
                    rel="noreferrer noopener">{{ 'pages.enterMfa.details.sendCodeLinkText'| translate }}</a>
                 {{ 'pages.enterMfa.details.text 2' | translate }}
             </p>
-                {% if accountRecoveryPermitted === true or accountRecoveryPermitted === "true" %}
+                {% if hasMultipleMfaMethods %}
+                <p class="govuk-body">
+                    {{ 'pages.enterMfa.details.chooseMfaMethodText' | translate }}
+                    <a href={{ mfaIssuePath }} class="govuk-link"
+                       rel="noreferrer noopener">{{ 'pages.enterMfa.details.chooseMfaMethodLinkText'| translate }}</a>.
+                </p>
+                {% elif accountRecoveryPermitted === true or accountRecoveryPermitted === "true" %}
                     <p class="govuk-body">
                         {{ 'pages.enterMfa.details.changeGetSecurityCodesTextWithIpv' | translate }}
                         <a href={{ mfaIssuePath }} class="govuk-link"

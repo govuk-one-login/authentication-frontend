@@ -54,7 +54,13 @@
 
     </form>
 
-    {% if isAccountRecoveryPermitted === true or isAccountRecoveryPermitted === "true" %}
+    {% if hasMultipleMfaMethods %}
+    <p class="govuk-body">
+        {{ 'pages.enterMfa.details.chooseMfaMethodText' | translate }}
+        <a href={{ mfaIssuePath }} class="govuk-link"
+           rel="noreferrer noopener">{{ 'pages.enterMfa.details.chooseMfaMethodLinkText'| translate }}</a>.
+    </p>
+    {% elif isAccountRecoveryPermitted === true or isAccountRecoveryPermitted === "true" %}
         {% set detailsHTML %}
         <p class="govuk-body">
             {{'pages.enterAuthenticatorAppCode.details.mfaReset.text1' | translate}}
