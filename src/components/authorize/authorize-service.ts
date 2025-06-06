@@ -88,5 +88,6 @@ function createStartBody(startRequestParameters: StartRequestParameters) {
   body["is_smoke_test"] = startRequestParameters.is_smoke_test;
   body["is_one_login_service"] = startRequestParameters.is_one_login_service;
   body["subject_type"] = startRequestParameters.subject_type;
+  body["rp_sector_identifier_host"] = startRequestParameters.rp_sector_host;
   return body;
 }

@@ -22,6 +22,7 @@ export interface StartRequestParameters {
   is_smoke_test: boolean;
   is_one_login_service: boolean;
   subject_type: string;
+  rp_sector_host: string;
 }
 
 export interface StartAuthResponse extends DefaultApiResponse {
