@@ -1,0 +1,68 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+h3 {
+  padding-bottom: 8px;
+}
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+#header {
+  position: relative;
+  border-bottom: 3px solid black;
+  background: white;
+  z-index: 1;
+}
+#header-bar {
+  display: flex;
+  background: black;
+  color: white;
+  padding: 8px;
+  align-items: center;
+}
+#header-bar h1 {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 8px;
+}
+#header-bar h1 a {
+  text-decoration: none;
+}
+#header-bar a {
+  flex: 1 1 auto;
+  color: white;
+  text-align: center;
+}
+#diagram {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex: 1 1 auto;
+}
+#diagram > * {
+  height: 100%;
+  width: 100%;
+  max-width: unset !important;
+}
+#diagramSvg .highlight.outgoingEdge {
+  stroke-width: 3px;
+  filter: drop-shadow(1px 0 0 #ffdd00) drop-shadow(-1px 0 0 #ffdd00)
+    drop-shadow(0 1px 0 #ffdd00) drop-shadow(0 -1px 0 #ffdd00);
+}
+#diagramSvg .highlight.incomingEdge {
+  stroke-width: 3px;
+  filter: drop-shadow(1px 0 0 cyan) drop-shadow(-1px 0 0 cyan)
+    drop-shadow(0 1px 0 cyan) drop-shadow(0 -1px 0 cyan);
+}
+#diagramSvg .highlight.node rect {
+  stroke-width: 3px;
+  filter: drop-shadow(1px 0 0 #ffdd00) drop-shadow(-1px 0 0 #ffdd00)
+    drop-shadow(0 1px 0 #ffdd00) drop-shadow(0 -1px 0 #ffdd00);
+}

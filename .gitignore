@@ -128,3 +128,6 @@ ci/terraform/*.plan
 src/authentication_frontend.egg-info/
 .venv
 .aws-sam
+
+!journey-map/public
+journey-map/public/application*
