@@ -2227,6 +2227,10 @@
         "title": "You had a problem linking the GOV.UK ID Check app to your web browser",
         "header": "You had a problem linking the GOV.UK ID Check app to your web browser"
       },
+      "oneLoginAppSignInProblem": {
+        "title": "You had a problem signing in to the GOV.UK One Login app",
+        "header": "You had a problem signing in to the GOV.UK One Login app"
+      },
       "takingPhotoOfIdProblem": {
         "title": "You had a problem taking a photo of your identity document using the GOV.UK ID Check app",
         "header": "You had a problem taking a photo of your identity document using the GOV.UK ID Check app",

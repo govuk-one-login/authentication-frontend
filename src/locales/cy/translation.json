@@ -2228,6 +2228,10 @@
         "title": "Roeddech wedi cael problem cysylltu’r ap GOV.UK ID Check gyda’ch porwr gwe",
         "header": "Roeddech wedi cael problem cysylltu’r ap GOV.UK ID Check gyda’ch porwr gwe"
       },
+      "oneLoginAppSignInProblem": {
+        "title": "Roeddech wedi cael problem mewngofnodi i’r ap GOV.UK One Login",
+        "header": "Roeddech wedi cael problem mewngofnodi i’r ap GOV.UK One Login"
+      },
       "takingPhotoOfIdProblem": {
         "title": "Roeddech wedi cael problem tynnu llun eich dogfen hunaniaeth wrth ddefnyddio’r ap GOV.UK ID Check",
         "header": "Roeddech wedi cael problem tynnu llun eich dogfen hunaniaeth wrth ddefnyddio’r ap GOV.UK ID Check",
