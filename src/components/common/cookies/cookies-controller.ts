@@ -13,11 +13,12 @@ export function cookiesGet(req: Request, res: Response): void {
   const consentValue = cookieService.getCookieConsent(
     sanitize(req.cookies.cookies_preferences_set)
   );
-  res.locals.originalReferer = sanitize(req.headers.referer);
-  res.locals.analyticsConsent =
-    consentValue.cookie_consent === COOKIE_CONSENT.ACCEPT;
-  res.locals.updated = false;
-  res.render("common/cookies/index.njk");
+
+  res.render("common/cookies/index.njk", {
+    originalReferer: sanitize(req.headers.referer),
+    analyticsConsent: consentValue.cookie_consent === COOKIE_CONSENT.ACCEPT,
+    updated: false,
+  });
 }
 
 export function cookiesPost(req: Request, res: Response): void {
@@ -48,8 +49,10 @@ export function cookiesPost(req: Request, res: Response): void {
     httpOnly: false,
     domain: res.locals.analyticsCookieDomain,
   });
-  res.locals.originalReferer = sanitize(req.body.originalReferer);
-  res.locals.analyticsConsent = consentValue === "true";
-  res.locals.updated = true;
-  res.render("common/cookies/index.njk");
+
+  res.render("common/cookies/index.njk", {
+    originalReferer: sanitize(req.body.originalReferer),
+    analyticsConsent: consentValue === "true",
+    updated: true,
+  });
 }
