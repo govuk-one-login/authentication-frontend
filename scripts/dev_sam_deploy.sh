@@ -67,6 +67,7 @@ ECR_REPO_NAME=""
 case $DEPLOY_ENV in
     authdev1) ECR_REPO_NAME="authdev1-frontend-image-repository-containerrepository-k0a7zjnydazf" ;;
     authdev2) ECR_REPO_NAME="authdev2-frontend-image-repository-containerrepository-lvjd0pm7fkxh" ;;
+    authdev3) ECR_REPO_NAME="authdev3-frontend-image-repository-containerrepository-km3egd1niwc1" ;;
     *)
         echo "Unrecognized deploy env: $DEPLOY_ENV"
         exit 1
