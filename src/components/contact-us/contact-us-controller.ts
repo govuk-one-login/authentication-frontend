@@ -93,7 +93,7 @@ const somethingElseSubThemeToPageTitle = {
     "pages.contactUsQuestions.accountCreation.title",
   [CONTACT_US_THEMES.SIGNING_IN]: "pages.contactUsQuestions.signingIn.title",
   [CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
-    "pages.contactUsQuestions.idCheckAppTechnicalError.title",
+    "pages.contactUsQuestions.idCheckAppTechnicalProblem.title",
   [CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
     "pages.contactUsQuestions.idCheckAppSomethingElse.title",
 };
