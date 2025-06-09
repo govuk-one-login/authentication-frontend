@@ -462,6 +462,7 @@ Mappings:
       Enableipvspinner: "No"
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
+      DeviceIntelligenceEnabled: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
     production:
       DeployServiceDownPage: "Yes"
@@ -493,6 +494,7 @@ Mappings:
       Enableipvspinner: "No"
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
+      DeviceIntelligenceEnabled: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
 
 Globals:

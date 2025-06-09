@@ -403,6 +403,6 @@ variable "vpc_environment" {
 
 variable "device_intelligence_enabled" {
   type        = string
-  default     = "0"
+  default     = "1"
   description = "Switch to enable device intelligence"
 }
