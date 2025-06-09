@@ -1,5 +1,12 @@
-import { TransitionDefinition } from "xstate";
+import type { AnyEventObject, StateNode, TransitionDefinition } from "xstate";
 import { authStateMachine } from "../../src/components/common/state-machine/state-machine.js";
+
+type AuthContext = typeof authStateMachine.context;
+
+export interface Options {
+  includeOptional: boolean;
+  context?: AuthContext;
+}
 
 interface State {
   name: string;
@@ -39,9 +46,8 @@ const renderTransition = ({
 const renderClickHandler = ({ id }: State): string =>
   `    click ${id} call onStateClick(${JSON.stringify(id)})`;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getSingleTransitionTarget = (
-  transition: TransitionDefinition<any, any>
+  transition: TransitionDefinition<AuthContext, AnyEventObject>
 ): string => {
   if (!transition.target?.length) {
     throw new Error(`Transition from ${transition.source.id} missing a target`);
@@ -54,36 +60,86 @@ const getSingleTransitionTarget = (
   return transition.target[0].id;
 };
 
-export const renderStateMachine = (): string => {
-  const states: State[] = Object.entries(authStateMachine.states).map(
-    ([name, node]) => ({ name, id: node.id })
-  );
+const getTransitions = (state: StateNode, options: Options): Transition[] => {
+  const transitions: Transition[] = [];
 
-  const transitions: Transition[] = Object.values(
-    authStateMachine.states
-  ).flatMap((node) =>
-    node.transitions.map((transition) => ({
-      source: node.id,
-      target: getSingleTransitionTarget(transition),
-      event: transition.eventType,
-      condition: transition.cond?.name ?? undefined,
-    }))
-  );
-
-  // Add optional transitions
-  Object.values(authStateMachine.states).forEach((node) =>
-    node.meta?.optionalPaths?.forEach((target: string) => {
-      const targetId = `${authStateMachine.id}.${target}`;
-      if (!states.some(({ id }) => id === targetId)) {
-        states.push({ name: target, id: targetId });
-      }
+  if (options.context) {
+    // Only show applicable transitions
+    state.events.forEach((event) => {
+      const { value } = authStateMachine.transition(
+        state.key,
+        event,
+        options.context
+      );
       transitions.push({
-        source: node.id,
+        source: state.id,
+        target: `${authStateMachine.id}.${value}`,
+        event: event,
+      });
+    });
+  } else {
+    // Show all transitions
+    state.transitions.forEach((transition) =>
+      transitions.push({
+        source: state.id,
+        target: getSingleTransitionTarget(transition),
+        event: transition.eventType,
+        condition: transition.cond?.name ?? undefined,
+      })
+    );
+  }
+
+  if (options.includeOptional) {
+    // Add optional transitions
+    state.meta?.optionalPaths?.forEach((target: string) => {
+      const targetId = `${authStateMachine.id}.${target}`;
+      transitions.push({
+        source: state.id,
         target: targetId,
         optional: true,
       });
-    })
-  );
+    });
+  }
+
+  return transitions;
+};
+
+const getReachableStatesAndTransitions = (
+  options: Options
+): { states: State[]; transitions: Transition[] } => {
+  const xStates = [...authStateMachine.initialStateNodes];
+
+  const states: State[] = [];
+  const transitions: Transition[] = [];
+
+  for (const state of xStates) {
+    // Record this state
+    states.push({ name: state.key, id: state.id });
+
+    // Find transitions from this state
+    const activeTransitions = getTransitions(state, options);
+    transitions.push(...activeTransitions);
+
+    // Add target states to the list of states to traverse
+    activeTransitions.forEach((transition) => {
+      if (authStateMachine.stateIds.includes(transition.target)) {
+        if (!xStates.some((state) => state.id === transition.target)) {
+          xStates.push(authStateMachine.getStateNodeById(transition.target));
+        }
+      } else {
+        states.push({
+          name: transition.target.substring(authStateMachine.id.length + 1),
+          id: transition.target,
+        });
+      }
+    });
+  }
+
+  return { states, transitions };
+};
+
+export const renderStateMachine = (options: Options): string => {
+  const { states, transitions } = getReachableStatesAndTransitions(options);
 
   return `
 ${getMermaidHeader("LR")}

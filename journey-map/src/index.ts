@@ -12,7 +12,10 @@ declare global {
 const diagramElement = document.getElementById("diagram") as HTMLDivElement;
 
 const render = async (): Promise<void> => {
-  const stateMachineMermaid = renderStateMachine();
+  const options = {
+    includeOptional: false,
+  };
+  const stateMachineMermaid = renderStateMachine(options);
   console.log(stateMachineMermaid);
 
   mermaid.initialize({
