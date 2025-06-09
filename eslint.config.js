@@ -4,6 +4,8 @@ import globals from "globals";
 import parser from "@typescript-eslint/parser";
 import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
+import customLintRules from "./custom-lint-rules/index.js";
+
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
   recommendedConfig: js.configs.recommended,
@@ -15,6 +17,7 @@ const config = [
     plugins: {
       "@typescript-eslint": typescriptEslint,
       "no-only-tests": noOnlyTestPlugin,
+      "custom-lint-rules": customLintRules,
     },
   },
   {
@@ -47,6 +50,7 @@ const config = [
         { blankLine: "any", prev: "*", next: "*" },
       ],
       "no-only-tests/no-only-tests": "error",
+      "custom-lint-rules/no-res-locals-write": "error",
     },
     linterOptions: {
       reportUnusedDisableDirectives: true,
