@@ -173,6 +173,8 @@ export const CONTACT_US_THEMES = {
   TAKING_PHOTO_OF_ID_PROBLEM: "taking_photo_of_id_problem",
   FACE_SCANNING_PROBLEM: "face_scanning_problem",
   ID_CHECK_APP_TECHNICAL_ERROR: "id_check_app_technical_problem",
+  GOV_UK_LOGIN_AND_ID_APPS_TECHNICAL_ERROR:
+    "gov_uk_login_and_id_apps_technical_problem",
   ID_CHECK_APP_SOMETHING_ELSE: "id_check_app_something_else",
   PROVING_IDENTITY_FACE_TO_FACE: "id_face_to_face",
   PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS:

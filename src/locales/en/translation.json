@@ -2257,6 +2257,19 @@
           "errorMessage": "Tell us what happened"
         }
       },
+      "govUKLoginAndIdAppsTechnicalProblem": {
+        "title": "You had a technical problem",
+        "section1": {
+          "title": "You had a technical problem",
+          "header": "What were you trying to do?",
+          "errorMessage": "Tell us what you were trying to do"
+        },
+        "section2": {
+          "header": "What happened?",
+          "paragraph1": "Include details of the error",
+          "errorMessage": "Tell us what happened"
+        }
+      },
       "idCheckAppSomethingElse": {
         "title": "Another problem with the GOV.UK ID Check app",
         "section1": {

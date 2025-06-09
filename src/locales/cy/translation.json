@@ -2258,6 +2258,19 @@
           "errorMessage": "Dywedwch wrthym beth ddigwyddodd"
         }
       },
+      "govUKLoginAndIdAppsTechnicalProblem": {
+        "title": "Roeddech wedi cael problem dechnegol",
+        "section1": {
+          "title": "Roeddech wedi cael problem dechnegol",
+          "header": "Beth oeddech chi’n ceisio ei wneud?",
+          "errorMessage": "Dywedwch wrthym beth oeddech yn ceisio ei wneud"
+        },
+        "section2": {
+          "header": "Beth ddigwyddodd?",
+          "paragraph1": "Dylech gynnwys manylion y gwall",
+          "errorMessage": "Dywedwch wrthym beth ddigwyddodd"
+        }
+      },
       "idCheckAppSomethingElse": {
         "title": "Problem arall gyda’r ap GOV.UK ID Check",
         "section1": {
