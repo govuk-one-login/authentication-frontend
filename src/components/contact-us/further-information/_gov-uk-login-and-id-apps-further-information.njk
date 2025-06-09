@@ -1,7 +1,3 @@
-<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  {{ 'pages.contactUsFurtherInformation.idCheckApp.header' | translate }}
-</h1>
-
 <form action="/contact-us-further-information" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
@@ -9,46 +5,96 @@
 <input type="hidden" name="referer" value="{{referer}}"/>
 <input type="hidden" name="fromURL" value="{{fromURL}}"/>
 {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
+        {% if isStrategicAppLive %}
+            <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+                {{ 'pages.contactUsFurtherInformation.govUKLoginAndIdApps.header' | translate }}
+            </h1>
+            {% set items = [
+                    {
+                        value: "id_check_app_linking_problem",
+                        text: 'pages.contactUsFurtherInformation.govUKLoginAndIdApps.section1.idCheckAppLinkingProblem' | translate
+                    },
+                    {
+                        value: "one_login_app_sign_in_problem",
+                        text: 'pages.contactUsFurtherInformation.govUKLoginAndIdApps.section1.oneLoginAppSignInProblem' | translate
+                    },
+                    {
+                        value: "taking_photo_of_id_problem",
+                        text: 'pages.contactUsFurtherInformation.govUKLoginAndIdApps.section1.photoProblem' | translate
+                    },
+                    {
+                        value: "face_scanning_problem",
+                        text: 'pages.contactUsFurtherInformation.govUKLoginAndIdApps.section1.faceScanningProblem' | translate
+                    },
+                    {
+                        value: "gov_uk_login_and_id_apps_technical_problem",
+                        text: 'pages.contactUsFurtherInformation.govUKLoginAndIdApps.section1.technicalError' | translate
+                    },
+                    {
+                        value: "gov_uk_login_and_id_apps_something_else",
+                        text: 'pages.contactUsFurtherInformation.govUKLoginAndIdApps.section1.somethingElse' | translate
+                    }
+                ]
+            %}
 
-        {% set items = [
-                {
-                    value: "linking_problem",
-                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.linkingProblem' | translate
+            {{ govukRadios({
+                name: "subtheme",
+                fieldset: {
+                    legend: {
+                        text: 'pages.contactUsFurtherInformation.govUKLoginAndIdApps.section1.header' | translate,
+                        isPageHeading: false,
+                        classes: "govuk-fieldset__legend--m"
+                    }
                 },
-                {
-                    value: "taking_photo_of_id_problem",
-                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.photoProblem' | translate
-                },
-                {
-                    value: "face_scanning_problem",
-                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.faceScanningProblem' | translate
-                },
-                {
-                    value: "id_check_app_technical_problem",
-                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.technicalError' | translate
-                },
-                {
-                    value: "id_check_app_something_else",
-                    text: 'pages.contactUsFurtherInformation.idCheckApp.section1.somethingElse' | translate
-                }
-            ]
-        %}
+                items: items,
+            errorMessage: {
+            text: errors['subtheme'].text
+            } if (errors['subtheme'])
+            }) }}
 
-    {{ govukRadios({
-        name: "subtheme",
-        fieldset: {
-            legend: {
-                text: 'pages.contactUsFurtherInformation.idCheckApp.section1.header' | translate,
-                isPageHeading: false,
-                classes: "govuk-fieldset__legend--m"
-            }
-        },
-        items: items,
-      errorMessage: {
-      text: errors['subtheme'].text
-      } if (errors['subtheme'])
-    }) }}
+        {% else %}
+            <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+                {{ 'pages.contactUsFurtherInformation.idCheckApp.header' | translate }}
+            </h1>
+            {% set items = [
+                    {
+                        value: "linking_problem",
+                        text: 'pages.contactUsFurtherInformation.idCheckApp.section1.linkingProblem' | translate
+                    },
+                    {
+                        value: "taking_photo_of_id_problem",
+                        text: 'pages.contactUsFurtherInformation.idCheckApp.section1.photoProblem' | translate
+                    },
+                    {
+                        value: "face_scanning_problem",
+                        text: 'pages.contactUsFurtherInformation.idCheckApp.section1.faceScanningProblem' | translate
+                    },
+                    {
+                        value: "id_check_app_technical_problem",
+                        text: 'pages.contactUsFurtherInformation.idCheckApp.section1.technicalError' | translate
+                    },
+                    {
+                        value: "id_check_app_something_else",
+                        text: 'pages.contactUsFurtherInformation.idCheckApp.section1.somethingElse' | translate
+                    }
+                ]
+            %}
 
+            {{ govukRadios({
+                name: "subtheme",
+                fieldset: {
+                    legend: {
+                        text: 'pages.contactUsFurtherInformation.idCheckApp.section1.header' | translate,
+                        isPageHeading: false,
+                        classes: "govuk-fieldset__legend--m"
+                    }
+                },
+                items: items,
+            errorMessage: {
+            text: errors['subtheme'].text
+            } if (errors['subtheme'])
+            }) }}
+        {% endif%}
 
 {{ govukButton({
     "text": "general.continue.label" | translate,
