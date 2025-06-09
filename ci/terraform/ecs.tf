@@ -194,6 +194,10 @@ locals {
       {
         name  = "DEVICE_INTELLIGENCE_ENABLED"
         value = var.device_intelligence_enabled
+      },
+      {
+        name  = "STRATEGIC_APP_LIVE"
+        value = var.is_strategic_app_live
       }
     ]
 

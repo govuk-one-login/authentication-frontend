@@ -194,3 +194,7 @@ export function getDeviceIntelligenceEnabled(): boolean {
 export function getPrivacyNoticeRedirectEnabled(): boolean {
   return process.env.PRIVACY_NOTICE_REDIRECT_ENABLED === "1";
 }
+
+export function getIsStrategicAppLive(): boolean {
+  return process.env.STRATEGIC_APP_LIVE === "1";
+}
