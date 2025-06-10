@@ -406,3 +406,9 @@ variable "device_intelligence_enabled" {
   default     = "1"
   description = "Switch to enable device intelligence"
 }
+
+variable "is_strategic_app_live" {
+  type        = string
+  default     = "0"
+  description = "Switch to enable strategic app features"
+}

@@ -447,13 +447,25 @@ export function getErrorMessageForIdCheckAppIssueDescription(
   if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR) {
     return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section1.errorMessage";
   }
+  if (subtheme === CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_TECHNICAL_ERROR) {
+    return "pages.contactUsQuestions.govUKLoginAndIdAppsTechnicalProblem.section1.errorMessage";
+  }
   if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
     return "pages.contactUsQuestions.idCheckAppSomethingElse.section1.errorMessage";
+  }
+  if (subtheme === CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_SOMETHING_ELSE) {
+    return "pages.contactUsQuestions.govUKLoginAndIdAppsSomethingElse.section1.errorMessage";
   }
   if (subtheme === CONTACT_US_THEMES.TAKING_PHOTO_OF_ID_PROBLEM) {
     return "pages.contactUsQuestions.whatHappened.errorMessage";
   }
   if (subtheme === CONTACT_US_THEMES.LINKING_PROBLEM) {
+    return "pages.contactUsQuestions.whatHappened.errorMessage";
+  }
+  if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_LINKING_PROBLEM) {
+    return "pages.contactUsQuestions.whatHappened.errorMessage";
+  }
+  if (subtheme === CONTACT_US_THEMES.ONE_LOGIN_APP_SIGN_IN_PROBLEM) {
     return "pages.contactUsQuestions.whatHappened.errorMessage";
   }
   if (subtheme === CONTACT_US_THEMES.FACE_SCANNING_PROBLEM) {
@@ -510,6 +522,12 @@ export function getLengthExceededErrorMessageForIdCheckAppIssueDescription(
   if (subtheme === CONTACT_US_THEMES.LINKING_PROBLEM) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.whatHappenedTooLongMessage";
   }
+  if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_LINKING_PROBLEM) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.whatHappenedTooLongMessage";
+  }
+  if (subtheme === CONTACT_US_THEMES.ONE_LOGIN_APP_SIGN_IN_PROBLEM) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.whatHappenedTooLongMessage";
+  }
   if (subtheme === CONTACT_US_THEMES.TAKING_PHOTO_OF_ID_PROBLEM) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.whatHappenedTooLongMessage";
   }
@@ -519,7 +537,13 @@ export function getLengthExceededErrorMessageForIdCheckAppIssueDescription(
   if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
+  if (subtheme === CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_TECHNICAL_ERROR) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
+  }
   if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
+  }
+  if (subtheme === CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_SOMETHING_ELSE) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
 }
@@ -560,8 +584,17 @@ export function getErrorMessageForAdditionalDescription(
   if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR) {
     return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.errorMessage";
   }
+  if (subtheme === CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_TECHNICAL_ERROR) {
+    return "pages.contactUsQuestions.govUKLoginAndIdAppsTechnicalProblem.section2.errorMessage";
+  }
   if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
     return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.errorMessage";
+  }
+  if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
+    return "pages.contactUsQuestions.govUKLoginAndIdAppsTechnicalProblem.section2.errorMessage";
+  }
+  if (subtheme === CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_SOMETHING_ELSE) {
+    return "pages.contactUsQuestions.govUKLoginAndIdAppsTechnicalProblem.section2.errorMessage";
   }
   if (
     subtheme ===

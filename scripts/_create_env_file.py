@@ -93,6 +93,7 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             "SUPPORT_HTTP_KEEP_ALIVE": 0,
             "DEVICE_INTELLIGENCE_ENABLED": 1,
             "PRIVACY_NOTICE_REDIRECT_ENABLED": 1,
+            "STRATEGIC_APP_LIVE": 1,
         },
     },
     {

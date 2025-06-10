@@ -4,6 +4,7 @@ import {
   getAnalyticsCookieDomain,
   getDeviceIntelligenceEnabled,
   getLanguageToggleEnabled,
+  getIsStrategicAppLive,
 } from "../config.js";
 import { generateNonce } from "../utils/strings.js";
 export async function setLocalVarsMiddleware(
@@ -16,5 +17,6 @@ export async function setLocalVarsMiddleware(
   res.locals.analyticsCookieDomain = getAnalyticsCookieDomain();
   res.locals.languageToggleEnabled = getLanguageToggleEnabled();
   res.locals.deviceIntelligenceEnabled = getDeviceIntelligenceEnabled();
+  res.locals.isStrategicAppLive = getIsStrategicAppLive();
   next();
 }

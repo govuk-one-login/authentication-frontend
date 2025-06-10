@@ -104,6 +104,14 @@
         {% include 'contact-us/questions/_id-check-app-linking-problem.njk' %}
     {% endif %}
 
+    {% if (theme == 'id_check_app') and (subtheme == 'id_check_app_linking_problem') %}
+        {% include 'contact-us/questions/_id-check-app-linking-problem-new.njk' %}
+    {% endif %}
+
+    {% if (theme == 'id_check_app') and (subtheme == 'one_login_app_sign_in_problem') %}
+        {% include 'contact-us/questions/_one-login-app-sign-in-problem.njk' %}
+    {% endif %}
+
     {% if (theme == 'id_check_app') and (subtheme == 'taking_photo_of_id_problem') %}
         {% include 'contact-us/questions/_id-check-app-taking-photo-of-id-problem.njk' %}
     {% endif %}
@@ -116,8 +124,16 @@
         {% include 'contact-us/questions/_id-check-app-technical-problem.njk' %}
     {% endif %}
 
+    {% if (theme == 'id_check_app') and (subtheme == 'gov_uk_login_and_id_apps_technical_problem') %}
+        {% include 'contact-us/questions/_gov-uk-login-and-id-apps-technical-problem.njk' %}
+    {% endif %}
+
     {% if (theme == 'id_check_app') and (subtheme == 'id_check_app_something_else') %}
         {% include 'contact-us/questions/_id-check-app-something-else.njk' %}
+    {% endif %}
+
+    {% if (theme == 'id_check_app') and (subtheme == 'gov_uk_login_and_id_apps_something_else') %}
+        {% include 'contact-us/questions/_gov-uk-login-and-id-apps-something-else.njk' %}
     {% endif %}
 
     {% if (theme == 'proving_identity') and (subtheme == 'proving_identity_problem_answering_security_questions') %}

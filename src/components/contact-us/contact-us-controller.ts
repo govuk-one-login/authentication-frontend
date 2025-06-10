@@ -46,14 +46,22 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.authenticatorApp.title",
   [CONTACT_US_THEMES.LINKING_PROBLEM]:
     "pages.contactUsQuestions.linkingProblem.title",
+  [CONTACT_US_THEMES.ID_CHECK_APP_LINKING_PROBLEM]:
+    "pages.contactUsQuestions.idCheckAppLinkingProblem.title",
+  [CONTACT_US_THEMES.ONE_LOGIN_APP_SIGN_IN_PROBLEM]:
+    "pages.contactUsQuestions.oneLoginAppSignInProblem.title",
   [CONTACT_US_THEMES.TAKING_PHOTO_OF_ID_PROBLEM]:
     "pages.contactUsQuestions.takingPhotoOfIdProblem.title",
   [CONTACT_US_THEMES.FACE_SCANNING_PROBLEM]:
     "pages.contactUsQuestions.faceScanningProblem.title",
   [CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
     "pages.contactUsQuestions.idCheckAppTechnicalProblem.title",
+  [CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_TECHNICAL_ERROR]:
+    "pages.contactUsQuestions.govUKLoginAndIdAppsTechnicalProblem.title",
   [CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
     "pages.contactUsQuestions.idCheckAppSomethingElse.title",
+  [CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_SOMETHING_ELSE]:
+    "pages.contactUsQuestions.govUKLoginAndIdAppsSomethingElse.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS]:
     "pages.contactUsQuestions.provingIdentityFaceToFaceDetails.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_LETTER]:
@@ -89,9 +97,13 @@ const somethingElseSubThemeToPageTitle = {
     "pages.contactUsQuestions.accountCreation.title",
   [CONTACT_US_THEMES.SIGNING_IN]: "pages.contactUsQuestions.signingIn.title",
   [CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
-    "pages.contactUsQuestions.idCheckAppTechnicalError.title",
+    "pages.contactUsQuestions.idCheckAppTechnicalProblem.title",
+  [CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_TECHNICAL_ERROR]:
+    "pages.contactUsQuestions.govUKLoginAndIdAppsTechnicalProblem.title",
   [CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
     "pages.contactUsQuestions.idCheckAppSomethingElse.title",
+  [CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_SOMETHING_ELSE]:
+    "pages.contactUsQuestions.govUKLoginAndIdAppsSomethingElse.title",
 };
 
 const serviceDomain = getServiceDomain();
@@ -786,9 +798,37 @@ function getQuestionsFromFormTypeForMessageBody(
         { lng: "en" }
       ),
     },
+    govUKLoginAndIdAppsTechnicalProblem: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.govUKLoginAndIdAppsTechnicalProblem.section1.header",
+        { lng: "en" }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.whatHappened.header",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
     idCheckAppSomethingElse: {
       issueDescription: req.t(
         "pages.contactUsQuestions.idCheckAppSomethingElse.section1.header",
+        { lng: "en" }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.whatHappened.header",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
+    govUKLoginAndIdAppsSomethingElse: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.govUKLoginAndIdAppsSomethingElse.section1.header",
         { lng: "en" }
       ),
       additionalDescription: req.t(
@@ -926,6 +966,12 @@ function getQuestionFromThemes(
     id_check_app: req.t("pages.contactUsPublic.section3.idCheckApp", {
       lng: "en",
     }),
+    govUKLoginAndIdApps: req.t(
+      "pages.contactUsPublic.section3.govUKLoginAndIdApps",
+      {
+        lng: "en",
+      }
+    ),
     id_face_to_face: req.t(
       "pages.contactUsPublic.section3.provingIdentityFaceToFace",
       {
@@ -1017,6 +1063,14 @@ function getQuestionFromThemes(
       "pages.contactUsFurtherInformation.idCheckApp.section1.linkingProblem",
       { lng: "en" }
     ),
+    id_check_app_linking_problem: req.t(
+      "pages.contactUsFurtherInformation.govUKLoginAndIdApps.section1.idCheckAppLinkingProblem",
+      { lng: "en" }
+    ),
+    one_login_app_sign_in_problem: req.t(
+      "pages.contactUsFurtherInformation.idCheckApp.section1.oneLoginAppSignInProblem",
+      { lng: "en" }
+    ),
     taking_photo_of_id_problem: req.t(
       "pages.contactUsFurtherInformation.idCheckApp.section1.photoProblem",
       { lng: "en" }
@@ -1026,6 +1080,10 @@ function getQuestionFromThemes(
       { lng: "en" }
     ),
     id_check_app_technical_problem: req.t(
+      "pages.contactUsFurtherInformation.idCheckApp.section1.technicalError",
+      { lng: "en" }
+    ),
+    gov_uk_login_and_id_apps_technical_problem: req.t(
       "pages.contactUsFurtherInformation.idCheckApp.section1.technicalError",
       { lng: "en" }
     ),
