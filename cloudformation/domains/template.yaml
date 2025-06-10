@@ -140,6 +140,7 @@ Resources:
     - EnvName
     - - authdev1
       - authdev2
+      - authdev3
     - ${EnvName}HostedZone:
         Type: AWS::Route53::HostedZone
         Condition: CreateDevHostedZone
