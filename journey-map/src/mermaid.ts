@@ -22,15 +22,7 @@ interface Transition {
 }
 
 const getMermaidHeader = (graphDirection: "TD" | "LR"): string =>
-  // These styles should be kept in sync with the key in style.css
-  `graph ${graphDirection}
-    classDef process fill:#ffa,stroke:#000;
-    classDef page fill:#ae8,stroke:#000;
-    classDef cri fill:#faf,stroke:#000;
-    classDef journey_transition fill:#aaf,stroke:#000;
-    classDef error_transition fill:#f99,stroke:#000;
-    classDef other fill:#f3f2f1,stroke:#000;
-    classDef nested_journey fill:#aaedff,stroke:#000;`;
+  `graph ${graphDirection}`;
 
 const renderState = ({ name, id }: State): string => `    ${id}(${name})`;
 
@@ -40,8 +32,11 @@ const renderTransition = ({
   event,
   condition,
   optional,
-}: Transition): string =>
-  `    ${source}-${optional ? "." : ""}->|${event ?? ""}<br/>${condition ?? ""}|${target}`;
+}: Transition): string => {
+  const label = event ? `|${event}<br/>${condition ?? ""}|` : "";
+  const arrow = optional ? "-.->" : "-->";
+  return `    ${source}${arrow}${label}${target}`;
+};
 
 const renderClickHandler = ({ id }: State): string =>
   `    click ${id} call onStateClick(${JSON.stringify(id)})`;

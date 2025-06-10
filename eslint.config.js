@@ -70,6 +70,7 @@ const config = [
       "functional-output",
       "coverage",
       "src/assets/javascript",
+      "journey-map",
     ],
   },
 ];

@@ -12,15 +12,14 @@ This is a small JavaScript-based tool to display the journey map in an interacti
 - Run `npm run dev` to start the application in watch mode
 - Open [http://localhost:3000] in a web browser
 
-### Tests
-
-The unit tests can be run with `npm run test`, and use the built-in node test runner.
+### Linting and typechecking
 
 Linting and typechecking are available with `npm run lint` and `npm run tsc`.
 
 ### Build process
 
-To build
+To build:
+
 - `npm run build` will build the frontend JavaScript into `/public`
 - `npm run build-server` will build the server code into `/build`
 
@@ -28,10 +27,9 @@ Use `npm start` to run the built code.
 
 ## Using the map
 
-You should be able to pan and zoom using the mouse and scroll wheel,
-as well as viewing the differences when a CRI is marked as disabled, or a particular feature flag is enabled.
+You should be able to pan and zoom using the mouse and scroll wheel.
 
-N.B. for clarity, the map only displays states that are accessible via preconfigured entry states.
+The options header provides controls over which routes are displayed.
 
 ## Implementation
 
