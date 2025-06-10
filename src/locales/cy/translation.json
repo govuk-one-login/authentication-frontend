@@ -2493,8 +2493,9 @@
       },
       "authAppDetails": {
         "summaryText": "Beth yw ap dilysydd?",
-        "paragraph1": "Mae ap dilysu yn creu codau diogelwch y gallwch eu defnyddio i fewngofnodi i wefannau neu wasanaethau ar-lein.",
-        "paragraph2": "Gallwch ddefnyddio ap dilysydd ar eich ffôn clyfar, llechen neu gyfrifiadur bwrdd gwaith.  Lawrlwythwch ap dilysydd ar gyfer eich ffôn clyfar neu lechen o’ch siop apiau neu chwiliwch ar-lein am ap dilysydd ar gyfer eich cyfrifiadur."
+        "paragraph1": "Mae ap dilysydd yn creu cod diogelwch sy’n helpu i gadarnhau mai chi yw chi pan fyddwch yn mewngofnodi.",
+        "paragraph2": "Gallwch ddefnyddio ap dilysydd ar eich ffôn clyfar, tabled neu gyfrifiadur.",
+        "paragraph3": "Lawrlwythwch ap dilysydd o’ch ’app store’ neu chwiliwch ar-lein am un y gallwch ddefnyddio ar eich cyfrifiadur."
       },
       "continueButtonText": "Parhau",
       "accountRecoveryVariants": {

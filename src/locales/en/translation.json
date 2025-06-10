@@ -2492,8 +2492,9 @@
       },
       "authAppDetails": {
         "summaryText": "What is an authenticator app?",
-        "paragraph1": "An authenticator app creates security codes that you can use to sign in to websites or online services.",
-        "paragraph2": "You can use an authenticator app on your smartphone, tablet or desktop computer.  Download an authenticator app for your smartphone or tablet from your app store or search online for an authenticator app for your computer."
+        "paragraph1": "An authenticator app creates a security code that helps confirm it’s you when you sign in.",
+        "paragraph2": "You can use an authenticator app on your smartphone, tablet or desktop computer.",
+        "paragraph3": "Download an authenticator app from your app store or search online for one you can use on your computer."
       },
       "continueButtonText": "Continue",
       "accountRecoveryVariants": {
