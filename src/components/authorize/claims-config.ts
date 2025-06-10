@@ -55,6 +55,7 @@ export type Claims = {
   requested_credential_strength: string;
   is_smoke_test: boolean;
   subject_type: string;
+  is_identity_verification_required: boolean;
 };
 
 export const requiredClaimsKeys = [
@@ -78,4 +79,5 @@ export const requiredClaimsKeys = [
   "requested_credential_strength",
   "is_smoke_test",
   "subject_type",
+  "is_identity_verification_required",
 ];
