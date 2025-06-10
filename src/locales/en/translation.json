@@ -2498,7 +2498,7 @@
       "accountRecoveryVariants": {
         "title": "How do you want to get security codes?",
         "header": "How do you want to get security codes?",
-        "summary": "Choose how you’ll get security codes when signing in to your GOV.UK One Login. This will remove your old phone number or authenticator app from your GOV.UK One Login."
+        "summary": "Choose how you’ll get security codes when signing in to your GOV.UK One Login. This will remove all methods you already have set up."
       }
     },
     "setupAuthenticatorApp": {

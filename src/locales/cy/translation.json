@@ -2499,7 +2499,7 @@
       "accountRecoveryVariants": {
         "title": "Sut ydych chi am gael codau diogelwch?",
         "header": "Sut ydych chi am gael codau diogelwch?",
-        "summary": "Dewis sut byddwch yn cael codau diogelwch pan rydych yn mewngofnodi i’ch GOV.UK One Login. Bydd hyn yn dileu eich hen rhif ffôn neu ap dilysydd o’ch GOV.UK One Login."
+        "summary": "Dewiswch sut ydych chi am gael codau diogelwch wrth fewngofnodi i’ch GOV.UK One Login. Bydd hyn yn dileu’r holl ddulliau rydych wedi’u sefydlu’n barod."
       }
     },
     "setupAuthenticatorApp": {
