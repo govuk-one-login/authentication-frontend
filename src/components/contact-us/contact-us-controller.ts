@@ -768,6 +768,18 @@ function getQuestionsFromFormTypeForMessageBody(
         { lng: "en" }
       ),
     },
+    oneLoginAppSignInProblem: {
+      issueDescription: `${req.t(
+        "pages.contactUsQuestions.whatHappened.header",
+        { lng: "en" }
+      )} ${req.t("pages.contactUsQuestions.whatHappened.paragraph1", {
+        lng: "en",
+      })}`,
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
     idCheckAppPhotoProblem: {
       issueDescription: `${req.t(
         "pages.contactUsQuestions.whatHappened.header",
