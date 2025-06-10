@@ -29,6 +29,25 @@
           </a>
         </h1>
       </div>
+      <div id="header-content" class="hidden">
+        <form id="configuration-form">
+          <h2>Options</h2>
+          <fieldset id="otherOptions">
+            <legend>Turn on other options</legend>
+            <p>By default, optional journeys are not displayed.</p>
+            <label>
+              <input
+                id="includeOptional"
+                name="otherOption"
+                value="includeOptional"
+                type="checkbox"
+              />
+              <span>Show <strong>optional</strong> journeys</span>
+            </label>
+          </fieldset>
+        </form>
+      </div>
+      <button id="header-toggle">Show header</button>
     </div>
     <div id="diagram"></div>
     <script type="module" src="./application.js"></script>

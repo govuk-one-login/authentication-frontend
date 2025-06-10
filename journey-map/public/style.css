@@ -1,9 +1,8 @@
+/* Global styles */
+
 * {
   margin: 0;
   box-sizing: border-box;
-}
-h3 {
-  padding-bottom: 8px;
 }
 body {
   height: 100vh;
@@ -12,6 +11,9 @@ body {
   overflow: hidden;
   font-family: sans-serif;
 }
+
+/* Header styles */
+
 #header {
   position: relative;
   border-bottom: 3px solid black;
@@ -38,6 +40,80 @@ body {
   color: white;
   text-align: center;
 }
+#header-content {
+  display: flex;
+  margin: 16px 0;
+  overflow: hidden;
+  max-height: 500px;
+  transition:
+    max-height 0.15s ease-out,
+    margin 0.15s ease-out;
+}
+#header-content.hidden {
+  max-height: 0;
+  margin: 0;
+}
+#header-content > *:not(:first-child) {
+  border-left: 1px solid black;
+}
+#header-toggle {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 100px;
+  margin-left: -50px;
+
+  background: white;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+/* Control panel styles */
+
+form {
+  flex: 0 1 525px;
+  padding: 8px 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+form button {
+  width: 180px;
+}
+form label {
+  display: flex;
+  gap: 8px;
+  margin: 2px 0;
+}
+form select {
+  flex: 0 0 30%;
+}
+form input[type="checkbox"] {
+  margin-left: 8px;
+}
+form fieldset {
+  margin-top: 8px;
+  padding: 8px;
+}
+form fieldset legend {
+  font-weight: bold;
+}
+form fieldset p {
+  color: #555;
+  margin-bottom: 8px;
+}
+#checkbox-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 16px;
+}
+#checkbox-controls fieldset {
+  flex: 1 0 0;
+}
+
+/* Diagram styles */
+
 #diagram {
   position: absolute;
   top: 0;
@@ -45,6 +121,7 @@ body {
   right: 0;
   bottom: 0;
   flex: 1 1 auto;
+  user-select: none;
 }
 #diagram > * {
   height: 100%;
