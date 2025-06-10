@@ -2486,7 +2486,8 @@
       "summaryAccountPartCreated": "Choose a way to get security codes when you sign in. This helps keep your GOV.UK One Login secure.",
       "secondFactorRadios": {
         "textMessageText": "Text message",
-        "authAppText": "Authenticator app for smartphone, tablet or computer",
+        "authAppText": "Authenticator app",
+        "authAppHintText": "You can use any authenticator app to create security codes when you sign in",
         "errorMessage": "Select how you want to get security codes"
       },
       "authAppDetails": {
