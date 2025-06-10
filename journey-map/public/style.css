@@ -41,8 +41,7 @@ body {
   text-align: center;
 }
 #header-content {
-  display: flex;
-  margin: 16px 0;
+  margin: 16px;
   overflow: hidden;
   max-height: 500px;
   transition:
@@ -52,9 +51,6 @@ body {
 #header-content.hidden {
   max-height: 0;
   margin: 0;
-}
-#header-content > *:not(:first-child) {
-  border-left: 1px solid black;
 }
 #header-toggle {
   position: absolute;
@@ -72,9 +68,8 @@ body {
 
 form {
   flex: 0 1 525px;
-  padding: 8px 32px 0;
+  margin: 8px 0;
   display: flex;
-  flex-direction: column;
   gap: 8px;
 }
 form button {
@@ -101,6 +96,15 @@ form fieldset legend {
 form fieldset p {
   color: #555;
   margin-bottom: 8px;
+}
+form textarea {
+  font-family: monospace;
+  width: 500px;
+  height: 300px;
+  margin-top: 16px;
+}
+form textarea.hidden {
+  display: none;
 }
 #checkbox-controls {
   display: flex;

@@ -1,7 +1,7 @@
 import type { AnyEventObject, StateNode, TransitionDefinition } from "xstate";
 import { authStateMachine } from "../../src/components/common/state-machine/state-machine.js";
 
-type AuthContext = typeof authStateMachine.context;
+export type AuthContext = typeof authStateMachine.context;
 
 export interface Options {
   includeOptional: boolean;

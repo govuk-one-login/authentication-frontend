@@ -30,8 +30,8 @@
         </h1>
       </div>
       <div id="header-content" class="hidden">
+        <h2>Options</h2>
         <form id="configuration-form">
-          <h2>Options</h2>
           <fieldset id="otherOptions">
             <legend>Turn on other options</legend>
             <p>By default, optional journeys are not displayed.</p>
@@ -44,7 +44,17 @@
               />
               <span>Show <strong>optional</strong> journeys</span>
             </label>
+            <label>
+              <input
+                id="overrideContext"
+                name="otherOption"
+                value="overrideContext"
+                type="checkbox"
+              />
+              <span>Specify journey <strong>context</strong></span>
+            </label>
           </fieldset>
+          <textarea id="context" name="context" class="hidden"></textarea>
         </form>
       </div>
       <button id="header-toggle">Show header</button>
