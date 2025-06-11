@@ -268,16 +268,6 @@ Conditions:
                 ]
               - "Yes"
 
-  DeviceIntelligenceEnabled:
-    Fn::Equals:
-      - !FindInMap [
-        EnvironmentConfiguration,
-        !Ref Environment,
-        DeviceIntelligenceEnabled,
-        DefaultValue: "No",
-      ]
-      - "Yes"
-
   PrivacyNoticeRedirectEnabled:
     Fn::Or:
       - Fn::And:
@@ -333,7 +323,6 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
-      DeviceIntelligenceEnabled: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
       isStrategicAppLive: "Yes"
     authdev2:
@@ -352,7 +341,6 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
-      DeviceIntelligenceEnabled: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
       isStrategicAppLive: "Yes"
     dev:
@@ -381,7 +369,6 @@ Mappings:
       UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
-      DeviceIntelligenceEnabled: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
       isStrategicAppLive: "Yes"
     build:
@@ -410,7 +397,6 @@ Mappings:
       UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
-      DeviceIntelligenceEnabled: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
       isStrategicAppLive: "Yes"
     staging:
@@ -446,7 +432,6 @@ Mappings:
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       UseAlarmActions: "Yes"
-      DeviceIntelligenceEnabled: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
       isStrategicAppLive: "Yes"
     integration:
@@ -477,7 +462,6 @@ Mappings:
       Enableipvspinner: "No"
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
-      DeviceIntelligenceEnabled: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
       isStrategicAppLive: "No"
     production:
@@ -510,7 +494,6 @@ Mappings:
       Enableipvspinner: "No"
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
-      DeviceIntelligenceEnabled: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
       isStrategicAppLive: "No"
 
@@ -1034,8 +1017,6 @@ Resources:
               Value: !If [UseMfaResetWithIpv, "1", "0"]
             - Name: ROUTE_USERS_TO_NEW_IPV_JOURNEY
               Value: !If [UseRouteUsersToNewIpvJourney, "1", "0"]
-            - Name: DEVICE_INTELLIGENCE_ENABLED
-              Value: !If [DeviceIntelligenceEnabled, "1", "0"]
             - Name: PRIVACY_NOTICE_REDIRECT_ENABLED
               Value: !If [PrivacyNoticeRedirectEnabled, "1", "0"]
             - Name: STRATEGIC_APP_LIVE

@@ -187,10 +187,6 @@ export function showTestBanner(): boolean {
   return getAppEnv() !== "production" || process.env.SHOW_TEST_BANNER === "1";
 }
 
-export function getDeviceIntelligenceEnabled(): boolean {
-  return process.env.DEVICE_INTELLIGENCE_ENABLED === "1";
-}
-
 export function getPrivacyNoticeRedirectEnabled(): boolean {
   return process.env.PRIVACY_NOTICE_REDIRECT_ENABLED === "1";
 }
