@@ -590,9 +590,6 @@ export function getErrorMessageForAdditionalDescription(
   if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
     return "pages.contactUsQuestions.idCheckAppTechnicalProblem.section2.errorMessage";
   }
-  if (subtheme === CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE) {
-    return "pages.contactUsQuestions.govUKLoginAndIdAppsTechnicalProblem.section2.errorMessage";
-  }
   if (subtheme === CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_SOMETHING_ELSE) {
     return "pages.contactUsQuestions.govUKLoginAndIdAppsTechnicalProblem.section2.errorMessage";
   }
