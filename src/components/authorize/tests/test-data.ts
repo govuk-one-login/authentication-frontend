@@ -34,6 +34,7 @@ export function createMockClaims(): Claims {
     scope: "openid",
     is_smoke_test: false,
     subject_type: "pairwise",
+    is_identity_verification_required: false,
   };
 }
 

@@ -22,6 +22,7 @@ export interface StartRequestParameters {
   is_smoke_test: boolean;
   is_one_login_service: boolean;
   subject_type: string;
+  is_identity_verification_required: boolean;
 }
 
 export interface StartAuthResponse extends DefaultApiResponse {

@@ -56,6 +56,7 @@ describe("authorize service", () => {
       is_smoke_test: false,
       is_one_login_service: false,
       subject_type: "pairwise",
+      is_identity_verification_required: false,
     });
 
     expect(
@@ -75,6 +76,7 @@ describe("authorize service", () => {
           is_smoke_test: false,
           is_one_login_service: false,
           subject_type: "pairwise",
+          is_identity_verification_required: false,
         },
         {
           headers: {
@@ -103,6 +105,7 @@ describe("authorize service", () => {
       is_smoke_test: false,
       is_one_login_service: false,
       subject_type: "pairwise",
+      is_identity_verification_required: false,
     });
 
     expect(
@@ -121,6 +124,7 @@ describe("authorize service", () => {
           is_smoke_test: false,
           is_one_login_service: false,
           subject_type: "pairwise",
+          is_identity_verification_required: false,
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -145,6 +149,7 @@ describe("authorize service", () => {
       is_smoke_test: false,
       is_one_login_service: false,
       subject_type: "pairwise",
+      is_identity_verification_required: false,
     });
 
     expect(
@@ -163,6 +168,7 @@ describe("authorize service", () => {
           is_smoke_test: false,
           is_one_login_service: false,
           subject_type: "pairwise",
+          is_identity_verification_required: false,
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -189,6 +195,7 @@ describe("authorize service", () => {
       is_smoke_test: false,
       is_one_login_service: false,
       subject_type: "pairwise",
+      is_identity_verification_required: false,
     });
 
     expect(
@@ -208,6 +215,7 @@ describe("authorize service", () => {
           is_smoke_test: false,
           is_one_login_service: false,
           subject_type: "pairwise",
+          is_identity_verification_required: false,
         },
         {
           headers: {
@@ -237,6 +245,7 @@ describe("authorize service", () => {
       is_smoke_test: false,
       is_one_login_service: false,
       subject_type: "pairwise",
+      is_identity_verification_required: false,
     });
 
     expect(
@@ -257,6 +266,7 @@ describe("authorize service", () => {
           is_smoke_test: false,
           is_one_login_service: false,
           subject_type: "pairwise",
+          is_identity_verification_required: false,
         },
         {
           headers: {
@@ -288,6 +298,7 @@ describe("authorize service", () => {
       is_smoke_test: false,
       is_one_login_service: false,
       subject_type: "pairwise",
+      is_identity_verification_required: false,
     });
 
     expect(
@@ -309,6 +320,7 @@ describe("authorize service", () => {
           is_smoke_test: false,
           is_one_login_service: false,
           subject_type: "pairwise",
+          is_identity_verification_required: false,
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
