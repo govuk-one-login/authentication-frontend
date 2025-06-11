@@ -186,13 +186,11 @@
     <script type="text/javascript" src="/public/scripts/all.js"></script>
     <script type="text/javascript" src="/public/scripts/analytics.js"></script>
 
-    {% if deviceIntelligenceEnabled %}
-        <script type="text/javascript" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
-          import("/public/scripts/device-intelligence.js").then(({setFingerprintCookie}) => {
-            setFingerprintCookie("{{analyticsCookieDomain}}"==="localhost" ? "localhost" : ".account.gov.uk");
-          })
-        </script>
-    {% endif %}
+    <script type="text/javascript" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
+      import("/public/scripts/device-intelligence.js").then(({setFingerprintCookie}) => {
+        setFingerprintCookie("{{analyticsCookieDomain}}"==="localhost" ? "localhost" : ".account.gov.uk");
+      })
+    </script>
 
     <script type="text/javascript" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
         if (window.DI) {

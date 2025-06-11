@@ -2,7 +2,6 @@ import type { NextFunction, Request, Response } from "express";
 import {
   getAccountManagementUrl,
   getAnalyticsCookieDomain,
-  getDeviceIntelligenceEnabled,
   getLanguageToggleEnabled,
   getIsStrategicAppLive,
 } from "../config.js";
@@ -16,7 +15,6 @@ export async function setLocalVarsMiddleware(
   res.locals.accountManagementUrl = getAccountManagementUrl();
   res.locals.analyticsCookieDomain = getAnalyticsCookieDomain();
   res.locals.languageToggleEnabled = getLanguageToggleEnabled();
-  res.locals.deviceIntelligenceEnabled = getDeviceIntelligenceEnabled();
   res.locals.isStrategicAppLive = getIsStrategicAppLive();
   next();
 }

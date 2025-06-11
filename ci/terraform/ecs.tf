@@ -192,10 +192,6 @@ locals {
         value = var.route_users_to_new_ipv_journey
       },
       {
-        name  = "DEVICE_INTELLIGENCE_ENABLED"
-        value = var.device_intelligence_enabled
-      },
-      {
         name  = "STRATEGIC_APP_LIVE"
         value = var.is_strategic_app_live
       }
