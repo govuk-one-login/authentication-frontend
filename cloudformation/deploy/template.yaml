@@ -469,8 +469,8 @@ Mappings:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
       frontendAutoScalingMinCount: 4
       frontendAutoScalingMaxCount: 240
-      frontendTaskDefinitionCpu: 2048
-      frontendTaskDefinitionMemory: 4096
+      frontendTaskDefinitionCpu: 1024
+      frontendTaskDefinitionMemory: 2048
       cloudwatchLogRetentionInDays: 30
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
