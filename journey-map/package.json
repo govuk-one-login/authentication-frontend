@@ -1,0 +1,39 @@
+{
+  "name": "authentication-journey-map",
+  "version": "1.0.0",
+  "description": "Generate an interactive Authentication journey map",
+  "main": "src/server.ts",
+  "author": "Government Digital Service",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --minify --sourcemap --target=chrome135,firefox137,safari18,edge135 --outfile=public/application.js",
+    "build-server": "tsc --project tsconfig.server.json",
+    "start": "NODE_ENV=development tsx watch --clear-screen=false server/app.ts",
+    "start-build": "node --enable-source-maps build/app.js",
+    "dev": "npm run build -- --watch=forever & npm run start; wait",
+    "tsc": "tsc && tsc --project tsconfig.server.json --noEmit",
+    "lint": "eslint src server && prettier src server --check",
+    "lint-fix": "eslint --fix src server && prettier src server --write"
+  },
+  "dependencies": {
+    "express": "5.1.0",
+    "mermaid": "10.9.3",
+    "svg-pan-zoom": "3.6.2",
+    "yaml": "2.8.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.28.0",
+    "@types/express": "5.0.3",
+    "esbuild": "0.25.5",
+    "eslint": "9.28.0",
+    "eslint-config-prettier": "10.1.5",
+    "globals": "16.2.0",
+    "prettier": "3.5.3",
+    "tsx": "4.19.4",
+    "typescript-eslint": "8.34.0"
+  },
+  "overrides": {
+    "dompurify": "3.2.6"
+  }
+}
