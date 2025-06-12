@@ -1,6 +1,7 @@
 import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
 import type { ValidationChainFunc } from "../../types.js";
+import { getIsStrategicAppLive } from "../../config.js";
 export function getContactUsErrorMessage(theme: string): string {
   if (theme === "signing_in") {
     return "pages.contactUsFurtherInformation.signingIn.section1.errorMessage";
@@ -9,7 +10,11 @@ export function getContactUsErrorMessage(theme: string): string {
     return "pages.contactUsFurtherInformation.accountCreation.section1.errorMessage";
   }
   if (theme === "id_check_app") {
-    return "pages.contactUsFurtherInformation.idCheckApp.section1.errorMessage";
+    if (getIsStrategicAppLive()) {
+      return "pages.contactUsFurtherInformation.govUKLoginAndIdApps.section1.errorMessage";
+    } else {
+      return "pages.contactUsFurtherInformation.idCheckApp.section1.errorMessage";
+    }
   }
   if (theme === "id_face_to_face") {
     return "pages.contactUsFurtherInformation.provingIdentityFaceToFace.section1.errorMessage";
