@@ -1,11 +1,13 @@
 import type { AnyEventObject, StateNode, TransitionDefinition } from "xstate";
-import { authStateMachine } from "../../src/components/common/state-machine/state-machine.js";
-
-export type AuthContext = typeof authStateMachine.context;
+import type {
+  AuthStateContext,
+  AuthStateMachine,
+} from "di-auth/src/components/common/state-machine/state-machine.js";
+import { authStateMachine } from "di-auth/src/components/common/state-machine/state-machine.js";
 
 export interface Options {
   includeOptional: boolean;
-  context?: AuthContext;
+  context?: AuthStateContext;
 }
 
 interface State {
@@ -42,7 +44,7 @@ const renderClickHandler = ({ id }: State): string =>
   `    click ${id} call onStateClick(${JSON.stringify(id)})`;
 
 const getSingleTransitionTarget = (
-  transition: TransitionDefinition<AuthContext, AnyEventObject>
+  transition: TransitionDefinition<AuthStateContext, AnyEventObject>
 ): string => {
   if (!transition.target?.length) {
     throw new Error(`Transition from ${transition.source.id} missing a target`);
@@ -55,20 +57,24 @@ const getSingleTransitionTarget = (
   return transition.target[0].id;
 };
 
-const getTransitions = (state: StateNode, options: Options): Transition[] => {
+const getTransitions = (
+  stateMachine: AuthStateMachine,
+  state: StateNode,
+  options: Options
+): Transition[] => {
   const transitions: Transition[] = [];
 
   if (options.context) {
     // Only show applicable transitions
     state.events.forEach((event) => {
-      const { value } = authStateMachine.transition(
+      const { value } = stateMachine.transition(
         state.key,
         event,
         options.context
       );
       transitions.push({
         source: state.id,
-        target: `${authStateMachine.id}.${value}`,
+        target: `${stateMachine.id}.${value}`,
         event: event,
       });
     });
@@ -87,7 +93,7 @@ const getTransitions = (state: StateNode, options: Options): Transition[] => {
   if (options.includeOptional) {
     // Add optional transitions
     state.meta?.optionalPaths?.forEach((target: string) => {
-      const targetId = `${authStateMachine.id}.${target}`;
+      const targetId = `${stateMachine.id}.${target}`;
       transitions.push({
         source: state.id,
         target: targetId,
@@ -100,9 +106,10 @@ const getTransitions = (state: StateNode, options: Options): Transition[] => {
 };
 
 const getReachableStatesAndTransitions = (
+  stateMachine: AuthStateMachine,
   options: Options
 ): { states: State[]; transitions: Transition[] } => {
-  const xStates = [...authStateMachine.initialStateNodes];
+  const xStates = [...stateMachine.initialStateNodes];
 
   const states: State[] = [];
   const transitions: Transition[] = [];
@@ -112,18 +119,18 @@ const getReachableStatesAndTransitions = (
     states.push({ name: state.key, id: state.id });
 
     // Find transitions from this state
-    const activeTransitions = getTransitions(state, options);
+    const activeTransitions = getTransitions(stateMachine, state, options);
     transitions.push(...activeTransitions);
 
     // Add target states to the list of states to traverse
     activeTransitions.forEach((transition) => {
-      if (authStateMachine.stateIds.includes(transition.target)) {
+      if (stateMachine.stateIds.includes(transition.target)) {
         if (!xStates.some((state) => state.id === transition.target)) {
-          xStates.push(authStateMachine.getStateNodeById(transition.target));
+          xStates.push(stateMachine.getStateNodeById(transition.target));
         }
       } else {
         states.push({
-          name: transition.target.substring(authStateMachine.id.length + 1),
+          name: transition.target.substring(stateMachine.id.length + 1),
           id: transition.target,
         });
       }
@@ -133,8 +140,11 @@ const getReachableStatesAndTransitions = (
   return { states, transitions };
 };
 
-export const renderStateMachine = (options: Options): string => {
-  const { states, transitions } = getReachableStatesAndTransitions(options);
+export const renderStateMachine = async (options: Options): Promise<string> => {
+  const { states, transitions } = getReachableStatesAndTransitions(
+    authStateMachine,
+    options
+  );
 
   return `
 ${getMermaidHeader("LR")}

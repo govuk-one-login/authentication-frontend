@@ -1,8 +1,9 @@
 import mermaid from "mermaid";
 import svgPanZoom from "svg-pan-zoom";
-import type { AuthContext, Options } from "./mermaid.js";
+import type { Options } from "./mermaid.js";
 import { renderStateMachine } from "./mermaid.js";
-import { authStateMachine } from "../../src/components/common/state-machine/state-machine.js";
+import type { AuthStateContext } from "di-auth/src/components/common/state-machine/state-machine.js";
+import { authStateMachine } from "di-auth/src/components/common/state-machine/state-machine.js";
 
 declare global {
   interface Window {
@@ -34,7 +35,7 @@ const setupHeaderToggleClickHandlers = (): void => {
   });
 };
 
-const parseContext = (formData: FormData): AuthContext | undefined => {
+const parseContext = (formData: FormData): AuthStateContext | undefined => {
   if (formData.getAll("otherOption").includes("overrideContext")) {
     try {
       return JSON.parse(formData.get("context") as string);
@@ -51,7 +52,7 @@ const parseOptions = (formData: FormData): Options => ({
 
 const render = async (): Promise<void> => {
   const options = parseOptions(new FormData(form));
-  const stateMachineMermaid = renderStateMachine(options);
+  const stateMachineMermaid = await renderStateMachine(options);
   console.debug(stateMachineMermaid);
 
   mermaid.initialize({
