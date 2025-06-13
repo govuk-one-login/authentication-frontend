@@ -1930,7 +1930,7 @@
           "faceScanningProblem": "You had a problem scanning your face",
           "technicalError": "There was a technical problem (for example you saw an error message)",
           "somethingElse": "Something else",
-          "errorMessage": "Select the problem you had when proving your identity using the GOV.UK ID Check app"
+          "errorMessage": "Select a problem you had with the app"
         }
       },
       "provingIdentityFaceToFace": {

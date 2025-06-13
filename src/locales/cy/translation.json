@@ -1931,7 +1931,7 @@
           "faceScanningProblem": "Roeddech wedi cael problem sganio eich wyneb",
           "technicalError": "Roedd problem dechnegol (er enghraifft, fe welsoch neges gwall)",
           "somethingElse": "Rhywbeth arall",
-          "errorMessage": "Dewiswch y broblem a gawsoch pan yn profi eich hunaniaeth drwy ddefnyddio’r ap GOV.UK ID Check"
+          "errorMessage": "Dewiswch broblem a gawsoch gyda’r ap"
         }
       },
       "provingIdentityFaceToFace": {
