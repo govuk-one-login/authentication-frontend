@@ -25,6 +25,9 @@ To build:
 
 Use `npm start` to run the built code.
 
+In production, the journey map is bundled with the main application container and served in non-production environments.
+See `../Dockerfile`.
+
 ## Using the map
 
 You should be able to pan and zoom using the mouse and scroll wheel.

@@ -815,6 +815,6 @@ function getNextState(
 }
 
 export type AuthStateMachine = typeof authStateMachine;
-export type AuthStateContext = AuthStateMachine['context'];
+export type AuthStateContext = AuthStateMachine["context"];
 
 export { getNextState, USER_JOURNEY_EVENTS, authStateMachine };
