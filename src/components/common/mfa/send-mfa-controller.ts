@@ -46,11 +46,15 @@ function handleErrors(
     if (
       mfaFailResponse.data.code ===
         ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||
-      mfaFailResponse.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES ||
-      mfaFailResponse.data.code === ERROR_CODES.MFA_SMS_MAX_CODES_SENT
+      mfaFailResponse.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
     ) {
       return res.redirect(
         req.session.client.redirectUri.concat("?error=login_required")
+      );
+    }
+    if (mfaFailResponse.data.code === ERROR_CODES.MFA_SMS_MAX_CODES_SENT) {
+      return res.redirect(
+        getErrorPathByCode(ERROR_CODES.MFA_SMS_MAX_CODES_SENT)
       );
     }
   }
