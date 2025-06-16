@@ -141,7 +141,10 @@ export function authorizeGet(
 
     const cookieConsent = sanitize(startAuthResponse.data.user.cookieConsent);
 
-    if (req.session.user.channel === CHANNEL.STRATEGIC_APP) {
+    if (
+      req.session.user.channel === CHANNEL.STRATEGIC_APP ||
+      req.session.user.channel === CHANNEL.GENERIC_APP
+    ) {
       const consentCookieValue = cookiesConsentService.createConsentCookieValue(
         COOKIE_CONSENT.REJECT
       );
