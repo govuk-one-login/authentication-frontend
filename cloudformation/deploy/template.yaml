@@ -463,7 +463,7 @@ Mappings:
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
-      isStrategicAppLive: "No"
+      isStrategicAppLive: "Yes"
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -495,7 +495,7 @@ Mappings:
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
-      isStrategicAppLive: "No"
+      isStrategicAppLive: "Yes"
 
 Globals:
   Function:
