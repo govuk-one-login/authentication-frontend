@@ -25,8 +25,11 @@ To build:
 
 Use `npm start` to run the built code.
 
-In production, the journey map is bundled with the main application container and served in non-production environments.
-See `../Dockerfile`.
+When deployed, the journey map is bundled with the main application container
+and served in non-production environments at `/journey-map/`. See:
+
+- [Dockerfile](../Dockerfile)
+- [app.ts](../src/app.ts)
 
 ## Using the map
 
