@@ -25,6 +25,7 @@ import type { AccountInterventionsInterface } from "../../account-intervention/t
 import { isSuspendedWithoutUserActions } from "../../../utils/interventions.js";
 import { isReauth } from "../../../utils/request.js";
 import { logger } from "../../../utils/logger.js";
+import { timestampNMinutesFromNow } from "../../../utils/lock-helper.js";
 interface Config {
   notificationType: NOTIFICATION_TYPE;
   template: string;
@@ -95,9 +96,9 @@ export function verifyCodePost(
       }
 
       if (result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
-        req.session.user.wrongCodeEnteredLock = new Date(
-          Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
-        ).toUTCString();
+        req.session.user.wrongCodeEnteredLock = timestampNMinutesFromNow(
+          getCodeEnteredWrongBlockDurationInMinutes()
+        );
         logger.info(
           `AIDAN: this is wrongCodeEnteredLock in verify-code-controller: ${
             req.session.user.wrongCodeEnteredLock

@@ -45,6 +45,10 @@ const EMAIL_ERROR_KEY = "pages.reEnterEmailAccount.enterYourEmailAddressError";
 export function enterEmailGet(req: Request, res: Response): void {
   const isReAuthenticationRequired = req.session.user.reauthenticate;
 
+  logger.info(
+    `AIDAN: wrongCodeEnteredLock in enter-email-controller: ${req.session.user.wrongCodeEnteredLock}`
+  );
+
   if (supportReauthentication() && isReAuthenticationRequired) {
     if (isLocked(req.session.user.wrongEmailEnteredLock)) {
       return res.render(BLOCKED_TEMPLATE);
@@ -56,9 +60,6 @@ export function enterEmailGet(req: Request, res: Response): void {
 }
 
 export function enterEmailCreateGet(req: Request, res: Response): void {
-  logger.info(
-    `AIDAN: wrongCodeEnteredLock in enter-email-controller: ${req.session.user.wrongCodeEnteredLock}`
-  );
   return res.render("enter-email/index-create-account.njk");
 }
 
