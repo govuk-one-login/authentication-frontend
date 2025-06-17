@@ -55,6 +55,8 @@ function handleErrors(
     }
   }
 
+  // Maybe need a check here against MFA_SMS_MAX_CODES_SENT setting lock on the session
+
   if (path && !isResendCodeRequest) {
     res.redirect(path);
   }

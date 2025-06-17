@@ -29,6 +29,7 @@ import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
 import type { AccountInterventionsInterface } from "../account-intervention/types.js";
 import { handleSendMfaCodeError } from "../../utils/send-mfa-code-error-helper.js";
+import { isLocked } from "../../utils/lock-helper.js";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -191,6 +192,17 @@ export function enterPasswordPost(
     }
 
     req.session.user.isSignInJourney = true;
+
+    // Check if user is locked out due to too many incorrect MFA attempts
+    if (isLocked(req.session.user.wrongCodeEnteredLock)) {
+      return res.render(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        {
+          newCodeLink: PATH_NAMES.ENTER_MFA,
+          show2HrScreen: true,
+        }
+      );
+    }
 
     if (
       userLogin.data.mfaRequired &&
