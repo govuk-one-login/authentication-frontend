@@ -25,7 +25,10 @@ import { createMockClaims } from "./test-data.js";
 import type { Claims } from "../claims-config.js";
 import { getOrchToAuthExpectedClientId } from "../../../config.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
-import { createMockCookieConsentService } from "../../../../test/helpers/mock-cookie-consent-service-helper.js";
+import {
+  createCookieConsentMock,
+  createMockCookieConsentService,
+} from "../../../../test/helpers/mock-cookie-consent-service-helper.js";
 describe("authorize controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
@@ -85,87 +88,74 @@ describe("authorize controller", () => {
       expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
     });
 
-    it("should redirect to /sign-in-or-create page with cookie preferences set", async () => {
-      req.body.cookie_preferences = "true";
+    type CookieConsentExpectation = {
+      channel: CHANNEL;
+      cookieConsent: string;
+      checkExpires: boolean;
+    };
 
-      authServiceResponseData.data.user = {
+    const cookieConsentExpectations: CookieConsentExpectation[] = [
+      {
+        channel: CHANNEL.WEB,
         cookieConsent: COOKIE_CONSENT.ACCEPT,
-      };
+        checkExpires: true,
+      },
+      {
+        channel: CHANNEL.STRATEGIC_APP,
+        cookieConsent: COOKIE_CONSENT.REJECT,
+        checkExpires: false,
+      },
+      {
+        channel: CHANNEL.GENERIC_APP,
+        cookieConsent: COOKIE_CONSENT.REJECT,
+        checkExpires: false,
+      },
+    ];
 
-      fakeAuthorizeService = mockAuthService(authServiceResponseData);
+    cookieConsentExpectations.forEach((expectation) => {
+      it(`should redirect to /sign-in-or-create page with cookie preferences set to ${expectation.cookieConsent} for a ${expectation.channel} journey regardless of the user's data`, async () => {
+        mockClaims.channel = expectation.channel;
 
-      const fakeCookieConsentService = createMockCookieConsentService(
-        req.body.cookie_preferences
-      );
+        authServiceResponseData.data.user = {
+          cookieConsent: COOKIE_CONSENT.ACCEPT,
+        };
 
-      const consentCookieValue =
-        fakeCookieConsentService.createConsentCookieValue(
-          req.body.cookie_preferences === "true"
-            ? COOKIE_CONSENT.ACCEPT
-            : COOKIE_CONSENT.REJECT
+        fakeAuthorizeService = mockAuthService(authServiceResponseData);
+
+        const fakeCookieConsentService = createCookieConsentMock();
+        const expectedConsentCookieValue =
+          fakeCookieConsentService.createConsentCookieValue(
+            expectation.cookieConsent
+          );
+
+        await authorizeGet(
+          fakeAuthorizeService,
+          fakeCookieConsentService,
+          fakeKmsDecryptionService,
+          fakeJwtService
+        )(req as Request, res as Response);
+
+        expect(res.cookie).to.have.been.calledWith(
+          COOKIES_PREFERENCES_SET,
+          expectedConsentCookieValue.value,
+          sinon.match({
+            expires: sinon.match((date: Date) => {
+              if (!expectation.checkExpires) {
+                return true;
+              } else {
+                const expectedExpires = new Date(Date.now());
+                expectedExpires.setFullYear(expectedExpires.getFullYear() + 1);
+                return (
+                  Math.abs(date.getTime() - expectedExpires.getTime()) < 1000
+                );
+              }
+            }),
+            secure: true,
+            httpOnly: false,
+          })
         );
-
-      await authorizeGet(
-        fakeAuthorizeService,
-        fakeCookieConsentService,
-        fakeKmsDecryptionService,
-        fakeJwtService
-      )(req as Request, res as Response);
-
-      expect(res.cookie).to.have.been.calledWith(
-        COOKIES_PREFERENCES_SET,
-        consentCookieValue.value,
-        sinon.match({
-          expires: sinon.match((date: Date) => {
-            const expectedExpires = new Date(Date.now());
-            expectedExpires.setFullYear(expectedExpires.getFullYear() + 1);
-            return Math.abs(date.getTime() - expectedExpires.getTime()) < 1000;
-          }),
-          secure: true,
-          httpOnly: false,
-        })
-      );
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
-    });
-
-    it("should redirect to /sign-in-or-create page with cookie preferences set to false for a strategic app journey regardless of the user's data", async () => {
-      mockClaims.channel = CHANNEL.STRATEGIC_APP;
-
-      req.body.cookie_preferences = "true";
-
-      authServiceResponseData.data.user = {
-        cookieConsent: COOKIE_CONSENT.ACCEPT,
-      };
-
-      fakeAuthorizeService = mockAuthService(authServiceResponseData);
-
-      const fakeCookieConsentService = createMockCookieConsentService(
-        req.body.cookie_preferences
-      );
-
-      const consentCookieValue =
-        fakeCookieConsentService.createConsentCookieValue(
-          req.body.cookie_preferences === "true"
-            ? COOKIE_CONSENT.ACCEPT
-            : COOKIE_CONSENT.REJECT
-        );
-
-      await authorizeGet(
-        fakeAuthorizeService,
-        fakeCookieConsentService,
-        fakeKmsDecryptionService,
-        fakeJwtService
-      )(req as Request, res as Response);
-
-      expect(res.cookie).to.have.been.calledWith(
-        COOKIES_PREFERENCES_SET,
-        consentCookieValue.value,
-        sinon.match({
-          secure: true,
-          httpOnly: false,
-        })
-      );
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
+        expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
+      });
     });
 
     it("should redirect to /uplift page when uplift query param set and MfaType is SMS", async () => {
