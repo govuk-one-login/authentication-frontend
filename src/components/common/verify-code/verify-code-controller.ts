@@ -24,6 +24,7 @@ import {
 import type { AccountInterventionsInterface } from "../../account-intervention/types.js";
 import { isSuspendedWithoutUserActions } from "../../../utils/interventions.js";
 import { isReauth } from "../../../utils/request.js";
+import { logger } from "../../../utils/logger.js";
 interface Config {
   notificationType: NOTIFICATION_TYPE;
   template: string;
@@ -75,6 +76,10 @@ export function verifyCodePost(
         }
       }
 
+      logger.info(
+        `AIDAN: this is result.data.code in verify-code-controller: ${result.data.message}`
+      );
+
       if (isReauth(req)) {
         if (
           result.data.code ===
@@ -93,6 +98,11 @@ export function verifyCodePost(
         req.session.user.wrongCodeEnteredLock = new Date(
           Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
         ).toUTCString();
+        logger.info(
+          `AIDAN: this is wrongCodeEnteredLock in verify-code-controller: ${
+            req.session.user.wrongCodeEnteredLock
+          }`
+        );
       }
 
       if (

@@ -33,6 +33,7 @@ import { isLocked, timestampNSecondsFromNow } from "../../utils/lock-helper.js";
 import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message.js";
 import { isReauth } from "../../utils/request.js";
 import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
+import { logger } from "../../utils/logger.js";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -55,6 +56,9 @@ export function enterEmailGet(req: Request, res: Response): void {
 }
 
 export function enterEmailCreateGet(req: Request, res: Response): void {
+  logger.info(
+    `AIDAN: wrongCodeEnteredLock in enter-email-controller: ${req.session.user.wrongCodeEnteredLock}`
+  );
   return res.render("enter-email/index-create-account.njk");
 }
 
