@@ -17,7 +17,10 @@ import {
   NOTIFICATION_TYPE,
   PATH_NAMES,
 } from "../../../app.constants.js";
-import { supportAccountInterventions } from "../../../config.js";
+import {
+  getCodeEnteredWrongBlockDurationInMinutes,
+  supportAccountInterventions,
+} from "../../../config.js";
 import type { AccountInterventionsInterface } from "../../account-intervention/types.js";
 import { isSuspendedWithoutUserActions } from "../../../utils/interventions.js";
 import { isReauth } from "../../../utils/request.js";
@@ -84,6 +87,12 @@ export function verifyCodePost(
             req.session.client.redirectUri.concat("?error=login_required")
           );
         }
+      }
+
+      if (result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
+        req.session.user.wrongCodeEnteredLock = new Date(
+          Date.now() + getCodeEnteredWrongBlockDurationInMinutes() * 60000
+        ).toUTCString();
       }
 
       if (
