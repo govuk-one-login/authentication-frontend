@@ -33,6 +33,7 @@ import { isLocked, timestampNSecondsFromNow } from "../../utils/lock-helper.js";
 import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message.js";
 import { isReauth } from "../../utils/request.js";
 import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
+import { logger } from "../../utils/logger.js";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -289,6 +290,9 @@ function setUpAuthAppLocks(req: Request, lockoutArray: LockoutInformation[]) {
       lockInfo.lockType === "codeRequestBlock" &&
       lockInfo.journeyType === JOURNEY_TYPE.SIGN_IN
     ) {
+      logger.info(
+        `AIDAN - codeRequestBlock code info in enter-email-controller: ${lockInfo}`
+      );
       req.session.user.smsCodeRequestLock = lockTime;
     }
   }

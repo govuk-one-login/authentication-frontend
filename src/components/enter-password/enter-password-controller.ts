@@ -30,6 +30,7 @@ import { accountInterventionService } from "../account-intervention/account-inte
 import type { AccountInterventionsInterface } from "../account-intervention/types.js";
 import { handleSendMfaCodeError } from "../../utils/send-mfa-code-error-helper.js";
 import { isLocked } from "../../utils/lock-helper.js";
+import { logger } from "../../utils/logger.js";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -105,6 +106,9 @@ export function enterPasswordPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     if (isLocked(req.session.user.smsCodeRequestLock)) {
+      logger.info(
+        `AIDAN - value for smsCodeRequestLock in enter-password-controller: ${req.session.user.smsCodeRequestLock}`
+      );
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
