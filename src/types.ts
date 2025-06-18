@@ -90,6 +90,7 @@ export interface UserSession {
   channel?: string;
   mfaMethodType?: string;
   activeMfaMethodId?: string;
+  smsCodeRequestLock?: string;
 }
 
 export interface UserSessionClient {

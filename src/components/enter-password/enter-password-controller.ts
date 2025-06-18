@@ -29,6 +29,7 @@ import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
 import type { AccountInterventionsInterface } from "../account-intervention/types.js";
 import { handleSendMfaCodeError } from "../../utils/send-mfa-code-error-helper.js";
+import { isLocked } from "../../utils/lock-helper.js";
 
 const ENTER_PASSWORD_TEMPLATE = "enter-password/index.njk";
 const ENTER_PASSWORD_VALIDATION_KEY =
@@ -103,6 +104,16 @@ export function enterPasswordPost(
   accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
+    if (isLocked(req.session.user.smsCodeRequestLock)) {
+      return res.render(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        {
+          show2HrScreen: true,
+          contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
+        }
+      );
+    }
+
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 

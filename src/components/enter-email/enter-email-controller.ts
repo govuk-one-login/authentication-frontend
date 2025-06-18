@@ -276,21 +276,20 @@ function handleBadRequest(
 }
 
 function setUpAuthAppLocks(req: Request, lockoutArray: LockoutInformation[]) {
-  lockoutArray.forEach(function (lockoutInformation) {
-    if (lockoutInformation.lockType == "codeBlock") {
-      const lockTime = timestampNSecondsFromNow(
-        parseInt(lockoutInformation.lockTTL)
-      );
-      switch (lockoutInformation.journeyType) {
-        case JOURNEY_TYPE.SIGN_IN:
-          req.session.user.wrongCodeEnteredLock = lockTime;
-          break;
-        case JOURNEY_TYPE.PASSWORD_RESET_MFA:
-          req.session.user.wrongCodeEnteredPasswordResetMfaLock = lockTime;
-          break;
-        default:
-          break;
+  for (const lockInfo of lockoutArray) {
+    const lockTime = timestampNSecondsFromNow(parseInt(lockInfo.lockTTL));
+
+    if (lockInfo.lockType === "codeBlock") {
+      if (lockInfo.journeyType === JOURNEY_TYPE.SIGN_IN) {
+        req.session.user.wrongCodeEnteredLock = lockTime;
+      } else if (lockInfo.journeyType === JOURNEY_TYPE.PASSWORD_RESET_MFA) {
+        req.session.user.wrongCodeEnteredPasswordResetMfaLock = lockTime;
       }
+    } else if (
+      lockInfo.lockType === "codeRequestBlock" &&
+      lockInfo.journeyType === JOURNEY_TYPE.SIGN_IN
+    ) {
+      req.session.user.smsCodeRequestLock = lockTime;
     }
-  });
+  }
 }
