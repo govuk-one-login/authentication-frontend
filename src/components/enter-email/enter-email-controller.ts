@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import {
   JOURNEY_TYPE,
+  MFA_METHOD_TYPE,
   NOTIFICATION_TYPE,
   WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS,
 } from "../../app.constants.js";
@@ -286,14 +287,8 @@ function setUpAuthAppLocks(req: Request, lockoutArray: LockoutInformation[]) {
       } else if (lockInfo.journeyType === JOURNEY_TYPE.PASSWORD_RESET_MFA) {
         req.session.user.wrongCodeEnteredPasswordResetMfaLock = lockTime;
       }
-    } else if (
-      lockInfo.lockType === "codeRequestBlock" &&
-      lockInfo.journeyType === JOURNEY_TYPE.SIGN_IN
-    ) {
-      logger.info(
-        `AIDAN - codeRequestBlock code info in enter-email-controller: ${lockInfo}`
-      );
-      req.session.user.smsCodeRequestLock = lockTime;
+    } else if (lockInfo.lockType === "codeRequestBlock") {
+      req.session.user.codeRequestLock = lockTime;
     }
   }
 }

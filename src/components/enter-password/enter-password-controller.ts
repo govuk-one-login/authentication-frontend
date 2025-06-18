@@ -105,10 +105,7 @@ export function enterPasswordPost(
   accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    if (isLocked(req.session.user.smsCodeRequestLock)) {
-      logger.info(
-        `AIDAN - value for smsCodeRequestLock in enter-password-controller: ${req.session.user.smsCodeRequestLock}`
-      );
+    if (isLocked(req.session.user.mfaCodeRequestLock)) {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {

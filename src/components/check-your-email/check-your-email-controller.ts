@@ -37,6 +37,15 @@ export const checkYourEmailPost = (
   checkEmailFraudService: CheckEmailFraudBlockInterface = checkEmailFraudBlockService()
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
+    if (isLocked(req.session.user.mfaCodeRequestLock)) {
+      return res.render("security-code-error/index-wait.njk", {
+        newCodeLink: getNewCodePath(
+          req.query.actionType as SecurityCodeErrorType
+        ),
+        isAccountCreationJourney: false,
+      });
+    }
+
     if (req.session.user?.isVerifyEmailCodeResendRequired) {
       const path = getErrorPathByCode(
         ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES
