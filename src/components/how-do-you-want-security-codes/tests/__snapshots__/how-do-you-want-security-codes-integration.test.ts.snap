@@ -2,7 +2,7 @@
 
 exports[`Integration::how do you want security codes GET /how-do-you-want-security-codes should return page as expected for AUTH APP user with SMS backup 1`] = `
 Object {
-  "contentId": "",
+  "contentId": "5c2256e7-a704-4da7-8cb4-0249fd8da0c4",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "",
   "taxonomyLevel3": "",
@@ -13,7 +13,7 @@ Object {
 
 exports[`Integration::how do you want security codes GET /how-do-you-want-security-codes should return page as expected for SMS user with AUTH APP backup 1`] = `
 Object {
-  "contentId": "",
+  "contentId": "5c2256e7-a704-4da7-8cb4-0249fd8da0c4",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "",
   "taxonomyLevel3": "",
@@ -24,7 +24,7 @@ Object {
 
 exports[`Integration::how do you want security codes GET /how-do-you-want-security-codes should return page as expected for SMS user with SMS backup 1`] = `
 Object {
-  "contentId": "",
+  "contentId": "5c2256e7-a704-4da7-8cb4-0249fd8da0c4",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "",
   "taxonomyLevel3": "",
