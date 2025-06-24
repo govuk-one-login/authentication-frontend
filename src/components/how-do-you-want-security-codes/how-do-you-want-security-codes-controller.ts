@@ -62,6 +62,7 @@ export function howDoYouWantSecurityCodesPost(
           req.session.user.activeMfaMethodId,
           getJourneyTypeFromUserSession(req.session.user, {
             includeReauthentication: true,
+            includePasswordResetMfa: true,
           })
         );
 

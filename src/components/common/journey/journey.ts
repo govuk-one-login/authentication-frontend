@@ -4,6 +4,7 @@ type GetJourneyTypeFromUserSessionOptions = {
   fallbackJourneyType?: JOURNEY_TYPE;
   includeReauthentication?: true;
   includeAccountRecovery?: true;
+  includePasswordResetMfa?: true;
 };
 
 /**
@@ -37,6 +38,10 @@ function getJourneyTypeFromUserSession(
     userSession.isAccountRecoveryJourney
   ) {
     return JOURNEY_TYPE.ACCOUNT_RECOVERY;
+  }
+
+  if (options.includePasswordResetMfa && userSession.isPasswordResetJourney) {
+    return JOURNEY_TYPE.PASSWORD_RESET_MFA;
   }
 
   // We should be able to know the user journey at all
