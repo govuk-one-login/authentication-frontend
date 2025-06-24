@@ -189,6 +189,64 @@ describe("enter password controller", () => {
       });
     });
 
+    it("should render error page when backend responds indicating mfa code request are blocked", async () => {
+      const fakePasswordService: EnterPasswordServiceInterface = {
+        loginUser: sinon.fake.returns({
+          success: false,
+          data: {
+            code: ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED,
+          },
+        }),
+      } as unknown as EnterPasswordServiceInterface;
+
+      const fakeMfaService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as MfaServiceInterface;
+
+      await enterPasswordPost(
+        false,
+        fakePasswordService,
+        fakeMfaService
+      )(req as Request, res as Response);
+
+      expect(res.render).to.have.calledOnceWithExactly(
+        "security-code-error/index-wait.njk"
+      );
+    });
+
+    it("should render error page when backend responds indicating mfa code entries are blocked", async () => {
+      const fakePasswordService: EnterPasswordServiceInterface = {
+        loginUser: sinon.fake.returns({
+          success: false,
+          data: {
+            code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
+          },
+        }),
+      } as unknown as EnterPasswordServiceInterface;
+
+      const fakeMfaService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as MfaServiceInterface;
+
+      await enterPasswordPost(
+        false,
+        fakePasswordService,
+        fakeMfaService
+      )(req as Request, res as Response);
+
+      expect(res.render).to.have.calledOnceWithExactly(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        {
+          show2HrScreen: true,
+          contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
+        }
+      );
+    });
+
     it("can send the journeyType when sending the password", async () => {
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sinon.fake.returns({
