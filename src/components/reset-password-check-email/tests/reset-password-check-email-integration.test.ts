@@ -239,6 +239,29 @@ describe("Integration::reset password check email ", () => {
       "you entered the wrong security code too many times",
     ],
   ].forEach(([errorCode, expectedString]) => {
+    it(`should render expected error message when verifying email OTP results in ${errorCode} error code`, async () => {
+      nock(baseApi)
+        .persist()
+        .post(API_ENDPOINTS.VERIFY_CODE)
+        .reply(HTTP_STATUS_CODES.BAD_REQUEST, { code: errorCode });
+
+      await request(app, (test) =>
+        test
+          .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            code: "123456",
+          })
+          .expect(function (res) {
+            const $ = cheerio.load(res.text);
+            expect($(".govuk-body").text()).to.contains(expectedString);
+          })
+          .expect(200)
+      );
+    });
+
     it(`should render expected error message when sending SMS OTP code results in ${errorCode} error code`, async () => {
       nock(baseApi)
         .persist()

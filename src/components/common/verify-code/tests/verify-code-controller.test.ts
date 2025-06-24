@@ -87,6 +87,49 @@ describe("Verify code controller tests", () => {
         )
       );
     });
+
+    it("should render error when notificationType is RESET_PASSWORD_WITH_CODE and MFA_CODE_REQUESTS_BLOCKED error is returned", async () => {
+      const verifyCodeService = fakeVerifyCodeServiceHelper(
+        false,
+        ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED
+      );
+
+      req = createMockRequest(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
+      req.session.user = {
+        email: "test@test.com",
+      };
+
+      await verifyCodePost(verifyCodeService, noInterventionsService, {
+        ...verifyCodePostOptions,
+        notificationType: NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE,
+      })(req as Request, res as Response);
+
+      expect(res.render).to.have.calledOnceWithExactly(
+        "security-code-error/index-wait.njk"
+      );
+    });
+
+    it("should render error when notificationType is RESET_PASSWORD_WITH_CODE and ENTERED_INVALID_MFA_MAX_TIMES error is returned", async () => {
+      const verifyCodeService = fakeVerifyCodeServiceHelper(
+        false,
+        ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
+      );
+
+      req = createMockRequest(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
+      req.session.user = {
+        email: "test@test.com",
+      };
+
+      await verifyCodePost(verifyCodeService, noInterventionsService, {
+        ...verifyCodePostOptions,
+        notificationType: NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE,
+      })(req as Request, res as Response);
+
+      expect(res.render).to.have.calledOnceWithExactly(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        { show2HrScreen: true }
+      );
+    });
   });
 
   describe("When code is valid and NOTIFICATION_TYPE.MFA_SMS", () => {

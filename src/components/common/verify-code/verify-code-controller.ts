@@ -96,6 +96,21 @@ export function verifyCodePost(
       ) {
         req.session.user.isVerifyEmailCodeResendRequired = true;
       }
+
+      if (
+        options.notificationType === NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE
+      ) {
+        if (ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED === result.data.code) {
+          return res.render("security-code-error/index-wait.njk");
+        }
+        if (ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES === result.data.code) {
+          return res.render(
+            "security-code-error/index-security-code-entered-exceeded.njk",
+            { show2HrScreen: true }
+          );
+        }
+      }
+
       const path = getErrorPathByCode(result.data.code);
 
       if (path) {
