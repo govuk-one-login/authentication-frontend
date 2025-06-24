@@ -1,15 +1,7 @@
 import type { Request, Response } from "express";
 import type { ExpressRouteFunc, MfaMethod } from "src/types.js";
-import xss from "xss";
-import type { MfaServiceInterface } from "../common/mfa/types.js";
-import { mfaService } from "../common/mfa/mfa-service.js";
 import type { SecurityCodeErrorType } from "../common/constants.js";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-  pathWithQueryParam,
-} from "../common/constants.js";
-import { BadRequestError } from "../../utils/error.js";
+import { ERROR_CODES, pathWithQueryParam } from "../common/constants.js";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
@@ -30,13 +22,8 @@ const RESEND_CODE_LINK = pathWithQueryParam(
   "true"
 );
 
-export function resetPassword2FASmsGet(
-  mfaCodeService: MfaServiceInterface = mfaService()
-): ExpressRouteFunc {
+export function resetPassword2FASmsGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { email } = req.session.user;
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
     if (isLocked(req.session.user.wrongCodeEnteredLock)) {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
@@ -53,48 +40,6 @@ export function resetPassword2FASmsGet(
         ),
         isAccountCreationJourney: false,
       });
-    }
-    const mfaResponse = await mfaCodeService.sendMfaCode(
-      sessionId,
-      clientSessionId,
-      email,
-      persistentSessionId,
-      false,
-      xss(req.cookies.lng as string),
-      req,
-      req.session.user.activeMfaMethodId,
-      JOURNEY_TYPE.PASSWORD_RESET_MFA
-    );
-
-    if (!mfaResponse.success) {
-      if (mfaResponse.data.code == ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
-        return res.render("security-code-error/index-wait.njk", {
-          newCodeLink: getNewCodePath(
-            req.query.actionType as SecurityCodeErrorType
-          ),
-          isAccountCreationJourney: false,
-        });
-      }
-      if (mfaResponse.data.code == ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
-        return res.render(
-          "security-code-error/index-security-code-entered-exceeded.njk",
-          {
-            newCodeLink: getNewCodePath(
-              req.query.actionType as SecurityCodeErrorType
-            ),
-            show2HrScreen: true,
-            isAccountCreationJourney: false,
-          }
-        );
-      }
-      const path = getErrorPathByCode(mfaResponse.data.code);
-      if (path) {
-        return res.redirect(path);
-      }
-      throw new BadRequestError(
-        mfaResponse.data.message,
-        mfaResponse.data.code
-      );
     }
 
     const { mfaMethods } = req.session.user;

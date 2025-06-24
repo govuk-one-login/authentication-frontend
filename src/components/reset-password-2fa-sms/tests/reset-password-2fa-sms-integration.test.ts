@@ -1,5 +1,5 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
+import { request, sinon } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
 import {
   API_ENDPOINTS,
@@ -80,24 +80,6 @@ describe("Integration::2fa sms (in reset password flow)", () => {
     nock(baseApi).persist().post("/mfa").reply(204);
     await request(app, (test) =>
       test.get("/reset-password-2fa-sms").expect(200)
-    );
-  });
-
-  it("should render index-security-code-entered-exceeded.njk when user is locked out due to too many incorrect codes", async () => {
-    nock(baseApi).persist().post("/mfa").reply(400, {
-      code: ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
-    });
-    await request(app, (test) =>
-      test
-        .get("/reset-password-2fa-sms")
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($(".govuk-heading-l").text()).to.contains(
-            "You cannot sign in at the moment"
-          );
-          expect($(".govuk-body").text()).to.contains("Wait for 2 hours");
-        })
-        .expect(200)
     );
   });
 

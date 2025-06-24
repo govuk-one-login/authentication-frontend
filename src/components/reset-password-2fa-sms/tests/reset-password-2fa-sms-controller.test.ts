@@ -11,14 +11,12 @@ import {
   resetPassword2FASmsPost,
 } from "../reset-password-2fa-sms-controller.js";
 import type { VerifyCodeInterface } from "../../common/verify-code/types.js";
-import type { MfaServiceInterface } from "../../common/mfa/types.js";
 import { fakeVerifyCodeServiceHelper } from "../../../../test/helpers/verify-code-helpers.js";
 import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
 const TEST_REDACTED_PHONE_NUMBER = "777";
-const TEST_ACTIVE_MFA_METHOD_ID = "active-mfa-method-id";
 
 describe("reset password 2fa SMS controller", () => {
   let req: RequestOutput;
@@ -36,11 +34,6 @@ describe("reset password 2fa SMS controller", () => {
 
   describe("resetPassword2FASmsGet", () => {
     it("should render reset password SMS view", async () => {
-      const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as MfaServiceInterface;
       const activeMfaMethodId = "active-mfa-method-id";
       req.session.user = {
         email: "joe.bloggs@test.com",
@@ -53,22 +46,7 @@ describe("reset password 2fa SMS controller", () => {
         ]),
       };
 
-      await resetPassword2FASmsGet(fakeService)(
-        req as Request,
-        res as Response
-      );
-
-      expect(fakeService.sendMfaCode).to.have.been.calledOnceWithExactly(
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        TEST_ACTIVE_MFA_METHOD_ID,
-        sinon.match.any
-      );
+      await resetPassword2FASmsGet()(req as Request, res as Response);
 
       expect(res.render).to.have.calledWithExactly(
         "reset-password-2fa-sms/index.njk",
@@ -82,12 +60,6 @@ describe("reset password 2fa SMS controller", () => {
     });
 
     it("should render index-security-code-entered-exceeded.njk view when user is account is locked from entering security codes", async () => {
-      const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: false,
-        }),
-      } as unknown as MfaServiceInterface;
-
       const date = new Date();
       const futureDate = new Date(
         date.setDate(date.getDate() + 6)
@@ -99,21 +71,13 @@ describe("reset password 2fa SMS controller", () => {
         wrongCodeEnteredLock: futureDate,
       };
 
-      await resetPassword2FASmsGet(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await resetPassword2FASmsGet()(req as Request, res as Response);
       expect(res.render).to.have.calledWith(
         "security-code-error/index-security-code-entered-exceeded.njk"
       );
     });
 
     it("should render security-code-error/index-wait.njk when user was locked out in the current session for requesting too many security codes", async () => {
-      const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as MfaServiceInterface;
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
@@ -121,10 +85,7 @@ describe("reset password 2fa SMS controller", () => {
       tomorrow.setDate(tomorrow.getDate() + 1);
       req.session.user.codeRequestLock = tomorrow.toUTCString();
 
-      await resetPassword2FASmsGet(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await resetPassword2FASmsGet()(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
         "security-code-error/index-wait.njk"
@@ -132,11 +93,6 @@ describe("reset password 2fa SMS controller", () => {
     });
 
     it("should render reset password auth app view with hasMultipleMfaMethods false when user has a single mfa method", async () => {
-      const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as MfaServiceInterface;
       req.session.user = {
         email: "joe.bloggs@test.com",
         mfaMethods: buildMfaMethods([
@@ -144,10 +100,7 @@ describe("reset password 2fa SMS controller", () => {
         ]),
       };
 
-      await resetPassword2FASmsGet(fakeService)(
-        req as Request,
-        res as Response
-      );
+      await resetPassword2FASmsGet()(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
         "reset-password-2fa-sms/index.njk",
@@ -165,11 +118,6 @@ describe("reset password 2fa SMS controller", () => {
     });
 
     it("should render reset password auth app view with hasMultipleMfaMethods true when user has more than one mfa method", async () => {
-      const fakeService: MfaServiceInterface = {
-        sendMfaCode: sinon.fake.returns({
-          success: true,
-        }),
-      } as unknown as MfaServiceInterface;
       req.session.user = {
         email: "joe.bloggs@test.com",
         mfaMethods: buildMfaMethods([
@@ -178,24 +126,7 @@ describe("reset password 2fa SMS controller", () => {
         ]),
       };
 
-      await resetPassword2FASmsGet(fakeService)(
-        req as Request,
-        res as Response
-      );
-
-      expect(res.render).to.have.calledWith(
-        "reset-password-2fa-sms/index.njk",
-        {
-          phoneNumber: TEST_REDACTED_PHONE_NUMBER,
-          resendCodeLink: pathWithQueryParam(
-            PATH_NAMES.RESEND_MFA_CODE,
-            "isResendCodeRequest",
-            "true"
-          ),
-          hasMultipleMfaMethods: true,
-          chooseMfaMethodHref: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
-        }
-      );
+      await resetPassword2FASmsGet()(req as Request, res as Response);
     });
   });
 

@@ -27,7 +27,10 @@ interface Config {
   validationKey: string;
   validationErrorCode: number;
   isOnForcedPasswordResetJourney?: boolean;
-  callback?: (req: Request, res: Response) => void;
+  beforeSuccessRedirectCallback?: (
+    req: Request,
+    res: Response
+  ) => Promise<boolean>;
   journeyType?: JOURNEY_TYPE;
   postValidationLocalsProvider?: (req: Request) => Record<string, unknown>;
 }
@@ -104,10 +107,6 @@ export function verifyCodePost(
 
     req.session.user.isAccountPartCreated = false;
 
-    if (options.callback) {
-      return options.callback(req, res);
-    }
-
     let nextEvent;
 
     switch (options.notificationType) {
@@ -151,6 +150,14 @@ export function verifyCodePost(
           nextEvent = USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION;
         }
       }
+    }
+
+    if (options.beforeSuccessRedirectCallback) {
+      const possibleEarlyReturn = await options.beforeSuccessRedirectCallback(
+        req,
+        res
+      );
+      if (possibleEarlyReturn) return;
     }
 
     res.redirect(
