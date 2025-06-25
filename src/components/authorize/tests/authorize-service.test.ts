@@ -57,6 +57,7 @@ describe("authorize service", () => {
       is_one_login_service: false,
       subject_type: "pairwise",
       is_identity_verification_required: false,
+      rp_sector_host: "example.com",
     });
 
     expect(
@@ -77,6 +78,7 @@ describe("authorize service", () => {
           is_one_login_service: false,
           subject_type: "pairwise",
           is_identity_verification_required: false,
+          rp_sector_identifier_host: "example.com",
         },
         {
           headers: {
@@ -106,6 +108,7 @@ describe("authorize service", () => {
       is_one_login_service: false,
       subject_type: "pairwise",
       is_identity_verification_required: false,
+      rp_sector_host: "example.com",
     });
 
     expect(
@@ -125,6 +128,7 @@ describe("authorize service", () => {
           is_one_login_service: false,
           subject_type: "pairwise",
           is_identity_verification_required: false,
+          rp_sector_identifier_host: "example.com",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -150,6 +154,7 @@ describe("authorize service", () => {
       is_one_login_service: false,
       subject_type: "pairwise",
       is_identity_verification_required: false,
+      rp_sector_host: "example.com",
     });
 
     expect(
@@ -169,6 +174,7 @@ describe("authorize service", () => {
           is_one_login_service: false,
           subject_type: "pairwise",
           is_identity_verification_required: false,
+          rp_sector_identifier_host: "example.com",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -196,6 +202,7 @@ describe("authorize service", () => {
       is_one_login_service: false,
       subject_type: "pairwise",
       is_identity_verification_required: false,
+      rp_sector_host: "example.com",
     });
 
     expect(
@@ -216,6 +223,7 @@ describe("authorize service", () => {
           is_one_login_service: false,
           subject_type: "pairwise",
           is_identity_verification_required: false,
+          rp_sector_identifier_host: "example.com",
         },
         {
           headers: {
@@ -246,6 +254,7 @@ describe("authorize service", () => {
       is_one_login_service: false,
       subject_type: "pairwise",
       is_identity_verification_required: false,
+      rp_sector_host: "example.com",
     });
 
     expect(
@@ -267,6 +276,7 @@ describe("authorize service", () => {
           is_one_login_service: false,
           subject_type: "pairwise",
           is_identity_verification_required: false,
+          rp_sector_identifier_host: "example.com",
         },
         {
           headers: {
@@ -299,6 +309,7 @@ describe("authorize service", () => {
       is_one_login_service: false,
       subject_type: "pairwise",
       is_identity_verification_required: false,
+      rp_sector_host: "example.com",
     });
 
     expect(
@@ -321,6 +332,7 @@ describe("authorize service", () => {
           is_one_login_service: false,
           subject_type: "pairwise",
           is_identity_verification_required: false,
+          rp_sector_identifier_host: "example.com",
         },
         {
           headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
