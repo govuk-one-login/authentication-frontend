@@ -526,7 +526,7 @@
         "text 2": " neu gallwch ",
         "changePhoneNumberLinkText": "ddefnyddio rhif ffôn gwahanol",
         "changePhoneNumberLinkHref": "/enter-phone-number",
-        "changeMfaChoiceLinkText": "Cael cod mewn ffordd arall",
+        "changeMfaChoiceLinkText": "Dewiswch ffordd arall o gael codau diogelwch",
         "changeMfaChoiceLinkHref": "/get-security-codes"
       }
     },
@@ -2536,19 +2536,21 @@
       "summaryAccountPartCreated": "Dewiswch ffordd o gael codau diogelwch pan fyddwch yn mewngofnodi. Mae hyn yn helpu i gadw eich GOV.UK One Login yn ddiogel.",
       "secondFactorRadios": {
         "textMessageText": "Neges destun",
-        "authAppText": "Ap dilysydd ar gyfer ffôn clyfar, llechen neu gyfrifiadur",
+        "authAppText": "Ap dilysydd",
+        "authAppHintText": "Gallwch ddefnyddio unrhyw ap dilysydd i greu codau diogelwch pan fyddwch yn mewngofnodi",
         "errorMessage": "Dewiswch y ffordd rydych am gael codau diogelwch"
       },
       "authAppDetails": {
         "summaryText": "Beth yw ap dilysydd?",
-        "paragraph1": "Mae ap dilysu yn creu codau diogelwch y gallwch eu defnyddio i fewngofnodi i wefannau neu wasanaethau ar-lein.",
-        "paragraph2": "Gallwch ddefnyddio ap dilysydd ar eich ffôn clyfar, llechen neu gyfrifiadur bwrdd gwaith.  Lawrlwythwch ap dilysydd ar gyfer eich ffôn clyfar neu lechen o’ch siop apiau neu chwiliwch ar-lein am ap dilysydd ar gyfer eich cyfrifiadur."
+        "paragraph1": "Mae ap dilysydd yn creu cod diogelwch sy’n helpu i gadarnhau mai chi yw chi pan fyddwch yn mewngofnodi.",
+        "paragraph2": "Gallwch ddefnyddio ap dilysydd ar eich ffôn clyfar, tabled neu gyfrifiadur.",
+        "paragraph3": "Lawrlwythwch ap dilysydd o’ch ’app store’ neu chwiliwch ar-lein am un y gallwch ddefnyddio ar eich cyfrifiadur."
       },
       "continueButtonText": "Parhau",
       "accountRecoveryVariants": {
         "title": "Sut ydych chi am gael codau diogelwch?",
         "header": "Sut ydych chi am gael codau diogelwch?",
-        "summary": "Dewis sut byddwch yn cael codau diogelwch pan rydych yn mewngofnodi i’ch GOV.UK One Login. Bydd hyn yn dileu eich hen rhif ffôn neu ap dilysydd o’ch GOV.UK One Login."
+        "summary": "Dewiswch sut ydych chi am gael codau diogelwch wrth fewngofnodi i’ch GOV.UK One Login. Bydd hyn yn dileu’r holl ddulliau rydych wedi’u sefydlu’n barod."
       }
     },
     "setupAuthenticatorApp": {
@@ -2579,7 +2581,7 @@
         }
       },
       "continueButtonText": "Parhau",
-      "changeMfaChoiceLinkText": "Cael cod mewn ffordd arall"
+      "changeMfaChoiceLinkText": "Dewiswch ffordd arall o gael codau diogelwch"
     },
     "enterAuthenticatorAppCode": {
       "title": "Rhowch y cod diogelwch 6 digid a ddangosir yn eich ap dilysydd",
