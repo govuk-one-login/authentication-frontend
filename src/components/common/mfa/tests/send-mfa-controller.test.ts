@@ -68,6 +68,7 @@ describe("send mfa controller", () => {
         getJourneyTypeFromUserSessionSpy
       ).to.have.been.calledOnceWithExactly(req.session.user, {
         includeReauthentication: true,
+        includePasswordResetMfa: true,
       });
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.REAUTHENTICATION
@@ -113,6 +114,7 @@ describe("send mfa controller", () => {
         getJourneyTypeFromUserSessionSpy
       ).to.have.been.calledOnceWithExactly(req.session.user, {
         includeReauthentication: true,
+        includePasswordResetMfa: true,
       });
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.be
         .undefined;
@@ -156,6 +158,7 @@ describe("send mfa controller", () => {
         getJourneyTypeFromUserSessionSpy
       ).to.have.been.calledOnceWithExactly(req.session.user, {
         includeReauthentication: true,
+        includePasswordResetMfa: true,
       });
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.REAUTHENTICATION

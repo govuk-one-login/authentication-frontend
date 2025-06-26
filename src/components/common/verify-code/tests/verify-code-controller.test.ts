@@ -18,6 +18,8 @@ import {
 import { ERROR_CODES, getErrorPathByCode } from "../../constants.js";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 import type { AccountInterventionsInterface } from "../../../account-intervention/types.js";
+import sinon from "sinon";
+
 describe("Verify code controller tests", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
@@ -83,6 +85,49 @@ describe("Verify code controller tests", () => {
         getErrorPathByCode(
           ERROR_CODES.ENTERED_INVALID_VERIFY_EMAIL_CODE_MAX_TIMES
         )
+      );
+    });
+
+    it("should render error when notificationType is RESET_PASSWORD_WITH_CODE and MFA_CODE_REQUESTS_BLOCKED error is returned", async () => {
+      const verifyCodeService = fakeVerifyCodeServiceHelper(
+        false,
+        ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED
+      );
+
+      req = createMockRequest(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
+      req.session.user = {
+        email: "test@test.com",
+      };
+
+      await verifyCodePost(verifyCodeService, noInterventionsService, {
+        ...verifyCodePostOptions,
+        notificationType: NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE,
+      })(req as Request, res as Response);
+
+      expect(res.render).to.have.calledOnceWithExactly(
+        "security-code-error/index-wait.njk"
+      );
+    });
+
+    it("should render error when notificationType is RESET_PASSWORD_WITH_CODE and ENTERED_INVALID_MFA_MAX_TIMES error is returned", async () => {
+      const verifyCodeService = fakeVerifyCodeServiceHelper(
+        false,
+        ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES
+      );
+
+      req = createMockRequest(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
+      req.session.user = {
+        email: "test@test.com",
+      };
+
+      await verifyCodePost(verifyCodeService, noInterventionsService, {
+        ...verifyCodePostOptions,
+        notificationType: NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE,
+      })(req as Request, res as Response);
+
+      expect(res.render).to.have.calledOnceWithExactly(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        { show2HrScreen: true }
       );
     });
   });
@@ -225,6 +270,37 @@ describe("Verify code controller tests", () => {
       expect(res.redirect).to.have.calledWith(
         EXAMPLE_REDIRECT_URI.concat("?error=login_required")
       );
+    });
+  });
+
+  describe("callback option", () => {
+    async function testCallbackOption(callbackValue: boolean) {
+      const verifyCodeService = fakeVerifyCodeServiceHelper(true);
+      const callback = sinon.fake(() => Promise.resolve(callbackValue));
+
+      req = createMockRequest(PATH_NAMES.ENTER_PASSWORD);
+      req.session.user = { email: "test@test.com" };
+
+      await verifyCodePost(verifyCodeService, noInterventionsService, {
+        notificationType: NOTIFICATION_TYPE.VERIFY_EMAIL,
+        template: "check-your-email/index.njk",
+        validationKey: "pages.checkYourEmail.code.validationError.invalidCode",
+        validationErrorCode: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE,
+        beforeSuccessRedirectCallback: callback,
+      })(req as Request, res as Response);
+      return callback;
+    }
+
+    it("executes the callback option and returns early if true is returned", async () => {
+      const callback = await testCallbackOption(true);
+      expect(callback).to.be.called;
+      expect(res.redirect).to.not.have.calledWith(PATH_NAMES.ENTER_PASSWORD);
+    });
+
+    it("executes the callback option and continue if false is returned", async () => {
+      const callback = await testCallbackOption(false);
+      expect(callback).to.be.called;
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_PASSWORD);
     });
   });
 });

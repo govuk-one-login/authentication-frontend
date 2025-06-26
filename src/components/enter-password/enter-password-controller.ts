@@ -136,6 +136,20 @@ export function enterPasswordPost(
         return res.redirect(PATH_NAMES.ERROR_PAGE);
       }
 
+      if (errorCode === ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
+        return res.render("security-code-error/index-wait.njk");
+      }
+
+      if (errorCode === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
+        return res.render(
+          "security-code-error/index-security-code-entered-exceeded.njk",
+          {
+            show2HrScreen: true,
+            contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
+          }
+        );
+      }
+
       const validationKey = fromAccountExists
         ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY
         : ENTER_PASSWORD_VALIDATION_KEY;

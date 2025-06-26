@@ -62,6 +62,24 @@ describe("journey", () => {
         },
         expectedJourneyType: undefined,
       },
+      // Return PASSWORD_RESET_MFA as expected
+      {
+        options: {
+          includePasswordResetMfa: true,
+        },
+        userSession: {
+          isPasswordResetJourney: true,
+        },
+        expectedJourneyType: JOURNEY_TYPE.PASSWORD_RESET_MFA,
+      },
+      // Return PASSWORD_RESET_MFA prevented as not included in options
+      {
+        options: {},
+        userSession: {
+          isPasswordResetJourney: true,
+        },
+        expectedJourneyType: undefined,
+      },
     ];
 
     callVariants.forEach(({ options, userSession, expectedJourneyType }) => {

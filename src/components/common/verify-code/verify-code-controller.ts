@@ -27,7 +27,10 @@ interface Config {
   validationKey: string;
   validationErrorCode: number;
   isOnForcedPasswordResetJourney?: boolean;
-  callback?: (req: Request, res: Response) => void;
+  beforeSuccessRedirectCallback?: (
+    req: Request,
+    res: Response
+  ) => Promise<boolean>;
   journeyType?: JOURNEY_TYPE;
   postValidationLocalsProvider?: (req: Request) => Record<string, unknown>;
 }
@@ -93,6 +96,21 @@ export function verifyCodePost(
       ) {
         req.session.user.isVerifyEmailCodeResendRequired = true;
       }
+
+      if (
+        options.notificationType === NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE
+      ) {
+        if (ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED === result.data.code) {
+          return res.render("security-code-error/index-wait.njk");
+        }
+        if (ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES === result.data.code) {
+          return res.render(
+            "security-code-error/index-security-code-entered-exceeded.njk",
+            { show2HrScreen: true }
+          );
+        }
+      }
+
       const path = getErrorPathByCode(result.data.code);
 
       if (path) {
@@ -103,10 +121,6 @@ export function verifyCodePost(
     }
 
     req.session.user.isAccountPartCreated = false;
-
-    if (options.callback) {
-      return options.callback(req, res);
-    }
 
     let nextEvent;
 
@@ -151,6 +165,14 @@ export function verifyCodePost(
           nextEvent = USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION;
         }
       }
+    }
+
+    if (options.beforeSuccessRedirectCallback) {
+      const possibleEarlyReturn = await options.beforeSuccessRedirectCallback(
+        req,
+        res
+      );
+      if (possibleEarlyReturn) return;
     }
 
     res.redirect(

@@ -4,14 +4,26 @@ import { MfaMethodPriority } from "../../types.js";
 import type { ResetPasswordCheckEmailServiceInterface } from "./types.js";
 import { resetPasswordCheckEmailService } from "./reset-password-check-email-service.js";
 import { BadRequestError } from "../../utils/error.js";
-import { ERROR_CODES } from "../common/constants.js";
+import {
+  ERROR_CODES,
+  getErrorPathByCode,
+  type SecurityCodeErrorType,
+} from "../common/constants.js";
 import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
-import { NOTIFICATION_TYPE } from "../../app.constants.js";
+import {
+  JOURNEY_TYPE,
+  MFA_METHOD_TYPE,
+  NOTIFICATION_TYPE,
+} from "../../app.constants.js";
 import type { AccountInterventionsInterface } from "../account-intervention/types.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
 import { isLocked } from "../../utils/lock-helper.js";
+import xss from "xss";
+import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
+import type { MfaServiceInterface } from "../common/mfa/types.js";
+import { mfaService } from "../common/mfa/mfa-service.js";
 
 const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
@@ -102,7 +114,8 @@ export function resetPasswordCheckEmailGet(
 
 export function resetPasswordCheckEmailPost(
   service: VerifyCodeInterface = codeService(),
-  accountInterventionsService: AccountInterventionsInterface = accountInterventionService()
+  accountInterventionsService: AccountInterventionsInterface = accountInterventionService(),
+  mfaCodeService: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
   return verifyCodePost(service, accountInterventionsService, {
     notificationType: NOTIFICATION_TYPE.RESET_PASSWORD_WITH_CODE,
@@ -112,6 +125,62 @@ export function resetPasswordCheckEmailPost(
     validationErrorCode: ERROR_CODES.RESET_PASSWORD_INVALID_CODE,
     postValidationLocalsProvider:
       resetPasswordCheckEmailTemplateParametersFromRequest,
+    beforeSuccessRedirectCallback: async (req, res) => {
+      const { email, mfaMethods, activeMfaMethodId } = req.session.user;
+      const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+
+      const activeMfaMethod = (mfaMethods ?? []).find(
+        (method: MfaMethod) => method.id === activeMfaMethodId
+      );
+      if (!activeMfaMethod || activeMfaMethod.type !== MFA_METHOD_TYPE.SMS)
+        return false;
+
+      const mfaResponse = await mfaCodeService.sendMfaCode(
+        sessionId,
+        clientSessionId,
+        email,
+        persistentSessionId,
+        false,
+        xss(req.cookies.lng as string),
+        req,
+        req.session.user.activeMfaMethodId,
+        JOURNEY_TYPE.PASSWORD_RESET_MFA
+      );
+
+      if (mfaResponse.success) return false;
+
+      if (mfaResponse.data.code == ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
+        res.render("security-code-error/index-wait.njk", {
+          newCodeLink: getNewCodePath(
+            req.query.actionType as SecurityCodeErrorType
+          ),
+          isAccountCreationJourney: false,
+        });
+        return true;
+      }
+      if (mfaResponse.data.code == ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
+        res.render(
+          "security-code-error/index-security-code-entered-exceeded.njk",
+          {
+            newCodeLink: getNewCodePath(
+              req.query.actionType as SecurityCodeErrorType
+            ),
+            show2HrScreen: true,
+            isAccountCreationJourney: false,
+          }
+        );
+        return true;
+      }
+      const path = getErrorPathByCode(mfaResponse.data.code);
+      if (path) {
+        res.redirect(path);
+        return true;
+      }
+      throw new BadRequestError(
+        mfaResponse.data.message,
+        mfaResponse.data.code
+      );
+    },
   });
 }
 

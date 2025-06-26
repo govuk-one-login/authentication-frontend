@@ -84,6 +84,7 @@ export function sendMfaGeneric(
       activeMfaMethodId,
       getJourneyTypeFromUserSession(req.session.user, {
         includeReauthentication: true,
+        includePasswordResetMfa: true,
       })
     );
 

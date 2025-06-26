@@ -24,8 +24,10 @@ import { getDefaultSmsMfaMethod } from "../../../utils/mfa.js";
 import { match } from "sinon";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import type { MfaMethod } from "../../../types.js";
+import type { MfaServiceInterface } from "../../common/mfa/types.js";
 
 const TEST_DEFAULT_MFA_METHOD_ID = "TEST_DEFAULT_MFA_METHOD_ID";
+const TEST_REDACTED_PHONE_NUMBER = "777";
 
 describe("reset password check email controller", () => {
   let req: RequestOutput;
@@ -96,6 +98,186 @@ describe("reset password check email controller", () => {
       );
 
       expect(res.redirect).to.have.calledWith("/reset-password");
+    });
+
+    it("should send SMS OTP code where DEFAULT MFA is SMS", async () => {
+      const fakeService = fakeVerifyCodeServiceHelper(true);
+      const fakeInterventionsService =
+        accountInterventionsFakeHelper(noInterventions);
+      const fakeMfaService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as MfaServiceInterface;
+      const activeMfaMethodId = TEST_DEFAULT_MFA_METHOD_ID;
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        activeMfaMethodId,
+        mfaMethods: buildMfaMethods([
+          {
+            id: activeMfaMethodId,
+            redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER,
+          },
+          {
+            id: "doesnt-matter",
+            authApp: true,
+          },
+        ]),
+      };
+
+      await resetPasswordCheckEmailPost(
+        fakeService,
+        fakeInterventionsService,
+        fakeMfaService
+      )(req as Request, res as Response);
+
+      expect(fakeMfaService.sendMfaCode).to.have.been.calledOnceWithExactly(
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        activeMfaMethodId,
+        sinon.match.any
+      );
+    });
+
+    it("should not send SMS OTP code where DEFAULT MFA is AUTH_APP", async () => {
+      const fakeService = fakeVerifyCodeServiceHelper(true);
+      const fakeInterventionsService =
+        accountInterventionsFakeHelper(noInterventions);
+      const fakeMfaService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as MfaServiceInterface;
+      const activeMfaMethodId = TEST_DEFAULT_MFA_METHOD_ID;
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        activeMfaMethodId,
+        mfaMethods: buildMfaMethods([
+          {
+            id: activeMfaMethodId,
+            authApp: true,
+          },
+          {
+            id: "doesnt-matter",
+            redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER,
+          },
+        ]),
+      };
+
+      await resetPasswordCheckEmailPost(
+        fakeService,
+        fakeInterventionsService,
+        fakeMfaService
+      )(req as Request, res as Response);
+
+      expect(fakeMfaService.sendMfaCode).to.not.have.been.calledWithExactly(
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any
+      );
+    });
+
+    it("should send SMS OTP code where DEFAULT MFA is SMS", async () => {
+      const fakeService = fakeVerifyCodeServiceHelper(true);
+      const fakeInterventionsService =
+        accountInterventionsFakeHelper(noInterventions);
+      const fakeMfaService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as MfaServiceInterface;
+      const activeMfaMethodId = TEST_DEFAULT_MFA_METHOD_ID;
+      req.session.user = {
+        email: "joe.bloggs@test.com",
+        activeMfaMethodId,
+        mfaMethods: buildMfaMethods([
+          {
+            id: activeMfaMethodId,
+            redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER,
+          },
+          {
+            id: "doesnt-matter",
+            authApp: true,
+          },
+        ]),
+      };
+
+      await resetPasswordCheckEmailPost(
+        fakeService,
+        fakeInterventionsService,
+        fakeMfaService
+      )(req as Request, res as Response);
+
+      expect(fakeMfaService.sendMfaCode).to.have.been.calledOnceWithExactly(
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        activeMfaMethodId,
+        sinon.match.any
+      );
+    });
+
+    [
+      [
+        ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED,
+        "security-code-error/index-wait.njk",
+      ],
+      [
+        ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
+        "security-code-error/index-security-code-entered-exceeded.njk",
+      ],
+    ].forEach(([errorCode, template]) => {
+      it(`should render expected template when sending SMS OTP code results in ${errorCode} error code`, async () => {
+        const fakeService = fakeVerifyCodeServiceHelper(true);
+        const fakeInterventionsService =
+          accountInterventionsFakeHelper(noInterventions);
+        const fakeMfaService: MfaServiceInterface = {
+          sendMfaCode: sinon.fake.returns({
+            success: false,
+            data: {
+              code: errorCode,
+            },
+          }),
+        } as unknown as MfaServiceInterface;
+        const activeMfaMethodId = TEST_DEFAULT_MFA_METHOD_ID;
+        req.session.user = {
+          email: "joe.bloggs@test.com",
+          activeMfaMethodId,
+          mfaMethods: buildMfaMethods([
+            {
+              id: activeMfaMethodId,
+              redactedPhoneNumber: TEST_REDACTED_PHONE_NUMBER,
+            },
+            {
+              id: "doesnt-matter",
+              authApp: true,
+            },
+          ]),
+        };
+
+        await resetPasswordCheckEmailPost(
+          fakeService,
+          fakeInterventionsService,
+          fakeMfaService
+        )(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWith(template);
+      });
     });
 
     it("should redirect to check_phone if code entered is correct", async () => {

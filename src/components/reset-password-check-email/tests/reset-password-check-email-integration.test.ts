@@ -38,6 +38,11 @@ describe("Integration::reset password check email ", () => {
               journey: getPermittedJourneyForPath(
                 PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
               ),
+              mfaMethods: buildMfaMethods({
+                redactedPhoneNumber: "123",
+                id: "test-id",
+              }),
+              activeMfaMethodId: "test-id",
             };
             req.session.user.enterEmailMfaType = "SMS";
             next();
@@ -205,6 +210,10 @@ describe("Integration::reset password check email ", () => {
       .persist()
       .post(API_ENDPOINTS.VERIFY_CODE)
       .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
+    nock(baseApi)
+      .persist()
+      .post(API_ENDPOINTS.MFA)
+      .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
 
     await request(app, (test) =>
       test
@@ -218,5 +227,65 @@ describe("Integration::reset password check email ", () => {
         .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_SMS)
         .expect(302)
     );
+  });
+
+  [
+    [
+      ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED,
+      "you asked to resend the security code too many times",
+    ],
+    [
+      ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES,
+      "you entered the wrong security code too many times",
+    ],
+  ].forEach(([errorCode, expectedString]) => {
+    it(`should render expected error message when verifying email OTP results in ${errorCode} error code`, async () => {
+      nock(baseApi)
+        .persist()
+        .post(API_ENDPOINTS.VERIFY_CODE)
+        .reply(HTTP_STATUS_CODES.BAD_REQUEST, { code: errorCode });
+
+      await request(app, (test) =>
+        test
+          .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            code: "123456",
+          })
+          .expect(function (res) {
+            const $ = cheerio.load(res.text);
+            expect($(".govuk-body").text()).to.contains(expectedString);
+          })
+          .expect(200)
+      );
+    });
+
+    it(`should render expected error message when sending SMS OTP code results in ${errorCode} error code`, async () => {
+      nock(baseApi)
+        .persist()
+        .post(API_ENDPOINTS.VERIFY_CODE)
+        .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
+      nock(baseApi).persist().post(API_ENDPOINTS.MFA).reply(400, {
+        code: errorCode,
+      });
+
+      await request(app, (test) =>
+        test
+          .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            code: "123456",
+          })
+          .expect(function (res) {
+            const $ = cheerio.load(res.text);
+            expect($(".govuk-body").text()).to.contains(expectedString);
+          })
+          .expect(200)
+      );
+    });
   });
 });
