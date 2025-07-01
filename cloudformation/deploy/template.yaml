@@ -298,6 +298,7 @@ Mappings:
       AccountId: "652711504416"
   EnvironmentConfiguration:
     authdev1:
+      frontendApiBaseUrl: https://5fgwu5kpd2-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev1/
       cloudfrontDistributionStackName: "authdev1-cloudfront"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
@@ -315,6 +316,7 @@ Mappings:
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
     authdev2:
+      frontendApiBaseUrl: https://auth.authdev2.sandpit.account.gov.uk/
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
@@ -332,6 +334,7 @@ Mappings:
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
     dev:
+      frontendApiBaseUrl: https://cmm2f5oyob-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/dev/
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       frontendAutoScalingMinCount: 1
@@ -352,17 +355,18 @@ Mappings:
       redisNodeSize: cache.t2.small
       IsSplunkEnabled: "No"
       SupportHTTPKeepAlive: "No"
-      migratedDomain: signin.dev.account.gov.uk
+      migratedDomain: apitest.signin.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
     build:
+      frontendApiBaseUrl: https://7ecg8e1o73-vpce-042c5d3d97d7438d9.execute-api.eu-west-2.amazonaws.com/build/
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
-      frontendAutoScalingMinCount: 4
-      frontendAutoScalingMaxCount: 6
+      frontendAutoScalingMinCount: 1
+      frontendAutoScalingMaxCount: 2
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       cloudwatchLogRetentionInDays: 7
@@ -379,17 +383,18 @@ Mappings:
       redisNodeSize: cache.t2.small
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
-      migratedDomain: signin.build.account.gov.uk
+      migratedDomain: apitest.signin.build.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
     staging:
+      frontendApiBaseUrl: https://z02rnzbqw8-vpce-07078f5f005fe5efc.execute-api.eu-west-2.amazonaws.com/staging/
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
-      frontendAutoScalingMinCount: 9
-      frontendAutoScalingMaxCount: 240
+      frontendAutoScalingMinCount: 1
+      frontendAutoScalingMaxCount: 2
       frontendTaskDefinitionCpu: 1024
       frontendTaskDefinitionMemory: 2048
       cloudwatchLogRetentionInDays: 7
@@ -412,7 +417,7 @@ Mappings:
       GA4Enabled: "true"
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "Yes"
-      migratedDomain: signin.staging.account.gov.uk
+      migratedDomain: apitest.signin.staging.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
@@ -420,6 +425,7 @@ Mappings:
       UseAlarmActions: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
     integration:
+      frontendApiBaseUrl: https://auth.integration.account.gov.uk/
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       frontendAutoScalingMinCount: 2
@@ -449,6 +455,7 @@ Mappings:
       UseAlarmActions: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
     production:
+      frontendApiBaseUrl: https://auth.account.gov.uk/
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
       frontendAutoScalingMinCount: 15
@@ -782,10 +789,11 @@ Resources:
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: !If
-        - UseSubEnvironment
-        - !Sub "${SubEnvironment}-frontend-ecs-task-definition"
-        - !Sub "${Environment}-frontend-ecs-task-definition"
+      # Family: !If
+      #   - UseSubEnvironment
+      #   - !Sub "${SubEnvironment}-frontend-ecs-task-definition"
+      #   - !Sub "${Environment}-frontend-ecs-task-definition"
+      Family: !Sub "${AWS::StackName}-ecs-task-definition"
       ContainerDefinitions:
         - Name: "frontend-application"
           Image: "CONTAINER-IMAGE-PLACEHOLDER"
@@ -818,13 +826,16 @@ Resources:
                   - !Sub "https://oidc.${Environment}.account.gov.uk"
                 - "https://oidc.account.gov.uk"
             - Name: FRONTEND_API_BASE_URL
-              Value: !If
-                - IsNotProduction
-                - !If
-                  - UseSubEnvironment
-                  - !Sub "https://auth.${SubEnvironment}.sandpit.account.gov.uk/" # Use sandpit for now as auth hasn't been migrated yet
-                  - !Sub "https://auth.${Environment}.account.gov.uk/"
-                - "https://auth.account.gov.uk/"
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !If [
+                    UseSubEnvironment,
+                    !Ref SubEnvironment,
+                    !Ref Environment,
+                  ],
+                  frontendApiBaseUrl,
+                ]
             - Name: ACCOUNT_MANAGEMENT_URL
               Value: !If
                 - IsNotProduction
@@ -1235,35 +1246,35 @@ Resources:
   # Migrated zone records
   #
 
-  FrontendDnsRecordA:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      Name: !If
-        - IsNotProduction
-        - !If
-          - UseSubEnvironment
-          - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
-          - !Sub "signin.${Environment}.account.gov.uk"
-        - "signin.account.gov.uk"
-      Type: A
-      HostedZoneId: !Sub
-        - "{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}"
-        - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
-      AliasTarget:
-        EvaluateTargetHealth: false
-        DNSName:
-          Fn::ImportValue: !Sub
-            - "${CFDistributionStackName}-DistributionDomain"
-            - CFDistributionStackName: !FindInMap
-                - EnvironmentConfiguration
-                - !If
-                  - UseSubEnvironment
-                  - !Ref SubEnvironment
-                  - !Ref Environment
-                - cloudfrontDistributionStackName
-                - DefaultValue: "auth-fe-cloudfront"
-        HostedZoneId: Z2FDTNDATAQYW2
-        # This is always the hosted zone ID when you create an alias record that routes traffic to a CloudFront distribution
+  # FrontendDnsRecordA:
+  #   Type: AWS::Route53::RecordSet
+  #   Properties:
+  #     Name: !If
+  #       - IsNotProduction
+  #       - !If
+  #         - UseSubEnvironment
+  #         - !Sub "signin.${SubEnvironment}.${Environment}.account.gov.uk"
+  #         - !Sub "signin.${Environment}.account.gov.uk"
+  #       - "signin.account.gov.uk"
+  #     Type: A
+  #     HostedZoneId: !Sub
+  #       - "{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}"
+  #       - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+  #     AliasTarget:
+  #       EvaluateTargetHealth: false
+  #       DNSName:
+  #         Fn::ImportValue: !Sub
+  #           - "${CFDistributionStackName}-DistributionDomain"
+  #           - CFDistributionStackName: !FindInMap
+  #               - EnvironmentConfiguration
+  #               - !If
+  #                 - UseSubEnvironment
+  #                 - !Ref SubEnvironment
+  #                 - !Ref Environment
+  #               - cloudfrontDistributionStackName
+  #               - DefaultValue: "auth-fe-cloudfront"
+  #       HostedZoneId: Z2FDTNDATAQYW2
+  #       # This is always the hosted zone ID when you create an alias record that routes traffic to a CloudFront distribution
 
   ApplicationLoadBalancerDnsRecordA:
     Type: AWS::Route53::RecordSet
@@ -1273,7 +1284,7 @@ Resources:
         - !If
           - UseSubEnvironment
           - !Sub "origin.signin.${SubEnvironment}.${Environment}.account.gov.uk"
-          - !Sub "origin.signin.${Environment}.account.gov.uk"
+          - !Sub "apitest.signin.${Environment}.account.gov.uk"
         - "origin.signin.account.gov.uk"
       Type: A
       HostedZoneId: !Sub
@@ -1294,10 +1305,11 @@ Resources:
   ApplicationLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
-      Name: !If
-        - UseSubEnvironment
-        - !Sub "${SubEnvironment}-frontend"
-        - !Sub "${Environment}-frontend"
+      # Name: !If
+      #   - UseSubEnvironment
+      #   - !Sub "${SubEnvironment}-frontend"
+      #   - !Sub "${Environment}-frontend"
+      Name: !Sub "${AWS::StackName}-alb"
       Scheme: internet-facing
       SecurityGroups:
         - !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
@@ -1327,10 +1339,11 @@ Resources:
   ApplicationLoadBalancerTargetGroupA:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Name: !If
-        - UseSubEnvironment
-        - !Sub "${SubEnvironment}-frontend-target-a"
-        - !Sub "${Environment}-frontend-target-a"
+      # Name: !If
+      #   - UseSubEnvironment
+      #   - !Sub "${SubEnvironment}-frontend-target-a"
+      #   - !Sub "${Environment}-frontend-target-a"
+      Name: !Sub "${AWS::StackName}-target-a"
       HealthCheckIntervalSeconds: 10
       HealthCheckTimeoutSeconds: 3
       HealthCheckPath: /healthcheck/
@@ -1361,10 +1374,11 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Condition: UseECSCanaryDeploymentStack
     Properties:
-      Name: !If
-        - UseSubEnvironment
-        - !Sub "${SubEnvironment}-frontend-target-b"
-        - !Sub "${Environment}-frontend-target-b"
+      # Name: !If
+      #   - UseSubEnvironment
+      #   - !Sub "${SubEnvironment}-frontend-target-b"
+      #   - !Sub "${Environment}-frontend-target-b"
+      Name: !Sub "${AWS::StackName}-target-b"
       HealthCheckIntervalSeconds: 10
       HealthCheckTimeoutSeconds: 3
       HealthCheckPath: /healthcheck/
@@ -1402,7 +1416,7 @@ Resources:
       Protocol: HTTPS
       Certificates:
         - CertificateArn: !Sub
-            - "{{resolve:ssm:/deploy/${env}/signin_certificate_arn}}"
+            - "{{resolve:ssm:/deploy/${env}/apitest_signin_certificate_arn}}"
             - env:
                 !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       SslPolicy: "ELBSecurityPolicy-FS-1-2-Res-2020-10"
@@ -1549,21 +1563,21 @@ Resources:
       FromPort: 8080
       ToPort: 8080
 
-  ApplicationLoadBalancerCloudFrontWAFv2ACLAssociation:
-    Type: AWS::WAFv2::WebACLAssociation
-    Properties:
-      ResourceArn: !Ref ApplicationLoadBalancer
-      WebACLArn:
-        Fn::ImportValue: !Sub
-          - "${CFDistributionStackName}-CloakingOriginWebACLArn"
-          - CFDistributionStackName: !FindInMap
-              - EnvironmentConfiguration
-              - !If
-                - UseSubEnvironment
-                - !Ref SubEnvironment
-                - !Ref Environment
-              - cloudfrontDistributionStackName
-              - DefaultValue: "auth-fe-cloudfront"
+  # ApplicationLoadBalancerCloudFrontWAFv2ACLAssociation:
+  #   Type: AWS::WAFv2::WebACLAssociation
+  #   Properties:
+  #     ResourceArn: !Ref ApplicationLoadBalancer
+  #     WebACLArn:
+  #       Fn::ImportValue: !Sub
+  #         - "${CFDistributionStackName}-CloakingOriginWebACLArn"
+  #         - CFDistributionStackName: !FindInMap
+  #             - EnvironmentConfiguration
+  #             - !If
+  #               - UseSubEnvironment
+  #               - !Ref SubEnvironment
+  #               - !Ref Environment
+  #             - cloudfrontDistributionStackName
+  #             - DefaultValue: "auth-fe-cloudfront"
 
   #
   # Anomaly detection
@@ -2255,10 +2269,11 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       KmsKeyId: !GetAtt KmsKey.Arn
-      LogGroupName: !If
-        - UseSubEnvironment
-        - !Sub "/ecs/${SubEnvironment}-frontend"
-        - !Sub "/ecs/${Environment}-frontend"
+      # LogGroupName: !If
+      #   - UseSubEnvironment
+      #   - !Sub "/ecs/${SubEnvironment}-frontend"
+      #   - !Sub "/ecs/${Environment}-frontend"
+      LogGroupName: !Sub "/ecs/${AWS::StackName}-frontend"
       RetentionInDays:
         !FindInMap [
           EnvironmentConfiguration,
