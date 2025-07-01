@@ -51,8 +51,6 @@ export const PATH_NAMES = {
   CONTACT_US_SUBMIT_SUCCESS: "/contact-us-submit-success",
   CONTACT_US_FURTHER_INFORMATION: "/contact-us-further-information",
   CONTACT_US_QUESTIONS: "/contact-us-questions",
-  DOC_CHECKING_APP: "/doc-checking-app",
-  DOC_CHECKING_APP_CALLBACK: "/doc-app-callback",
   PROVE_IDENTITY_CALLBACK: "/ipv-callback",
   PROVE_IDENTITY_CALLBACK_SESSION_EXPIRY_ERROR:
     "/ipv-callback-session-expiry-error",
@@ -115,7 +113,6 @@ export const API_ENDPOINTS = {
   RESET_PASSWORD_REQUEST: "/reset-password-request",
   RESET_PASSWORD: "/reset-password",
   IPV_AUTHORIZE: "/ipv-authorize",
-  DOC_CHECKING_APP_AUTHORIZE: "/doc-app-authorize",
   IPV_PROCESSING_IDENTITY: "/processing-identity",
   VERIFY_MFA_CODE: "/verify-mfa-code",
   ACCOUNT_RECOVERY: "/account-recovery",
