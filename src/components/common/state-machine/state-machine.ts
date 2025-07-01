@@ -72,7 +72,6 @@ const authStateMachine = createMachine(
       isAuthenticated: false,
       isIdentityRequired: false,
       prompt: OIDC_PROMPT.NONE,
-      skipAuthentication: false,
       mfaMethodType: MFA_METHOD_TYPE.SMS,
       isMfaMethodVerified: true,
       isPasswordChangeRequired: false,
@@ -751,9 +750,6 @@ const authStateMachine = createMachine(
       requiresLogin: (context) =>
         context.isAuthenticated === true &&
         context.prompt === OIDC_PROMPT.LOGIN,
-      skipAuthentication: (context) =>
-        context.skipAuthentication === true &&
-        context.isAuthenticated === false,
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.requiresTwoFactorAuth === true,

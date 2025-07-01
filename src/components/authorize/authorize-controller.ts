@@ -132,7 +132,6 @@ export function authorizeGet(
         isIdentityRequired: req.session.user.isIdentityRequired,
         isAuthenticated: req.session.user.isAuthenticated,
         prompt: req.session.client.prompt,
-        skipAuthentication: false,
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
         isReauthenticationRequired: isReauth(req),
       },
