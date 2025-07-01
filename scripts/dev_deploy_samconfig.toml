@@ -28,3 +28,43 @@ confirm_changeset = true
 capabilities = "CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND"
 parameter_overrides = "Environment=\"dev\" SubEnvironment=\"authdev3\" VpcStackName=\"vpc\" CodeSigningConfigArn=\"arn:aws:lambda:eu-west-2:975050272416:code-signing-config:csc-0e7ece3a3ef748670\" DeploymentStrategy=\"None\" PermissionsBoundary=\"arn:aws:iam::975050272416:policy/authdev3-frontend-pipeline-AppProgrammaticPermissionsBoundary-0afdaa6e5089\""
 image_repositories = []
+
+[dev-apitest.deploy.parameters]
+stack_name = "dev-apitest-frontend"
+resolve_s3 = true
+s3_prefix = "dev-apitest-frontend"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND"
+parameter_overrides = "Environment=\"dev\" SubEnvironment=\"none\" VpcStackName=\"vpc\" CodeSigningConfigArn=\"arn:aws:lambda:eu-west-2:975050272416:code-signing-config:csc-0b8f9b55f0ce85863\" DeploymentStrategy=\"None\" PermissionsBoundary=\"arn:aws:iam::975050272416:policy/frontend-pipeline-AppProgrammaticPermissionsBoundary-0ae979326cf3\""
+image_repositories = []
+
+[build-apitest.deploy.parameters]
+stack_name = "build-apitest-frontend"
+resolve_s3 = true
+s3_prefix = "build-apitest-frontend"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND"
+parameter_overrides = "Environment=\"build\" SubEnvironment=\"none\" VpcStackName=\"vpc\" DeploymentStrategy=\"None\""
+image_repositories = []
+
+[staging-apitest.deploy.parameters]
+stack_name = "staging-apitest-front"
+resolve_s3 = true
+s3_prefix = "staging-apitest-frontend"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND"
+parameter_overrides = "Environment=\"staging\" SubEnvironment=\"none\" VpcStackName=\"vpc\" DeploymentStrategy=\"None\""
+image_repositories = []
+
+[integration-apitest.deploy.parameters]
+stack_name = "int-apitest-frontend"
+resolve_s3 = true
+s3_prefix = "integration-apitest-frontend"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND"
+parameter_overrides = "Environment=\"integration\" SubEnvironment=\"none\" VpcStackName=\"vpc\" DeploymentStrategy=\"None\""
+image_repositories = []

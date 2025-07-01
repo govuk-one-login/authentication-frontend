@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-envvalue=("authdev1" "authdev2" "authdev3")
+envvalue=("authdev1" "authdev2" "authdev3" "dev-apitest" "build-apitest" "staging-apitest" "integration-apitest")
 
 select word in "${envvalue[@]}"; do
   if [[ -z "$word" ]]; then
@@ -23,7 +23,12 @@ done
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-export AWS_PROFILE="di-authentication-development-admin"
+case $DEPLOY_ENV in
+    build-apitest) export AWS_PROFILE="di-authentication-build-admin" ;;
+    staging-apitest) export AWS_PROFILE="di-authentication-staging-admin" ;;
+    integration-apitest) export AWS_PROFILE="di-authentication-integration-admin" ;;
+    *) export AWS_PROFILE="di-authentication-development-admin" ;;
+esac
 
 # shellcheck source=scripts/dev_sam_deploy.sh
   source "${DIR}/scripts/dev_sam_deploy.sh"
