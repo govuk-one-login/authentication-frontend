@@ -67,6 +67,15 @@ ECR_REPO_NAME=""
 case $DEPLOY_ENV in
     authdev1) ECR_REPO_NAME="authdev1-frontend-image-repository-containerrepository-k0a7zjnydazf" ;;
     authdev2) ECR_REPO_NAME="authdev2-frontend-image-repository-containerrepository-lvjd0pm7fkxh" ;;
+    dev-apitest) ECR_REPO_NAME="frontend-apitest-image-repository-containerrepository-jgkmxxw0fzjt" ;;
+    build-apitest)
+        ECR_REGISTRY="058264536367.dkr.ecr.eu-west-2.amazonaws.com"
+        ECR_REPO_NAME="frontend-apitest-image-repository-containerrepository-ezd6vzi5su3d"
+        ;;
+    staging-apitest)
+        ECR_REGISTRY="058264536367.dkr.ecr.eu-west-2.amazonaws.com"
+        ECR_REPO_NAME="frontend-apitest-image-repository-containerrepository-ezd6vzi5su3d"
+        ;;
     *)
         echo "Unrecognized deploy env: $DEPLOY_ENV"
         exit 1
@@ -85,7 +94,7 @@ RESOURCES_TO_RETAIN=${RESOURCES_TO_RETAIN:-AccessLogsBucket}
 # -----------------------
 # login to target account
 # -----------------------
-export AWS_PROFILE="di-authentication-development-admin"
+# export AWS_PROFILE="di-authentication-development-admin"
 
 # shellcheck source=./scripts/export_aws_creds.sh
 source "${DIR}/scripts/export_aws_creds.sh"
