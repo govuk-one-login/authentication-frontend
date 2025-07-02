@@ -18,7 +18,7 @@ describe("getContactUsErrorMessage", () => {
       "pages.contactUsFurtherInformation.signingIn.section1.errorMessage"
     );
     expect(getContactUsErrorMessage(CONTACT_US_THEMES.ID_CHECK_APP)).to.eq(
-      "pages.contactUsFurtherInformation.idCheckApp.section1.errorMessage"
+      "pages.contactUsFurtherInformation.govUKLoginAndIdApps.section1.errorMessage"
     );
     expect(
       getContactUsErrorMessage(CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE)
