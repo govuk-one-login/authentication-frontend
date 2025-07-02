@@ -38,83 +38,43 @@
         <input type="hidden" name="appSessionId" value="{{appSessionId}}"/>
     {% endif %}
 
-    {% if isStrategicAppLive %}
-        {% set items = [
-            {
-                value: "account_creation",
-                text: 'pages.contactUsPublic.section3.accountCreation' | translate
-            },
-            {
-                value: "signing_in",
-                text: 'pages.contactUsPublic.section3.signingIn' | translate
-            },
-            {
-                value: "id_check_app",
-                text: 'pages.contactUsPublic.section3.govUKLoginAndIdApps' | translate
-            },
-            {
-                value: "id_face_to_face",
-                text: 'pages.contactUsPublic.section3.provingIdentityFaceToFace' | translate
-            },
-            {
-                value: "proving_identity",
-                text: 'pages.contactUsPublic.section3.provingIdentity' | translate
-            },
-            {
-                value: "suspect_unauthorised_access",
-                text: 'pages.contactUsPublic.section3.suspectUnauthorisedAccess' | translate
-            },
-            {
-                value: "something_else",
-                text: 'pages.contactUsPublic.section3.somethingElse' | translate
-            },
-            {
-                divider: "general.or" | translate | lower
-            },
-            {
-                value: "suggestions_feedback",
-                text: 'pages.contactUsPublic.section3.suggestionsFeedback' | translate
-            }
-        ] %}
-    {% else %}
-        {% set items = [
-            {
-                value: "account_creation",
-                text: 'pages.contactUsPublic.section3.accountCreation' | translate
-            },
-            {
-                value: "signing_in",
-                text: 'pages.contactUsPublic.section3.signingIn' | translate
-            },
-            {
-                value: "id_check_app",
-                text: 'pages.contactUsPublic.section3.idCheckApp' | translate
-            },
-            {
-                value: "id_face_to_face",
-                text: 'pages.contactUsPublic.section3.provingIdentityFaceToFace' | translate
-            },
-            {
-                value: "proving_identity",
-                text: 'pages.contactUsPublic.section3.provingIdentity' | translate
-            },
-            {
-                value: "suspect_unauthorised_access",
-                text: 'pages.contactUsPublic.section3.suspectUnauthorisedAccess' | translate
-            },
-            {
-                value: "something_else",
-                text: 'pages.contactUsPublic.section3.somethingElse' | translate
-            },
-            {
-                divider: "general.or" | translate | lower
-            },
-            {
-                value: "suggestions_feedback",
-                text: 'pages.contactUsPublic.section3.suggestionsFeedback' | translate
-            }
-        ] %}
-    {% endif %}
+    {% set items = [
+        {
+            value: "account_creation",
+            text: 'pages.contactUsPublic.section3.accountCreation' | translate
+        },
+        {
+            value: "signing_in",
+            text: 'pages.contactUsPublic.section3.signingIn' | translate
+        },
+        {
+            value: "id_check_app",
+            text: 'pages.contactUsPublic.section3.govUKLoginAndIdApps' | translate
+        },
+        {
+            value: "id_face_to_face",
+            text: 'pages.contactUsPublic.section3.provingIdentityFaceToFace' | translate
+        },
+        {
+            value: "proving_identity",
+            text: 'pages.contactUsPublic.section3.provingIdentity' | translate
+        },
+        {
+            value: "suspect_unauthorised_access",
+            text: 'pages.contactUsPublic.section3.suspectUnauthorisedAccess' | translate
+        },
+        {
+            value: "something_else",
+            text: 'pages.contactUsPublic.section3.somethingElse' | translate
+        },
+        {
+            divider: "general.or" | translate | lower
+        },
+        {
+            value: "suggestions_feedback",
+            text: 'pages.contactUsPublic.section3.suggestionsFeedback' | translate
+        }
+    ] %}
 
     {{ govukRadios({
         name: "theme",

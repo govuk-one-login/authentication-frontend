@@ -400,9 +400,3 @@ variable "vpc_environment" {
   type        = string
   default     = null
 }
-
-variable "is_strategic_app_live" {
-  type        = string
-  default     = "0"
-  description = "Switch to enable strategic app features"
-}
