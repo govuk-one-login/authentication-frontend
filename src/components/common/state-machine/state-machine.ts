@@ -23,8 +23,6 @@ const USER_JOURNEY_EVENTS = {
   VERIFY_MFA: "VERIFY_MFA",
   PROVE_IDENTITY_CALLBACK: "PROVE_IDENTITY_CALLBACK",
   PROVE_IDENTITY_CALLBACK_STATUS: "PROVE_IDENTITY_CALLBACK_STATUS",
-  DOC_CHECKING_AUTH_REDIRECT: "DOC_CHECKING_AUTH_REDIRECT",
-  DOC_CHECKING_AUTH_CALLBACK: "DOC_CHECKING_AUTH_CALLBACK",
   IDENTITY_CHECKED: "IDENTITY_CHECKED",
   CREATE_ACCOUNT: "CREATE_ACCOUNT",
   ENTER_EMAIL: "ENTER_EMAIL",
@@ -74,7 +72,6 @@ const authStateMachine = createMachine(
       isAuthenticated: false,
       isIdentityRequired: false,
       prompt: OIDC_PROMPT.NONE,
-      skipAuthentication: false,
       mfaMethodType: MFA_METHOD_TYPE.SMS,
       isMfaMethodVerified: true,
       isPasswordChangeRequired: false,
@@ -109,10 +106,6 @@ const authStateMachine = createMachine(
             {
               target: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
               cond: "isReauthenticationRequired",
-            },
-            {
-              target: [PATH_NAMES.DOC_CHECKING_APP],
-              cond: "skipAuthentication",
             },
             { target: [PATH_NAMES.SIGN_IN_OR_CREATE] },
           ],
@@ -617,23 +610,6 @@ const authStateMachine = createMachine(
           ],
         },
       },
-      [PATH_NAMES.DOC_CHECKING_APP]: {
-        on: {
-          [USER_JOURNEY_EVENTS.DOC_CHECKING_AUTH_REDIRECT]: [
-            PATH_NAMES.DOC_CHECKING_APP_CALLBACK,
-          ],
-        },
-      },
-      [PATH_NAMES.DOC_CHECKING_APP_CALLBACK]: {
-        on: {
-          [USER_JOURNEY_EVENTS.DOC_CHECKING_AUTH_CALLBACK]: [
-            PATH_NAMES.AUTH_CODE,
-          ],
-        },
-        meta: {
-          optionalPaths: [PATH_NAMES.DOC_CHECKING_APP],
-        },
-      },
       [PATH_NAMES.AUTH_CODE]: {
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION]: [
@@ -774,9 +750,6 @@ const authStateMachine = createMachine(
       requiresLogin: (context) =>
         context.isAuthenticated === true &&
         context.prompt === OIDC_PROMPT.LOGIN,
-      skipAuthentication: (context) =>
-        context.skipAuthentication === true &&
-        context.isAuthenticated === false,
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.requiresTwoFactorAuth === true,
