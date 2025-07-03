@@ -263,6 +263,7 @@ export const ENVIRONMENT_NAME = {
 export const APP_ENV_NAME = {
   PROD: "production",
   INT: "integration",
+  STAGING: "staging",
   BUILD: "build",
   LOCAL: "local",
 };
