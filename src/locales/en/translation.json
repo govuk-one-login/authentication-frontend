@@ -526,7 +526,7 @@
         "text 2": " or you can ",
         "changePhoneNumberLinkText": "use a different phone number",
         "changePhoneNumberLinkHref": "/enter-phone-number",
-        "changeMfaChoiceLinkText": "Get a code another way",
+        "changeMfaChoiceLinkText": "Choose another way to get security codes",
         "changeMfaChoiceLinkHref": "/get-security-codes"
       }
     },
@@ -2535,19 +2535,21 @@
       "summaryAccountPartCreated": "Choose a way to get security codes when you sign in. This helps keep your GOV.UK One Login secure.",
       "secondFactorRadios": {
         "textMessageText": "Text message",
-        "authAppText": "Authenticator app for smartphone, tablet or computer",
+        "authAppText": "Authenticator app",
+        "authAppHintText": "You can use any authenticator app to create security codes when you sign in",
         "errorMessage": "Select how you want to get security codes"
       },
       "authAppDetails": {
         "summaryText": "What is an authenticator app?",
-        "paragraph1": "An authenticator app creates security codes that you can use to sign in to websites or online services.",
-        "paragraph2": "You can use an authenticator app on your smartphone, tablet or desktop computer.  Download an authenticator app for your smartphone or tablet from your app store or search online for an authenticator app for your computer."
+        "paragraph1": "An authenticator app creates a security code that helps confirm it’s you when you sign in.",
+        "paragraph2": "You can use an authenticator app on your smartphone, tablet or desktop computer.",
+        "paragraph3": "Download an authenticator app from your app store or search online for one you can use on your computer."
       },
       "continueButtonText": "Continue",
       "accountRecoveryVariants": {
         "title": "How do you want to get security codes?",
         "header": "How do you want to get security codes?",
-        "summary": "Choose how you’ll get security codes when signing in to your GOV.UK One Login. This will remove your old phone number or authenticator app from your GOV.UK One Login."
+        "summary": "Choose how you’ll get security codes when signing in to your GOV.UK One Login. This will remove all methods you already have set up."
       }
     },
     "setupAuthenticatorApp": {
@@ -2578,7 +2580,7 @@
         }
       },
       "continueButtonText": "Continue",
-      "changeMfaChoiceLinkText": "Get a code another way"
+      "changeMfaChoiceLinkText": "Choose another way to get security codes"
     },
     "enterAuthenticatorAppCode": {
       "title": "Enter the 6 digit security code shown in your authenticator app",
