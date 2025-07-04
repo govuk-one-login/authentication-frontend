@@ -2975,10 +2975,10 @@ concurrently@9.1.2:
     tree-kill "^1.2.2"
     yargs "^17.7.2"
 
-connect-redis@8.0.3:
-  version "8.0.3"
-  resolved "https://registry.yarnpkg.com/connect-redis/-/connect-redis-8.0.3.tgz#ff82a9f810b3baf3966a5284c66ce92cef892020"
-  integrity sha512-wLIaRv5csDWZsODD/X1vzfF9YKAYVfjJfzxsR6er0jqikM+i4GuBv06kgB8/O3QJWj5ANhYRoym/j1rL459v7g==
+connect-redis@8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/connect-redis/-/connect-redis-8.1.0.tgz#4f57665c07c65bb14351e4fc49f313248edb04e8"
+  integrity sha512-Km0EYLDlmExF52UCss5gLGTtrukGC57G6WCC2aqEMft5Vr4xNWuM4tL+T97kWrw+vp40SXFteb6Xk/7MxgpwdA==
 
 content-disposition@0.5.4:
   version "0.5.4"
