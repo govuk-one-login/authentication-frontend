@@ -221,6 +221,30 @@ describe("security code controller", () => {
 
     it(
       "should render security-code-error/index.njk and set lock when user entered too many SMS OTPs " +
+        "in the uplift journey",
+      () => {
+        process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES = "120";
+        req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
+        req.session.user.isUpliftRequired = true;
+        securityCodeInvalidGet(req as Request, res as Response);
+        expect(res.render).to.have.calledWith("security-code-error/index.njk", {
+          newCodeLink: pathWithQueryParam(
+            PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
+            "actionType",
+            "mfaMaxRetries"
+          ),
+          isAuthApp: false,
+          isBlocked: true,
+          show2HrScreen: true,
+        });
+        expect(req.session.user.wrongCodeEnteredLock).to.eq(
+          "Mon, 01 Jan 2024 02:00:00 GMT"
+        );
+      }
+    );
+
+    it(
+      "should render security-code-error/index.njk and set lock when user entered too many SMS OTPs " +
         "in the account creation journey",
       () => {
         process.env.CODE_ENTERED_WRONG_BLOCKED_MINUTES = "30";

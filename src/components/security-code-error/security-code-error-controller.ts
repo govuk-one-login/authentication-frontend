@@ -201,11 +201,13 @@ function isJourneyWhere2HourLockoutScreenShown(
   const isAccountRecoveryEmail = isEmailCode && user.isAccountRecoveryJourney;
   const isNonAccountCreationEmail =
     isEmailCode && !user.isAccountCreationJourney;
+  const isUpliftRequired = user.isUpliftRequired;
   return (
     isStandardSignInJourney ||
     isPasswordResetJourney ||
     isNonAccountCreationEmail ||
     isAccountRecoveryEmail ||
+    isUpliftRequired ||
     false
   );
 }
