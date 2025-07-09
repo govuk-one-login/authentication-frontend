@@ -107,7 +107,7 @@ const directory_name = dirname(fileURLToPath(import.meta.url));
 
 const APP_VIEWS = [
   path.join(directory_name, "components"),
-  path.resolve("node_modules/govuk-frontend/"),
+  path.resolve("node_modules/govuk-frontend/dist"),
   path.resolve("node_modules/@govuk-one-login/"),
 ];
 
@@ -184,7 +184,7 @@ async function createApp(): Promise<express.Application> {
   app.use(
     "/assets",
     express.static(
-      path.resolve("node_modules/govuk-frontend/govuk/assets"),
+      path.resolve("node_modules/govuk-frontend/dist/govuk/assets"),
       staticAssetOptions
     )
   );
