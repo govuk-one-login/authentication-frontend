@@ -122,48 +122,47 @@ export function enterPasswordPost(
 
     if (!userLogin.success) {
       const errorCode = userLogin.data.code;
-      if (
-        errorCode === ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED ||
-        errorCode === ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
-      ) {
-        return handleMaxCredentialsReached(errorCode, journeyType, res, req);
+
+      switch (errorCode) {
+        case ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED:
+        case ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED:
+          return handleMaxCredentialsReached(errorCode, journeyType, res, req);
+
+        case ERROR_CODES.SESSION_ID_MISSING_OR_INVALID:
+          req.log.warn(
+            `Backend session is missing or invalid - user cannot enter password. Session id ${sessionId}`
+          );
+          return res.redirect(PATH_NAMES.ERROR_PAGE);
+
+        case ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED:
+          return res.render("security-code-error/index-wait.njk");
+
+        case ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES:
+          return res.render(
+            "security-code-error/index-security-code-entered-exceeded.njk",
+            {
+              show2HrScreen: true,
+              contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
+            }
+          );
+
+        default: {
+          const validationKey = fromAccountExists
+            ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY
+            : ENTER_PASSWORD_VALIDATION_KEY;
+          const error = formatValidationError("password", req.t(validationKey));
+
+          return renderBadRequest(
+            res,
+            req,
+            fromAccountExists
+              ? ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE
+              : ENTER_PASSWORD_TEMPLATE,
+            error,
+            { email }
+          );
+        }
       }
-
-      if (errorCode === ERROR_CODES.SESSION_ID_MISSING_OR_INVALID) {
-        req.log.warn(
-          `Backend session is missing or invalid - user cannot enter password. Session id ${sessionId}`
-        );
-        return res.redirect(PATH_NAMES.ERROR_PAGE);
-      }
-
-      if (errorCode === ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
-        return res.render("security-code-error/index-wait.njk");
-      }
-
-      if (errorCode === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
-        return res.render(
-          "security-code-error/index-security-code-entered-exceeded.njk",
-          {
-            show2HrScreen: true,
-            contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
-          }
-        );
-      }
-
-      const validationKey = fromAccountExists
-        ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY
-        : ENTER_PASSWORD_VALIDATION_KEY;
-      const error = formatValidationError("password", req.t(validationKey));
-
-      return renderBadRequest(
-        res,
-        req,
-        fromAccountExists
-          ? ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE
-          : ENTER_PASSWORD_TEMPLATE,
-        error,
-        { email }
-      );
     }
 
     const isPasswordChangeRequired = userLogin.data.passwordChangeRequired;
