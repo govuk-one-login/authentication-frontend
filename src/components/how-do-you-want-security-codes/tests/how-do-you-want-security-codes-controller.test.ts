@@ -138,5 +138,35 @@ describe("how do you want security codes controller", () => {
         PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
       );
     });
+
+    it("should not call sendMfaCode if requested MFA method ID is in sentOtpMfaMethodIds on the user session", async () => {
+      const fakeMfaCodeService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as MfaServiceInterface;
+
+      req.session.user.activeMfaMethodId = defaultId;
+      req.body["mfa-method-id"] = backupId;
+      req.session.user.sentOtpMfaMethodIds = [defaultId, backupId];
+      req.session.user.mfaMethods = buildMfaMethods([
+        {
+          id: defaultId,
+          redactedPhoneNumber: "07123456789",
+        },
+        {
+          id: backupId,
+          redactedPhoneNumber: "07987654321",
+        },
+      ]);
+
+      await howDoYouWantSecurityCodesPost(fakeMfaCodeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeMfaCodeService.sendMfaCode).to.not.have.been.called;
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ENTER_MFA);
+    });
   });
 });
