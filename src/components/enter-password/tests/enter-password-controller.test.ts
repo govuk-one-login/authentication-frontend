@@ -361,6 +361,7 @@ describe("enter password controller", () => {
       } as unknown as MfaServiceInterface;
 
       it("should redirect to enter-code when the password is correct", async () => {
+        req.session.user.activeMfaMethodId = DEFAULT_MFA_METHOD_ID;
         const fakeService: EnterPasswordServiceInterface = {
           loginUser: sinon.fake.returns({
             data: {
@@ -386,6 +387,9 @@ describe("enter password controller", () => {
 
         expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_MFA);
         expect(req.session.user.isAccountPartCreated).to.be.eq(false);
+        expect(req.session.user.sentOtpMfaMethodIds).to.deep.equal([
+          DEFAULT_MFA_METHOD_ID,
+        ]);
       });
 
       it("should redirect to account locked page when max password attempts exceeded", async () => {
