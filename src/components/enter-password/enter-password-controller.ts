@@ -177,30 +177,17 @@ export function enterPasswordPost(
     req.session.user.isPasswordChangeRequired = isPasswordChangeRequired;
     req.session.user.mfaMethodType = userLogin.data.mfaMethodType;
 
-    if (isPasswordChangeRequired && supportAccountInterventions()) {
-      const accountInterventionsResponse =
-        await accountInterventionsService.accountInterventionStatus(
-          sessionId,
-          email,
-          clientSessionId,
-          persistentSessionId,
-          req
-        );
-      if (
-        accountInterventionsResponse.data.passwordResetRequired ||
-        accountInterventionsResponse.data.temporarilySuspended ||
-        accountInterventionsResponse.data.blocked
-      ) {
-        return res.redirect(
-          await getNextPathAndUpdateJourney(
-            req,
-            req.path,
-            USER_JOURNEY_EVENTS.COMMON_PASSWORD_AND_AIS_STATUS,
-            null,
-            sessionId
-          )
-        );
-      }
+    const interventionRedirect = await handleAccountInterventions(
+      isPasswordChangeRequired,
+      accountInterventionsService,
+      sessionId,
+      email,
+      clientSessionId,
+      persistentSessionId,
+      req
+    );
+    if (interventionRedirect) {
+      return res.redirect(interventionRedirect);
     }
 
     req.session.user.isSignInJourney = true;
@@ -248,6 +235,45 @@ export function enterPasswordPost(
       )
     );
   };
+
+  async function handleAccountInterventions(
+    isPasswordChangeRequired: boolean,
+    accountInterventionsService: AccountInterventionsInterface,
+    sessionId: string,
+    email: string,
+    clientSessionId: string,
+    persistentSessionId: string,
+    req: Request
+  ): Promise<string | null> {
+    if (!isPasswordChangeRequired || !supportAccountInterventions()) {
+      return null;
+    }
+
+    const accountInterventionsResponse =
+      await accountInterventionsService.accountInterventionStatus(
+        sessionId,
+        email,
+        clientSessionId,
+        persistentSessionId,
+        req
+      );
+
+    if (
+      accountInterventionsResponse.data.passwordResetRequired ||
+      accountInterventionsResponse.data.temporarilySuspended ||
+      accountInterventionsResponse.data.blocked
+    ) {
+      return await getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.COMMON_PASSWORD_AND_AIS_STATUS,
+        null,
+        sessionId
+      );
+    }
+
+    return null;
+  }
 
   function handleMaxCredentialsReached(
     errorCode: number,
