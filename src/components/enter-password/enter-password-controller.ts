@@ -147,20 +147,20 @@ export function enterPasswordPost(
           );
 
         default: {
-          const validationKey = fromAccountExists
-            ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY
-            : ENTER_PASSWORD_VALIDATION_KEY;
+          let validationKey;
+          let template;
+
+          if (fromAccountExists) {
+            validationKey = ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY;
+            template = ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE;
+          } else {
+            validationKey = ENTER_PASSWORD_VALIDATION_KEY;
+            template = ENTER_PASSWORD_TEMPLATE;
+          }
+
           const error = formatValidationError("password", req.t(validationKey));
 
-          return renderBadRequest(
-            res,
-            req,
-            fromAccountExists
-              ? ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE
-              : ENTER_PASSWORD_TEMPLATE,
-            error,
-            { email }
-          );
+          return renderBadRequest(res, req, template, error, { email });
         }
       }
     }
