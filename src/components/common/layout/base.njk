@@ -35,16 +35,16 @@
 
 {% block header %}
     {% if isApp %}
-    {{ strategicAppHeader({
-        useTudorCrown: true,
-        classes: phaseBannerClasses
-    })}}
+        {{ strategicAppHeader({
+            useTudorCrown: true,
+            classes: phaseBannerClasses
+        })}}
     {% else %}
-    {{ govukHeader({
-        homepageUrl: 'general.header.homepageHref' | translate,
-        useTudorCrown: true,
-        classes: phaseBannerClasses
-    })}}
+        {{ govukHeader({
+            homepageUrl: 'general.header.homepageHref' | translate,
+            useTudorCrown: true,
+            classes: phaseBannerClasses
+        })}}
     {% endif %}
 {% endblock %}
 
