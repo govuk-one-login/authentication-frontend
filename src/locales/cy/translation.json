@@ -721,17 +721,20 @@
       "paragraph2": "i’ch GOV.UK One Login."
     },
     "updatedTermsAndConds": {
-      "title": "Diweddariad telerau defnyddio GOV.UK One Login",
-      "header": "Diweddariad telerau defnyddio GOV.UK One Login",
+      "title": "Rydym wedi diweddaru ein telerau defnyddio",
+      "header": "Rydym wedi diweddaru ein telerau defnyddio",
       "paragraph1": {
-        "text": "Rydym wedi diweddaru ein ",
+        "text": "Drwy barhau rydych yn cytuno i ",
         "termsAndConditionsHref": "terms-and-conditions",
-        "termsAndConditionsText": "telerau ac amodau",
-        "and": "a",
-        "privacyNoticeHref": "/privacy-notice",
-        "privacyNoticeText": "hysbysiad preifatrwydd"
+        "termsAndConditionsText": "delerau ac amodau",
+        "text2": " GOV.UK One Login."
       },
-      "paragraph2": "Drwy barhau rydych yn cytuno i’n telerau defnydd wedi’u diweddaru.",
+      "paragraph2": {
+        "text": "I ddarganfod sut rydym yn defnyddio eich gwybodaeth bersonol, gweler ein ",
+        "privacyNoticeHref": "/govuk-one-login-privacy-notice",
+        "privacyNoticeText": "hysbysiad preifatrwydd",
+        "text2": "."
+      },
       "agreeAndContinue": "Parhau"
     },
     "cookiePolicy": {
