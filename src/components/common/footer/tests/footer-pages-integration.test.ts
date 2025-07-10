@@ -37,7 +37,7 @@ describe("Integration:: privacy notice link", () => {
     it(`should redirect to the welsh privacy notice when the lng cookie is cy for ${path}`, async () => {
       process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "1";
       const app = await createApp();
-      await request(app, (test) => test.get(path).set("cookie", ["lng=cy"]), {
+      await request(app, (test) => test.get(path).set("Cookie", ["lng=cy"]), {
         expectAnalyticsPropertiesMatchSnapshot: false,
       })
         .expect(302)
