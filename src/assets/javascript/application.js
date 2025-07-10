@@ -91,7 +91,6 @@ function initDynaTraceRUM(hasConsentedForAnalytics) {
 })();
 
 window.addEventListener("load", (event) => {
-  window.GOVUKFrontend.initAll();
   initEnterPhoneNumber();
 
   if (
