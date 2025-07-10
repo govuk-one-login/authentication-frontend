@@ -12,6 +12,7 @@ const router = express.Router();
 
 router.get(PATH_NAMES.ACCESSIBILITY_STATEMENT, accessibilityStatementGet);
 router.get(PATH_NAMES.PRIVACY_POLICY, privacyStatementGet);
+router.get(PATH_NAMES.PRIVACY_POLICY_NEW, privacyStatementGet);
 router.get(PATH_NAMES.PRIVACY_STATEMENT, privacyStatementGet);
 router.get(PATH_NAMES.TERMS_AND_CONDITIONS, termsConditionsGet);
 router.get(PATH_NAMES.SUPPORT, supportGet);
