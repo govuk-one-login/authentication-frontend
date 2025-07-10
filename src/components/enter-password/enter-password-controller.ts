@@ -226,6 +226,10 @@ export function enterPasswordPost(
 
       if (!result.success) {
         return handleSendMfaCodeError(result, res);
+      } else {
+        req.session.user.sentOtpMfaMethodIds = [
+          req.session.user.activeMfaMethodId,
+        ];
       }
     }
     return res.redirect(
