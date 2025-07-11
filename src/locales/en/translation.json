@@ -446,16 +446,20 @@
           "matches": "Enter the same password in both fields"
         }
       },
-      "termsOfUse": {
-        "heading": "Agree to the GOV.UK One Login terms of use",
-        "paragraph1": "By continuing, you confirm that you agree to our:",
-        "bullet1LinkText": "privacy notice (opens in a new tab)",
-        "bullet1LinkTextApp": "privacy notice",
-        "bullet1Text": ", which explains how we use your personal information",
-        "bullet1LinkHref": "/privacy-notice",
-        "bullet2LinkText": "terms and conditions (opens in a new tab)",
-        "bullet2LinkTextApp": "terms and conditions",
-        "bullet2LinkHref": "/terms-and-conditions"
+      "termsAndConditions": {
+        "header": "Agree to the GOV.UK One Login terms and conditions",
+        "paragraph1": {
+          "text1": "By continuing, you confirm that you agree to our ",
+          "termsAndConditionsHref": "/terms-and-conditions",
+          "termsAndConditionsText": "terms and conditions (opens in a new tab)",
+          "text2": "."
+        },
+        "paragraph2": {
+          "text1": "To find out how we use your personal information, see our ",
+          "privacyNoticeHref": "/govuk-one-login-privacy-notice",
+          "privacyNoticeText": "privacy notice (opens in a new tab)",
+          "text2": "."
+        }
       }
     },
     "enterPhoneNumber": {
