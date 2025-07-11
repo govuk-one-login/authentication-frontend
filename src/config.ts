@@ -190,3 +190,7 @@ export function showTestBanner(): boolean {
 export function getPrivacyNoticeRedirectEnabled(): boolean {
   return process.env.PRIVACY_NOTICE_REDIRECT_ENABLED === "1";
 }
+
+export function useRebrand(): boolean {
+  return process.env.USE_REBRAND === "1";
+}

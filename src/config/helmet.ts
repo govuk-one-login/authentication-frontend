@@ -10,7 +10,7 @@ export const helmetConfiguration: HelmetOptions = {
         "'self'",
         (req: Request, res: Response): string =>
           `'nonce-${res.locals.scriptNonce}'`,
-        "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
+        "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
         "https://*.googletagmanager.com",
         "https://www.google-analytics.com",
         "https://ssl.google-analytics.com",

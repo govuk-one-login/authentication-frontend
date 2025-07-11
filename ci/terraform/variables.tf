@@ -400,3 +400,9 @@ variable "vpc_environment" {
   type        = string
   default     = null
 }
+
+variable "use_rebrand" {
+  type        = string
+  description = "Should the rebranded design system be enabled"
+  default     = "0"
+}

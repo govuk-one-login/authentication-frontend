@@ -92,6 +92,7 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             "SUPPORT_NEW_IPV_SPINNER": 0,
             "SUPPORT_HTTP_KEEP_ALIVE": 0,
             "PRIVACY_NOTICE_REDIRECT_ENABLED": 1,
+            "USE_REBRAND": 1,
         },
     },
     {

@@ -17,6 +17,7 @@ support_reauthentication      = "1"
 language_toggle_enabled       = "1"
 no_photo_id_contact_forms     = "1"
 support_new_ipv_spinner       = "0"
+use_rebrand                   = "1"
 
 code_request_blocked_minutes                        = "120"
 account_recovery_code_entered_wrong_blocked_minutes = "120"

@@ -15,6 +15,7 @@ url_for_support_links                               = "https://home.build.accoun
 language_toggle_enabled                             = "1"
 no_photo_id_contact_forms                           = "1"
 support_new_ipv_spinner                             = "0"
+use_rebrand                                         = "1"
 
 frontend_task_definition_cpu     = 512
 frontend_task_definition_memory  = 1024

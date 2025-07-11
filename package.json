@@ -11,10 +11,10 @@
   "scripts": {
     "build-ts": "tsc",
     "build": "yarn build-sass && yarn build-ts && yarn minfiy-build-js && yarn copy-assets",
-    "build-sass": "rm -rf dist/public/style.css && sass --load-path=node_modules/govuk-frontend/govuk --no-source-map --quiet-deps src/assets/scss/application.scss dist/public/style.css --style compressed",
+    "build-sass": "rm -rf dist/public/style.css && sass --load-path=node_modules/govuk-frontend/dist/govuk --no-source-map --quiet-deps src/assets/scss/application.scss dist/public/style.css --style compressed",
     "clean": "rm -rf dist node_modules logs.json",
     "clean-modules": "rm -rf node_modules",
-    "copy-assets": "mkdir -p dist && copyfiles -u 1 src/**/*.njk dist/ src/locales/**/** dist/ src/config/*.txt dist/ && copyfiles -u 3 src/assets/javascript/*.js dist/public/scripts -e **/all.js && cp node_modules/govuk-frontend/govuk/all.js dist/public/scripts && cp node_modules/@govuk-one-login/frontend-analytics/lib/analytics.js dist/public/scripts && cp node_modules/@govuk-one-login/spinner/spinner-app.js dist/public/scripts && cp node_modules/@govuk-one-login/frontend-device-intelligence/build/esm/index.js dist/public/scripts/device-intelligence.js",
+    "copy-assets": "mkdir -p dist && copyfiles -u 1 src/**/*.njk dist/ src/locales/**/** dist/ src/config/*.txt dist/ && copyfiles -u 3 src/assets/javascript/*.js dist/public/scripts && cp node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js dist/public/scripts && cp node_modules/@govuk-one-login/frontend-analytics/lib/analytics.js dist/public/scripts && cp node_modules/@govuk-one-login/spinner/spinner-app.js dist/public/scripts && cp node_modules/@govuk-one-login/frontend-device-intelligence/build/esm/index.js dist/public/scripts/device-intelligence.js",
     "dev": "yarn build-ts && concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\"",
     "dummy-server": "node dev-app.js | pino-pretty",
     "dummy-server-orchstub": "node dev-app-orchstub.js | pino-pretty",
@@ -36,7 +36,7 @@
     "test:dev-evironment-variables": "mocha dev-check-environment.js",
     "watch-node": "nodemon -r dotenv/config --inspect=0.0.0.0:9230 dist/server.js | pino-pretty",
     "watch-ts": "tsc -w",
-    "watch-sass": "sass --load-path=node_modules/govuk-frontend/govuk --watch --quiet-deps src/assets/scss/application.scss dist/public/style.css",
+    "watch-sass": "sass --load-path=node_modules/govuk-frontend/dist/govuk --watch --quiet-deps src/assets/scss/application.scss dist/public/style.css",
     "dev:render-user-journey-documentation": "node --loader ts-node/esm ./scripts/render-user-journey-documentation.ts"
   },
   "mocha": {
@@ -87,7 +87,7 @@
     "express-session": "1.18.1",
     "express-validator": "6.13.0",
     "globals": "16.0.0",
-    "govuk-frontend": "4.9.0",
+    "govuk-frontend": "5.11.0",
     "helmet": "8.1.0",
     "i18next": "24.2.3",
     "i18next-fs-backend": "2.6.0",
