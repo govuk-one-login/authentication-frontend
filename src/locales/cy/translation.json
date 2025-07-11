@@ -446,16 +446,20 @@
           "matches": "Rhowch yr un cyfrinair yn y ddau faes"
         }
       },
-      "termsOfUse": {
-        "heading": "Cytuno i delerau defnyddio GOV.UK One Login",
-        "paragraph1": "Drwy barhau, rydych yn cadarnhau eich bod yn cytuno i’n:",
-        "bullet1LinkText": "hysbysiad preifatrwydd (agor mewn tab newydd)",
-        "bullet1LinkTextApp": "hysbysiad preifatrwydd",
-        "bullet1Text": ", sy’n egluro sut rydym yn defnyddio eich gwybodaeth bersonol",
-        "bullet1LinkHref": "/privacy-notice",
-        "bullet2LinkText": "telerau ac amodau (agor mewn tab newydd)",
-        "bullet2LinkTextApp": "telerau ac amodau",
-        "bullet2LinkHref": "/terms-and-conditions"
+      "termsAndConditions": {
+        "header": "Cytuno â thelerau ac amodau GOV.UK One Login",
+        "paragraph1": {
+          "text1": "Drwy barhau, rydych yn cadarnhau eich bod yn cytuno â’n ",
+          "termsAndConditionsHref": "/terms-and-conditions",
+          "termsAndConditionsText": "telerau ac amodau (agor mewn tab newydd)",
+          "text2": "."
+        },
+        "paragraph2": {
+          "text1": "I ddarganfod sut rydym yn defnyddio eich gwybodaeth bersonol, gweler ein ",
+          "privacyNoticeHref": "/govuk-one-login-privacy-notice",
+          "privacyNoticeText": "hysbysiad preifatrwydd (agor mewn tab newydd)",
+          "text2": "."
+        }
       }
     },
     "enterPhoneNumber": {
