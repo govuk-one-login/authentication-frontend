@@ -17,53 +17,51 @@ describe("Integration:: privacy notice link", () => {
       });
   });
 
-  it("should redirect to the privacy notice when the feature flag is enabled", async () => {
-    process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "1";
-    const app = await createApp();
-    await request(app, (test) => test.get(PATH_NAMES.PRIVACY_POLICY), {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    })
-      .expect(302)
-      .then((res) => {
-        expect(res.headers["location"]).to.equal(
-          "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice"
-        );
-      });
+  [PATH_NAMES.PRIVACY_POLICY, PATH_NAMES.PRIVACY_POLICY_NEW].forEach((path) => {
+    it(`should redirect to the privacy notice when the feature flag is enabled for ${path}`, async () => {
+      process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "1";
+      const app = await createApp();
+      await request(app, (test) => test.get(path), {
+        expectAnalyticsPropertiesMatchSnapshot: false,
+      })
+        .expect(302)
+        .then((res) => {
+          expect(res.headers["location"]).to.equal(
+            "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice"
+          );
+        });
+    });
   });
 
-  it("should redirect to the welsh privacy notice when the lng cookie is cy", async () => {
-    process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "1";
-    const app = await createApp();
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.PRIVACY_POLICY).set("cookie", ["lng=cy"]),
-      {
+  [PATH_NAMES.PRIVACY_POLICY, PATH_NAMES.PRIVACY_POLICY_NEW].forEach((path) => {
+    it(`should redirect to the welsh privacy notice when the lng cookie is cy for ${path}`, async () => {
+      process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "1";
+      const app = await createApp();
+      await request(app, (test) => test.get(path).set("Cookie", ["lng=cy"]), {
         expectAnalyticsPropertiesMatchSnapshot: false,
-      }
-    )
-      .expect(302)
-      .then((res) => {
-        expect(res.headers["location"]).to.equal(
-          "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice.cy"
-        );
-      });
+      })
+        .expect(302)
+        .then((res) => {
+          expect(res.headers["location"]).to.equal(
+            "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice.cy"
+          );
+        });
+    });
   });
 
-  it("should redirect to the welsh privacy notice when the lng query param is cy", async () => {
-    process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "1";
-    const app = await createApp();
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.PRIVACY_POLICY + "?lng=cy"),
-      {
+  [PATH_NAMES.PRIVACY_POLICY, PATH_NAMES.PRIVACY_POLICY_NEW].forEach((path) => {
+    it(`should redirect to the welsh privacy notice when the lng query param is cy for ${path}`, async () => {
+      process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "1";
+      const app = await createApp();
+      await request(app, (test) => test.get(path + "?lng=cy"), {
         expectAnalyticsPropertiesMatchSnapshot: false,
-      }
-    )
-      .expect(302)
-      .then((res) => {
-        expect(res.headers["location"]).to.equal(
-          "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice.cy"
-        );
-      });
+      })
+        .expect(302)
+        .then((res) => {
+          expect(res.headers["location"]).to.equal(
+            "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice.cy"
+          );
+        });
+    });
   });
 });

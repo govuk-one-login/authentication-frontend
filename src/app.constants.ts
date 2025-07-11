@@ -10,6 +10,7 @@ export const PATH_NAMES = {
   ACCOUNT_INTERVENTIONS: "/account-interventions",
   TERMS_AND_CONDITIONS: "/terms-and-conditions",
   PRIVACY_POLICY: "/privacy-notice",
+  PRIVACY_POLICY_NEW: "/govuk-one-login-privacy-notice",
   PRIVACY_STATEMENT: "/privacy-statement",
   SUPPORT: "/support",
   SIGN_IN_OR_CREATE: "/sign-in-or-create",

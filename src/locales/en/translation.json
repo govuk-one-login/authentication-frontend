@@ -721,17 +721,20 @@
       "paragraph2": "to your GOV.UK One Login."
     },
     "updatedTermsAndConds": {
-      "title": "GOV.UK One Login terms of use update",
-      "header": "GOV.UK One Login terms of use update",
+      "title": "We’ve updated our terms of use",
+      "header": "We’ve updated our terms of use",
       "paragraph1": {
-        "text": "We’ve updated our ",
-        "termsAndConditionsHref": "terms-and-conditions",
+        "text": "By continuing you agree to the GOV.UK One Login ",
+        "termsAndConditionsHref": "/terms-and-conditions",
         "termsAndConditionsText": "terms and conditions",
-        "and": "and",
-        "privacyNoticeHref": "/privacy-notice",
-        "privacyNoticeText": "privacy notice"
+        "text2": "."
       },
-      "paragraph2": "By continuing you agree to our updated terms of use.",
+      "paragraph2": {
+        "text": "To find out how we use your personal information, see our ",
+        "privacyNoticeHref": "/govuk-one-login-privacy-notice",
+        "privacyNoticeText": "privacy notice",
+        "text2": "."
+      },
       "agreeAndContinue": "Continue"
     },
     "cookiePolicy": {
