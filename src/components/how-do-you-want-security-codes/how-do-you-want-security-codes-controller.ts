@@ -27,7 +27,7 @@ export function howDoYouWantSecurityCodesGet(
 
   res.render("how-do-you-want-security-codes/index.njk", {
     mfaResetLink: PATH_NAMES.MFA_RESET_WITH_IPV,
-    mfaMethods: sortMfaMethodsBackupFirst(req.session.user.mfaMethods || []),
+    mfaMethods: sortMfaMethodsBackupFirst(req.session.user.mfaMethods ?? []),
     supportMfaReset,
   });
 }
@@ -49,25 +49,33 @@ export function howDoYouWantSecurityCodesPost(
     if (selectedMethod.type === MFA_METHOD_TYPE.SMS) {
       if (mfaMethodId !== req.session.user.activeMfaMethodId) {
         req.session.user.activeMfaMethodId = mfaMethodId;
-        const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
-        const result = await mfaCodeService.sendMfaCode(
-          sessionId,
-          clientSessionId,
-          email,
-          persistentSessionId,
-          false,
-          xss(req.cookies.lng as string),
-          req,
-          req.session.user.activeMfaMethodId,
-          getJourneyTypeFromUserSession(req.session.user, {
-            includeReauthentication: true,
-            includePasswordResetMfa: true,
-          })
-        );
+        req.session.user.sentOtpMfaMethodIds ??= [];
 
-        if (!result.success) {
-          return handleSendMfaCodeError(result, res);
+        if (!req.session.user.sentOtpMfaMethodIds.includes(mfaMethodId)) {
+          const { sessionId, clientSessionId, persistentSessionId } =
+            res.locals;
+
+          const result = await mfaCodeService.sendMfaCode(
+            sessionId,
+            clientSessionId,
+            email,
+            persistentSessionId,
+            false,
+            xss(req.cookies.lng as string),
+            req,
+            req.session.user.activeMfaMethodId,
+            getJourneyTypeFromUserSession(req.session.user, {
+              includeReauthentication: true,
+              includePasswordResetMfa: true,
+            })
+          );
+
+          if (!result.success) {
+            return handleSendMfaCodeError(result, res);
+          }
+
+          req.session.user.sentOtpMfaMethodIds.push(mfaMethodId);
         }
       }
 
