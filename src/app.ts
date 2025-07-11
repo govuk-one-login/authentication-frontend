@@ -73,8 +73,6 @@ import session from "express-session";
 import { healthcheckRouter } from "./components/healthcheck/healthcheck-routes.js";
 import { crossDomainTrackingMiddleware } from "./middleware/cross-domain-tracking-middleware.js";
 import { proveIdentityCallbackRouter } from "./components/prove-identity-callback/prove-identity-callback-routes.js";
-import { docCheckingAppRouter } from "./components/doc-checking-app/doc-checking-app-routes.js";
-import { docCheckingAppCallbackRouter } from "./components/doc-checking-app-callback/doc-checking-app-callback-routes.js";
 import { selectMFAOptionsRouter } from "./components/select-mfa-options/select-mfa-options-routes.js";
 import { setupAuthenticatorAppRouter } from "./components/setup-authenticator-app/setup-authenticator-app-routes.js";
 import { enterAuthenticatorAppCodeRouter } from "./components/enter-authenticator-app-code/enter-authenticator-app-code-routes.js";
@@ -147,8 +145,6 @@ function registerRoutes(app: express.Application) {
   app.use(contactUsRouter);
   app.use(proveIdentityCallbackRouter);
   app.use(cookiesRouter);
-  app.use(docCheckingAppRouter);
-  app.use(docCheckingAppCallbackRouter);
   app.use(errorPageRouter);
   if (supportAccountInterventions()) {
     app.use(accountInterventionRouter);
