@@ -162,10 +162,15 @@
 
 {% block bodyEnd %}
     {% block scripts %}{% endblock %}
-    <script type="module" src="/public/scripts/govuk-frontend.min.js"></script>
     <script type="text/javascript" src="/public/scripts/dataLayerEvents.js"></script>
     <script type="text/javascript" src="/public/scripts/application.js"></script>
     <script type="text/javascript" src="/public/scripts/analytics.js"></script>
+
+    <script type="module" src="/public/scripts/govuk-frontend.min.js" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}></script>
+    <script type="module" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
+        import { initAll } from '/public/scripts/govuk-frontend.min.js'
+        initAll()
+    </script>
 
     <script type="text/javascript" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
       import("/public/scripts/device-intelligence.js").then(({setFingerprintCookie}) => {
