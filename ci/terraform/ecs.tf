@@ -190,6 +190,10 @@ locals {
       {
         name  = "ROUTE_USERS_TO_NEW_IPV_JOURNEY"
         value = var.route_users_to_new_ipv_journey
+      },
+      {
+        name  = "USE_REBRAND"
+        value = var.use_rebrand
       }
     ]
 
