@@ -2013,7 +2013,7 @@
         "emailLabel": "Cyfeiriad e-bost",
         "emailHint": "Byddwn ond yn defnyddio hyn i ymateb i’ch neges",
         "nameLabel": "Enw (Dewisol)",
-        "privacyNote": "Darllenwch ein <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">hysbysiad preifatrwydd</a> am fwy o wybodaeth am sut rydym yn defnyddio eich gwybodaeth bersonol."
+        "privacyNote": "Darllenwch ein <a href=\"/govuk-one-login-privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">hysbysiad preifatrwydd</a> am fwy o wybodaeth am sut rydym yn defnyddio eich gwybodaeth bersonol."
       },
       "textMessageInternationNumberConditionalSection": {
         "heading": "Pa wlad?",
