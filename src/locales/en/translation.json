@@ -2012,7 +2012,7 @@
         "emailLabel": "Email address",
         "emailHint": "We will only use this to reply to your message",
         "nameLabel": "Name (Optional)",
-        "privacyNote": "Read our <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">privacy notice</a> for more information on how we use your personal information."
+        "privacyNote": "Read our <a href=\"/govuk-one-login-privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">privacy notice</a> for more information on how we use your personal information."
       },
       "textMessageInternationNumberConditionalSection": {
         "heading": "Which country?",
