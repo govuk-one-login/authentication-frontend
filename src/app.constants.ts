@@ -11,7 +11,6 @@ export const PATH_NAMES = {
   TERMS_AND_CONDITIONS: "/terms-and-conditions",
   PRIVACY_POLICY: "/privacy-notice",
   PRIVACY_POLICY_NEW: "/govuk-one-login-privacy-notice",
-  PRIVACY_STATEMENT: "/privacy-statement",
   SUPPORT: "/support",
   SIGN_IN_OR_CREATE: "/sign-in-or-create",
   ENTER_EMAIL_CREATE_ACCOUNT: "/enter-email-create",
