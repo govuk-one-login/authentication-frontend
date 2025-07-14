@@ -39,7 +39,7 @@ import { serverErrorHandler } from "./handlers/internal-server-error-handler.js"
 import { csrfMiddleware } from "./middleware/csrf-middleware.js";
 import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-routes.js";
 import { landingRouter } from "./components/landing/landing-route.js";
-import { ENVIRONMENT_NAME } from "./app.constants.js";
+import { APP_ENV_NAME, ENVIRONMENT_NAME } from "./app.constants.js";
 import { enterMfaRouter } from "./components/enter-mfa/enter-mfa-routes.js";
 import { howDoYouWantSecurityCodesRouter } from "./components/how-do-you-want-security-codes/how-do-you-want-security-codes-routes.js";
 import { authCodeRouter } from "./components/auth-code/auth-code-routes.js";
@@ -167,7 +167,7 @@ async function createApp(): Promise<express.Application> {
 
   app.use(loggerMiddleware);
   app.use(healthcheckRouter);
-  if (getAppEnv() === "staging") {
+  if (getAppEnv() === APP_ENV_NAME.STAGING) {
     const protect = applyOverloadProtection(isProduction);
     app.use(protect);
   }
@@ -180,6 +180,18 @@ async function createApp(): Promise<express.Application> {
     immutable: false,
     maxAge: "60s",
   };
+
+  // The journey map is not secret (this is a public repo)
+  // but we don't want to display it in external-facing environments
+  if (getAppEnv() !== APP_ENV_NAME.PROD && getAppEnv() !== APP_ENV_NAME.INT) {
+    app.use(
+      "/journey-map",
+      express.static(
+        path.resolve(directory_name, "../journey-map/public"),
+        staticAssetOptions
+      )
+    );
+  }
 
   app.use(
     "/assets",
