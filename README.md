@@ -122,6 +122,10 @@ You can also add an additional service with a different VTR by duplicating the `
 giving it a new name and amending the `PORT` and `VTR` environment variables. The `ports` entry, must reflect the port
 number in the `PORT` environment variable. Each service must have a unique port number.
 
+### The service down page
+
+The service down page starts up automatically when the startup script is run. It can be tested by going to [http://localhost:3005](http://localhost:3005).
+
 ### Running the tests
 
 The unit tests have been written with Mocha and Supertest.
