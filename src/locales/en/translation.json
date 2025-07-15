@@ -452,12 +452,14 @@
           "text1": "By continuing, you confirm that you agree to our ",
           "termsAndConditionsHref": "/terms-and-conditions",
           "termsAndConditionsText": "terms and conditions (opens in a new tab)",
+          "termsAndConditionsTextApp": "terms and conditions",
           "text2": "."
         },
         "paragraph2": {
           "text1": "To find out how we use your personal information, see our ",
           "privacyNoticeHref": "/govuk-one-login-privacy-notice",
           "privacyNoticeText": "privacy notice (opens in a new tab)",
+          "privacyNoticeTextApp": "privacy notice",
           "text2": "."
         }
       }
