@@ -69,7 +69,6 @@ const authStateMachine = createMachine(
       isLatestTermsAndConditionsAccepted: true,
       requiresUplift: false,
       requiresTwoFactorAuth: false,
-      isAuthenticated: false,
       isIdentityRequired: false,
       prompt: OIDC_PROMPT.NONE,
       mfaMethodType: MFA_METHOD_TYPE.SMS,
@@ -96,11 +95,7 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
               cond: "isReauthenticationRequired",
             },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
-            { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
+            { target: [PATH_NAMES.AUTH_CODE] },
           ],
           [USER_JOURNEY_EVENTS.NO_EXISTING_SESSION]: [
             {
@@ -734,22 +729,17 @@ const authStateMachine = createMachine(
     guards: {
       isLatestTermsAndConditionsAccepted: (context) =>
         context.isLatestTermsAndConditionsAccepted === false,
-      requiresUplift: (context) =>
-        context.requiresUplift === true && context.isAuthenticated === true,
+      requiresUplift: (context) => context.requiresUplift === true,
       isReauthenticationRequired: (context) =>
         context.isReauthenticationRequired,
       requiresAuthAppUplift: (context) =>
         context.requiresUplift === true &&
-        context.isAuthenticated === true &&
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP,
       requiresTwoFactorAuth: (context) =>
         context.requiresTwoFactorAuth === true,
       isAccountPartCreated: (context) => context.isMfaMethodVerified === false,
       isIdentityRequired: (context) => context.isIdentityRequired === true,
-      isAuthenticated: (context) => context.isAuthenticated === true,
-      requiresLogin: (context) =>
-        context.isAuthenticated === true &&
-        context.prompt === OIDC_PROMPT.LOGIN,
+      requiresLogin: (context) => context.prompt === OIDC_PROMPT.LOGIN,
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.requiresTwoFactorAuth === true,
