@@ -362,10 +362,6 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
               cond: "isLatestTermsAndConditionsAccepted",
             },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -389,10 +385,6 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
               cond: "isLatestTermsAndConditionsAccepted",
             },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -415,10 +407,6 @@ const authStateMachine = createMachine(
       [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS]: {
         on: {
           [USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED]: [
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -525,10 +513,6 @@ const authStateMachine = createMachine(
             {
               target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
               cond: "isLatestTermsAndConditionsAccepted",
-            },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
             },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
