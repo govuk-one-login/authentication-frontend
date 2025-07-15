@@ -517,20 +517,6 @@ const authStateMachine = createMachine(
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
-        [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
-          on: {
-            [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [
-              PATH_NAMES.CHECK_YOUR_PHONE,
-            ],
-          },
-          meta: {
-            optionalPaths: [
-              PATH_NAMES.SECURITY_CODE_WAIT,
-              PATH_NAMES.SECURITY_CODE_INVALID,
-              PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
-            ],
-          },
-        },
         meta: {
           optionalPaths: [
             PATH_NAMES.ENTER_EMAIL_SIGN_IN,
@@ -557,20 +543,6 @@ const authStateMachine = createMachine(
             },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
-        },
-        [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
-          on: {
-            [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [
-              PATH_NAMES.CHECK_YOUR_PHONE,
-            ],
-          },
-          meta: {
-            optionalPaths: [
-              PATH_NAMES.SECURITY_CODE_WAIT,
-              PATH_NAMES.SECURITY_CODE_INVALID,
-              PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
-            ],
-          },
         },
         meta: {
           optionalPaths: [
