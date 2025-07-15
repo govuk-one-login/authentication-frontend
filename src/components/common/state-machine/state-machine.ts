@@ -77,8 +77,6 @@ const authStateMachine = createMachine(
       isAccountRecoveryJourney: false,
       isPasswordResetJourney: false,
       isReauthenticationRequired: false,
-      requiresResetPasswordMFASmsCode: false,
-      requiresResetPasswordMFAAuthAppCode: false,
       isOnForcedPasswordResetJourney: false,
     },
     states: {
