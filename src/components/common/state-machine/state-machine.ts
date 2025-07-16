@@ -61,24 +61,28 @@ const USER_JOURNEY_EVENTS = {
   SELECT_AUTH_APP_MFA_METHOD: "SELECT_AUTH_APP_MFA_METHOD",
 };
 
-const authStateMachine = createMachine(
+const defaultContext = {
+  isLatestTermsAndConditionsAccepted: true,
+  requiresUplift: false,
+  requiresTwoFactorAuth: false,
+  isIdentityRequired: false,
+  prompt: OIDC_PROMPT.NONE,
+  mfaMethodType: MFA_METHOD_TYPE.SMS,
+  isMfaMethodVerified: true,
+  isPasswordChangeRequired: false,
+  isAccountRecoveryJourney: false,
+  isPasswordResetJourney: false,
+  isReauthenticationRequired: false,
+  isOnForcedPasswordResetJourney: false,
+};
+
+export type AuthStateContext = Partial<typeof defaultContext>;
+
+const authStateMachine = createMachine<AuthStateContext>(
   {
     id: "AUTH",
     initial: PATH_NAMES.AUTHORIZE,
-    context: {
-      isLatestTermsAndConditionsAccepted: true,
-      requiresUplift: false,
-      requiresTwoFactorAuth: false,
-      isIdentityRequired: false,
-      prompt: OIDC_PROMPT.NONE,
-      mfaMethodType: MFA_METHOD_TYPE.SMS,
-      isMfaMethodVerified: true,
-      isPasswordChangeRequired: false,
-      isAccountRecoveryJourney: false,
-      isPasswordResetJourney: false,
-      isReauthenticationRequired: false,
-      isOnForcedPasswordResetJourney: false,
-    },
+    context: defaultContext,
     states: {
       [PATH_NAMES.AUTHORIZE]: {
         on: {
@@ -721,7 +725,7 @@ const authStateMachine = createMachine(
 function getNextState(
   from: StateValue,
   to: any,
-  ctx?: any
+  ctx?: AuthStateContext
 ): { value: string; events: EventType[]; meta: any } {
   const t = authStateMachine.transition(from, to, ctx);
   return {
@@ -732,6 +736,5 @@ function getNextState(
 }
 
 export type AuthStateMachine = typeof authStateMachine;
-export type AuthStateContext = AuthStateMachine["context"];
 
 export { getNextState, USER_JOURNEY_EVENTS, authStateMachine };

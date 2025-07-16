@@ -186,7 +186,7 @@ export async function getNextPathAndUpdateJourney(
   req: Request,
   path: string,
   event: string,
-  ctx?: Partial<AuthStateContext>,
+  ctx?: AuthStateContext,
   sessionId?: string
 ): Promise<string> {
   const nextState = getNextState(path, event, ctx);
