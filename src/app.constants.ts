@@ -196,6 +196,7 @@ export const CONTACT_US_THEMES = {
     "proving_identity_problem_with_bank_building_society_details",
   PROVING_IDENTITY_NEED_TO_UPDATE_PERSONAL_INFORMATION:
     "proving_identity_need_to_update_personal_information",
+  PROVING_IDENTITY_TECHNICAL_PROBLEM: "proving_identity_technical_problem",
   PROVING_IDENTITY_SOMETHING_ELSE: "proving_identity_something_else",
   PROVING_IDENTITY_PROBLEM_WITH_NATIONAL_INSURANCE_NUMBER:
     "proving_identity_problem_with_national_insurance_number",
@@ -204,7 +205,7 @@ export const CONTACT_US_THEMES = {
   SUSPECT_UNAUTHORISED_ACCESS: "suspect_unauthorised_access",
 };
 
-interface Theme {
+export interface Theme {
   radio: {
     mainText: string;
     hintText?: string;
@@ -212,7 +213,7 @@ interface Theme {
   subThemes?: Map<string, Theme>;
 }
 
-const CONTACT_FORM_STRUCTURE = new Map<string, Theme>([
+export const CONTACT_FORM_STRUCTURE = new Map<string, Theme>([
   [
     CONTACT_US_THEMES.ACCOUNT_CREATION,
     {
