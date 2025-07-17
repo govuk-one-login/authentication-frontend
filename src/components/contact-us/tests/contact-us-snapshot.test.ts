@@ -31,6 +31,15 @@ test.describe.parallel("Snapshot:: contact us - public user", () => {
     await expectPageToMatchScreenshot(page, contactUsPath, "contact-us--en");
   });
 
+  const contactUsSubmitSuccessPath = "/contact-us-submit-success";
+  test(`should render ${contactUsSubmitSuccessPath}`, async ({ page }) => {
+    await expectPageToMatchScreenshot(
+      page,
+      contactUsSubmitSuccessPath,
+      "contact-us-submit-success--en"
+    );
+  });
+
   CONTACT_FORM_STRUCTURE.forEach((theme: Theme, themeKey: string) => {
     test.describe.parallel(themeKey, () => {
       if (theme.subThemes) {
