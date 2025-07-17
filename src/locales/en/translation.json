@@ -446,16 +446,22 @@
           "matches": "Enter the same password in both fields"
         }
       },
-      "termsOfUse": {
-        "heading": "Agree to the GOV.UK One Login terms of use",
-        "paragraph1": "By continuing, you confirm that you agree to our:",
-        "bullet1LinkText": "privacy notice (opens in a new tab)",
-        "bullet1LinkTextApp": "privacy notice",
-        "bullet1Text": ", which explains how we use your personal information",
-        "bullet1LinkHref": "/privacy-notice",
-        "bullet2LinkText": "terms and conditions (opens in a new tab)",
-        "bullet2LinkTextApp": "terms and conditions",
-        "bullet2LinkHref": "/terms-and-conditions"
+      "termsAndConditions": {
+        "header": "Agree to the GOV.UK One Login terms and conditions",
+        "paragraph1": {
+          "text1": "By continuing, you confirm that you agree to our ",
+          "termsAndConditionsHref": "/terms-and-conditions",
+          "termsAndConditionsText": "terms and conditions (opens in a new tab)",
+          "termsAndConditionsTextApp": "terms and conditions",
+          "text2": "."
+        },
+        "paragraph2": {
+          "text1": "To find out how we use your personal information, see our ",
+          "privacyNoticeHref": "/govuk-one-login-privacy-notice",
+          "privacyNoticeText": "privacy notice (opens in a new tab)",
+          "privacyNoticeTextApp": "privacy notice",
+          "text2": "."
+        }
       }
     },
     "enterPhoneNumber": {
@@ -721,17 +727,20 @@
       "paragraph2": "to your GOV.UK One Login."
     },
     "updatedTermsAndConds": {
-      "title": "GOV.UK One Login terms of use update",
-      "header": "GOV.UK One Login terms of use update",
+      "title": "We’ve updated our terms of use",
+      "header": "We’ve updated our terms of use",
       "paragraph1": {
-        "text": "We’ve updated our ",
-        "termsAndConditionsHref": "terms-and-conditions",
+        "text": "By continuing you agree to the GOV.UK One Login ",
+        "termsAndConditionsHref": "/terms-and-conditions",
         "termsAndConditionsText": "terms and conditions",
-        "and": "and",
-        "privacyNoticeHref": "/privacy-notice",
-        "privacyNoticeText": "privacy notice"
+        "text2": "."
       },
-      "paragraph2": "By continuing you agree to our updated terms of use.",
+      "paragraph2": {
+        "text": "To find out how we use your personal information, see our ",
+        "privacyNoticeHref": "/govuk-one-login-privacy-notice",
+        "privacyNoticeText": "privacy notice",
+        "text2": "."
+      },
       "agreeAndContinue": "Continue"
     },
     "cookiePolicy": {
@@ -2005,7 +2014,7 @@
         "emailLabel": "Email address",
         "emailHint": "We will only use this to reply to your message",
         "nameLabel": "Name (Optional)",
-        "privacyNote": "Read our <a href=\"/privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">privacy notice</a> for more information on how we use your personal information."
+        "privacyNote": "Read our <a href=\"/govuk-one-login-privacy-notice\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">privacy notice</a> for more information on how we use your personal information."
       },
       "textMessageInternationNumberConditionalSection": {
         "heading": "Which country?",

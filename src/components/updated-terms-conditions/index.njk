@@ -7,14 +7,12 @@
 <h1 class="govuk-white-text govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.updatedTermsAndConds.header' | translate}}</h1>
 
 <p class="govuk-body govuk-white-text">
-    {{ 'pages.updatedTermsAndConds.paragraph1.text' | translate }}
-    <a class="govuk-white-text"
-       href="{{ 'pages.updatedTermsAndConds.paragraph1.termsAndConditionsHref' | translate }}">{{ 'pages.updatedTermsAndConds.paragraph1.termsAndConditionsText' | translate }}</a>
-    {{ 'pages.updatedTermsAndConds.paragraph1.and' | translate }}
-    <a class="govuk-white-text"
-       href="{{ 'pages.updatedTermsAndConds.paragraph1.privacyNoticeHref' | translate }}">{{ 'pages.updatedTermsAndConds.paragraph1.privacyNoticeText' | translate }}</a>.
+    {{ 'pages.updatedTermsAndConds.paragraph1.text' | translate }}<a class="govuk-white-text" href="{{ 'pages.updatedTermsAndConds.paragraph1.termsAndConditionsHref' | translate }}">{{ 'pages.updatedTermsAndConds.paragraph1.termsAndConditionsText' | translate }}</a>{{ 'pages.updatedTermsAndConds.paragraph1.text2' | translate }}
 </p>
-<p class="govuk-body govuk-white-text">{{ 'pages.updatedTermsAndConds.paragraph2' | translate }}</p>
+
+<p class="govuk-body govuk-white-text">
+    {{ 'pages.updatedTermsAndConds.paragraph2.text' | translate }}<a class="govuk-white-text" href="{{ 'pages.updatedTermsAndConds.paragraph2.privacyNoticeHref' | translate }}">{{ 'pages.updatedTermsAndConds.paragraph2.privacyNoticeText' | translate }}</a>{{ 'pages.updatedTermsAndConds.paragraph2.text2' | translate }}
+</p>
 
 <form id="form-tracking"  action="/updated-terms-and-conditions" method="post" novalidate>
 

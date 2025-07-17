@@ -552,7 +552,7 @@ describe("prepareBackLink", () => {
     });
     it("should return the `supportLinkURL` if there is a fromURL and the theme is ID_CHECK_APP", () => {
       req.path = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
-      req.query.fromURL = PATH_NAMES.DOC_CHECKING_APP;
+      req.query.fromURL = "/doc-checking-app";
       req.query.theme = CONTACT_US_THEMES.ID_CHECK_APP;
       expect(
         prepareBackLink(req as Request, supportLinkURL, serviceDomain)
