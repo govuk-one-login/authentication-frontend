@@ -1,5 +1,3 @@
-version: "3.8"
-
 x-stub-image-name: &stub-image-name di-authentication-frontend/di-auth-stub:latest
 
 services:
@@ -69,6 +67,15 @@ services:
       - yarn
       - dummy-server-orchstub
     restart: on-failure
+    networks:
+      - di-net
+
+  service-down-page:
+    build:
+      context: ./service-down-page-config/
+      dockerfile: Dockerfile
+    ports:
+      - ${DOCKER_SERVICE_DOWN_PAGE_PORT:-3005}:8080
     networks:
       - di-net
 
