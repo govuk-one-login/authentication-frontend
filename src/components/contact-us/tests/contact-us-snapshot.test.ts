@@ -3,12 +3,6 @@ import { test, expect } from "@playwright/test";
 import { CONTACT_FORM_STRUCTURE } from "../../../app.constants.js";
 import type { Theme } from "src/app.constants.js";
 
-/*
-TODO
-- Trigger errors
-- Test different languages
- */
-
 const expectPageToMatchScreenshot = async (
   page: Page,
   pathToNavigateTo: string,
@@ -26,63 +20,73 @@ const expectPageToMatchScreenshot = async (
 };
 
 test.describe.parallel("Snapshot:: contact us - public user", () => {
-  const contactUsPath = "/contact-us";
-  test(`should render ${contactUsPath}`, async ({ page }) => {
-    await expectPageToMatchScreenshot(page, contactUsPath, "contact-us--en");
-  });
-
-  const contactUsGovServicePath = "/contact-us?supportType=GOV_SERVICE";
-  test(`should render ${contactUsGovServicePath}`, async ({ page }) => {
-    await expectPageToMatchScreenshot(
-      page,
-      contactUsGovServicePath,
-      "contact-us--GOV_SERVICE--en"
-    );
-  });
-
-  const contactUsSubmitSuccessPath = "/contact-us-submit-success";
-  test(`should render ${contactUsSubmitSuccessPath}`, async ({ page }) => {
-    await expectPageToMatchScreenshot(
-      page,
-      contactUsSubmitSuccessPath,
-      "contact-us-submit-success--en"
-    );
-  });
-
-  CONTACT_FORM_STRUCTURE.forEach((theme: Theme, themeKey: string) => {
-    test.describe.parallel(themeKey, () => {
-      if (theme.subThemes) {
-        const subThemeFurtherInformationPath = `/contact-us-further-information?theme=${themeKey}`;
-        test(`should render ${subThemeFurtherInformationPath}`, async ({
+  ["en", "cy"].forEach((lng: string) => {
+    test.describe.parallel(lng, () => {
+      const contactUsPath = `/contact-us?lng=${lng}`;
+      test(`should render ${contactUsPath}`, async ({ page }) => {
+        await expectPageToMatchScreenshot(
           page,
-        }) => {
-          await expectPageToMatchScreenshot(
-            page,
-            subThemeFurtherInformationPath,
-            `contact-us-further-information--en--${themeKey}`
-          );
-        });
+          contactUsPath,
+          `contact-us--${lng}`
+        );
+      });
 
-        theme.subThemes.forEach((_subTheme: Theme, subThemeKey) => {
-          const subThemeQuestionsPath = `/contact-us-questions?theme=${themeKey}&subtheme=${subThemeKey}`;
-          test(`should render ${subThemeQuestionsPath}`, async ({ page }) => {
-            await expectPageToMatchScreenshot(
+      const contactUsGovServicePath = `/contact-us?supportType=GOV_SERVICE&lng=${lng}`;
+      test(`should render ${contactUsGovServicePath}`, async ({ page }) => {
+        await expectPageToMatchScreenshot(
+          page,
+          contactUsGovServicePath,
+          `contact-us--GOV_SERVICE--${lng}`
+        );
+      });
+
+      const contactUsSubmitSuccessPath = `/contact-us-submit-success?lng=${lng}`;
+      test(`should render ${contactUsSubmitSuccessPath}`, async ({ page }) => {
+        await expectPageToMatchScreenshot(
+          page,
+          contactUsSubmitSuccessPath,
+          `contact-us-submit-success--${lng}`
+        );
+      });
+
+      CONTACT_FORM_STRUCTURE.forEach((theme: Theme, themeKey: string) => {
+        test.describe.parallel(themeKey, () => {
+          if (theme.subThemes) {
+            const subThemeFurtherInformationPath = `/contact-us-further-information?theme=${themeKey}&lng=${lng}`;
+            test(`should render ${subThemeFurtherInformationPath}`, async ({
               page,
-              subThemeQuestionsPath,
-              `contact-us-questions--en--${themeKey}--${subThemeKey}`
-            );
-          });
+            }) => {
+              await expectPageToMatchScreenshot(
+                page,
+                subThemeFurtherInformationPath,
+                `contact-us-further-information--${themeKey}--${lng}`
+              );
+            });
+
+            theme.subThemes.forEach((_subTheme: Theme, subThemeKey) => {
+              const subThemeQuestionsPath = `/contact-us-questions?theme=${themeKey}&subtheme=${subThemeKey}&lng=${lng}`;
+              test(`should render ${subThemeQuestionsPath}`, async ({
+                page,
+              }) => {
+                await expectPageToMatchScreenshot(
+                  page,
+                  subThemeQuestionsPath,
+                  `contact-us-questions--${themeKey}--${subThemeKey}--${lng}`
+                );
+              });
+            });
+          } else {
+            const themeQuestionsPath = `/contact-us-questions?theme=${themeKey}&lng=${lng}`;
+            test(`should render ${themeQuestionsPath}`, async ({ page }) => {
+              await expectPageToMatchScreenshot(
+                page,
+                themeQuestionsPath,
+                `contact-us-questions--${themeKey}--${lng}`
+              );
+            });
+          }
         });
-      } else {
-        const themeQuestionsPath = `/contact-us-questions?theme=${themeKey}`;
-        test(`should render ${themeQuestionsPath}`, async ({ page }) => {
-          await expectPageToMatchScreenshot(
-            page,
-            themeQuestionsPath,
-            `contact-us-questions--en--${themeKey}`
-          );
-        });
-      }
+      });
     });
   });
 });
