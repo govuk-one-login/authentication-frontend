@@ -338,8 +338,7 @@ Mappings:
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
-      frontendbaseurl: "https://auth.authdev1.sandpit.account.gov.uk/"
-      apibaseurl: "https://oidc.authdev1.sandpit.account.gov.uk"
+      OrchApiBaseUrl: "https://oidc.authdev1.sandpit.account.gov.uk"
       orchtoauthaudience: "https://signin.authdev1.sandpit.account.gov.uk/"
       UseRebrand: "Yes"
     authdev2:
@@ -360,12 +359,12 @@ Mappings:
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
-      frontendbaseurl: "https://auth.authdev2.sandpit.account.gov.uk/"
-      apibaseurl: "https://oidc.authdev2.sandpit.account.gov.uk"
+      OrchApiBaseUrl: "https://oidc.authdev2.sandpit.account.gov.uk"
       orchtoauthaudience: "https://signin.authdev2.sandpit.account.gov.uk/"
       UseRebrand: "Yes"
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
+      frontendApiBaseUrl: "https://auth.authdev3.dev.account.gov.uk"
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEyu7XCXkDyxhHrmoOfLrl6tcd9e9V
@@ -376,8 +375,7 @@ Mappings:
       UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
-      frontendbaseurl: "https://auth.authdev3.dev.account.gov.uk/"
-      apibaseurl: "https://oidc.authdev3.dev.account.gov.uk"
+      OrchApiBaseUrl: "https://oidc.authdev3.dev.account.gov.uk"
       orchtoauthaudience: "https://signin.authdev3.dev.account.gov.uk/"
       UseRebrand: "Yes"
     dev:
@@ -408,8 +406,7 @@ Mappings:
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
-      frontendbaseurl: "https://auth.dev.account.gov.uk/"
-      apibaseurl: "https://oidc.dev.account.gov.uk"
+      OrchApiBaseUrl: "https://oidc.dev.account.gov.uk"
       orchtoauthaudience: "https://signin.dev.account.gov.uk/"
       UseRebrand: "Yes"
     build:
@@ -440,8 +437,7 @@ Mappings:
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
-      frontendbaseurl: "https://auth.build.account.gov.uk/"
-      apibaseurl: "https://oidc.build.account.gov.uk"
+      OrchApiBaseUrl: "https://oidc.build.account.gov.uk"
       orchtoauthaudience: "https://signin.build.account.gov.uk/"
       UseRebrand: "Yes"
     staging:
@@ -479,8 +475,7 @@ Mappings:
       Enableipvspinner: "No"
       UseAlarmActions: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
-      frontendbaseurl: "https://auth.staging.account.gov.uk/"
-      apibaseurl: "https://oidc.staging.account.gov.uk"
+      OrchApiBaseUrl: "https://oidc.staging.account.gov.uk"
       orchtoauthaudience: "https://signin.staging.account.gov.uk/"
       UseRebrand: "Yes"
     integration:
@@ -512,8 +507,7 @@ Mappings:
       Enableipvspinner: "No"
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
-      frontendbaseurl: "https://auth.integration.account.gov.uk/"
-      apibaseurl: "https://oidc.integration.account.gov.uk"
+      OrchApiBaseUrl: "https://oidc.integration.account.gov.uk"
       orchtoauthaudience: "https://signin.integration.account.gov.uk/"
       PrivacyNoticeRedirectEnabled: "Yes"
       UseRebrand: "Yes"
@@ -548,8 +542,7 @@ Mappings:
       Enableipvspinner: "No"
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
-      frontendbaseurl: "https://auth.account.gov.uk/"
-      apibaseurl: "https://oidc.account.gov.uk"
+      OrchApiBaseUrl: "https://oidc.account.gov.uk"
       orchtoauthaudience: "https://signin.account.gov.uk/"
       PrivacyNoticeRedirectEnabled: "Yes"
       UseRebrand: "No"
@@ -892,7 +885,7 @@ Resources:
                     !Ref SubEnvironment,
                     !Ref Environment,
                   ],
-                  apibaseurl,
+                  OrchApiBaseUrl,
                 ]
             - Name: FRONTEND_API_BASE_URL
               Value:
@@ -903,7 +896,7 @@ Resources:
                     !Ref SubEnvironment,
                     !Ref Environment,
                   ],
-                  frontendbaseurl,
+                  frontendApiBaseUrl,
                 ]
             - Name: ACCOUNT_MANAGEMENT_URL
               Value: !If
