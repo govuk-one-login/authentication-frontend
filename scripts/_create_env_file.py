@@ -46,7 +46,7 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
         "header": "Local Express session configuration",
         "variables": {
             "SESSION_EXPIRY": {
-                "value": 60000,
+                "value": 3600000,
                 "comment": "Express session expiry time in milliseconds",
             },
             "SESSION_SECRET": {"value": 123456, "comment": "Express session secret"},
