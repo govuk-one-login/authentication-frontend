@@ -31,6 +31,15 @@ test.describe.parallel("Snapshot:: contact us - public user", () => {
     await expectPageToMatchScreenshot(page, contactUsPath, "contact-us--en");
   });
 
+  const contactUsGovServicePath = "/contact-us?supportType=GOV_SERVICE";
+  test(`should render ${contactUsGovServicePath}`, async ({ page }) => {
+    await expectPageToMatchScreenshot(
+      page,
+      contactUsGovServicePath,
+      "contact-us--GOV_SERVICE--en"
+    );
+  });
+
   const contactUsSubmitSuccessPath = "/contact-us-submit-success";
   test(`should render ${contactUsSubmitSuccessPath}`, async ({ page }) => {
     await expectPageToMatchScreenshot(
