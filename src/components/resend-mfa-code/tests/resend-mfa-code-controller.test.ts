@@ -67,10 +67,10 @@ describe("resend mfa controller", () => {
       expect(res.render).to.have.calledWithMatch(
         "security-code-error/index-security-code-entered-exceeded.njk",
         sinon.match({
-          show2HrScreen: true
+          show2HrScreen: true,
         })
       );
-    })
+    });
   });
 
   describe("resendMfaCodePost", () => {
