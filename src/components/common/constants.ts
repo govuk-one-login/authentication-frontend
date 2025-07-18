@@ -1,4 +1,5 @@
 import { PATH_NAMES } from "../../app.constants.js";
+import type { AuthStateContext } from "./state-machine/state-machine.js";
 import { getNextState } from "./state-machine/state-machine.js";
 import type { Request } from "express";
 
@@ -185,7 +186,7 @@ export async function getNextPathAndUpdateJourney(
   req: Request,
   path: string,
   event: string,
-  ctx?: any,
+  ctx?: AuthStateContext,
   sessionId?: string
 ): Promise<string> {
   const nextState = getNextState(path, event, ctx);

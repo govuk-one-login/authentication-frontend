@@ -61,27 +61,28 @@ const USER_JOURNEY_EVENTS = {
   SELECT_AUTH_APP_MFA_METHOD: "SELECT_AUTH_APP_MFA_METHOD",
 };
 
-const authStateMachine = createMachine(
+const defaultContext = {
+  isLatestTermsAndConditionsAccepted: true,
+  requiresUplift: false,
+  requiresTwoFactorAuth: false,
+  isIdentityRequired: false,
+  prompt: OIDC_PROMPT.NONE,
+  mfaMethodType: MFA_METHOD_TYPE.SMS,
+  isMfaMethodVerified: true,
+  isPasswordChangeRequired: false,
+  isAccountRecoveryJourney: false,
+  isPasswordResetJourney: false,
+  isReauthenticationRequired: false,
+  isOnForcedPasswordResetJourney: false,
+};
+
+export type AuthStateContext = Partial<typeof defaultContext>;
+
+const authStateMachine = createMachine<AuthStateContext>(
   {
     id: "AUTH",
     initial: PATH_NAMES.AUTHORIZE,
-    context: {
-      isLatestTermsAndConditionsAccepted: true,
-      requiresUplift: false,
-      requiresTwoFactorAuth: false,
-      isAuthenticated: false,
-      isIdentityRequired: false,
-      prompt: OIDC_PROMPT.NONE,
-      mfaMethodType: MFA_METHOD_TYPE.SMS,
-      isMfaMethodVerified: true,
-      isPasswordChangeRequired: false,
-      isAccountRecoveryJourney: false,
-      isPasswordResetJourney: false,
-      isReauthenticationRequired: false,
-      requiresResetPasswordMFASmsCode: false,
-      requiresResetPasswordMFAAuthAppCode: false,
-      isOnForcedPasswordResetJourney: false,
-    },
+    context: defaultContext,
     states: {
       [PATH_NAMES.AUTHORIZE]: {
         on: {
@@ -96,11 +97,7 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
               cond: "isReauthenticationRequired",
             },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
-            { target: [PATH_NAMES.AUTH_CODE], cond: "isAuthenticated" },
+            { target: [PATH_NAMES.AUTH_CODE] },
           ],
           [USER_JOURNEY_EVENTS.NO_EXISTING_SESSION]: [
             {
@@ -367,10 +364,6 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
               cond: "isLatestTermsAndConditionsAccepted",
             },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -394,10 +387,6 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
               cond: "isLatestTermsAndConditionsAccepted",
             },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -420,10 +409,6 @@ const authStateMachine = createMachine(
       [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS]: {
         on: {
           [USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED]: [
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
         },
@@ -531,26 +516,8 @@ const authStateMachine = createMachine(
               target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
               cond: "isLatestTermsAndConditionsAccepted",
             },
-            {
-              target: [PATH_NAMES.AUTH_CODE],
-              cond: "isIdentityRequired",
-            },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
-        },
-        [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
-          on: {
-            [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [
-              PATH_NAMES.CHECK_YOUR_PHONE,
-            ],
-          },
-          meta: {
-            optionalPaths: [
-              PATH_NAMES.SECURITY_CODE_WAIT,
-              PATH_NAMES.SECURITY_CODE_INVALID,
-              PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
-            ],
-          },
         },
         meta: {
           optionalPaths: [
@@ -578,20 +545,6 @@ const authStateMachine = createMachine(
             },
             { target: [PATH_NAMES.AUTH_CODE] },
           ],
-        },
-        [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
-          on: {
-            [USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER]: [
-              PATH_NAMES.CHECK_YOUR_PHONE,
-            ],
-          },
-          meta: {
-            optionalPaths: [
-              PATH_NAMES.SECURITY_CODE_WAIT,
-              PATH_NAMES.SECURITY_CODE_INVALID,
-              PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
-            ],
-          },
         },
         meta: {
           optionalPaths: [
@@ -734,22 +687,17 @@ const authStateMachine = createMachine(
     guards: {
       isLatestTermsAndConditionsAccepted: (context) =>
         context.isLatestTermsAndConditionsAccepted === false,
-      requiresUplift: (context) =>
-        context.requiresUplift === true && context.isAuthenticated === true,
+      requiresUplift: (context) => context.requiresUplift === true,
       isReauthenticationRequired: (context) =>
         context.isReauthenticationRequired,
       requiresAuthAppUplift: (context) =>
         context.requiresUplift === true &&
-        context.isAuthenticated === true &&
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP,
       requiresTwoFactorAuth: (context) =>
         context.requiresTwoFactorAuth === true,
       isAccountPartCreated: (context) => context.isMfaMethodVerified === false,
       isIdentityRequired: (context) => context.isIdentityRequired === true,
-      isAuthenticated: (context) => context.isAuthenticated === true,
-      requiresLogin: (context) =>
-        context.isAuthenticated === true &&
-        context.prompt === OIDC_PROMPT.LOGIN,
+      requiresLogin: (context) => context.prompt === OIDC_PROMPT.LOGIN,
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.requiresTwoFactorAuth === true,
@@ -777,7 +725,7 @@ const authStateMachine = createMachine(
 function getNextState(
   from: StateValue,
   to: any,
-  ctx?: any
+  ctx?: AuthStateContext
 ): { value: string; events: EventType[]; meta: any } {
   const t = authStateMachine.transition(from, to, ctx);
   return {
@@ -788,6 +736,5 @@ function getNextState(
 }
 
 export type AuthStateMachine = typeof authStateMachine;
-export type AuthStateContext = AuthStateMachine["context"];
 
 export { getNextState, USER_JOURNEY_EVENTS, authStateMachine };

@@ -1,3 +1,4 @@
+import type { MFA_METHOD_TYPE } from "../../app.constants.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
 import type { Claims } from "./claims-config.js";
 import type { Request } from "express";
@@ -37,7 +38,7 @@ export interface UserSessionInfo {
   authenticated: boolean;
   cookieConsent?: string;
   gaCrossDomainTrackingId?: string;
-  mfaMethodType?: string;
+  mfaMethodType?: MFA_METHOD_TYPE;
   isBlockedForReauth: boolean;
 }
 

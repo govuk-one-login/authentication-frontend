@@ -1,53 +1,51 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { getNextState, USER_JOURNEY_EVENTS } from "../state-machine.js";
-import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../../app.constants.js";
+import {
+  MFA_METHOD_TYPE,
+  OIDC_PROMPT,
+  PATH_NAMES,
+} from "../../../../app.constants.js";
+
 describe("state-machine", () => {
   describe(`getNextState - ${PATH_NAMES.AUTHORIZE} on ${USER_JOURNEY_EVENTS.EXISTING_SESSION}`, () => {
-    describe("where isIdentityRequired", () => {
-      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.AUTH_CODE}`, () => {
-        const nextState = getNextState(
-          PATH_NAMES.AUTHORIZE,
-          USER_JOURNEY_EVENTS.EXISTING_SESSION,
-          {
-            isIdentityRequired: true,
-          }
-        );
-
-        expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
-      });
-      it(`should stay on ${PATH_NAMES.AUTHORIZE}`, () => {
-        const nextState = getNextState(
-          PATH_NAMES.AUTHORIZE,
-          USER_JOURNEY_EVENTS.EXISTING_SESSION,
-          { isIdentityRequired: false }
-        );
-        expect(nextState.value).to.equal(PATH_NAMES.AUTHORIZE);
-      });
-      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.ENTER_EMAIL_SIGN_IN}`, () => {
-        const nextState = getNextState(
-          PATH_NAMES.AUTHORIZE,
-          USER_JOURNEY_EVENTS.EXISTING_SESSION,
-          {
-            isIdentityRequired: true,
-            isAuthenticated: true,
-            isReauthenticationRequired: true,
-          }
-        );
-        expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
-      });
-      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.AUTH_CODE}`, () => {
-        const nextState = getNextState(
-          PATH_NAMES.AUTHORIZE,
-          USER_JOURNEY_EVENTS.EXISTING_SESSION,
-          {
-            isIdentityRequired: true,
-            isAuthenticated: true,
-            isReauthenticationRequired: false,
-          }
-        );
-        expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
-      });
+    it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.AUTH_CODE}`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.AUTHORIZE,
+        USER_JOURNEY_EVENTS.EXISTING_SESSION,
+        {}
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
+    });
+    it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.ENTER_PASSWORD} for prompt login`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.AUTHORIZE,
+        USER_JOURNEY_EVENTS.EXISTING_SESSION,
+        {
+          prompt: OIDC_PROMPT.LOGIN,
+        }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.ENTER_PASSWORD);
+    });
+    it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.UPLIFT_JOURNEY} for uplift`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.AUTHORIZE,
+        USER_JOURNEY_EVENTS.EXISTING_SESSION,
+        {
+          requiresUplift: true,
+        }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.UPLIFT_JOURNEY);
+    });
+    it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.ENTER_EMAIL_SIGN_IN} for reauth`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.AUTHORIZE,
+        USER_JOURNEY_EVENTS.EXISTING_SESSION,
+        {
+          isReauthenticationRequired: true,
+        }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
     });
   });
 
@@ -180,7 +178,7 @@ describe("state-machine", () => {
       const nextState = getNextState(
         PATH_NAMES.AUTHORIZE,
         USER_JOURNEY_EVENTS.EXISTING_SESSION,
-        { isAuthenticated: true, isReauthenticationRequired: true }
+        { isReauthenticationRequired: true }
       );
       expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
     });
@@ -198,7 +196,7 @@ describe("state-machine", () => {
       const nextState = getNextState(
         PATH_NAMES.AUTHORIZE,
         USER_JOURNEY_EVENTS.EXISTING_SESSION,
-        { isAuthenticated: true }
+        {}
       );
       expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
     });
