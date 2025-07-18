@@ -58,6 +58,19 @@ describe("resend mfa controller", () => {
         "security-code-error/index-wait.njk"
       );
     });
+
+    it("should render security-code-error/index-security-code-entered-exceeded.njk with 2 hour lockout if user has wrongCodeEnteredLock", () => {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      req.session.user.wrongCodeEnteredLock = tomorrow.toUTCString();
+      resendMfaCodeGet(req as Request, res as Response);
+      expect(res.render).to.have.calledWithMatch(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        sinon.match({
+          show2HrScreen: true
+        })
+      );
+    })
   });
 
   describe("resendMfaCodePost", () => {
