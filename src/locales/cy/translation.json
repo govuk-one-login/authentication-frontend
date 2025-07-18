@@ -1881,7 +1881,8 @@
         "govUKLoginAndIdApps": "Problem profi eich hunaniaeth wrth ddefnyddio’r ap GOV.UK One Login neu’r ap GOV.UK ID Check",
         "provingIdentityFaceToFace": "Problem profi eich hunaniaeth gyda’r Swyddfa Bost",
         "errorMessage": "Dewiswch reswm dros gysylltu â ni",
-        "suspectUnauthorisedAccess": "Rydych chi’n meddwl bod rhywun arall yn defnyddio’ch gwybodaeth i gael mynediad i’ch GOV.UK One Login"
+        "suspectUnauthorisedAccess": "Rydych chi’n meddwl bod rhywun arall yn defnyddio’ch gwybodaeth i gael mynediad i’ch GOV.UK One Login",
+        "wallet": "Problem gyda'ch Cerdyn Cyn-filwr y Lluoedd Arfog EF digidol"
       },
       "continueLabel": "Parhau"
     },
