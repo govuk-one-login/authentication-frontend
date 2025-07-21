@@ -122,48 +122,47 @@ export function enterPasswordPost(
 
     if (!userLogin.success) {
       const errorCode = userLogin.data.code;
-      if (
-        errorCode === ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED ||
-        errorCode === ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
-      ) {
-        return handleMaxCredentialsReached(errorCode, journeyType, res, req);
-      }
 
-      if (errorCode === ERROR_CODES.SESSION_ID_MISSING_OR_INVALID) {
-        req.log.warn(
-          `Backend session is missing or invalid - user cannot enter password. Session id ${sessionId}`
-        );
-        return res.redirect(PATH_NAMES.ERROR_PAGE);
-      }
+      switch (errorCode) {
+        case ERROR_CODES.INVALID_PASSWORD_MAX_ATTEMPTS_REACHED:
+        case ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED:
+          return handleMaxCredentialsReached(errorCode, journeyType, res, req);
 
-      if (errorCode === ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
-        return res.render("security-code-error/index-wait.njk");
-      }
+        case ERROR_CODES.SESSION_ID_MISSING_OR_INVALID:
+          req.log.warn(
+            `Backend session is missing or invalid - user cannot enter password. Session id ${sessionId}`
+          );
+          return res.redirect(PATH_NAMES.ERROR_PAGE);
 
-      if (errorCode === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES) {
-        return res.render(
-          "security-code-error/index-security-code-entered-exceeded.njk",
-          {
-            show2HrScreen: true,
-            contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
+        case ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED:
+          return res.render("security-code-error/index-wait.njk");
+
+        case ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES:
+          return res.render(
+            "security-code-error/index-security-code-entered-exceeded.njk",
+            {
+              show2HrScreen: true,
+              contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
+            }
+          );
+
+        default: {
+          let validationKey;
+          let template;
+
+          if (fromAccountExists) {
+            validationKey = ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY;
+            template = ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE;
+          } else {
+            validationKey = ENTER_PASSWORD_VALIDATION_KEY;
+            template = ENTER_PASSWORD_TEMPLATE;
           }
-        );
+
+          const error = formatValidationError("password", req.t(validationKey));
+
+          return renderBadRequest(res, req, template, error, { email });
+        }
       }
-
-      const validationKey = fromAccountExists
-        ? ENTER_PASSWORD_ACCOUNT_EXISTS_VALIDATION_KEY
-        : ENTER_PASSWORD_VALIDATION_KEY;
-      const error = formatValidationError("password", req.t(validationKey));
-
-      return renderBadRequest(
-        res,
-        req,
-        fromAccountExists
-          ? ENTER_PASSWORD_ACCOUNT_EXISTS_TEMPLATE
-          : ENTER_PASSWORD_TEMPLATE,
-        error,
-        { email }
-      );
     }
 
     const isPasswordChangeRequired = userLogin.data.passwordChangeRequired;
@@ -178,30 +177,17 @@ export function enterPasswordPost(
     req.session.user.isPasswordChangeRequired = isPasswordChangeRequired;
     req.session.user.mfaMethodType = userLogin.data.mfaMethodType;
 
-    if (isPasswordChangeRequired && supportAccountInterventions()) {
-      const accountInterventionsResponse =
-        await accountInterventionsService.accountInterventionStatus(
-          sessionId,
-          email,
-          clientSessionId,
-          persistentSessionId,
-          req
-        );
-      if (
-        accountInterventionsResponse.data.passwordResetRequired ||
-        accountInterventionsResponse.data.temporarilySuspended ||
-        accountInterventionsResponse.data.blocked
-      ) {
-        return res.redirect(
-          await getNextPathAndUpdateJourney(
-            req,
-            req.path,
-            USER_JOURNEY_EVENTS.COMMON_PASSWORD_AND_AIS_STATUS,
-            null,
-            sessionId
-          )
-        );
-      }
+    const interventionRedirect = await handleAccountInterventions(
+      isPasswordChangeRequired,
+      accountInterventionsService,
+      sessionId,
+      email,
+      clientSessionId,
+      persistentSessionId,
+      req
+    );
+    if (interventionRedirect) {
+      return res.redirect(interventionRedirect);
     }
 
     req.session.user.isSignInJourney = true;
@@ -226,6 +212,10 @@ export function enterPasswordPost(
 
       if (!result.success) {
         return handleSendMfaCodeError(result, res);
+      } else {
+        req.session.user.sentOtpMfaMethodIds = [
+          req.session.user.activeMfaMethodId,
+        ];
       }
     }
     return res.redirect(
@@ -245,6 +235,45 @@ export function enterPasswordPost(
       )
     );
   };
+
+  async function handleAccountInterventions(
+    isPasswordChangeRequired: boolean,
+    accountInterventionsService: AccountInterventionsInterface,
+    sessionId: string,
+    email: string,
+    clientSessionId: string,
+    persistentSessionId: string,
+    req: Request
+  ): Promise<string | null> {
+    if (!isPasswordChangeRequired || !supportAccountInterventions()) {
+      return null;
+    }
+
+    const accountInterventionsResponse =
+      await accountInterventionsService.accountInterventionStatus(
+        sessionId,
+        email,
+        clientSessionId,
+        persistentSessionId,
+        req
+      );
+
+    if (
+      accountInterventionsResponse.data.passwordResetRequired ||
+      accountInterventionsResponse.data.temporarilySuspended ||
+      accountInterventionsResponse.data.blocked
+    ) {
+      return await getNextPathAndUpdateJourney(
+        req,
+        req.path,
+        USER_JOURNEY_EVENTS.COMMON_PASSWORD_AND_AIS_STATUS,
+        null,
+        sessionId
+      );
+    }
+
+    return null;
+  }
 
   function handleMaxCredentialsReached(
     errorCode: number,
