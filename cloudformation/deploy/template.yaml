@@ -339,7 +339,6 @@ Mappings:
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.authdev1.sandpit.account.gov.uk"
-      orchtoauthaudience: "https://signin.authdev1.sandpit.account.gov.uk/"
       UseRebrand: "Yes"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
@@ -360,7 +359,6 @@ Mappings:
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.authdev2.sandpit.account.gov.uk"
-      orchtoauthaudience: "https://signin.authdev2.sandpit.account.gov.uk/"
       UseRebrand: "Yes"
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
@@ -376,7 +374,6 @@ Mappings:
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.authdev3.dev.account.gov.uk"
-      orchtoauthaudience: "https://signin.authdev3.dev.account.gov.uk/"
       UseRebrand: "Yes"
     dev:
       DeployServiceDownPage: "No"
@@ -407,7 +404,6 @@ Mappings:
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.dev.account.gov.uk"
-      orchtoauthaudience: "https://signin.dev.account.gov.uk/"
       UseRebrand: "Yes"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -438,7 +434,6 @@ Mappings:
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.build.account.gov.uk"
-      orchtoauthaudience: "https://signin.build.account.gov.uk/"
       UseRebrand: "Yes"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -476,7 +471,6 @@ Mappings:
       UseAlarmActions: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.staging.account.gov.uk"
-      orchtoauthaudience: "https://signin.staging.account.gov.uk/"
       UseRebrand: "Yes"
     integration:
       DeployServiceDownPage: "Yes"
@@ -508,7 +502,6 @@ Mappings:
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
       OrchApiBaseUrl: "https://oidc.integration.account.gov.uk"
-      orchtoauthaudience: "https://signin.integration.account.gov.uk/"
       PrivacyNoticeRedirectEnabled: "Yes"
       UseRebrand: "Yes"
     production:
@@ -543,7 +536,6 @@ Mappings:
       orchStubToAuth: ""
       UseAlarmActions: "Yes"
       OrchApiBaseUrl: "https://oidc.account.gov.uk"
-      orchtoauthaudience: "https://signin.account.gov.uk/"
       PrivacyNoticeRedirectEnabled: "Yes"
       UseRebrand: "No"
 
@@ -932,16 +924,18 @@ Resources:
             - Name: ORCH_TO_AUTH_CLIENT_ID
               Value: orchestrationAuth
             - Name: ORCH_TO_AUTH_AUDIENCE
-              Value:
-                !FindInMap [
-                  EnvironmentConfiguration,
-                  !If [
-                    UseSubEnvironment,
-                    !Ref SubEnvironment,
-                    !Ref Environment,
-                  ],
-                  orchtoauthaudience,
-                ]
+              Value: !Sub
+                - "https://${FQDN}/"
+                - FQDN:
+                    !FindInMap [
+                      EnvironmentConfiguration,
+                      !If [
+                        UseSubEnvironment,
+                        !Ref SubEnvironment,
+                        !Ref Environment,
+                      ],
+                      migratedDomain,
+                    ]
             - Name: ORCH_STUB_TO_AUTH_SIGNING_KEY
               Value: !If
                 - UseSubEnvironment
