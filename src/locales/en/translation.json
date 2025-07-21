@@ -1976,6 +1976,19 @@
           },
           "errorMessage": "Select the problem you had proving your identity"
         }
+      },
+      "wallet":  {
+        "title": "A problem with your digital HM Armed Forces Veteran Card",
+        "header": "A problem with your digital HM Armed Forces Veteran Card",
+        "section1": {
+          "header": "Tell us what happened",
+          "radio1": "You had a problem opening the GOV.UK One Login app",
+          "radio2": "You had a problem adding your Veteran Card to the GOV.UK One Login app",
+          "radio3": "You had a problem viewing your Veteran Card in the GOV.UK One Login app",
+          "radio4": "There was a technical problem (for example you saw an error message)",
+          "radio5": "Something else",
+          "errorMessage": "TODO - AUT-4497 - Error message"
+        }
       }
     },
     "contactUsQuestions": {

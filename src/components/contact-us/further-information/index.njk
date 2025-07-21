@@ -27,6 +27,10 @@
     {% set pageTitleName = 'pages.contactUsFurtherInformation.provingIdentity.title' | translate %}
 {% endif %}
 
+{% if theme == 'wallet' %}
+    {% set pageTitleName = 'pages.contactUsFurtherInformation.wallet.title' | translate %}
+{% endif %}
+
 {% block content %}
 {% include "common/errors/errorSummary.njk" %}
 
@@ -48,6 +52,10 @@
 
     {% if theme == 'proving_identity' %}
         {% include 'contact-us/further-information/_proving-identity-further-information.njk' %}
+    {% endif %}
+
+    {% if theme == 'wallet' %}
+        {% include 'contact-us/further-information/_wallet.njk' %}
     {% endif %}
 
 {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}

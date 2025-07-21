@@ -19,6 +19,9 @@ export function getContactUsErrorMessage(theme: string): string {
   if (theme === "proving_identity") {
     return "pages.contactUsFurtherInformation.provingIdentity.section1.errorMessage";
   }
+  if (theme === "wallet") {
+    return "pages.contactUsFurtherInformation.wallet.section1.errorMessage";
+  }
   return "pages.contactUsPublic.section3.errorMessage";
 }
 

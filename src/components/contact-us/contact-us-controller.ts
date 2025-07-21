@@ -322,8 +322,6 @@ export function getPreferredLanguage(languageCode: string): string {
 }
 
 export function getNextUrlBasedOnTheme(theme: string): string {
-  let url: string = PATH_NAMES.CONTACT_US_QUESTIONS;
-
   if (
     [
       CONTACT_US_THEMES.ACCOUNT_CREATION,
@@ -331,12 +329,13 @@ export function getNextUrlBasedOnTheme(theme: string): string {
       CONTACT_US_THEMES.ID_CHECK_APP,
       CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE,
       CONTACT_US_THEMES.PROVING_IDENTITY,
+      CONTACT_US_THEMES.WALLET,
     ].includes(theme)
   ) {
-    url = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
+    return PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
+  } else {
+    return PATH_NAMES.CONTACT_US_QUESTIONS;
   }
-
-  return url;
 }
 
 export function contactUsFormPost(req: Request, res: Response): void {
