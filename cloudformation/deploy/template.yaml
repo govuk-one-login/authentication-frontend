@@ -297,21 +297,21 @@ Conditions:
           - !Condition UseSubEnvironment
           - Fn::Equals:
               - !FindInMap [
-                EnvironmentConfiguration,
-                !Ref SubEnvironment,
-                UseRebrand,
-                DefaultValue: "No",
-              ]
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  UseRebrand,
+                  DefaultValue: "No",
+                ]
               - "Yes"
       - Fn::And:
           - !Condition NotSubEnvironment
           - Fn::Equals:
               - !FindInMap [
-                EnvironmentConfiguration,
-                !Ref Environment,
-                UseRebrand,
-                DefaultValue: "No",
-              ]
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  UseRebrand,
+                  DefaultValue: "No",
+                ]
               - "Yes"
 
 Mappings:
