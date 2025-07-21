@@ -487,7 +487,7 @@ Mappings:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
       frontendApiBaseUrl: https://auth.account.gov.uk/
-      frontendAutoScalingMinCount: 15
+      frontendAutoScalingMinCount: 9
       frontendAutoScalingMaxCount: 240
       frontendTaskDefinitionCpu: 1024
       frontendTaskDefinitionMemory: 2048
