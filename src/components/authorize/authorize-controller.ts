@@ -130,7 +130,6 @@ export function authorizeGet(
       {
         requiresUplift: isUpliftRequired(req),
         isIdentityRequired: req.session.user.isIdentityRequired,
-        isAuthenticated: req.session.user.isAuthenticated,
         prompt: req.session.client.prompt,
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
         isReauthenticationRequired: isReauth(req),

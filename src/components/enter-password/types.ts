@@ -3,14 +3,14 @@ import type {
   DefaultApiResponse,
   MfaMethod,
 } from "../../types.js";
-import type { JOURNEY_TYPE } from "../../app.constants.js";
+import type { JOURNEY_TYPE, MFA_METHOD_TYPE } from "../../app.constants.js";
 import type { Request } from "express";
 
 export interface UserLoginResponse extends DefaultApiResponse {
   redactedPhoneNumber?: string;
   mfaRequired?: boolean;
   latestTermsAndConditionsAccepted?: boolean;
-  mfaMethodType?: string;
+  mfaMethodType?: MFA_METHOD_TYPE;
   mfaMethodVerified?: boolean;
   mfaMethods: MfaMethod[];
   passwordChangeRequired?: boolean;
