@@ -38,6 +38,9 @@ describe("app", () => {
         "@govuk-one-login/frontend-vital-signs": {
           frontendVitalSignsInit: fakeFrontendVitalSignsInit,
         },
+        "../../src/config.js": {
+          getVitalSignsIntervalSeconds: () => 10,
+        },
       });
 
       const app = express();
