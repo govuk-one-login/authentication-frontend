@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe } from "mocha";
 import { expect, sinon } from "../utils/test-utils.js";
-import { createApp, shutdownProcess, startServer } from "../../src/app.js";
+import { shutdownProcess, startServer } from "../../src/app.js";
 import express from "express";
 import esmock from "esmock";
 
@@ -111,23 +111,31 @@ describe("app", () => {
     it("should not call applyOverloadProtection when the environment isn't staging", async () => {
       process.env.APP_ENV = "production";
 
-      const app = await createApp();
+      const fakeApplyOverloadProtection = sinon.fake();
+      const { createApp } = await esmock("../../src/app.js", {
+        "../../src/middleware/overload-protection-middleware.js": {
+          applyOverloadProtection: fakeApplyOverloadProtection,
+        },
+      });
 
-      const hasOverloadProtection = app._router.stack.some(
-        (layer: { name: string }) => layer.name === "overloadProtection"
-      );
-      expect(hasOverloadProtection).to.eq(false);
+      await createApp();
+
+      expect(fakeApplyOverloadProtection).to.not.have.been.called;
     });
 
     it("should applyOverloadProtection when the environment is staging", async () => {
       process.env.APP_ENV = "staging";
 
-      const app = await createApp();
+      const fakeApplyOverloadProtection = sinon.fake.returns(() => {});
+      const { createApp } = await esmock("../../src/app.js", {
+        "../../src/middleware/overload-protection-middleware.js": {
+          applyOverloadProtection: fakeApplyOverloadProtection,
+        },
+      });
 
-      const hasOverloadProtection = app._router.stack.some(
-        (layer: { name: string }) => layer.name === "overloadProtection"
-      );
-      expect(hasOverloadProtection).to.eq(true);
+      await createApp();
+
+      expect(fakeApplyOverloadProtection).to.have.been.calledOnce;
     });
   });
 });
