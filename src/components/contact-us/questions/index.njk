@@ -168,6 +168,10 @@
         {% include 'contact-us/questions/_proving-identity-problem-entering-address.njk' %}
     {% endif %}
 
+    {% if (theme == 'wallet') %}
+        {% include 'contact-us/questions/_wallet-questions.njk' %}
+    {% endif %}
+
     {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
     {%- include "ga4-opl/template.njk" -%}
 

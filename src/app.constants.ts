@@ -203,6 +203,13 @@ export const CONTACT_US_THEMES = {
   PROVING_IDENTITY_PROBLEM_WITH_ADDRESS:
     "proving_identity_problem_with_address",
   WALLET: "wallet",
+  WALLET_PROBLEM_OPENING_APP: "wallet_problem_opening_app",
+  WALLET_PROBLEM_ADDING_CREDENTIALS_DOCUMENT:
+    "wallet_problem_adding_credentials_document",
+  WALLET_PROBLEM_VIEWING_CREDENTIALS_DOCUMENT:
+    "wallet_problem_viewing_credentials_document",
+  WALLET_TECHNICAL_PROBLEM: "wallet_technical_problem",
+  WALLET_SOMETHING_ELSE: "wallet_something_else",
   SUSPECT_UNAUTHORISED_ACCESS: "suspect_unauthorised_access",
 };
 

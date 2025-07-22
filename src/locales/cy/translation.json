@@ -2492,6 +2492,21 @@
           "header": "Pa broblem oeddech chi’n ei chael gyda’ch rhif Yswiriant Gwladol?",
           "errorMessage": "Pa broblem oeddech chi’n ei chael gyda’ch rhif Yswiriant Gwladol?"
         }
+      },
+      "walletProblemOpeningApp": {
+        "title": "Rydych wedi cael problem agor yr ap GOV.UK One Login"
+      },
+      "walletProblemAddingCredentialsDocument": {
+        "title": "Rydych wedi cael problem ychwanegu eich Cerdyn Cyn-filwr i’r ap GOV.UK One Login"
+      },
+      "walletProblemViewingCredentialsDocument":  {
+        "title": "Rydych wedi cael problem gweld eich Cerdyn Cyn-filwr yn yr ap GOV.UK One Login"
+      },
+      "walletTechnicalProblem": {
+        "title": "Roeddech wedi cael problem dechnegol"
+      },
+      "walletSomethingElse":  {
+        "title": "Problem arall gyda’ch Cerdyn Cyn-filwr Lluoedd Arfog EF digidol"
       }
     },
     "contactUsSubmitSuccess": {

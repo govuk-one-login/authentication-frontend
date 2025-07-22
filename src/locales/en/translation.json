@@ -2491,6 +2491,21 @@
           "header": "What problem were you having with your National Insurance number?",
           "errorMessage": "What problem were you having with your National Insurance number?"
         }
+      },
+      "walletProblemOpeningApp": {
+        "title": "You had a problem opening the GOV.UK One Login app"
+      },
+      "walletProblemAddingCredentialsDocument": {
+        "title": "You had a problem adding your Veteran Card to the GOV.UK One Login app"
+      },
+      "walletProblemViewingCredentialsDocument":  {
+        "title": "You had a problem viewing your Veteran Card in the GOV.UK One Login app"
+      },
+      "walletTechnicalProblem": {
+        "title": "You had a technical problem"
+      },
+      "walletSomethingElse":  {
+        "title": "Another problem with your digital HM Armed Forces Veteran Card"
       }
     },
     "contactUsSubmitSuccess": {

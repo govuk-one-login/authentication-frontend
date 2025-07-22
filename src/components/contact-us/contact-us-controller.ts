@@ -91,6 +91,16 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_ADDRESS]:
     "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.title",
+  [CONTACT_US_THEMES.WALLET_PROBLEM_OPENING_APP]:
+    "pages.contactUsQuestions.walletProblemOpeningApp.title",
+  [CONTACT_US_THEMES.WALLET_PROBLEM_ADDING_CREDENTIALS_DOCUMENT]:
+    "pages.contactUsQuestions.walletProblemAddingCredentialsDocument.title",
+  [CONTACT_US_THEMES.WALLET_PROBLEM_VIEWING_CREDENTIALS_DOCUMENT]:
+    "pages.contactUsQuestions.walletProblemViewingCredentialsDocument.title",
+  [CONTACT_US_THEMES.WALLET_TECHNICAL_PROBLEM]:
+    "pages.contactUsQuestions.walletTechnicalProblem.title",
+  [CONTACT_US_THEMES.WALLET_SOMETHING_ELSE]:
+    "pages.contactUsQuestions.walletSomethingElse.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
