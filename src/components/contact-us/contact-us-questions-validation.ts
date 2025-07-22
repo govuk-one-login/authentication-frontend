@@ -396,6 +396,9 @@ export function getErrorMessageForIssueDescription(
   if (theme === CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
     return getErrorMessageForFaceToFaceIssueDescription(subtheme);
   }
+  if (theme === CONTACT_US_THEMES.WALLET) {
+    return "pages.contactUsQuestions.anotherProblem.section1.errorMessage";
+  }
 }
 
 export function getErrorMessageForFaceToFaceIssueDescription(
@@ -496,6 +499,9 @@ export function getLengthExceededErrorMessageForIssueDescription(
   }
   if (theme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.suggestionFeedbackTooLongMessage";
+  }
+  if (theme === CONTACT_US_THEMES.WALLET) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
 }
 
@@ -606,5 +612,8 @@ export function getErrorMessageForAdditionalDescription(
   }
   if (subtheme === CONTACT_US_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE) {
     return "pages.contactUsQuestions.signInPhoneNumberIssue.section2.errorMessage";
+  }
+  if (theme === CONTACT_US_THEMES.WALLET) {
+    return "pages.contactUsQuestions.anotherProblem.section2.errorMessage";
   }
 }
