@@ -19,9 +19,9 @@ const expectPageToMatchScreenshot = async (
   });
 };
 
-test.describe.parallel("Snapshot:: contact us - public user", () => {
+test.describe("Snapshot:: contact us - public user", () => {
   ["en", "cy"].forEach((lng: string) => {
-    test.describe.parallel(lng, () => {
+    test.describe(lng, () => {
       const contactUsPath = `/contact-us?lng=${lng}`;
       test(`should render ${contactUsPath}`, async ({ page }) => {
         await expectPageToMatchScreenshot(

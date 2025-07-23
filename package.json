@@ -28,7 +28,7 @@
     "test:integration": "rm -rf test/coverage && NODE_ENV=development c8 mocha -r dotenv/config  \"src/**/*-integration.test.ts\"",
     "test:integration-no-clear-cov": "NODE_ENV=development c8 --no-clean mocha -r dotenv/config  \"src/**/*-integration.test.ts\"",
     "test:integration-nocov": "NODE_ENV=development mocha -r dotenv/config  \"src/**/*-integration.test.ts\"",
-    "test:unit": "rm -rf test/coverage && NODE_ENV=development c8 mocha --exclude \"src/**/*-integration.test.ts\" \"src/**/*-snapshot.test.ts\" \"test/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
+    "test:unit": "rm -rf test/coverage && NODE_ENV=development c8 mocha --exclude \"src/**/*-integration.test.ts\" --exclude \"src/**/*-snapshot.test.ts\" \"test/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
     "test:unit-nocov": "NODE_ENV=development mocha --exclude \"src/**/*-integration.test.ts\"  \"test/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
     "test:u1": "rm -rf test/coverage && NODE_ENV=development c8 mocha --exclude \"src/**/*-integration.test.ts\" --recursive \"src/**/your-test*.test.ts\"",
     "test": "rm -rf test/coverage && NODE_ENV=development c8 mocha -r dotenv/config  \"test/unit/**/*.test.ts\" --recursive \"src/**/*.test.ts\"",
