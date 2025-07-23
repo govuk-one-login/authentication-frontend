@@ -58,6 +58,41 @@ describe("resend mfa controller", () => {
         "security-code-error/index-wait.njk"
       );
     });
+
+    [
+      {
+        isSignInJourney: true,
+        isAccountRecoveryJourney: false,
+        expectedShow2HrScreen: true,
+      },
+      {
+        isSignInJourney: false,
+        isAccountRecoveryJourney: true,
+        expectedShow2HrScreen: false,
+      },
+      {
+        isSignInJourney: true,
+        isAccountRecoveryJourney: true,
+        expectedShow2HrScreen: false,
+      },
+    ].forEach((i) => {
+      it(`should render correct lockout when isSignInJourney is ${i.isSignInJourney} and isAccountRecoveryJourney is ${i.isAccountRecoveryJourney}`, () => {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        req.session.user.wrongCodeEnteredLock = tomorrow.toUTCString();
+        req.session.user.isSignInJourney = i.isSignInJourney;
+        req.session.user.isAccountRecoveryJourney = i.isAccountRecoveryJourney;
+
+        resendMfaCodeGet(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWithMatch(
+          "security-code-error/index-security-code-entered-exceeded.njk",
+          sinon.match({
+            show2HrScreen: i.expectedShow2HrScreen,
+          })
+        );
+      });
+    });
   });
 
   describe("resendMfaCodePost", () => {

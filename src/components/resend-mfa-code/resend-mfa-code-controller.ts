@@ -21,6 +21,9 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     res.render("security-code-error/index-security-code-entered-exceeded.njk", {
       newCodeLink: newCodeLink,
       isAuthApp: false,
+      show2HrScreen:
+        req.session.user.isSignInJourney &&
+        !req.session.user.isAccountRecoveryJourney,
     });
   } else if (isLocked(req.session.user.codeRequestLock)) {
     const newCodeLink = req.query?.isResendCodeRequest

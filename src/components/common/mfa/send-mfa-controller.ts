@@ -34,12 +34,12 @@ function handleErrors(
   res: Response<any, Record<string, any>>,
   req: Request
 ) {
-  const path = getErrorPathByCode(mfaFailResponse.data.code);
+  const pathWithQueryParams = getErrorPathByCode(mfaFailResponse.data.code);
 
-  if (path && isResendCodeRequest) {
-    return path.includes("?")
-      ? res.redirect(path + "&isResendCodeRequest=true")
-      : res.redirect(path + "?isResendCodeRequest=true");
+  if (pathWithQueryParams && isResendCodeRequest) {
+    return pathWithQueryParams.includes("?")
+      ? res.redirect(pathWithQueryParams + "&isResendCodeRequest=true")
+      : res.redirect(pathWithQueryParams + "?isResendCodeRequest=true");
   }
 
   if (isReauth(req)) {
@@ -55,8 +55,8 @@ function handleErrors(
     }
   }
 
-  if (path && !isResendCodeRequest) {
-    res.redirect(path);
+  if (pathWithQueryParams && !isResendCodeRequest) {
+    res.redirect(pathWithQueryParams);
   }
 
   throw new BadRequestError(
