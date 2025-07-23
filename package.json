@@ -135,7 +135,7 @@
     "chai": "4.5.0",
     "chai-http": "5.1.2",
     "cheerio": "1.0.0",
-    "concurrently": "9.1.2",
+    "concurrently": "9.2.0",
     "copyfiles": "2.4.1",
     "debug": "4.4.1",
     "dotenv": "16.5.0",
