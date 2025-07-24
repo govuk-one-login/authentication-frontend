@@ -9,7 +9,7 @@
       <env name="NODE_ENV" value="development" />
     </envs>
     <ui>bdd</ui>
-    <extra-mocha-options>--exclude &quot;src/**/*-integration.test.ts&quot;  &quot;test/unit/**/*.test.ts&quot; --recursive &quot;src/**/*.test.ts&quot;</extra-mocha-options>
+    <extra-mocha-options>--exclude &quot;src/**/*-integration.test.ts&quot; --exclude "src/**/*-snapshot.test.ts" &quot;test/unit/**/*.test.ts&quot; --recursive &quot;src/**/*.test.ts&quot;</extra-mocha-options>
     <test-kind>PATTERN</test-kind>
     <test-pattern />
     <method v="2" />
