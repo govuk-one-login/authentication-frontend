@@ -13,6 +13,7 @@ import { logger } from "../../utils/logger.js";
 import {
   getServiceDomain,
   getSupportLinkUrl,
+  showWalletContactForm,
   supportNoPhotoIdContactForms,
 } from "../../config.js";
 import { getContactUsService } from "./contact-us-service.js";
@@ -162,6 +163,7 @@ export function contactUsGet(req: Request, res: Response): void {
     ...(getAppSessionId(req.query.appSessionId as string) && {
       appSessionId: getAppSessionId(req.query.appSessionId as string),
     }),
+    showWalletContactForm: showWalletContactForm(),
   };
 
   return res.render("contact-us/index-public-contact-us.njk", options);

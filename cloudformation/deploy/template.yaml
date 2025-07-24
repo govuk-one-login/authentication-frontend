@@ -314,6 +314,29 @@ Conditions:
                 ]
               - "Yes"
 
+  ShowWalletContactForm:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref SubEnvironment,
+                ShowWalletContactForm,
+                DefaultValue: "No",
+              ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref Environment,
+                ShowWalletContactForm,
+                DefaultValue: "No",
+              ]
+              - "Yes"
+
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   ElasticLoadBalancerAccountIds:
@@ -340,6 +363,7 @@ Mappings:
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.authdev1.sandpit.account.gov.uk"
       UseRebrand: "Yes"
+      ShowWalletContactForm: "Yes"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       frontendApiBaseUrl: https://auth.authdev2.sandpit.account.gov.uk/
@@ -375,6 +399,7 @@ Mappings:
       DeviceIntelligenceEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.authdev3.dev.account.gov.uk"
       UseRebrand: "Yes"
+      ShowWalletContactForm: "Yes"
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -405,6 +430,7 @@ Mappings:
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.dev.account.gov.uk"
       UseRebrand: "Yes"
+      ShowWalletContactForm: "Yes"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -435,6 +461,7 @@ Mappings:
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.build.account.gov.uk"
       UseRebrand: "Yes"
+      ShowWalletContactForm: "Yes"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -472,6 +499,7 @@ Mappings:
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.staging.account.gov.uk"
       UseRebrand: "Yes"
+      ShowWalletContactForm: "Yes"
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -504,6 +532,7 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.integration.account.gov.uk"
       PrivacyNoticeRedirectEnabled: "Yes"
       UseRebrand: "Yes"
+      ShowWalletContactForm: "Yes"
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -538,6 +567,7 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.account.gov.uk"
       PrivacyNoticeRedirectEnabled: "Yes"
       UseRebrand: "Yes"
+      ShowWalletContactForm: "No"
 
 Globals:
   Function:
@@ -1074,6 +1104,8 @@ Resources:
               Value: !If [PrivacyNoticeRedirectEnabled, "1", "0"]
             - Name: USE_REBRAND
               Value: !If [UseRebrand, "1", "0"]
+            - Name: SHOW_WALLET_CONTACT_FORM
+              Value: !If [ShowWalletContactForm, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If

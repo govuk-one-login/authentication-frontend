@@ -93,6 +93,7 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             "SUPPORT_HTTP_KEEP_ALIVE": 0,
             "PRIVACY_NOTICE_REDIRECT_ENABLED": 1,
             "USE_REBRAND": 1,
+            "SHOW_WALLET_CONTACT_FORM": 1,
         },
     },
     {
