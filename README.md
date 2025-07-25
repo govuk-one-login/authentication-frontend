@@ -12,10 +12,13 @@ Clones the repository to the `<your_folder_name>` directory.
 
 ## Running the app
 
-There are two different ways to run the app on a local machine:
+There are three different ways to run the app on a local machine:
 
-- Everything running in Docker
-- The frontend app running in a local node instance, with supporting services running in Docker
+- Full stack running locally in Docker
+- The frontend and stubs running in Docker, with AWS connections
+- The frontend app running in a local node instance, with supporting services running in Docker and AWS connections
+
+To run the full stack locally in Docker, see `local-running` in the `authentication-api` repo.
 
 Before you can run the frontend app against the backend you will need to configure some environment variables.
 
