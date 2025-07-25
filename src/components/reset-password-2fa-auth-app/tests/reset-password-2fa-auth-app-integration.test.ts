@@ -124,4 +124,82 @@ describe("Integration::2fa auth app (in reset password flow)", () => {
         .expect(302)
     );
   });
+
+  it("should return validation error when code not entered", async () => {
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#code-error").text()).to.contains("Enter the code");
+        })
+        .expect(400)
+    );
+  });
+
+  it("should return validation error when code is less than 6 characters", async () => {
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "2",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#code-error").text()).to.contains(
+            "Enter the code using only 6 digits"
+          );
+        })
+        .expect(400)
+    );
+  });
+
+  it("should return validation error when code is more than 6 characters", async () => {
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "1234567",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#code-error").text()).to.contains(
+            "Enter the code using only 6 digits"
+          );
+        })
+        .expect(400)
+    );
+  });
+
+  it("should return validation error when code entered contains letters", async () => {
+    await request(app, (test) =>
+      test
+        .post(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "12ert-",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#code-error").text()).to.contains(
+            "Enter the code using only 6 digits"
+          );
+        })
+        .expect(400)
+    );
+  });
 });

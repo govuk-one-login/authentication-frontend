@@ -6,6 +6,7 @@ import {
 import * as express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
+import { validateResetPassword2faAuthAppRequest } from "./reset-password-2fa-auth-app-validation.js";
 
 const router = express.Router();
 
@@ -20,6 +21,7 @@ router.post(
   PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  validateResetPassword2faAuthAppRequest(),
   resetPassword2FAAuthAppPost()
 );
 
