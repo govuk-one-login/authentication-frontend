@@ -191,6 +191,12 @@ export async function getNextPathAndUpdateJourney(
 ): Promise<string> {
   const nextState = getNextState(path, event, ctx);
 
+  if (nextState.value === path) {
+    throw Error(
+      `Invalid state transition: Event '${event}' is not valid for state '${path}' with sessionId ${sessionId}`
+    );
+  }
+
   req.session.user.journey = {
     nextPath: nextState.value,
     optionalPaths:
