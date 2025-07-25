@@ -52,7 +52,7 @@ export interface AuthorizeServiceInterface {
   ) => Promise<ApiResponseResult<StartAuthResponse>>;
 }
 
-export interface KmsDecryptionServiceInterface {
+export interface DecryptionServiceInterface {
   decrypt(serializedJwe: string): Promise<string>;
 }
 
