@@ -1,7 +1,7 @@
 import type { Page } from "@playwright/test";
 import { test, expect } from "@playwright/test";
-import { CONTACT_FORM_STRUCTURE } from "../../../app.constants.js";
-import type { Theme } from "src/app.constants.js";
+import { CONTACT_FORM_STRUCTURE } from "../structure/contact-us-structure.js";
+import type { Theme } from "../structure/contact-us-structure.js";
 
 const expectPageToMatchScreenshot = async (
   page: Page,
