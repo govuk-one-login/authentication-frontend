@@ -116,6 +116,7 @@ logs*.json
 *.csv
 *.xlsx
 *.iml
+test-results/
 
 keys/
 .vscode/
