@@ -86,13 +86,14 @@ describe("contact us controller", () => {
 
       contactUsGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
+      expect(res.render).to.have.been.calledWithMatch(
         "contact-us/index-public-contact-us.njk",
-        {
+        sinon.match({
           referer: "",
           fromURL: undefined,
           hrefBack: PATH_NAMES.CONTACT_US,
-        }
+          radioButtons: sinon.match.any,
+        })
       );
     });
 
@@ -104,13 +105,14 @@ describe("contact us controller", () => {
 
       contactUsGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
+      expect(res.render).to.have.been.calledWithMatch(
         "contact-us/index-public-contact-us.njk",
-        {
+        sinon.match({
           referer: encodeURIComponent(REFERER),
           fromURL: fromUrlEncoded,
           hrefBack: `${PATH_NAMES.CONTACT_US}?fromURL=${fromUrlEncoded}`,
-        }
+          radioButtons: sinon.match.any,
+        })
       );
     });
 
@@ -128,13 +130,14 @@ describe("contact us controller", () => {
 
         contactUsGet(req as Request, res as Response);
 
-        expect(res.render).to.have.calledWith(
+        expect(res.render).to.have.been.calledWithMatch(
           "contact-us/index-public-contact-us.njk",
-          {
+          sinon.match({
             referer: "",
             fromURL: undefined,
             hrefBack: PATH_NAMES.CONTACT_US,
-          }
+            radioButtons: sinon.match.any,
+          })
         );
       });
     });

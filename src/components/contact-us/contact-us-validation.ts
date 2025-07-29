@@ -1,6 +1,8 @@
 import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
 import type { ValidationChainFunc } from "../../types.js";
+import { getThemeRadioButtonsFromContactFormStructure } from "./structure/contact-us-structure-utils.js";
+
 export function getContactUsErrorMessage(theme: string): string {
   if (theme === "signing_in") {
     return "pages.contactUsFurtherInformation.signingIn.section1.errorMessage";
@@ -32,6 +34,12 @@ export function validateContactUsRequest(
           value,
         });
       }),
-    validateBodyMiddleware(template),
+    validateBodyMiddleware(template, postValidationLocals),
   ];
 }
+
+const postValidationLocals = function locals(): Record<string, unknown> {
+  return {
+    radioButtons: getThemeRadioButtonsFromContactFormStructure(),
+  };
+};

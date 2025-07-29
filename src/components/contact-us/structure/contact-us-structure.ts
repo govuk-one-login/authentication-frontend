@@ -1,6 +1,6 @@
 import { CONTACT_US_THEMES } from "../../../app.constants.js";
 
-export type ContactFormStructure = Map<string, Theme>
+export type ContactFormStructure = Map<string, Theme>;
 
 export interface Theme {
   radio: {
