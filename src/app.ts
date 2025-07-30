@@ -1,6 +1,5 @@
 import type { Application } from "express";
 import express from "express";
-import "express-async-errors";
 import cookieParser from "cookie-parser";
 import type serveStatic from "serve-static";
 import { logger, loggerMiddleware } from "./utils/logger.js";
@@ -258,7 +257,7 @@ async function createApp(): Promise<express.Application> {
   app.use(channelMiddleware);
   app.use(environmentBannerMiddleware);
   app.use(getSessionIdMiddleware);
-  app.post("*", sanitizeRequestMiddleware);
+  app.post("/*splat", sanitizeRequestMiddleware);
   app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
   app.use(initialiseSessionMiddleware);

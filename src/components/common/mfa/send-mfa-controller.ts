@@ -71,7 +71,7 @@ export function sendMfaGeneric(
   return async function (req: Request, res: Response) {
     const { email, activeMfaMethodId } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const isResendCodeRequest: boolean = req.body.isResendCodeRequest;
+    const isResendCodeRequest: boolean = req.body?.isResendCodeRequest ?? false;
 
     const result = await mfaCodeService.sendMfaCode(
       sessionId,
@@ -97,7 +97,7 @@ export function sendMfaGeneric(
     if (!isResendCodeRequest) {
       redirectPath = await getNextPathAndUpdateJourney(
         req,
-        PATH_NAMES.ENTER_MFA,
+        PATH_NAMES.UPLIFT_JOURNEY,
         USER_JOURNEY_EVENTS.VERIFY_MFA,
         {
           isLatestTermsAndConditionsAccepted:
