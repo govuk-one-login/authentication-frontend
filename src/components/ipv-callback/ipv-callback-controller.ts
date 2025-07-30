@@ -15,6 +15,7 @@ import {
   MFA_METHOD_TYPE,
   PATH_NAMES,
 } from "../../app.constants.js";
+
 const ERROR_TO_EVENT_MAP = new Map<string, string>();
 ERROR_TO_EVENT_MAP.set(
   REVERIFICATION_ERROR_CODE.NO_IDENTITY_AVAILABLE,

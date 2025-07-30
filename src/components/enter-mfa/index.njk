@@ -33,14 +33,14 @@
   text: 'pages.enterMfa.code.label' | translate
   },
   classes: "govuk-input--width-10 govuk-!-font-weight-bold",
-  id: "code",
-  name: "code",
+  id: "sms-otp-code",
+  name: "sms-otp-code",
   inputmode: "numeric",
   spellcheck: false,
   autocomplete: "one-time-code",
   errorMessage: {
-  text: errors['code'].text
-  } if (errors['code'])})
+  text: errors['sms-otp-code'].text
+  } if (errors['sms-otp-code'])})
   }}
 
     {{ govukButton({

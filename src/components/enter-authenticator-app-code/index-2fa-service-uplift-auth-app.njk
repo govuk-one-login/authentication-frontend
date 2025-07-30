@@ -37,14 +37,14 @@
                 text: 'pages.enterAuthenticatorAppCode.upliftRequired.code.labelSummary' | translate
             },
             classes: "govuk-input--width-10 govuk-!-font-weight-bold",
-            id: "code",
-            name: "code",
+            id: "totp-code",
+            name: "totp-code",
             inputmode: "numeric",
             spellcheck: false,
             autocomplete: "one-time-code",
             errorMessage: {
-                text: errors['code'].text
-            } if (errors['code'])}) }}
+                text: errors['totp-code'].text
+            } if (errors['totp-code'])}) }}
 
         {{ govukButton({
             "text": "general.continue.label" | translate,
