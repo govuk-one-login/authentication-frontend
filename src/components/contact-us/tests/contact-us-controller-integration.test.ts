@@ -37,7 +37,7 @@ describe("Integration:: contact us - public user", () => {
     );
 
     app = await createApp();
-    smartAgentApiUrl = process.env.SMARTAGENT_API_URL;
+    smartAgentApiUrl = "http://smartagentmockurl";
 
     await request(
       app,
