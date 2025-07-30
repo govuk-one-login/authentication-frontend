@@ -201,6 +201,15 @@ describe("Integration:: contact us - public user", () => {
     );
   });
 
+  it("should return contact us further information wallet page", async () => {
+    await request(app, (test) =>
+      test
+        .get("/contact-us-further-information")
+        .query("theme=wallet")
+        .expect(200)
+    );
+  });
+
   it("should return contact us questions page with only a theme", async () => {
     await request(app, (test) =>
       test
@@ -254,6 +263,19 @@ describe("Integration:: contact us - public user", () => {
       data,
       "#subtheme-error",
       "Select the problem you had proving your identity"
+    );
+  });
+
+  it("should return validation error when no radio boxes are selected on the wallet contact-us-further-information page", async () => {
+    const data = {
+      _csrf: token,
+      theme: "wallet",
+    };
+    await expectValidationErrorOnPost(
+      "/contact-us-further-information",
+      data,
+      "#subtheme-error",
+      "XXXXX"
     );
   });
 
@@ -348,6 +370,111 @@ describe("Integration:: contact us - public user", () => {
         "#securityCodeSentMethod-error",
         "Select whether you expected to get the code by email, text message or authenticator app"
       );
+    });
+
+    describe("A problem with your digital HM Armed Forces Veteran Card", () => {
+      describe("presence checks", () => {
+        [
+          {
+            name: "issueDescription",
+            errorMessage: "Enter what you were trying to do",
+          },
+          {
+            name: "additionalDescription",
+            errorMessage: "Enter what happened",
+          },
+          {
+            name: "serviceTryingToUse",
+            errorMessage: "Enter the name of the service",
+          },
+          {
+            name: "contact",
+            errorMessage: "Select yes if we can reply to you by email",
+          },
+        ].forEach((field) => {
+          it(`should return a validation error when hasn't provided ${field.name}`, async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.WALLET,
+              subtheme: CONTACT_US_THEMES.SOMETHING_ELSE,
+              issueDescription: "",
+              additionalDescription: "",
+              serviceTryingToUse: "",
+              contact: "",
+            };
+
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              `#${field.name}-error`,
+              field.errorMessage
+            );
+          });
+        });
+
+        it("should return a validation error if the user has opted into contact but not provided an email", async () => {
+          const data = {
+            _csrf: token,
+            theme: CONTACT_US_THEMES.WALLET,
+            subtheme: CONTACT_US_THEMES.SOMETHING_ELSE,
+            contact: "true",
+          };
+
+          await expectValidationErrorOnPost(
+            "/contact-us-questions",
+            data,
+            `#email-error`,
+            "Enter your email address"
+          );
+        });
+      });
+
+      describe("length checks", () => {
+        [
+          {
+            name: "issueDescription",
+            errorMessage:
+              "What were you trying to do must be 1,200 characters or less",
+          },
+          {
+            name: "additionalDescription",
+            errorMessage: "What happened must be 1,200 characters or less",
+          },
+        ].forEach((field) => {
+          it(`should return a validation error if ${field.name} is greater than 1,200 characters`, async () => {
+            const data = {
+              _csrf: token,
+              theme: CONTACT_US_THEMES.WALLET,
+              subtheme: CONTACT_US_THEMES.SOMETHING_ELSE,
+              [field.name]: new Array(2000).join("X"),
+            };
+
+            await expectValidationErrorOnPost(
+              "/contact-us-questions",
+              data,
+              `#${field.name}-error`,
+              field.errorMessage
+            );
+          });
+        });
+      });
+
+      it("should return validation error when email address is invalid", async () => {
+        const data = {
+          _csrf: token,
+          theme: CONTACT_US_THEMES.WALLET,
+          subtheme: CONTACT_US_THEMES.SOMETHING_ELSE,
+          contact: "true",
+          email: "invalid",
+        };
+
+        await expectValidationErrorOnPost(
+          "/contact-us-questions",
+          data,
+          `#email-error`,
+          "Enter an email address in the correct format, like name@example.com"
+        );
+      });
     });
 
     describe("somebody else is using your information", () => {

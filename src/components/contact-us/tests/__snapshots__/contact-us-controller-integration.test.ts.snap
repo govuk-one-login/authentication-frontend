@@ -22,6 +22,17 @@ Object {
 }
 `;
 
+exports[`Integration:: contact us - public user should return contact us further information wallet page 1`] = `
+Object {
+  "contentId": "a06d6387-d411-47db-8f7d-88871286330b",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
 exports[`Integration:: contact us - public user should return contact us page 1`] = `
 Object {
   "contentId": "e08d04e6-b24f-4bad-9955-1eb860771747",
@@ -289,6 +300,127 @@ Object {
 exports[`Integration:: contact us - public user should return validation error when no radio boxes are selected on the signing in contact-us-further-information page 1`] = `
 Object {
   "contentId": "a06d6387-d411-47db-8f7d-88871286330b",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly A problem with your digital HM Armed Forces Veteran Card length checks should return a validation error if additionalDescription is greater than 1,200 characters 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly A problem with your digital HM Armed Forces Veteran Card length checks should return a validation error if issueDescription is greater than 1,200 characters 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly A problem with your digital HM Armed Forces Veteran Card presence checks should return a validation error if the user has opted into contact but not provided an email 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly A problem with your digital HM Armed Forces Veteran Card presence checks should return a validation error if the user has opted into contact but not provided an email 2`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly A problem with your digital HM Armed Forces Veteran Card presence checks should return a validation error if the user has opted into contact but not provided an email 3`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly A problem with your digital HM Armed Forces Veteran Card presence checks should return a validation error if the user has opted into contact but not provided an email 4`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly A problem with your digital HM Armed Forces Veteran Card presence checks should return a validation error when hasn't provided additionalDescription 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly A problem with your digital HM Armed Forces Veteran Card presence checks should return a validation error when hasn't provided contact 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly A problem with your digital HM Armed Forces Veteran Card presence checks should return a validation error when hasn't provided issueDescription 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly A problem with your digital HM Armed Forces Veteran Card presence checks should return a validation error when hasn't provided serviceTryingToUse 1`] = `
+Object {
+  "contentId": "",
+  "taxonomyLevel1": "authentication",
+  "taxonomyLevel2": "feedback",
+  "taxonomyLevel3": "",
+  "taxonomyLevel4": "",
+  "taxonomyLevel5": "",
+}
+`;
+
+exports[`Integration:: contact us - public user visiting contact-us-questions directly A problem with your digital HM Armed Forces Veteran Card should return validation error when email address is invalid 1`] = `
+Object {
+  "contentId": "",
   "taxonomyLevel1": "authentication",
   "taxonomyLevel2": "feedback",
   "taxonomyLevel3": "",

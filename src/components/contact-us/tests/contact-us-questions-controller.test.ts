@@ -253,6 +253,66 @@ describe("contact us questions controller", () => {
         });
       });
     });
+
+    describe("from /contact-us-further-information wallet", () => {
+      [
+        {
+          radioButtonText: "You had a problem opening the GOV.UK One Login app",
+          subTheme: CONTACT_US_THEMES.WALLET_PROBLEM_OPENING_APP,
+          translationKey: "walletProblemOpeningApp",
+        },
+        {
+          radioButtonText:
+            "You had a problem adding your Veteran Card to the GOV.UK One Login app",
+          subTheme:
+            CONTACT_US_THEMES.WALLET_PROBLEM_ADDING_CREDENTIALS_DOCUMENT,
+          translationKey: "walletProblemAddingCredentialsDocument",
+        },
+        {
+          radioButtonText:
+            "You had a problem viewing your Veteran Card in the GOV.UK One Login app",
+          subTheme:
+            CONTACT_US_THEMES.WALLET_PROBLEM_VIEWING_CREDENTIALS_DOCUMENT,
+          translationKey: "walletProblemViewingCredentialsDocument",
+        },
+        {
+          radioButtonText:
+            "There was a technical problem (for example you saw an error message)",
+          subTheme: CONTACT_US_THEMES.WALLET_TECHNICAL_PROBLEM,
+          translationKey: "walletTechnicalProblem",
+        },
+        {
+          radioButtonText: "Something else",
+          subTheme: CONTACT_US_THEMES.WALLET_SOMETHING_ELSE,
+          translationKey: "walletSomethingElse",
+        },
+      ].forEach(({ radioButtonText, subTheme, translationKey }) => {
+        it(`should render ${PATH_NAMES.CONTACT_US_QUESTIONS} if '${radioButtonText}' radio option as chosen`, () => {
+          req.query.theme = CONTACT_US_THEMES.WALLET;
+          req.query.subtheme = subTheme;
+          req.headers.referer = REFERER;
+          req.query.referer = REFERER;
+          req.path = PATH_NAMES.CONTACT_US_QUESTIONS;
+          contactUsQuestionsGet(req as Request, res as Response);
+
+          expect(res.render).to.have.calledWith(
+            "contact-us/questions/index.njk",
+            {
+              formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
+              theme: CONTACT_US_THEMES.WALLET,
+              subtheme: subTheme,
+              backurl: `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.WALLET}`,
+              referer: encodeURIComponent(REFERER),
+              pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+              contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
+              contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
+              appErrorCode: "",
+              appSessionId: "",
+            }
+          );
+        });
+      });
+    });
   });
 
   describe("POST /contact-us-questions", () => {
