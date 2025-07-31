@@ -537,7 +537,7 @@ Mappings:
       UseAlarmActions: "Yes"
       OrchApiBaseUrl: "https://oidc.account.gov.uk"
       PrivacyNoticeRedirectEnabled: "Yes"
-      UseRebrand: "No"
+      UseRebrand: "Yes"
 
 Globals:
   Function:
