@@ -100,12 +100,21 @@ export interface SmartAgentTicket {
   customAttributes?: SmartAgentCustomAttributes;
 }
 
+export interface ThemeRadioButtons {
+  value: string;
+  text: string;
+}
+
 export interface FurtherInformationTemplateOptions {
   hrefBack: string
   referer: string
   supportNoPhotoIdContactForms: boolean
   fromURL: string
   theme: string
+  radioButtons: ThemeRadioButtons[]
+  header: string
+  legend: string
+  title: string
   appSessionId?: string
   appErrorCode?: string
 }

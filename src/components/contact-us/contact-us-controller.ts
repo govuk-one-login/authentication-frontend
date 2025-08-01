@@ -374,6 +374,8 @@ export function furtherInformationGet(req: Request, res: Response): void {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
 
+  const themeStructure = CONTACT_FORM_STRUCTURE.get(theme)
+
   const templateOptions: FurtherInformationTemplateOptions = {
     theme,
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
@@ -386,6 +388,10 @@ export function furtherInformationGet(req: Request, res: Response): void {
       validateReferer(req.query.referer as string, serviceDomain)
     ),
     supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
+    radioButtons: getThemeRadioButtonsFromStructure(themeStructure.subThemes),
+    title: `${themeStructure.nextPageContent}.title`,
+    header: `${themeStructure.nextPageContent}.header`,
+    legend: `${themeStructure.nextPageContent}.section1.header`,
   };
 
   if (isAppJourney(req.query.appSessionId as string)) {

@@ -1,9 +1,5 @@
 import type { Theme } from "./contact-us-structure.js";
-
-interface ThemeRadioButtons {
-  value: string;
-  text: string;
-}
+import type { ThemeRadioButtons } from "../types.js";
 
 export function getThemeRadioButtonsFromStructure(structure: Map<string, Theme>): ThemeRadioButtons[] {
   return Array.from(structure).map(([themeName, theme]) => ({
