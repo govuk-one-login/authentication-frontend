@@ -370,27 +370,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
 
-  if (isAppJourney(req.query.appSessionId as string)) {
-    return res.render("contact-us/further-information/index.njk", {
-      theme: req.query.theme,
-      hrefBack: backLinkHref,
-      referer: encodeValue(
-        validateReferer(req.query.referer as string, serviceDomain)
-      ),
-      ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
-        fromURL: encodeValue(
-          validateReferer(req.query.fromURL as string, serviceDomain)
-        ),
-      }),
-      appSessionId: getAppSessionId(req.query.appSessionId as string),
-      ...(getAppErrorCode(req.query.appErrorCode as string) && {
-        appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
-      }),
-      supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
-    });
-  }
-
-  return res.render("contact-us/further-information/index.njk", {
+  const baseTemplateOptions = {
     theme,
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
       fromURL: encodeValue(
@@ -402,7 +382,20 @@ export function furtherInformationGet(req: Request, res: Response): void {
       validateReferer(req.query.referer as string, serviceDomain)
     ),
     supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
-    radioButtons: getThemeRadioButtonsFromStructure(CONTACT_FORM_STRUCTURE.get(theme).subThemes)
+  };
+
+  if (isAppJourney(req.query.appSessionId as string)) {
+    return res.render("contact-us/further-information/index.njk", {
+      ...baseTemplateOptions,
+      appSessionId: getAppSessionId(req.query.appSessionId as string),
+      ...(getAppErrorCode(req.query.appErrorCode as string) && {
+        appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
+      }),
+    });
+  }
+
+  return res.render("contact-us/further-information/index.njk", {
+    defaultTemplateOptions: baseTemplateOptions
   });
 }
 
