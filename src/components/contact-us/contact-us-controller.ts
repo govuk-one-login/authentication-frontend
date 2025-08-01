@@ -21,7 +21,11 @@ import {
 } from "../../config.js";
 import { getContactUsService } from "./contact-us-service.js";
 import { supportTypeIsGovService } from "../../utils/request.js";
-import { getThemeRadioButtonsFromStructure } from "./structure/contact-us-structure-utils.js";
+import {
+  getHeaderFromTheme, getLegendFromTheme,
+  getThemeRadioButtonsFromStructure,
+  getTitleFromTheme,
+} from "./structure/contact-us-structure-utils.js";
 import { CONTACT_FORM_STRUCTURE } from "./structure/contact-us-structure.js";
 const themeToPageTitle = {
   [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:
@@ -389,9 +393,9 @@ export function furtherInformationGet(req: Request, res: Response): void {
     ),
     supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
     radioButtons: getThemeRadioButtonsFromStructure(themeStructure.subThemes),
-    title: `${themeStructure.nextPageContent}.title`,
-    header: `${themeStructure.nextPageContent}.header`,
-    legend: `${themeStructure.nextPageContent}.section1.header`,
+    title: getTitleFromTheme(themeStructure),
+    header: getHeaderFromTheme(themeStructure),
+    legend: getLegendFromTheme(themeStructure),
   };
 
   if (isAppJourney(req.query.appSessionId as string)) {

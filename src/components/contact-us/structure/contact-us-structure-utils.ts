@@ -7,3 +7,15 @@ export function getThemeRadioButtonsFromStructure(structure: Map<string, Theme>)
     text: theme.radio.mainText,
   }));
 }
+
+export function getTitleFromTheme(theme: Theme): string {
+  return `${theme.nextPageContent}.title`
+}
+
+export function getHeaderFromTheme(theme: Theme): string {
+  return `${theme.nextPageContent}.header`
+}
+
+export function getLegendFromTheme(theme: Theme): string {
+  return `${theme.nextPageContent}.section1.header`
+}
