@@ -16,6 +16,7 @@ import {
   internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
   internationalPhoneNumberMustHaveLengthWithoutSpacesInRange,
 } from "../common/phone-number/phone-number-validation.js";
+import { generatePageTitle } from "./contact-us-controller.js";
 const sanitizeFreeTextValue: CustomSanitizer = function sanitizeFreeTextValue(
   value: string
 ) {
@@ -355,7 +356,9 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
     body("name").customSanitizer(sanitizeFreeTextValue),
     body("country").customSanitizer(sanitizeFreeTextValue),
     body("countryPhoneNumberFrom").customSanitizer(sanitizeFreeTextValue),
-    validateBodyMiddleware("contact-us/questions/index.njk"),
+    validateBodyMiddleware("contact-us/questions/index.njk", (req) => ({
+      pageTitleHeading: generatePageTitle(req),
+    })),
   ];
 }
 

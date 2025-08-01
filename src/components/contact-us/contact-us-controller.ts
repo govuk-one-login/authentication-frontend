@@ -438,6 +438,21 @@ export function furtherInformationPost(req: Request, res: Response): void {
   res.redirect(url + "?" + queryParams.toString());
 }
 
+export function generatePageTitle(req: Request): string {
+  const theme = (req.query.theme || req.body.theme) as string;
+  const subtheme = (req.query.subtheme || req.body.subtheme) as string;
+  let pageTitle = themeToPageTitle[theme];
+  if (
+    subtheme === CONTACT_US_THEMES.SOMETHING_ELSE &&
+    theme === CONTACT_US_THEMES.ACCOUNT_CREATION
+  ) {
+    pageTitle = somethingElseSubThemeToPageTitle[theme];
+  } else if (subtheme) {
+    pageTitle = themeToPageTitle[subtheme];
+  }
+  return pageTitle;
+}
+
 export function contactUsQuestionsGet(req: Request, res: Response): void {
   const supportLinkURL = getSupportLinkUrl();
   // TODO - AUT-4118 - Fix this
@@ -446,15 +461,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
   if (!req.query.theme) {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
-  let pageTitle = themeToPageTitle[req.query.theme as string];
-  if (
-    req.query.subtheme === CONTACT_US_THEMES.SOMETHING_ELSE &&
-    req.query.theme === CONTACT_US_THEMES.ACCOUNT_CREATION
-  ) {
-    pageTitle = somethingElseSubThemeToPageTitle[req.query.theme as string];
-  } else if (req.query.subtheme) {
-    pageTitle = themeToPageTitle[req.query.subtheme as string];
-  }
+  const pageTitle = generatePageTitle(req);
   return res.render("contact-us/questions/index.njk", {
     formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
     theme: req.query.theme,
@@ -468,6 +475,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
         validateReferer(req.query.fromURL as string, serviceDomain)
       ),
     }),
+    pageTitle: pageTitle,
     pageTitleHeading: pageTitle,
     contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
     contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
