@@ -10,8 +10,8 @@ import {
   getLengthExceededErrorMessageForIdCheckAppIssueDescription,
   getLengthExceededErrorMessageForSigningInIssueDescription,
   getErrorMessageForAdditionalDescription,
-} from "../contact-us-questions-validation.ts";
-import { CONTACT_US_THEMES } from "../../../app.constants";
+} from "../validation/contact-us-questions-validation.js";
+import { CONTACT_US_THEMES } from "src/app.constants.js";
 
 interface TestCase {
   subtheme: string;
