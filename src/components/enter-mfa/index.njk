@@ -80,4 +80,38 @@
 
 {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
 {%- include "ga4-opl/template.njk" -%}
+<script {% if ga4Params.nonce%} nonce='{{ ga4Params.nonce }}'{%  endif %}>
+    if ("OTPCredential" in window) {
+        alert("OTPCredential supported");
+      window.addEventListener("DOMContentLoaded", (e) => {
+        const input = document.querySelector('input[autocomplete="one-time-code"]');
+        if (!input) return;
+        alert("Input found");
+
+        const ac = new AbortController();
+        const form = input.closest("form");
+        if (form) {
+            alert("Form submit listener attaching");
+          form.addEventListener("submit", (e) => {
+            ac.abort();
+          });
+        }
+
+        navigator.credentials
+          .get({
+            otp: { transport: ["sms"] },
+            signal: ac.signal,
+          })
+          .then((otp) => {
+            alert("OTP received");
+            input.value = otp.code;
+            if (form) form.submit();
+          })
+          .catch((err) => {
+            alert(err.message);
+            console.error(err);
+          });
+      });
+    }
+</script>
 {% endblock %}
