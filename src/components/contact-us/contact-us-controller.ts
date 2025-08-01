@@ -979,6 +979,20 @@ function getQuestionsFromFormTypeForMessageBody(
         { lng: "en" }
       ),
     },
+    wallet: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.anotherProblem.section1.header",
+        { lng: "en" }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.anotherProblem.section2.header",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
   };
 
   return formTypeToQuestions[formType];
@@ -1027,6 +1041,9 @@ function getQuestionFromThemes(
       "pages.contactUsPublic.section3.suggestionsFeedback",
       { lng: "en" }
     ),
+    wallet: req.t("pages.contactUsPublic.section3.wallet", {
+      lng: "en",
+    }),
   };
 
   const signinSubthemeToQuestions: { [key: string]: any } = {
@@ -1188,6 +1205,29 @@ function getQuestionFromThemes(
     ),
   };
 
+  const walletSubthemeToQuestions: { [key: string]: any } = {
+    wallet_problem_opening_app: req.t(
+      "pages.contactUsFurtherInformation.wallet.section1.radio1",
+      { lng: "en" }
+    ),
+    wallet_problem_adding_credentials_document: req.t(
+      "pages.contactUsFurtherInformation.wallet.section1.radio2",
+      { lng: "en" }
+    ),
+    wallet_problem_viewing_credentials_document: req.t(
+      "pages.contactUsFurtherInformation.wallet.section1.radio3",
+      { lng: "en" }
+    ),
+    wallet_technical_problem: req.t(
+      "pages.contactUsFurtherInformation.wallet.section1.radio4",
+      { lng: "en" }
+    ),
+    wallet_something_else: req.t(
+      "pages.contactUsFurtherInformation.wallet.section1.radio5",
+      { lng: "en" }
+    ),
+  };
+
   const themeQuestion = themesToQuestions[theme];
   let subthemeQuestion;
   if (subtheme) {
@@ -1205,6 +1245,9 @@ function getQuestionFromThemes(
     }
     if (theme == CONTACT_US_THEMES.PROVING_IDENTITY) {
       subthemeQuestion = provingIdentitySubthemeToQuestion[subtheme];
+    }
+    if (theme == CONTACT_US_THEMES.WALLET) {
+      subthemeQuestion = walletSubthemeToQuestions[subtheme];
     }
   }
   return {
