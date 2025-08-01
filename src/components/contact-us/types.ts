@@ -102,7 +102,8 @@ export interface SmartAgentTicket {
 
 export interface ThemeRadioButtons {
   value: string;
-  text: string;
+  mainText: string;
+  hintText?: string
 }
 
 export interface FurtherInformationTemplateOptions {

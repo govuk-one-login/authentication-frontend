@@ -30,7 +30,10 @@
     {% for radio in radioButtons %}
         {% set _ = items.push({
             value: radio.value,
-            text: radio.text | translate
+            text: radio.mainText | translate,
+            hint: {
+                text: radio.hintText | translate | safe
+            }
         }) %}
     {% endfor %}
 
