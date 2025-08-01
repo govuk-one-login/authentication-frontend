@@ -391,7 +391,6 @@ export function furtherInformationGet(req: Request, res: Response): void {
     referer: encodeValue(
       validateReferer(req.query.referer as string, serviceDomain)
     ),
-    supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
     radioButtons: getThemeRadioButtonsFromStructure(themeStructure.subThemes),
     title: getTitleFromTheme(themeStructure),
     header: getHeaderFromTheme(themeStructure),

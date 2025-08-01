@@ -108,7 +108,6 @@ export interface ThemeRadioButtons {
 export interface FurtherInformationTemplateOptions {
   hrefBack: string
   referer: string
-  supportNoPhotoIdContactForms: boolean
   fromURL: string
   theme: string
   radioButtons: ThemeRadioButtons[]
