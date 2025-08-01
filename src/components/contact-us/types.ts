@@ -99,3 +99,13 @@ export interface SmartAgentTicket {
   message: string;
   customAttributes?: SmartAgentCustomAttributes;
 }
+
+export interface FurtherInformationTemplateOptions {
+  hrefBack: string
+  referer: string
+  supportNoPhotoIdContactForms: boolean
+  fromURL: string
+  theme: string
+  appSessionId?: string
+  appErrorCode?: string
+}
