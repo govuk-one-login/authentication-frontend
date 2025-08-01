@@ -1,12 +1,12 @@
-import { getContactFormStructure } from "./contact-us-structure.js";
+import type { Theme } from "./contact-us-structure.js";
 
 interface ThemeRadioButtons {
   value: string;
   text: string;
 }
 
-export function getThemeRadioButtonsFromContactFormStructure(): ThemeRadioButtons[] {
-  return Array.from(getContactFormStructure()).map(([themeName, theme]) => ({
+export function getThemeRadioButtonsFromStructure(structure: Map<string, Theme>): ThemeRadioButtons[] {
+  return Array.from(structure).map(([themeName, theme]) => ({
     value: themeName,
     text: theme.radio.mainText,
   }));

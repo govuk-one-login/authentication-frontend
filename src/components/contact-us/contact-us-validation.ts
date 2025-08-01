@@ -1,7 +1,9 @@
 import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
 import type { ValidationChainFunc } from "../../types.js";
-import { getThemeRadioButtonsFromContactFormStructure } from "./structure/contact-us-structure-utils.js";
+import { getThemeRadioButtonsFromStructure } from "./structure/contact-us-structure-utils.js";
+import { CONTACT_FORM_STRUCTURE } from "./structure/contact-us-structure.js";
+import type { Request } from "express";
 
 export function getContactUsErrorMessage(theme: string): string {
   if (theme === "signing_in") {
@@ -38,8 +40,10 @@ export function validateContactUsRequest(
   ];
 }
 
-const postValidationLocals = function locals(): Record<string, unknown> {
+const postValidationLocals = function locals(req: Request): Record<string, unknown> {
+  const subTheme: string = req.body.theme
+  const structure = subTheme ? CONTACT_FORM_STRUCTURE.get(subTheme).subThemes : CONTACT_FORM_STRUCTURE
   return {
-    radioButtons: getThemeRadioButtonsFromContactFormStructure(),
+    radioButtons: getThemeRadioButtonsFromStructure(structure)
   };
 };
