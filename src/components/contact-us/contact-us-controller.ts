@@ -6,7 +6,11 @@ import {
   CONTACT_US_COUNTRY_MAX_LENGTH,
   CONTACT_US_REFERER_ALLOWLIST,
 } from "../../app.constants.js";
-import type { Questions, ThemeQuestions } from "./types.js";
+import type {
+  FurtherInformationTemplateOptions,
+  Questions,
+  ThemeQuestions,
+} from "./types.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import crypto from "crypto";
 import { logger } from "../../utils/logger.js";
@@ -370,7 +374,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
 
-  const baseTemplateOptions = {
+  const templateOptions: FurtherInformationTemplateOptions = {
     theme,
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
       fromURL: encodeValue(
@@ -385,18 +389,17 @@ export function furtherInformationGet(req: Request, res: Response): void {
   };
 
   if (isAppJourney(req.query.appSessionId as string)) {
-    return res.render("contact-us/further-information/index.njk", {
-      ...baseTemplateOptions,
-      appSessionId: getAppSessionId(req.query.appSessionId as string),
-      ...(getAppErrorCode(req.query.appErrorCode as string) && {
-        appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
-      }),
-    });
+    templateOptions.appSessionId = getAppSessionId(
+      req.query.appSessionId as string
+    );
+    templateOptions.appErrorCode =
+      getAppErrorCode(req.query.appErrorCode as string) &&
+      getAppErrorCode(req.query.appErrorCode as string);
   }
 
-  return res.render("contact-us/further-information/index.njk", {
-    ...baseTemplateOptions
-  });
+  return res.render("contact-us/further-information/index.njk",
+    templateOptions,
+  );
 }
 
 export function furtherInformationPost(req: Request, res: Response): void {
