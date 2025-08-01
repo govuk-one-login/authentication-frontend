@@ -17,6 +17,7 @@ import {
 } from "../../config.js";
 import { getContactUsService } from "./contact-us-service.js";
 import { supportTypeIsGovService } from "../../utils/request.js";
+import { getThemeRadioButtonsFromContactFormStructure } from "./structure/contact-us-structure-utils.js";
 const themeToPageTitle = {
   [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:
     "pages.contactUsQuestions.accountNotFound.title",
@@ -147,6 +148,7 @@ export function contactUsGet(req: Request, res: Response): void {
     referer: encodeValue(referer),
     fromURL: encodeValue(fromURL),
     hrefBack: backLinkHref,
+    radioButtons: getThemeRadioButtonsFromContactFormStructure(),
     ...(getAppSessionId(req.query.appSessionId as string) && {
       appSessionId: getAppSessionId(req.query.appSessionId as string),
     }),
