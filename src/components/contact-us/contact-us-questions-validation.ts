@@ -16,6 +16,7 @@ import {
   internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
   internationalPhoneNumberMustHaveLengthWithoutSpacesInRange,
 } from "../common/phone-number/phone-number-validation.js";
+import { generatePageTitle } from "./contact-us-controller.js";
 const sanitizeFreeTextValue: CustomSanitizer = function sanitizeFreeTextValue(
   value: string
 ) {
@@ -355,7 +356,9 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
     body("name").customSanitizer(sanitizeFreeTextValue),
     body("country").customSanitizer(sanitizeFreeTextValue),
     body("countryPhoneNumberFrom").customSanitizer(sanitizeFreeTextValue),
-    validateBodyMiddleware("contact-us/questions/index.njk"),
+    validateBodyMiddleware("contact-us/questions/index.njk", (req) => ({
+      pageTitleHeading: generatePageTitle(req),
+    })),
   ];
 }
 
@@ -395,6 +398,9 @@ export function getErrorMessageForIssueDescription(
   }
   if (theme === CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE) {
     return getErrorMessageForFaceToFaceIssueDescription(subtheme);
+  }
+  if (theme === CONTACT_US_THEMES.WALLET) {
+    return "pages.contactUsQuestions.anotherProblem.section1.errorMessage";
   }
 }
 
@@ -496,6 +502,9 @@ export function getLengthExceededErrorMessageForIssueDescription(
   }
   if (theme === CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.suggestionFeedbackTooLongMessage";
+  }
+  if (theme === CONTACT_US_THEMES.WALLET) {
+    return "pages.contactUsQuestions.issueDescriptionErrorMessage.entryTooLongMessage";
   }
 }
 
@@ -606,5 +615,8 @@ export function getErrorMessageForAdditionalDescription(
   }
   if (subtheme === CONTACT_US_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE) {
     return "pages.contactUsQuestions.signInPhoneNumberIssue.section2.errorMessage";
+  }
+  if (theme === CONTACT_US_THEMES.WALLET) {
+    return "pages.contactUsQuestions.anotherProblem.section2.errorMessage";
   }
 }

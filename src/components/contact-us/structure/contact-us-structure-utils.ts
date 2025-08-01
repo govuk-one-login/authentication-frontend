@@ -6,8 +6,10 @@ interface ThemeRadioButtons {
 }
 
 export function getThemeRadioButtonsFromContactFormStructure(): ThemeRadioButtons[] {
-  return Array.from(getContactFormStructure()).map(([themeName, theme]) => ({
-    value: themeName,
-    text: theme.radio.mainText,
-  }));
+  return Array.from(getContactFormStructure())
+    .filter(([, theme]) => !theme.isHidden)
+    .map(([themeName, theme]) => ({
+      value: themeName,
+      text: theme.radio.mainText,
+    }));
 }

@@ -263,6 +263,17 @@ describe("contact us controller", () => {
           "/contact-us-further-information?theme=account_creation&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
         );
       });
+
+      it("should redirect when 'A problem with your digital HM Armed Forces Veteran Card' radio option is chosen", async () => {
+        req.body.theme = CONTACT_US_THEMES.WALLET;
+        req.body.referer = REFERER;
+
+        contactUsFormPost(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(
+          "/contact-us-further-information?theme=wallet&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
+        );
+      });
     });
 
     describe("redirect to /contact-us-questions page", () => {
@@ -582,6 +593,9 @@ describe("getNextUrlBasedOnTheme", () => {
       getNextUrlBasedOnTheme(CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE)
     ).to.equal(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION);
     expect(getNextUrlBasedOnTheme(CONTACT_US_THEMES.PROVING_IDENTITY)).to.equal(
+      PATH_NAMES.CONTACT_US_FURTHER_INFORMATION
+    );
+    expect(getNextUrlBasedOnTheme(CONTACT_US_THEMES.WALLET)).to.equal(
       PATH_NAMES.CONTACT_US_FURTHER_INFORMATION
     );
   });

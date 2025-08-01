@@ -1,4 +1,5 @@
 import { CONTACT_US_THEMES } from "../../../app.constants.js";
+import { showWalletContactForm } from "../../../config.js";
 
 export type ContactFormStructure = Map<string, Theme>;
 
@@ -8,6 +9,7 @@ export interface Theme {
     hintText?: string;
   };
   subThemes?: ContactFormStructure;
+  isHidden?: boolean;
 }
 
 export const getContactFormStructure = (): ContactFormStructure =>
@@ -368,6 +370,62 @@ export const CONTACT_FORM_STRUCTURE: ContactFormStructure = new Map([
             radio: {
               mainText:
                 "pages.contactUsFurtherInformation.provingIdentity.section1.somethingElse",
+            },
+          },
+        ],
+      ]),
+    },
+  ],
+  [
+    CONTACT_US_THEMES.WALLET,
+    {
+      isHidden: !showWalletContactForm(),
+      radio: {
+        mainText: "pages.contactUsPublic.section3.wallet",
+      },
+      subThemes: new Map([
+        [
+          CONTACT_US_THEMES.WALLET_PROBLEM_OPENING_APP,
+          {
+            radio: {
+              mainText:
+                "pages.contactUsFurtherInformation.wallet.section1.radio1",
+            },
+          },
+        ],
+        [
+          CONTACT_US_THEMES.WALLET_PROBLEM_ADDING_CREDENTIALS_DOCUMENT,
+          {
+            radio: {
+              mainText:
+                "pages.contactUsFurtherInformation.wallet.section1.radio2",
+            },
+          },
+        ],
+        [
+          CONTACT_US_THEMES.WALLET_PROBLEM_VIEWING_CREDENTIALS_DOCUMENT,
+          {
+            radio: {
+              mainText:
+                "pages.contactUsFurtherInformation.wallet.section1.radio3",
+            },
+          },
+        ],
+        [
+          CONTACT_US_THEMES.WALLET_TECHNICAL_PROBLEM,
+          {
+            radio: {
+              mainText:
+                "pages.contactUsFurtherInformation.wallet.section1.radio4",
+            },
+          },
+        ],
+        [
+          CONTACT_US_THEMES.WALLET_SOMETHING_ELSE,
+          {
+            radio: {
+              mainText:
+                "pages.contactUsFurtherInformation.wallet.section1.radio5",
             },
           },
         ],

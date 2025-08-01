@@ -26,6 +26,7 @@ support_new_ipv_spinner                             = "0"
 support_mfa_reset_with_ipv                          = "1"
 route_users_to_new_ipv_journey                      = "1"
 use_rebrand                                         = "1"
+show_wallet_contact_form                            = "1"
 
 frontend_task_definition_cpu     = 512
 frontend_task_definition_memory  = 1024

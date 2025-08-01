@@ -13,6 +13,7 @@ import { logger } from "../../utils/logger.js";
 import {
   getServiceDomain,
   getSupportLinkUrl,
+  showWalletContactForm,
   supportNoPhotoIdContactForms,
 } from "../../config.js";
 import { getContactUsService } from "./contact-us-service.js";
@@ -91,6 +92,16 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.title",
   [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_ADDRESS]:
     "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.title",
+  [CONTACT_US_THEMES.WALLET_PROBLEM_OPENING_APP]:
+    "pages.contactUsQuestions.walletProblemOpeningApp.title",
+  [CONTACT_US_THEMES.WALLET_PROBLEM_ADDING_CREDENTIALS_DOCUMENT]:
+    "pages.contactUsQuestions.walletProblemAddingCredentialsDocument.title",
+  [CONTACT_US_THEMES.WALLET_PROBLEM_VIEWING_CREDENTIALS_DOCUMENT]:
+    "pages.contactUsQuestions.walletProblemViewingCredentialsDocument.title",
+  [CONTACT_US_THEMES.WALLET_TECHNICAL_PROBLEM]:
+    "pages.contactUsQuestions.walletTechnicalProblem.title",
+  [CONTACT_US_THEMES.WALLET_SOMETHING_ELSE]:
+    "pages.contactUsQuestions.walletSomethingElse.title",
 };
 
 const somethingElseSubThemeToPageTitle = {
@@ -152,6 +163,7 @@ export function contactUsGet(req: Request, res: Response): void {
     ...(getAppSessionId(req.query.appSessionId as string) && {
       appSessionId: getAppSessionId(req.query.appSessionId as string),
     }),
+    showWalletContactForm: showWalletContactForm(),
   };
 
   return res.render("contact-us/index-public-contact-us.njk", options);
@@ -322,8 +334,6 @@ export function getPreferredLanguage(languageCode: string): string {
 }
 
 export function getNextUrlBasedOnTheme(theme: string): string {
-  let url: string = PATH_NAMES.CONTACT_US_QUESTIONS;
-
   if (
     [
       CONTACT_US_THEMES.ACCOUNT_CREATION,
@@ -331,12 +341,13 @@ export function getNextUrlBasedOnTheme(theme: string): string {
       CONTACT_US_THEMES.ID_CHECK_APP,
       CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE,
       CONTACT_US_THEMES.PROVING_IDENTITY,
+      CONTACT_US_THEMES.WALLET,
     ].includes(theme)
   ) {
-    url = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
+    return PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
+  } else {
+    return PATH_NAMES.CONTACT_US_QUESTIONS;
   }
-
-  return url;
 }
 
 export function contactUsFormPost(req: Request, res: Response): void {
@@ -427,6 +438,21 @@ export function furtherInformationPost(req: Request, res: Response): void {
   res.redirect(url + "?" + queryParams.toString());
 }
 
+export function generatePageTitle(req: Request): string {
+  const theme = (req.query.theme || req.body.theme) as string;
+  const subtheme = (req.query.subtheme || req.body.subtheme) as string;
+  let pageTitle = themeToPageTitle[theme];
+  if (
+    subtheme === CONTACT_US_THEMES.SOMETHING_ELSE &&
+    theme === CONTACT_US_THEMES.ACCOUNT_CREATION
+  ) {
+    pageTitle = somethingElseSubThemeToPageTitle[theme];
+  } else if (subtheme) {
+    pageTitle = themeToPageTitle[subtheme];
+  }
+  return pageTitle;
+}
+
 export function contactUsQuestionsGet(req: Request, res: Response): void {
   const supportLinkURL = getSupportLinkUrl();
   // TODO - AUT-4118 - Fix this
@@ -435,15 +461,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
   if (!req.query.theme) {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
-  let pageTitle = themeToPageTitle[req.query.theme as string];
-  if (
-    req.query.subtheme === CONTACT_US_THEMES.SOMETHING_ELSE &&
-    req.query.theme === CONTACT_US_THEMES.ACCOUNT_CREATION
-  ) {
-    pageTitle = somethingElseSubThemeToPageTitle[req.query.theme as string];
-  } else if (req.query.subtheme) {
-    pageTitle = themeToPageTitle[req.query.subtheme as string];
-  }
+  const pageTitle = generatePageTitle(req);
   return res.render("contact-us/questions/index.njk", {
     formSubmissionUrl: PATH_NAMES.CONTACT_US_QUESTIONS,
     theme: req.query.theme,
@@ -457,6 +475,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
         validateReferer(req.query.fromURL as string, serviceDomain)
       ),
     }),
+    pageTitle: pageTitle,
     pageTitleHeading: pageTitle,
     contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
     contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
@@ -960,6 +979,20 @@ function getQuestionsFromFormTypeForMessageBody(
         { lng: "en" }
       ),
     },
+    wallet: {
+      issueDescription: req.t(
+        "pages.contactUsQuestions.anotherProblem.section1.header",
+        { lng: "en" }
+      ),
+      additionalDescription: req.t(
+        "pages.contactUsQuestions.anotherProblem.section2.header",
+        { lng: "en" }
+      ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
   };
 
   return formTypeToQuestions[formType];
@@ -1008,6 +1041,9 @@ function getQuestionFromThemes(
       "pages.contactUsPublic.section3.suggestionsFeedback",
       { lng: "en" }
     ),
+    wallet: req.t("pages.contactUsPublic.section3.wallet", {
+      lng: "en",
+    }),
   };
 
   const signinSubthemeToQuestions: { [key: string]: any } = {
@@ -1169,6 +1205,29 @@ function getQuestionFromThemes(
     ),
   };
 
+  const walletSubthemeToQuestions: { [key: string]: any } = {
+    wallet_problem_opening_app: req.t(
+      "pages.contactUsFurtherInformation.wallet.section1.radio1",
+      { lng: "en" }
+    ),
+    wallet_problem_adding_credentials_document: req.t(
+      "pages.contactUsFurtherInformation.wallet.section1.radio2",
+      { lng: "en" }
+    ),
+    wallet_problem_viewing_credentials_document: req.t(
+      "pages.contactUsFurtherInformation.wallet.section1.radio3",
+      { lng: "en" }
+    ),
+    wallet_technical_problem: req.t(
+      "pages.contactUsFurtherInformation.wallet.section1.radio4",
+      { lng: "en" }
+    ),
+    wallet_something_else: req.t(
+      "pages.contactUsFurtherInformation.wallet.section1.radio5",
+      { lng: "en" }
+    ),
+  };
+
   const themeQuestion = themesToQuestions[theme];
   let subthemeQuestion;
   if (subtheme) {
@@ -1186,6 +1245,9 @@ function getQuestionFromThemes(
     }
     if (theme == CONTACT_US_THEMES.PROVING_IDENTITY) {
       subthemeQuestion = provingIdentitySubthemeToQuestion[subtheme];
+    }
+    if (theme == CONTACT_US_THEMES.WALLET) {
+      subthemeQuestion = walletSubthemeToQuestions[subtheme];
     }
   }
   return {

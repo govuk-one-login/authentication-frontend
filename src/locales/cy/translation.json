@@ -1881,7 +1881,8 @@
         "govUKLoginAndIdApps": "Problem profi eich hunaniaeth wrth ddefnyddio’r ap GOV.UK One Login neu’r ap GOV.UK ID Check",
         "provingIdentityFaceToFace": "Problem profi eich hunaniaeth gyda’r Swyddfa Bost",
         "errorMessage": "Dewiswch reswm dros gysylltu â ni",
-        "suspectUnauthorisedAccess": "Rydych chi’n meddwl bod rhywun arall yn defnyddio’ch gwybodaeth i gael mynediad i’ch GOV.UK One Login"
+        "suspectUnauthorisedAccess": "Rydych chi’n meddwl bod rhywun arall yn defnyddio’ch gwybodaeth i gael mynediad i’ch GOV.UK One Login",
+        "wallet": "Problem gyda’ch Cerdyn Cyn-filwr y Lluoedd Arfog EF digidol"
       },
       "continueLabel": "Parhau"
     },
@@ -1975,6 +1976,19 @@
             "hint": "Gallwch ddarllen mwy am gael neu ddod o hyd i’ch rhif Yswiriant Gwladol yn <a href=\"https://www.gov.uk/rhif-yswiriant-gwladol-coll\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">www.gov.uk/rhif-yswiriant-gwladol-coll</a>"
           },
           "errorMessage": "Dewiswch y broblem oedd gennych wrth brofi eich hunaniaeth"
+        }
+      },
+      "wallet":  {
+        "title": "Problem gyda’ch Cerdyn Cyn-filwr y Lluoedd Arfog EF digidol",
+        "header": "Problem gyda’ch Cerdyn Cyn-filwr y Lluoedd Arfog EF digidol",
+        "section1": {
+          "header": "Dywedwch wrthym beth ddigwyddodd",
+          "radio1": "Rydych wedi cael problem agor yr ap GOV.UK One Login",
+          "radio2": "Rydych wedi cael problem ychwanegu eich Cerdyn Cyn-filwr i’r ap GOV.UK One Login",
+          "radio3": "Rydych wedi cael problem gweld eich Cerdyn Cyn-filwr yn yr ap GOV.UK One Login",
+          "radio4": "Roedd problem dechnegol (er enghraifft, fe welsoch neges gwall)",
+          "radio5": "Rhywbeth arall",
+          "errorMessage": "CY TODO - AUT-4497 - Error message"
         }
       }
     },
@@ -2478,6 +2492,21 @@
           "header": "Pa broblem oeddech chi’n ei chael gyda’ch rhif Yswiriant Gwladol?",
           "errorMessage": "Pa broblem oeddech chi’n ei chael gyda’ch rhif Yswiriant Gwladol?"
         }
+      },
+      "walletProblemOpeningApp": {
+        "title": "Rydych wedi cael problem agor yr ap GOV.UK One Login"
+      },
+      "walletProblemAddingCredentialsDocument": {
+        "title": "Rydych wedi cael problem ychwanegu eich Cerdyn Cyn-filwr i’r ap GOV.UK One Login"
+      },
+      "walletProblemViewingCredentialsDocument":  {
+        "title": "Rydych wedi cael problem gweld eich Cerdyn Cyn-filwr yn yr ap GOV.UK One Login"
+      },
+      "walletTechnicalProblem": {
+        "title": "Roeddech wedi cael problem dechnegol"
+      },
+      "walletSomethingElse":  {
+        "title": "Problem arall gyda’ch Cerdyn Cyn-filwr Lluoedd Arfog EF digidol"
       }
     },
     "contactUsSubmitSuccess": {

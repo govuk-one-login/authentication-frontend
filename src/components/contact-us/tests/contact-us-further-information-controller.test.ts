@@ -66,6 +66,23 @@ describe("contact us further information controller", () => {
       );
     });
 
+    it("should render wallet further information if a wallet radio option was chosen", () => {
+      req.path = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
+      req.query.theme = CONTACT_US_THEMES.WALLET;
+      req.query.referer = REFERER;
+      furtherInformationGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "contact-us/further-information/index.njk",
+        {
+          theme: "wallet",
+          referer: encodeURIComponent(REFERER),
+          hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.WALLET}`,
+          supportNoPhotoIdContactForms: false,
+        }
+      );
+    });
+
     it("should redirect to contact-us when no theme is present in request", () => {
       req.path = PATH_NAMES.CONTACT_US_FURTHER_INFORMATION;
       furtherInformationGet(req as Request, res as Response);
@@ -197,6 +214,45 @@ describe("contact us further information controller", () => {
       expect(res.redirect).to.have.calledWith(
         "/contact-us-questions?theme=account_creation&subtheme=something_else&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email"
       );
+    });
+  });
+
+  describe("walletFurtherInformationPost", () => {
+    [
+      {
+        subtheme: "wallet_problem_opening_app",
+        radioOption: "You had a problem opening the GOV.UK One Login app",
+      },
+      {
+        subtheme: "wallet_problem_adding_credentials_document",
+        radioOption:
+          "You had a problem adding your Veteran Card to the GOV.UK One Login app",
+      },
+      {
+        subtheme: "wallet_problem_viewing_credentials_document",
+        radioOption:
+          "You had a problem viewing your Veteran Card in the GOV.UK One Login app",
+      },
+      {
+        subtheme: "wallet_technical_problem",
+        radioOption:
+          "There was a technical problem (for example you saw an error message)",
+      },
+      {
+        subtheme: "wallet_something_else",
+        radioOption: "Something else",
+      },
+    ].forEach(({ subtheme, radioOption }) => {
+      it(`should redirect /contact-us-questions page when '${radioOption}' radio option is chosen`, async () => {
+        req.body.theme = CONTACT_US_THEMES.WALLET;
+        req.body.subtheme = subtheme;
+        req.body.referer = REFERER;
+        furtherInformationPost(req as Request, res as Response);
+
+        expect(res.redirect).to.have.calledWith(
+          `/contact-us-questions?theme=wallet&subtheme=${subtheme}&referer=http%3A%2F%2Flocalhost%3A3000%2Fenter-email`
+        );
+      });
     });
   });
 

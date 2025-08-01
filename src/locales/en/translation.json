@@ -1880,7 +1880,8 @@
         "govUKLoginAndIdApps": "A problem proving your identity using the GOV.UK One Login app or the GOV.UK ID Check app",
         "provingIdentityFaceToFace": "A problem proving your identity with the Post Office",
         "errorMessage": "Select a reason for contacting us",
-        "suspectUnauthorisedAccess":  "You think somebody else is using your information to access your GOV.UK One Login"
+        "suspectUnauthorisedAccess":  "You think somebody else is using your information to access your GOV.UK One Login",
+        "wallet": "A problem with your digital HM Armed Forces Veteran Card"
       },
       "continueLabel": "Continue"
     },
@@ -1974,6 +1975,19 @@
             "hint": "You can read more about getting or finding your National Insurance number at <a href=\"https://www.gov.uk/find-national-insurance-number\" class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\">www.gov.uk/find-national-insurance-number</a>"
           },
           "errorMessage": "Select the problem you had proving your identity"
+        }
+      },
+      "wallet":  {
+        "title": "A problem with your digital HM Armed Forces Veteran Card",
+        "header": "A problem with your digital HM Armed Forces Veteran Card",
+        "section1": {
+          "header": "Tell us what happened",
+          "radio1": "You had a problem opening the GOV.UK One Login app",
+          "radio2": "You had a problem adding your Veteran Card to the GOV.UK One Login app",
+          "radio3": "You had a problem viewing your Veteran Card in the GOV.UK One Login app",
+          "radio4": "There was a technical problem (for example you saw an error message)",
+          "radio5": "Something else",
+          "errorMessage": "TODO - AUT-4497 - Error message"
         }
       }
     },
@@ -2477,6 +2491,21 @@
           "header": "What problem were you having with your National Insurance number?",
           "errorMessage": "What problem were you having with your National Insurance number?"
         }
+      },
+      "walletProblemOpeningApp": {
+        "title": "You had a problem opening the GOV.UK One Login app"
+      },
+      "walletProblemAddingCredentialsDocument": {
+        "title": "You had a problem adding your Veteran Card to the GOV.UK One Login app"
+      },
+      "walletProblemViewingCredentialsDocument":  {
+        "title": "You had a problem viewing your Veteran Card in the GOV.UK One Login app"
+      },
+      "walletTechnicalProblem": {
+        "title": "You had a technical problem"
+      },
+      "walletSomethingElse":  {
+        "title": "Another problem with your digital HM Armed Forces Veteran Card"
       }
     },
     "contactUsSubmitSuccess": {
