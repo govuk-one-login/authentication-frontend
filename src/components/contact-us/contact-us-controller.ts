@@ -395,7 +395,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
   }
 
   return res.render("contact-us/further-information/index.njk", {
-    defaultTemplateOptions: baseTemplateOptions
+    ...baseTemplateOptions
   });
 }
 
