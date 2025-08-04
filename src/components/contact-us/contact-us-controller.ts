@@ -374,33 +374,14 @@ export function contactUsFormPost(req: Request, res: Response): void {
 export function furtherInformationGet(req: Request, res: Response): void {
   const supportLinkURL = getSupportLinkUrl();
   const backLinkHref = prepareBackLink(req, supportLinkURL, serviceDomain);
+  const theme = req.query.theme as string;
 
-  if (!req.query.theme) {
+  if (!theme) {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
 
-  if (isAppJourney(req.query.appSessionId as string)) {
-    return res.render("contact-us/further-information/index.njk", {
-      theme: req.query.theme,
-      hrefBack: backLinkHref,
-      referer: encodeValue(
-        validateReferer(req.query.referer as string, serviceDomain)
-      ),
-      ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
-        fromURL: encodeValue(
-          validateReferer(req.query.fromURL as string, serviceDomain)
-        ),
-      }),
-      appSessionId: getAppSessionId(req.query.appSessionId as string),
-      ...(getAppErrorCode(req.query.appErrorCode as string) && {
-        appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
-      }),
-      supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
-    });
-  }
-
-  return res.render("contact-us/further-information/index.njk", {
-    theme: req.query.theme,
+  const templateOptions: FurtherInformationTemplateOptions = {
+    theme,
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
       fromURL: encodeValue(
         validateReferer(req.query.fromURL as string, serviceDomain)
@@ -410,8 +391,21 @@ export function furtherInformationGet(req: Request, res: Response): void {
     referer: encodeValue(
       validateReferer(req.query.referer as string, serviceDomain)
     ),
-    supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
-  });
+  };
+
+  if (isAppJourney(req.query.appSessionId as string)) {
+    templateOptions.appSessionId = getAppSessionId(
+      req.query.appSessionId as string
+    );
+    templateOptions.appErrorCode =
+      getAppErrorCode(req.query.appErrorCode as string) &&
+      getAppErrorCode(req.query.appErrorCode as string);
+  }
+
+  return res.render(
+    "contact-us/further-information/index.njk",
+    templateOptions
+  );
 }
 
 export function furtherInformationPost(req: Request, res: Response): void {
