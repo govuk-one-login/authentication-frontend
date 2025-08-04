@@ -2446,13 +2446,13 @@
         "title": "A problem entering your address",
         "header": "A problem entering your address",
         "location": {
-          "label": "Do you live in the UK, Channel Islands or the Isle of Man?",
+          "label": "Where do you live?",
           "hint": "How you can prove your identity depends on where you live",
           "options": {
-            "yes": "Yes",
-            "no": "No"
+            "ukChannelOrManx": "UK, Channel Islands or Isle of Man",
+            "anotherCountry": "Another country"
           },
-          "errorMessage": "Select yes if you live in the UK, Channel Islands or Isle of Man"
+          "errorMessage": "Select where you live"
         },
         "whatWereYouTryingToDo": {
           "label": "What were you trying to do?",

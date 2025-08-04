@@ -672,7 +672,7 @@ describe("Integration:: contact us - public user", () => {
         "/contact-us-questions",
         data,
         "#location-error",
-        "Select yes if you live in the UK, Channel Islands or Isle of Man"
+        "Select where you live"
       );
     });
 
@@ -687,7 +687,7 @@ describe("Integration:: contact us - public user", () => {
         "/contact-us-questions",
         data,
         "#location-error",
-        "Select yes if you live in the UK, Channel Islands or Isle of Man"
+        "Select where you live"
       );
     });
   });
