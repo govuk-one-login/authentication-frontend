@@ -100,6 +100,7 @@ import UID from "uid-safe";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
 import { csrfSynchronisedProtection } from "./utils/csrf.js";
+import { govukComponentRouter } from "./components/common/govuk-component/demo/govuk-component-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -153,6 +154,10 @@ function registerRoutes(app: express.Application) {
   }
   app.use(mfaResetWithIpvRouter);
   app.use(ipvCallbackRouter);
+
+  if (getAppEnv() !== APP_ENV_NAME.PROD && getAppEnv() !== APP_ENV_NAME.INT) {
+    app.use(govukComponentRouter);
+  }
 }
 
 async function createApp(): Promise<express.Application> {
