@@ -2447,13 +2447,13 @@
         "title": "Problem wrth roi eich cyfeiriad",
         "header": "Problem wrth roi eich cyfeiriad",
         "location": {
-          "label": "Ydych chi’n byw yn y DU, Ynysoedd y Sianel neu Ynys Manaw?",
+          "label": "Ble rydych yn byw?",
           "hint": "Mae sut y gallwch brofi eich hunaniaeth yn dibynnu ar ble rydych chi’n byw",
           "options": {
-            "yes": "Ydw",
-            "no": "Na"
+            "ukChannelOrManx": "Y DU, Ynysoedd y Sianel neu Ynys Manaw",
+            "anotherCountry": "Gwlad arall"
           },
-          "errorMessage": "Dewiswch ydw os ydych chi’n byw yn y DU, Ynysoedd y Sianel neu Ynys Manaw"
+          "errorMessage": "Dewiswch ble rydych yn byw"
         },
         "whatWereYouTryingToDo": {
           "label": "Beth oeddech chi’n ceisio ei wneud?",
