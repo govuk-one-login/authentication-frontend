@@ -1,7 +1,26 @@
 {% extends "../../../common/layout/base.njk" %}
+{% from '../govuk-component-macro.njk' import govukComponent %}
 
 {% block content %}
   <h1 class="govuk-heading-l">
     Demo page
   </h1>
+
+  {{ govukComponent({
+    type: 'govukTag',
+    args: {
+      component: {
+        text: 'Test tag'
+      }
+    }
+  }) }}
+
+  {{ govukComponent({
+    type: 'govukTag',
+    args: {
+      component: {
+        text: 'Test tag 2'
+      }
+    }
+  }) }}
 {% endblock %}
