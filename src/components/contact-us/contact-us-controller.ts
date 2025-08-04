@@ -22,10 +22,10 @@ import {
 import { getContactUsService } from "./contact-us-service.js";
 import { supportTypeIsGovService } from "../../utils/request.js";
 import {
-  getHeaderFromTheme,
-  getLegendFromTheme,
+  getHeaderKeyFromTheme,
+  getLegendKeyFromTheme,
   getThemeRadioButtonsFromStructure,
-  getTitleFromTheme,
+  getTitleKeyFromTheme,
 } from "./structure/contact-us-structure-utils.js";
 import { CONTACT_FORM_STRUCTURE } from "./structure/contact-us-structure.js";
 const themeToPageTitle = {
@@ -403,18 +403,18 @@ export function furtherInformationGet(req: Request, res: Response): void {
       validateReferer(req.query.referer as string, serviceDomain)
     ),
     radioButtons: getThemeRadioButtonsFromStructure(themeStructure.subThemes),
-    title: getTitleFromTheme(themeStructure),
-    header: getHeaderFromTheme(themeStructure),
-    legend: getLegendFromTheme(themeStructure),
+    title: getTitleKeyFromTheme(themeStructure),
+    header: getHeaderKeyFromTheme(themeStructure),
+    legend: getLegendKeyFromTheme(themeStructure),
   };
 
   if (isAppJourney(req.query.appSessionId as string)) {
     templateOptions.appSessionId = getAppSessionId(
       req.query.appSessionId as string
     );
-    templateOptions.appErrorCode =
-      getAppErrorCode(req.query.appErrorCode as string) &&
-      getAppErrorCode(req.query.appErrorCode as string);
+    templateOptions.appErrorCode = getAppErrorCode(
+      req.query.appErrorCode as string
+    );
   }
 
   return res.render(

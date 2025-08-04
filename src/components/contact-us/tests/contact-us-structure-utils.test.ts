@@ -5,9 +5,10 @@ import type {
   Theme,
 } from "../structure/contact-us-structure.js";
 import {
-  getHeaderFromTheme, getLegendFromTheme,
+  getHeaderKeyFromTheme,
+  getLegendKeyFromTheme,
   getThemeRadioButtonsFromStructure,
-  getTitleFromTheme,
+  getTitleKeyFromTheme,
 } from "../structure/contact-us-structure-utils.js";
 
 describe("contact-us-structure-utils", () => {
@@ -22,18 +23,18 @@ describe("contact-us-structure-utils", () => {
       expect(getThemeRadioButtonsFromStructure(mockContactUsStructure)).to.eql([
         {
           value: "theme1",
-          mainText: "mainText1",
-          hintText: undefined,
+          mainTextKey: "mainText1",
+          hintTextKey: undefined,
         },
         {
           value: "theme2",
-          mainText: "mainText2",
-          hintText: undefined,
+          mainTextKey: "mainText2",
+          hintTextKey: undefined,
         },
         {
           value: "theme3",
-          mainText: "mainText3",
-          hintText: "hintText3",
+          mainTextKey: "mainText3",
+          hintTextKey: "hintText3",
         },
       ]);
     });
@@ -43,7 +44,7 @@ describe("contact-us-structure-utils", () => {
     it("should return the correct title", () => {
       const mockSubTheme = createTheme("theme", "nextPage", "mainText");
 
-      expect(getTitleFromTheme(mockSubTheme)).to.equal("theme.title");
+      expect(getTitleKeyFromTheme(mockSubTheme)).to.equal("theme.title");
     });
   });
 
@@ -51,7 +52,7 @@ describe("contact-us-structure-utils", () => {
     it("should return the correct title", () => {
       const mockSubTheme = createTheme("theme", "nextPage", "mainText");
 
-      expect(getHeaderFromTheme(mockSubTheme)).to.equal("theme.header");
+      expect(getHeaderKeyFromTheme(mockSubTheme)).to.equal("theme.header");
     });
   });
 
@@ -59,7 +60,9 @@ describe("contact-us-structure-utils", () => {
     it("should return the correct title", () => {
       const mockSubTheme = createTheme("theme", "nextPage", "mainText");
 
-      expect(getLegendFromTheme(mockSubTheme)).to.equal("theme.section1.header");
+      expect(getLegendKeyFromTheme(mockSubTheme)).to.equal(
+        "theme.section1.header"
+      );
     });
   });
 });
@@ -71,7 +74,7 @@ const createTheme = (
 ): Theme => ({
   nextPageContent: nextPageContent,
   radio: {
-    mainText,
-    hintText,
+    mainTextKey: mainText,
+    hintTextKey: hintText,
   },
 });

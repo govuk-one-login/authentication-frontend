@@ -100,10 +100,10 @@ export interface SmartAgentTicket {
   customAttributes?: SmartAgentCustomAttributes;
 }
 
-export interface ThemeRadioButtons {
+export interface TemplateThemeRadioButtons {
   value: string;
-  mainText: string;
-  hintText?: string;
+  mainTextKey: string;
+  hintTextKey?: string;
 }
 
 export interface FurtherInformationTemplateOptions {
@@ -111,7 +111,7 @@ export interface FurtherInformationTemplateOptions {
   referer: string;
   fromURL: string;
   theme: string;
-  radioButtons: ThemeRadioButtons[];
+  radioButtons: TemplateThemeRadioButtons[];
   header: string;
   legend: string;
   title: string;
