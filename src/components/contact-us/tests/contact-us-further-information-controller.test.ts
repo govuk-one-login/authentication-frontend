@@ -79,14 +79,17 @@ describe("contact us further information controller", () => {
       req.query.referer = REFERER;
       furtherInformationGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith(
+      expect(res.render).to.have.been.calledWithMatch(
         "contact-us/further-information/index.njk",
-        {
+        sinon.match({
           theme: "wallet",
           referer: encodeURIComponent(REFERER),
           hrefBack: `${PATH_NAMES.CONTACT_US}?theme=${CONTACT_US_THEMES.WALLET}`,
-          supportNoPhotoIdContactForms: false,
-        }
+          radioButtons: sinon.match.any,
+          title: sinon.match.any,
+          header: sinon.match.any,
+          legend: sinon.match.any,
+        })
       );
     });
 

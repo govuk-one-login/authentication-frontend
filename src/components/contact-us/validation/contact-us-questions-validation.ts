@@ -16,7 +16,7 @@ import {
   internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
   internationalPhoneNumberMustHaveLengthWithoutSpacesInRange,
 } from "../../common/phone-number/phone-number-validation.js";
-import { generatePageTitle } from "./contact-us-controller.js";
+import { generatePageTitle } from "../contact-us-controller.js";
 const sanitizeFreeTextValue: CustomSanitizer = function sanitizeFreeTextValue(
   value: string
 ) {

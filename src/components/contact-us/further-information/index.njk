@@ -9,10 +9,6 @@
 
 {% set pageTitleName = title | translate %}
 
-{% if theme == 'wallet' %}
-    {% set pageTitleName = 'pages.contactUsFurtherInformation.wallet.title' | translate %}
-{% endif %}
-
 {% block content %}
 {% include "common/errors/errorSummary.njk" %}
 
@@ -34,9 +30,9 @@
     {% for radio in radioButtons %}
         {% set _ = items.push({
             value: radio.value,
-            text: radio.mainText | translate,
+            text: radio.mainTextKey | translate,
             hint: {
-                text: radio.hintText | translate | safe
+                text: radio.hintTextKey | translate | safe
             }
         }) %}
     {% endfor %}
@@ -63,10 +59,6 @@
     }) }}
 
 </form>
-
-    {% if theme == 'wallet' %}
-        {% include 'contact-us/further-information/_wallet.njk' %}
-    {% endif %}
 
 {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
 {%- include "ga4-opl/template.njk" -%}

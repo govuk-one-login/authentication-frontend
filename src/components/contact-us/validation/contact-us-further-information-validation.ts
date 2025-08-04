@@ -3,10 +3,10 @@ import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../../middleware/form-validation-middleware.js";
 import { CONTACT_FORM_STRUCTURE } from "../structure/contact-us-structure.js";
 import {
-  getHeaderFromTheme,
-  getLegendFromTheme,
+  getHeaderKeyFromTheme,
+  getLegendKeyFromTheme,
   getThemeRadioButtonsFromStructure,
-  getTitleFromTheme,
+  getTitleKeyFromTheme,
 } from "../structure/contact-us-structure-utils.js";
 import type { Request } from "express";
 
@@ -31,14 +31,12 @@ export function validateContactUsFurtherInformationRequest(
   ];
 }
 
-const postValidationLocals = function locals(
-  req: Request
-): Record<string, unknown> {
+const postValidationLocals = function locals(req: Request) {
   const theme = CONTACT_FORM_STRUCTURE.get(req.body.theme);
   return {
     radioButtons: getThemeRadioButtonsFromStructure(theme.subThemes),
-    title: getTitleFromTheme(theme),
-    header: getHeaderFromTheme(theme),
-    legend: getLegendFromTheme(theme),
+    title: getTitleKeyFromTheme(theme),
+    header: getHeaderKeyFromTheme(theme),
+    legend: getLegendKeyFromTheme(theme),
   };
 };

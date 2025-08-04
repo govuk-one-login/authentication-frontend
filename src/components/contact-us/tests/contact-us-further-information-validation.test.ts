@@ -22,5 +22,8 @@ describe("getErrorMessage", () => {
     expect(getErrorMessage(CONTACT_US_THEMES.PROVING_IDENTITY)).to.eq(
       "pages.contactUsFurtherInformation.provingIdentity.section1.errorMessage"
     );
+    expect(getErrorMessage(CONTACT_US_THEMES.WALLET)).to.eq(
+      "pages.contactUsFurtherInformation.wallet.section1.errorMessage"
+    );
   });
 });
