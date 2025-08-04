@@ -6,7 +6,11 @@ import {
   CONTACT_US_COUNTRY_MAX_LENGTH,
   CONTACT_US_REFERER_ALLOWLIST,
 } from "../../app.constants.js";
-import type { Questions, ThemeQuestions } from "./types.js";
+import type {
+  FurtherInformationTemplateOptions,
+  Questions,
+  ThemeQuestions,
+} from "./types.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import crypto from "crypto";
 import { logger } from "../../utils/logger.js";
@@ -14,11 +18,16 @@ import {
   getServiceDomain,
   getSupportLinkUrl,
   showWalletContactForm,
-  supportNoPhotoIdContactForms,
 } from "../../config.js";
 import { getContactUsService } from "./contact-us-service.js";
 import { supportTypeIsGovService } from "../../utils/request.js";
-import { getThemeRadioButtonsFromContactFormStructure } from "./structure/contact-us-structure-utils.js";
+import {
+  getHeaderFromTheme,
+  getLegendFromTheme,
+  getThemeRadioButtonsFromStructure,
+  getTitleFromTheme,
+} from "./structure/contact-us-structure-utils.js";
+import { CONTACT_FORM_STRUCTURE } from "./structure/contact-us-structure.js";
 const themeToPageTitle = {
   [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:
     "pages.contactUsQuestions.accountNotFound.title",
@@ -159,7 +168,7 @@ export function contactUsGet(req: Request, res: Response): void {
     referer: encodeValue(referer),
     fromURL: encodeValue(fromURL),
     hrefBack: backLinkHref,
-    radioButtons: getThemeRadioButtonsFromContactFormStructure(),
+    radioButtons: getThemeRadioButtonsFromStructure(CONTACT_FORM_STRUCTURE),
     ...(getAppSessionId(req.query.appSessionId as string) && {
       appSessionId: getAppSessionId(req.query.appSessionId as string),
     }),
@@ -380,6 +389,8 @@ export function furtherInformationGet(req: Request, res: Response): void {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
 
+  const themeStructure = CONTACT_FORM_STRUCTURE.get(theme);
+
   const templateOptions: FurtherInformationTemplateOptions = {
     theme,
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
@@ -391,6 +402,10 @@ export function furtherInformationGet(req: Request, res: Response): void {
     referer: encodeValue(
       validateReferer(req.query.referer as string, serviceDomain)
     ),
+    radioButtons: getThemeRadioButtonsFromStructure(themeStructure.subThemes),
+    title: getTitleFromTheme(themeStructure),
+    header: getHeaderFromTheme(themeStructure),
+    legend: getLegendFromTheme(themeStructure),
   };
 
   if (isAppJourney(req.query.appSessionId as string)) {

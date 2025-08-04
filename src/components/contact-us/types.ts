@@ -111,6 +111,10 @@ export interface FurtherInformationTemplateOptions {
   referer: string;
   fromURL: string;
   theme: string;
+  radioButtons: ThemeRadioButtons[];
+  header: string;
+  legend: string;
+  title: string;
   appSessionId?: string;
   appErrorCode?: string;
 }

@@ -7,25 +7,7 @@
 
 {% set showBack = true %}
 
-{% if theme == 'signing_in' %}
-    {% set pageTitleName = 'pages.contactUsFurtherInformation.signingIn.title' | translate %}
-{% endif %}
-
-{% if theme == 'account_creation' %}
-    {% set pageTitleName = 'pages.contactUsFurtherInformation.accountCreation.title' | translate %}
-{% endif %}
-
-{% if theme == 'id_check_app' %}
-    {% set pageTitleName = 'pages.contactUsFurtherInformation.idCheckApp.title' | translate %}
-{% endif %}
-
-{% if theme == 'id_face_to_face' %}
-    {% set pageTitleName = 'pages.contactUsFurtherInformation.provingIdentityFaceToFace.title' | translate %}
-{% endif %}
-
-{% if theme == 'proving_identity' %}
-    {% set pageTitleName = 'pages.contactUsFurtherInformation.provingIdentity.title' | translate %}
-{% endif %}
+{% set pageTitleName = title | translate %}
 
 {% if theme == 'wallet' %}
     {% set pageTitleName = 'pages.contactUsFurtherInformation.wallet.title' | translate %}
@@ -34,25 +16,53 @@
 {% block content %}
 {% include "common/errors/errorSummary.njk" %}
 
-    {% if theme == 'signing_in' %}
-        {% include 'contact-us/further-information/_signing-in-further-information.njk' %}
-    {% endif %}
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+    {{ header | translate }}
+</h1>
 
-    {% if theme == 'account_creation' %}
-        {% include 'contact-us/further-information/_account-creation-further-information.njk' %}
-    {% endif %}
+<form action="/contact-us-further-information" method="post" novalidate>
 
-    {% if theme == 'id_check_app' %}
-        {% include 'contact-us/further-information/_gov-uk-login-and-id-apps-further-information.njk' %}
-    {% endif %}
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <input type="hidden" name="theme" value="{{theme}}"/>
+    <input type="hidden" name="referer" value="{{referer}}"/>
+    <input type="hidden" name="fromURL" value="{{fromURL}}"/>
 
-    {% if theme == 'id_face_to_face' %}
-        {% include 'contact-us/further-information/_proving-identity-post-office-further-information.njk' %}
-    {% endif %}
+    {% include "contact-us/questions/_id-check-app-hidden-fields.njk" %}
 
-    {% if theme == 'proving_identity' %}
-        {% include 'contact-us/further-information/_proving-identity-further-information.njk' %}
-    {% endif %}
+
+    {% set items = [] %}
+    {% for radio in radioButtons %}
+        {% set _ = items.push({
+            value: radio.value,
+            text: radio.mainText | translate,
+            hint: {
+                text: radio.hintText | translate | safe
+            }
+        }) %}
+    {% endfor %}
+
+    {{ govukRadios({
+        name: "subtheme",
+        fieldset: {
+            legend: {
+                text: legend | translate,
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
+            }
+        },
+        items: items,
+        errorMessage: {
+            text: errors['subtheme'].text
+        } if (errors['subtheme'])
+    }) }}
+
+    {{ govukButton({
+        "text": "general.continue.label" | translate,
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+
+</form>
 
     {% if theme == 'wallet' %}
         {% include 'contact-us/further-information/_wallet.njk' %}
