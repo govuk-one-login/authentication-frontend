@@ -6,21 +6,7 @@
     Demo page
   </h1>
 
-  {{ govukComponent({
-    type: 'govukTag',
-    args: {
-      component: {
-        text: 'Test tag'
-      }
-    }
-  }) }}
-
-  {{ govukComponent({
-    type: 'govukTag',
-    args: {
-      component: {
-        text: 'Test tag 2'
-      }
-    }
-  }) }}
+  {% for demoComponent in demoComponents %}
+    {{ govukComponent(demoComponent) }}
+  {% endfor %}
 {% endblock %}
