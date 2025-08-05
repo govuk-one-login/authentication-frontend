@@ -1,21 +1,13 @@
-import express from "express";
 import type { Request, Response } from "express";
-import type { GovukComponent } from "../components/index.js";
+import express from "express";
+import { demoTag } from "../page-components/demo-tag.js";
+import type { PageComponent } from "../page-components/index.js";
 
 const router = express.Router();
 
-const demoComponents: GovukComponent[] = [
-  {
-    type: "govukTag",
-    args: {
-      component: {
-        text: "Test tag",
-      },
-    },
-  },
-];
-
 router.get("/govuk-component-demo", (req: Request, res: Response) => {
+  const demoComponents: PageComponent[] = [demoTag()];
+
   res.render("common/govuk-component/demo/index.njk", {
     demoComponents: demoComponents,
   });

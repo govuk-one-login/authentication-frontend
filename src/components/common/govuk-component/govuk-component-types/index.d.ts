@@ -9,14 +9,7 @@ interface GovukFieldComponent<T> extends GovukDisplayComponent<T> {
   validation: ValidationChainFunc;
 }
 
-interface GovukComponentArgsMap {
+export interface GovukComponentArgsMap {
   govukRadioButton: GovukFieldComponent<GovukRadioButton>;
   govukTag: GovukDisplayComponent<GovukTag>;
 }
-
-export type GovukComponent = {
-  [K in keyof GovukComponentArgsMap]: {
-    type: K;
-    args: GovukComponentArgsMap[K];
-  };
-}[keyof GovukComponentArgsMap];
