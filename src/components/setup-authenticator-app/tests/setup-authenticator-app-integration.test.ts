@@ -1,6 +1,7 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
+import { expect, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
+import request from "supertest";
 import * as cheerio from "cheerio";
 import {
   API_ENDPOINTS,
@@ -50,15 +51,13 @@ describe("Integration::setup-authenticator-app", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
-      const $ = cheerio.load(res.text);
-      token = $("[name=_csrf]").val();
-      cookies = res.headers["set-cookie"];
-    });
+    await request(app)
+      .get(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
+      .then((res) => {
+        const $ = cheerio.load(res.text);
+        token = $("[name=_csrf]").val();
+        cookies = res.headers["set-cookie"];
+      });
   });
 
   beforeEach(() => {
@@ -71,83 +70,75 @@ describe("Integration::setup-authenticator-app", () => {
   });
 
   it("should return setup authenticator app page", async () => {
-    await request(app, (test) =>
-      test.get(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP).expect(200)
-    );
+    await request(app)
+      .get(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
+      .expect(200);
   });
 
   it("should return error when csrf not present", async () => {
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
-        .type("form")
-        .send({
-          code: "123456",
-        })
-        .expect(403)
-    );
+    await request(app)
+      .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
+      .type("form")
+      .send({
+        code: "123456",
+      })
+      .expect(403);
   });
 
   it("should return validation error when access code not entered", async () => {
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($("#code-error").text()).to.contains(
-            "Enter the code shown in your authenticator app"
-          );
-          expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
-        })
-        .expect(400)
-    );
+    await request(app)
+      .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#code-error").text()).to.contains(
+          "Enter the code shown in your authenticator app"
+        );
+        expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
+      })
+      .expect(400);
   });
 
   it("should return validation error when access code is too long (more than 6 digits)", async () => {
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "12345678910",
-        })
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($("#code-error").text()).to.contains(
-            "Enter the code using only 6 digits"
-          );
-          expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
-        })
-        .expect(400)
-    );
+    await request(app)
+      .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "12345678910",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#code-error").text()).to.contains(
+          "Enter the code using only 6 digits"
+        );
+        expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
+      })
+      .expect(400);
   });
 
   it("should return validation error when code has non-digit characters", async () => {
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "asdfgh",
-        })
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($("#code-error").text()).to.contains(
-            "Enter the code using only 6 digits"
-          );
-          expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
-        })
-        .expect(400)
-    );
+    await request(app)
+      .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "asdfgh",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#code-error").text()).to.contains(
+          "Enter the code using only 6 digits"
+        );
+        expect($("#secret-key").text()).to.contain(AUTH_APP_SECRET);
+      })
+      .expect(400);
   });
 
   it("should redirect to /account-created page when successful validation of code", async () => {
@@ -160,17 +151,15 @@ describe("Integration::setup-authenticator-app", () => {
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT, { success: true });
 
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
-        .expect("Location", PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL)
-        .expect(302)
-    );
+    await request(app)
+      .post(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123456",
+      })
+      .expect("Location", PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL)
+      .expect(302);
   });
 });

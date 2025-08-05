@@ -1,8 +1,9 @@
 import { afterEach, describe } from "mocha";
-import { expect, sinon, request } from "../../../test/utils/test-utils.js";
+import { expect, sinon } from "../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
 import { PATH_NAMES } from "../../app.constants.js";
 import nock from "nock";
+import request from "supertest";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../test/helpers/session-helper.js";
 import esmock from "esmock";
@@ -44,11 +45,11 @@ describe("Integration::csrf checks", () => {
 
     app = await createApp();
 
-    await request(app, (test) => test.get(PATH_NAMES.SIGN_IN_OR_CREATE), {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    }).then((res) => {
-      cookies = res.headers["set-cookie"];
-    });
+    await request(app)
+      .get(PATH_NAMES.SIGN_IN_OR_CREATE)
+      .then((res) => {
+        cookies = res.headers["set-cookie"];
+      });
   });
 
   beforeEach(() => {
@@ -69,26 +70,23 @@ describe("Integration::csrf checks", () => {
   });
 
   it("should return error when csrf token does not match that in the session", async () => {
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: "an-invalid-csrf-token",
-          email: "test@test.com",
-        })
-        .expect(403)
-    );
+    await request(app)
+      .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: "an-invalid-csrf-token",
+        email: "test@test.com",
+      })
+      .expect(403);
   });
 
   it("should return the same csrf token on a subsequent request", async () => {
     // Make first request.
     let firstToken;
 
-    await request(app, (test) => test.get(PATH_NAMES.SIGN_IN_OR_CREATE), {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    })
+    await request(app)
+      .get(PATH_NAMES.SIGN_IN_OR_CREATE)
       .set("Cookie", cookies)
       .then((res) => {
         const $ = cheerio.load(res.text);
@@ -98,9 +96,8 @@ describe("Integration::csrf checks", () => {
     // Make second request with the same session/cookies.
     let secondToken;
 
-    await request(app, (test) => test.get(PATH_NAMES.SIGN_IN_OR_CREATE), {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    })
+    await request(app)
+      .get(PATH_NAMES.SIGN_IN_OR_CREATE)
       .set("Cookie", cookies)
       .then((res) => {
         const $ = cheerio.load(res.text);
@@ -116,9 +113,8 @@ describe("Integration::csrf checks", () => {
     // Make first request.
     let firstToken;
 
-    await request(app, (test) => test.get(PATH_NAMES.SIGN_IN_OR_CREATE), {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    })
+    await request(app)
+      .get(PATH_NAMES.SIGN_IN_OR_CREATE)
       .set("Cookie", cookies)
       .then((res) => {
         const $ = cheerio.load(res.text);
@@ -130,9 +126,8 @@ describe("Integration::csrf checks", () => {
     // Make second request.
     let secondToken;
 
-    await request(app, (test) => test.get(PATH_NAMES.SIGN_IN_OR_CREATE), {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    })
+    await request(app)
+      .get(PATH_NAMES.SIGN_IN_OR_CREATE)
       .set("Cookie", cookies)
       .then((res) => {
         const $ = cheerio.load(res.text);

@@ -1,6 +1,7 @@
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils.js";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import { PATH_NAMES } from "../../../app.constants.js";
+import request from "supertest";
 
 describe("Integration::healthcheck", () => {
   let sandbox: sinon.SinonSandbox;
@@ -18,6 +19,6 @@ describe("Integration::healthcheck", () => {
   });
 
   it("healthcheck should return 200 OK", async () => {
-    await request(app, (test) => test.get(PATH_NAMES.HEALTHCHECK).expect(200));
+    await request(app).get(PATH_NAMES.HEALTHCHECK).expect(200);
   });
 });

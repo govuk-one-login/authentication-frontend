@@ -1,6 +1,7 @@
 import { describe } from "mocha";
-import { expect, sinon, request } from "../../../../test/utils/test-utils.js";
+import { expect, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
+import request from "supertest";
 import * as cheerio from "cheerio";
 import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
@@ -39,15 +40,14 @@ describe("Integration:: contact us - public user", () => {
     app = await createApp();
     smartAgentApiUrl = "http://smartagentmockurl";
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.CONTACT_US).query("supportType=PUBLIC"),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
-      const $ = cheerio.load(res.text);
-      token = $("[name=_csrf]").val();
-      cookies = res.headers["set-cookie"];
-    });
+    await request(app)
+      .get(PATH_NAMES.CONTACT_US)
+      .query("supportType=PUBLIC")
+      .then((res) => {
+        const $ = cheerio.load(res.text);
+        token = $("[name=_csrf]").val();
+        cookies = res.headers["set-cookie"];
+      });
   });
 
   beforeEach(() => {
@@ -65,24 +65,23 @@ describe("Integration:: contact us - public user", () => {
     errorElement: string,
     errorDescription: string
   ) => {
-    await request(app, (test) =>
-      test
-        .post(url)
-        .type("form")
-        .set("Cookie", cookies)
-        .send(data)
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($(errorElement).text()).to.contains(errorDescription);
-        })
-        .expect(400)
-    );
+    await request(app)
+      .post(url)
+      .type("form")
+      .set("Cookie", cookies)
+      .send(data)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($(errorElement).text()).to.contains(errorDescription);
+      })
+      .expect(400);
   };
 
   it("should return contact us page", async () => {
-    await request(app, (test) =>
-      test.get(PATH_NAMES.CONTACT_US).query("supportType=PUBLIC").expect(200)
-    );
+    await request(app)
+      .get(PATH_NAMES.CONTACT_US)
+      .query("supportType=PUBLIC")
+      .expect(200);
   });
 
   [
@@ -92,20 +91,18 @@ describe("Integration:: contact us - public user", () => {
     "<script>alert(123);</script>",
   ].forEach(function (referer) {
     it("should return contact us page removing invalid referer url", async () => {
-      await request(app, (test) =>
-        test
-          .get(PATH_NAMES.CONTACT_US)
-          .query("supportType=PUBLIC")
-          .set("referer", referer)
-          .expect(function (res) {
-            const $ = cheerio.load(res.text);
-            expect($("input[name = referer]").val()).to.not.contains(referer);
-            expect($("input[name = referer]").val()).to.not.contains(
-              encodeURIComponent(referer)
-            );
-          })
-          .expect(200)
-      );
+      await request(app)
+        .get(PATH_NAMES.CONTACT_US)
+        .query("supportType=PUBLIC")
+        .set("referer", referer)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("input[name = referer]").val()).to.not.contains(referer);
+          expect($("input[name = referer]").val()).to.not.contains(
+            encodeURIComponent(referer)
+          );
+        })
+        .expect(200);
     });
   });
 
@@ -118,19 +115,17 @@ describe("Integration:: contact us - public user", () => {
     "https://localhost/scenario/page",
   ].forEach(function (referer) {
     it("should return contact us page including valid referer url", async () => {
-      await request(app, (test) =>
-        test
-          .get(PATH_NAMES.CONTACT_US)
-          .query("supportType=PUBLIC")
-          .set("referer", referer)
-          .expect(function (res) {
-            const $ = cheerio.load(res.text);
-            expect($("input[name = referer]").val()).to.contains(
-              encodeURIComponent(referer)
-            );
-          })
-          .expect(200)
-      );
+      await request(app)
+        .get(PATH_NAMES.CONTACT_US)
+        .query("supportType=PUBLIC")
+        .set("referer", referer)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("input[name = referer]").val()).to.contains(
+            encodeURIComponent(referer)
+          );
+        })
+        .expect(200);
     });
   });
 
@@ -140,21 +135,19 @@ describe("Integration:: contact us - public user", () => {
     "<script>alert(123);</script>",
   ].forEach(function (referer) {
     it("should return contact us questions page removing invalid referer queryparam url", async () => {
-      await request(app, (test) =>
-        test
-          .get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)
-          .query("theme=account_creation")
-          .query("subtheme=sign_in_phone_number_issue")
-          .query("referer=" + referer)
-          .expect(function (res) {
-            const $ = cheerio.load(res.text);
-            expect($("input[name = referer]").val()).to.not.contains(referer);
-            expect($("input[name = referer]").val()).to.not.contains(
-              encodeURIComponent(referer)
-            );
-          })
-          .expect(200)
-      );
+      await request(app)
+        .get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)
+        .query("theme=account_creation")
+        .query("subtheme=sign_in_phone_number_issue")
+        .query("referer=" + referer)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("input[name = referer]").val()).to.not.contains(referer);
+          expect($("input[name = referer]").val()).to.not.contains(
+            encodeURIComponent(referer)
+          );
+        })
+        .expect(200);
     });
   });
 
@@ -167,77 +160,63 @@ describe("Integration:: contact us - public user", () => {
     "http://localhost:3000/enter-email",
   ].forEach(function (referer) {
     it("should return contact us questions page including valid referer queryparam url", async () => {
-      await request(app, (test) =>
-        test
-          .get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)
-          .query("theme=account_creation")
-          .query("referer=" + referer)
-          .expect(function (res) {
-            const $ = cheerio.load(res.text);
-            expect($("input[name = referer]").val()).to.contains(
-              encodeURIComponent(referer)
-            );
-          })
-          .expect(200)
-      );
+      await request(app)
+        .get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION)
+        .query("theme=account_creation")
+        .query("referer=" + referer)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("input[name = referer]").val()).to.contains(
+            encodeURIComponent(referer)
+          );
+        })
+        .expect(200);
     });
   });
 
   it("should return contact us further information signing in page", async () => {
-    await request(app, (test) =>
-      test
-        .get("/contact-us-further-information")
-        .query("theme=signing_in")
-        .expect(200)
-    );
+    await request(app)
+      .get("/contact-us-further-information")
+      .query("theme=signing_in")
+      .expect(200);
   });
 
   it("should return contact us further information account creation page", async () => {
-    await request(app, (test) =>
-      test
-        .get("/contact-us-further-information")
-        .query("theme=account_creation")
-        .expect(200)
-    );
+    await request(app)
+      .get("/contact-us-further-information")
+      .query("theme=account_creation")
+      .expect(200);
   });
 
   it("should return contact us further information wallet page", async () => {
-    await request(app, (test) =>
-      test
-        .get("/contact-us-further-information")
-        .query("theme=wallet")
-        .expect(200)
-    );
+    await request(app)
+      .get("/contact-us-further-information")
+      .query("theme=wallet")
+      .expect(200);
   });
 
   it("should return contact us questions page with only a theme", async () => {
-    await request(app, (test) =>
-      test
-        .get("/contact-us-questions")
-        .query("theme=something_else")
-        .expect(200)
-    );
+    await request(app)
+      .get("/contact-us-questions")
+      .query("theme=something_else")
+      .expect(200);
   });
 
   it("should return contact us questions page with a theme and a subtheme", async () => {
-    await request(app, (test) =>
-      test
-        .get("/contact-us-questions")
-        .query("theme=signing_in")
-        .query("subtheme=no_security_code")
-        .expect(200)
-    );
+    await request(app)
+      .get("/contact-us-questions")
+      .query("theme=signing_in")
+      .query("subtheme=no_security_code")
+      .expect(200);
   });
 
   it("should return error when csrf not present", async () => {
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.CONTACT_US)
-        .query("supportType=PUBLIC")
-        .type("form")
-        .send({})
-        .expect(403)
-    );
+    await request(app)
+      .post(PATH_NAMES.CONTACT_US)
+      .query("supportType=PUBLIC")
+      .type("form")
+      .send({})
+      .expect(403);
   });
 
   it("should return validation error when no radio boxes are selected on the signing in contact-us-further-information page", async () => {
@@ -314,28 +293,26 @@ describe("Integration:: contact us - public user", () => {
     });
 
     it("should return validation error when user selected Text message to a phone number from another country and left the Which country field empty", async () => {
-      await request(app, (test) =>
-        test
-          .post("/contact-us-questions?radio_buttons=true")
-          .type("form")
-          .set("Cookie", cookies)
-          .send({
-            _csrf: token,
-            theme: "account_creation",
-            subtheme: "invalid_security_code",
-            additionalDescription: "additional",
-            contact: "false",
-            securityCodeSentMethod: "text_message_international_number",
-            country: " ",
-          })
-          .expect(function (res) {
-            const $ = cheerio.load(res.text);
-            expect($("#country-error").text()).to.contains(
-              "Enter which country your phone number is from"
-            );
-          })
-          .expect(400)
-      );
+      await request(app)
+        .post("/contact-us-questions?radio_buttons=true")
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          theme: "account_creation",
+          subtheme: "invalid_security_code",
+          additionalDescription: "additional",
+          contact: "false",
+          securityCodeSentMethod: "text_message_international_number",
+          country: " ",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#country-error").text()).to.contains(
+            "Enter which country your phone number is from"
+          );
+        })
+        .expect(400);
     });
 
     it("should return validation error when user selected yes to contact for feedback but email is in an invalid format", async () => {
@@ -796,87 +773,77 @@ describe("Integration:: contact us - public user", () => {
     it("should redirect to success page when valid form submitted", async () => {
       nock(smartAgentApiUrl).post("/").once().reply(200);
 
-      await request(app, (test) =>
-        test
-          .post("/contact-us-questions")
-          .type("form")
-          .set("Cookie", cookies)
-          .send(phoneNumberIssueData("detail", "description", "UK"))
-          .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
-          .expect(302)
-      );
+      await request(app)
+        .post("/contact-us-questions")
+        .type("form")
+        .set("Cookie", cookies)
+        .send(phoneNumberIssueData("detail", "description", "UK"))
+        .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
+        .expect(302);
     });
   });
 
   it("should redirect to success page when form submitted", async () => {
     nock(smartAgentApiUrl).post("/").once().reply(200);
 
-    await request(app, (test) =>
-      test
-        .post("/contact-us-questions")
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          theme: "signing_in",
-          subtheme: "no_security_code",
-          optionalDescription: "issue",
-          contact: "true",
-          email: "test@test.com",
-          formType: "noSecurityCode",
-          referer: "https://gov.uk/sign-in",
-        })
-        .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
-        .expect(302)
-    );
+    await request(app)
+      .post("/contact-us-questions")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        theme: "signing_in",
+        subtheme: "no_security_code",
+        optionalDescription: "issue",
+        contact: "true",
+        email: "test@test.com",
+        formType: "noSecurityCode",
+        referer: "https://gov.uk/sign-in",
+      })
+      .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
+      .expect(302);
   });
 
   it("should redirect to success page when authenticator app problem form submitted", async () => {
     nock(smartAgentApiUrl).post("/").once().reply(200);
 
-    await request(app, (test) =>
-      test
-        .post("/contact-us-questions")
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          theme: "account_creation",
-          subtheme: "authenticator_app_problem",
-          issueDescription: "issue",
-          additionalDescription: "additional information",
-          contact: "true",
-          email: "test@test.com",
-          formType: "authenticatorApp",
-          referer: "https://gov.uk/sign-in",
-        })
-        .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
-        .expect(302)
-    );
+    await request(app)
+      .post("/contact-us-questions")
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        theme: "account_creation",
+        subtheme: "authenticator_app_problem",
+        issueDescription: "issue",
+        additionalDescription: "additional information",
+        contact: "true",
+        email: "test@test.com",
+        formType: "authenticatorApp",
+        referer: "https://gov.uk/sign-in",
+      })
+      .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
+      .expect(302);
   });
 
   describe("Links to /contact-us-from-triage-page", () => {
     it("should redirect to /contact-us", async () => {
-      await request(app, (test) =>
-        test
-          .get("/contact-us-from-triage-page")
-          .query("fromURL=http//localhost/sign-in-or-create")
-          .expect("Location", `${PATH_NAMES.CONTACT_US}?`)
-          .expect(302)
-      );
+      await request(app)
+        .get("/contact-us-from-triage-page")
+        .query("fromURL=http//localhost/sign-in-or-create")
+        .expect("Location", `${PATH_NAMES.CONTACT_US}?`)
+        .expect(302);
     });
 
     it("should redirect to /contact-us-further-information", async () => {
-      await request(app, (test) =>
-        test
-          .get("/contact-us-from-triage-page")
-          .query(`theme=${CONTACT_US_THEMES.ID_CHECK_APP}`)
-          .expect(
-            "Location",
-            `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.ID_CHECK_APP}`
-          )
-          .expect(302)
-      );
+      await request(app)
+        .get("/contact-us-from-triage-page")
+        .query(`theme=${CONTACT_US_THEMES.ID_CHECK_APP}`)
+        .expect(
+          "Location",
+          `${PATH_NAMES.CONTACT_US_FURTHER_INFORMATION}?theme=${CONTACT_US_THEMES.ID_CHECK_APP}`
+        )
+        .expect(302);
     });
   });
 });

@@ -1,5 +1,5 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
+import { expect, sinon } from "../../../../test/utils/test-utils.js";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
@@ -14,20 +14,17 @@ import * as cheerio from "cheerio";
 import { MfaMethodPriority } from "../../../types.js";
 import type { MfaMethod } from "../../../types.js";
 import nock from "nock";
+import request from "supertest";
 
 const getTokenAndCookies = async (app: express.Application) => {
   let cookies, token;
-  await request(
-    app,
-    (test) => test.get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
-    {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    }
-  ).then((res) => {
-    const $ = cheerio.load(res.text);
-    token = $("[name=_csrf]").val();
-    cookies = res.headers["set-cookie"];
-  });
+  await request(app)
+    .get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
+    .then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
   return { token, cookies };
 };
 
@@ -137,49 +134,44 @@ describe("Integration::how do you want security codes", () => {
 
         app = await createApp();
 
-        await request(app, (test) =>
-          test
-            .get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
-            .expect(200)
-            .expect(function (res: any) {
-              const $ = cheerio.load(res.text);
-              expect(
-                $("a")
-                  .toArray()
-                  .some(
-                    (link) =>
-                      $(link).attr("href") === PATH_NAMES.MFA_RESET_WITH_IPV &&
-                      $(link).text().trim() ===
-                        "check if you can change how you get security codes"
-                  )
-              ).to.be.eq(true, "mfa reset link presence");
+        await request(app)
+          .get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
+          .expect(200)
+          .expect(function (res: any) {
+            const $ = cheerio.load(res.text);
+            expect(
+              $("a")
+                .toArray()
+                .some(
+                  (link) =>
+                    $(link).attr("href") === PATH_NAMES.MFA_RESET_WITH_IPV &&
+                    $(link).text().trim() ===
+                      "check if you can change how you get security codes"
+                )
+            ).to.be.eq(true, "mfa reset link presence");
 
-              const form = $(`form[action="/how-do-you-want-security-codes"]`);
-              expect(form.toArray().some(Boolean)).to.be.eq(
-                true,
-                "form presence"
-              );
-              expect(
-                form
-                  .first()
-                  .find("button[type=Submit]")
-                  .toArray()
-                  .some((link) => $(link).text().trim() === "Continue")
-              ).to.be.eq(true, "submit button presence");
-
-              const radioArray = form
+            const form = $(`form[action="/how-do-you-want-security-codes"]`);
+            expect(form.toArray().some(Boolean)).to.be.eq(
+              true,
+              "form presence"
+            );
+            expect(
+              form
                 .first()
-                .find("input[type=radio]")
-                .toArray();
-              expect(radioArray.length).to.be.eq(2);
-              expectedRadioValues.forEach((name, index) => {
-                expect($(radioArray[index]).val()).to.be.eq(
-                  name,
-                  `radio input presence for ${name} in correct order`
-                );
-              });
-            })
-        );
+                .find("button[type=Submit]")
+                .toArray()
+                .some((link) => $(link).text().trim() === "Continue")
+            ).to.be.eq(true, "submit button presence");
+
+            const radioArray = form.first().find("input[type=radio]").toArray();
+            expect(radioArray.length).to.be.eq(2);
+            expectedRadioValues.forEach((name, index) => {
+              expect($(radioArray[index]).val()).to.be.eq(
+                name,
+                `radio input presence for ${name} in correct order`
+              );
+            });
+          });
       });
     });
   });
@@ -189,13 +181,8 @@ describe("Integration::how do you want security codes", () => {
       const app = await createDefaultSmsBackupAppExpressApp();
       const { token, cookies } = await getTokenAndCookies(app);
 
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
+      await request(app)
+        .post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
         .type("form")
         .set("Cookie", cookies)
         .send({
@@ -246,18 +233,16 @@ describe("Integration::how do you want security codes", () => {
               .reply(HTTP_STATUS_CODES.NO_CONTENT);
           }
 
-          await request(app, (test) =>
-            test
-              .post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
-              .type("form")
-              .set("Cookie", cookies)
-              .send({
-                _csrf: token,
-                "mfa-method-id": selectedMfaMethodId,
-              })
-              .expect("Location", expectedPath)
-              .expect(302)
-          );
+          await request(app)
+            .post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
+            .type("form")
+            .set("Cookie", cookies)
+            .send({
+              _csrf: token,
+              "mfa-method-id": selectedMfaMethodId,
+            })
+            .expect("Location", expectedPath)
+            .expect(302);
         });
       }
     );

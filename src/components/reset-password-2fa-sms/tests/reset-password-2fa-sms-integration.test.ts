@@ -1,5 +1,5 @@
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils.js";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
 import {
   API_ENDPOINTS,
@@ -7,6 +7,7 @@ import {
   PATH_NAMES,
 } from "../../../app.constants.js";
 import nock from "nock";
+import request from "supertest";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
@@ -58,13 +59,13 @@ describe("Integration::2fa sms (in reset password flow)", () => {
 
     nock(baseApi).persist().post("/mfa").reply(204);
 
-    await request(app, (test) => test.get(PATH_NAMES.RESET_PASSWORD_2FA_SMS), {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    }).then((res) => {
-      const $ = cheerio.load(res.text);
-      token = $("[name=_csrf]").val();
-      cookies = res.headers["set-cookie"];
-    });
+    await request(app)
+      .get(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
+      .then((res) => {
+        const $ = cheerio.load(res.text);
+        token = $("[name=_csrf]").val();
+        cookies = res.headers["set-cookie"];
+      });
   });
 
   beforeEach(() => {
@@ -78,9 +79,7 @@ describe("Integration::2fa sms (in reset password flow)", () => {
 
   it("should return check your phone page", async () => {
     nock(baseApi).persist().post("/mfa").reply(204);
-    await request(app, (test) =>
-      test.get("/reset-password-2fa-sms").expect(200)
-    );
+    await request(app).get("/reset-password-2fa-sms").expect(200);
   });
 
   it("should redirect to reset password step when valid sms code is entered", async () => {
@@ -89,18 +88,16 @@ describe("Integration::2fa sms (in reset password flow)", () => {
       .post(API_ENDPOINTS.VERIFY_CODE)
       .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
 
-    request(app, (test) =>
-      test
-        .post(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
-        .expect("Location", PATH_NAMES.RESET_PASSWORD)
-        .expect(302)
-    );
+    request(app)
+      .post(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123456",
+      })
+      .expect("Location", PATH_NAMES.RESET_PASSWORD)
+      .expect(302);
   });
 
   it("should return error page when when user is locked out", async () => {
@@ -109,20 +106,18 @@ describe("Integration::2fa sms (in reset password flow)", () => {
       success: false,
     });
 
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
-        .expect(
-          "Location",
-          `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.MfaMaxRetries}`
-        )
-        .expect(302)
-    );
+    await request(app)
+      .post(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123456",
+      })
+      .expect(
+        "Location",
+        `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.MfaMaxRetries}`
+      )
+      .expect(302);
   });
 });
