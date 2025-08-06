@@ -22,8 +22,8 @@
         isPageHeading: true
       },
     classes: "govuk-input--width-10 govuk-!-font-weight-bold",
-    id: "totp-input",
-    name: "totp",
+    id: "app_otp",
+    name: "app_otp",
     inputmode: "numeric",
     spellcheck: false,
     autocomplete: "one-time-code",
@@ -32,8 +32,8 @@
         maxlength: "6"
     },
     errorMessage: {
-      text: errors['totp'].text
-    } if (errors['totp'])})
+      text: errors['app_otp'].text
+    } if (errors['app_otp'])})
   }}
 
     {{ govukButton({
