@@ -22,17 +22,18 @@
         isPageHeading: true
       },
     classes: "govuk-input--width-10 govuk-!-font-weight-bold",
-    id: "app_otp",
-    name: "app_otp",
+    id: "totp-input",
+    name: "totp",
     inputmode: "numeric",
     spellcheck: false,
-    autocomplete:"one-time-code",
+    autocomplete: "one-time-code",
     attributes: {
-        pattern: "([0-9]{6})"
+        pattern: "[0-9]*",
+        maxlength: "6"
     },
     errorMessage: {
-      text: errors['app_otp'].text
-    } if (errors['app_otp'])})
+      text: errors['totp'].text
+    } if (errors['totp'])})
   }}
 
     {{ govukButton({
