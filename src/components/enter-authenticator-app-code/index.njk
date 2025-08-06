@@ -22,14 +22,19 @@
         isPageHeading: true
       },
     classes: "govuk-input--width-10 govuk-!-font-weight-bold",
-    id: "wrguhwoghwoegh",
-    name: "wrguhwoghwoegh",
+    id: "app_otp",
+    name: "app_otp",
     inputmode: "numeric",
     spellcheck: false,
     autocomplete:"one-time-code",
+    attributes: {
+        "aria-labelledby": "session-otp-input-label",
+        "aria-describedby": "session-otp-input-description",
+        pattern: "([0-9]{6})"
+    },
     errorMessage: {
-      text: errors['wrguhwoghwoegh'].text
-    } if (errors['wrguhwoghwoegh'])})
+      text: errors['app_otp'].text
+    } if (errors['app_otp'])})
   }}
 
     {{ govukButton({
