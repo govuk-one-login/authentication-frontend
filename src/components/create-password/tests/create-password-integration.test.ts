@@ -193,7 +193,7 @@ describe("Integration::register create password", () => {
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("#password-error").text()).to.contains(
-          "Enter a stronger password. Do not use very common passwords, such as 'password' or a sequence of numbers."
+          "Enter a stronger password. Do not use very common passwords, such as ‘password’ or a sequence of numbers."
         );
       })
       .expect(400);
