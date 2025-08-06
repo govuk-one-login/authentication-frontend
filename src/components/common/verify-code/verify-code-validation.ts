@@ -8,7 +8,7 @@ export function removeWhiteSpace(value: string): string {
 }
 
 export function whitespaceSanitizer(): ValidationChain {
-  return body("code").customSanitizer(removeWhiteSpace);
+  return body("one-time-code").customSanitizer(removeWhiteSpace);
 }
 
 export function validateCode(validationMessageKeys: {
@@ -17,7 +17,7 @@ export function validateCode(validationMessageKeys: {
   minLengthKey: string;
   numbersOnlyKey: string;
 }): ValidationChain {
-  return body("code")
+  return body("one-time-code")
     .notEmpty()
     .withMessage((value, { req }) => {
       return req.t(validationMessageKeys.requiredKey, {
