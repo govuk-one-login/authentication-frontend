@@ -1,12 +1,9 @@
 import { describe } from "mocha";
-import {
-  expect,
-  sinon,
-  request,
-} from "../../../../../test/utils/test-utils.js";
+import { expect, sinon } from "../../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
 import { PATH_NAMES, ANALYTICS_COOKIES } from "../../../../app.constants.js";
 import esmock from "esmock";
+import request from "supertest";
 describe("Integration:: cookies controller", () => {
   let app: any;
   let $: any;
@@ -19,8 +16,9 @@ describe("Integration:: cookies controller", () => {
 
       app = await createApp();
 
-      await request(app, (test) => test.get(PATH_NAMES.COOKIES_POLICY)).then(
-        (res) => {
+      await request(app)
+        .get(PATH_NAMES.COOKIES_POLICY)
+        .then((res) => {
           $ = cheerio.load(res.text);
           $("table#analytics-cookies tbody td:first-child").each(
             (i: any, elem: any) => {
@@ -28,8 +26,7 @@ describe("Integration:: cookies controller", () => {
               analyticsCookieNamesListedInCookieNotice.push(cookieName);
             }
           );
-        }
-      );
+        });
     });
 
     after(() => {
@@ -75,19 +72,18 @@ describe("Integration:: cookies controller", () => {
 
       app = await createApp();
 
-      await request(app, (test) => test.get(PATH_NAMES.COOKIES_POLICY), {
-        expectAnalyticsPropertiesMatchSnapshot: false,
-      }).then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+      await request(app)
+        .get(PATH_NAMES.COOKIES_POLICY)
+        .then((res) => {
+          const $ = cheerio.load(res.text);
+          token = $("[name=_csrf]").val();
+          cookies = res.headers["set-cookie"];
+        });
     });
 
     it("successfully makes a call to update the cookie policy", async () => {
-      await request(app, (test) => test.post(PATH_NAMES.COOKIES_POLICY), {
-        expectAnalyticsPropertiesMatchSnapshot: false,
-      })
+      await request(app)
+        .post(PATH_NAMES.COOKIES_POLICY)
         .type("form")
         .set("Cookie", cookies)
         .send({

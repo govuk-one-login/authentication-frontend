@@ -1,6 +1,7 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
+import { expect, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
+import request from "supertest";
 import * as cheerio from "cheerio";
 import { PATH_NAMES } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
@@ -42,13 +43,13 @@ describe("Integration::select-mfa-options", () => {
 
     app = await createApp();
 
-    await request(app, (test) => test.get(PATH_NAMES.GET_SECURITY_CODES)).then(
-      (res) => {
+    await request(app)
+      .get(PATH_NAMES.GET_SECURITY_CODES)
+      .then((res) => {
         const $ = cheerio.load(res.text);
         token = $("[name=_csrf]").val();
         cookies = res.headers["set-cookie"];
-      }
-    );
+      });
   });
 
   beforeEach(() => {
@@ -61,70 +62,60 @@ describe("Integration::select-mfa-options", () => {
   });
 
   it("should return get security codes page", async () => {
-    await request(app, (test) =>
-      test.get(PATH_NAMES.GET_SECURITY_CODES).expect(200)
-    );
+    await request(app).get(PATH_NAMES.GET_SECURITY_CODES).expect(200);
   });
 
   it("should return error when csrf not present", async () => {
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.GET_SECURITY_CODES)
-        .type("form")
-        .send({
-          mfaOptions: "SMS",
-        })
-        .expect(403)
-    );
+    await request(app)
+      .post(PATH_NAMES.GET_SECURITY_CODES)
+      .type("form")
+      .send({
+        mfaOptions: "SMS",
+      })
+      .expect(403);
   });
 
   it("should return validation error when mfa option not selected", async () => {
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.GET_SECURITY_CODES)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          mfaOptions: undefined,
-        })
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($("#mfaOptions-error").text()).to.contains(
-            "Select how you want to get security codes"
-          );
-        })
-        .expect(400)
-    );
+    await request(app)
+      .post(PATH_NAMES.GET_SECURITY_CODES)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        mfaOptions: undefined,
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#mfaOptions-error").text()).to.contains(
+          "Select how you want to get security codes"
+        );
+      })
+      .expect(400);
   });
 
   it("should redirect to /setup-authenticator-app page when mfaOptions is AUTH_APP", async () => {
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.GET_SECURITY_CODES)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          mfaOptions: "AUTH_APP",
-        })
-        .expect("Location", PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
-        .expect(302)
-    );
+    await request(app)
+      .post(PATH_NAMES.GET_SECURITY_CODES)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        mfaOptions: "AUTH_APP",
+      })
+      .expect("Location", PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
+      .expect(302);
   });
 
   it("should redirect to /enter-phone-number page when mfaOptions is SMS", async () => {
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.GET_SECURITY_CODES)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          mfaOptions: "SMS",
-        })
-        .expect("Location", PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
-        .expect(302)
-    );
+    await request(app)
+      .post(PATH_NAMES.GET_SECURITY_CODES)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        mfaOptions: "SMS",
+      })
+      .expect("Location", PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
+      .expect(302);
   });
 });

@@ -1,5 +1,5 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
+import { expect, sinon } from "../../../../test/utils/test-utils.js";
 import {
   API_ENDPOINTS,
   CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,
@@ -13,6 +13,7 @@ import * as cheerio from "cheerio";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import esmock from "esmock";
+import request from "supertest";
 
 const TEST_CONTACT_US_LINK_URL = "https://example.com/contact-us";
 
@@ -40,17 +41,10 @@ describe("Integration:: ipv callback", () => {
 
       const requestPath = PATH_NAMES.IPV_CALLBACK + "?code=12345&state=abcde";
 
-      await request(
-        app,
-        (test) =>
-          test
-            .get(requestPath)
-            .expect(302)
-            .expect("Location", PATH_NAMES.GET_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      );
+      await request(app)
+        .get(requestPath)
+        .expect(302)
+        .expect("Location", PATH_NAMES.GET_SECURITY_CODES);
     });
 
     it("should redirect to CANNOT_CHANGE_SECURITY_CODES when the reverification result is successful", async () => {
@@ -61,17 +55,10 @@ describe("Integration:: ipv callback", () => {
 
       const requestPath = PATH_NAMES.IPV_CALLBACK + "?code=12345&state=abcde";
 
-      await request(
-        app,
-        (test) =>
-          test
-            .get(requestPath)
-            .expect(302)
-            .expect("Location", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      );
+      await request(app)
+        .get(requestPath)
+        .expect(302)
+        .expect("Location", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
     });
   });
 
@@ -88,13 +75,8 @@ describe("Integration:: ipv callback", () => {
       const { token, cookies } =
         await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
 
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
+      await request(app)
+        .post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES)
         .type("form")
         .set("Cookie", cookies)
         .send({
@@ -117,13 +99,8 @@ describe("Integration:: ipv callback", () => {
       const { token, cookies } =
         await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
 
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
+      await request(app)
+        .post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES)
         .type("form")
         .set("Cookie", cookies)
         .send({
@@ -143,13 +120,8 @@ describe("Integration:: ipv callback", () => {
       const { token, cookies } =
         await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
 
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
+      await request(app)
+        .post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES)
         .type("form")
         .set("Cookie", cookies)
         .send({
@@ -169,13 +141,8 @@ describe("Integration:: ipv callback", () => {
       const { token, cookies } =
         await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
 
-      await request(
-        app,
-        (test) => test.post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
-        {
-          expectAnalyticsPropertiesMatchSnapshot: false,
-        }
-      )
+      await request(app)
+        .post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES)
         .type("form")
         .set("Cookie", cookies)
         .send({
@@ -236,16 +203,12 @@ const getCannotChangeSecurityCodesAndReturnTokenAndCookies = async (
   app: express.Application
 ) => {
   let cookies, token;
-  await request(
-    app,
-    (test) => test.get(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES),
-    {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    }
-  ).then((res) => {
-    const $ = cheerio.load(res.text);
-    token = $("[name=_csrf]").val();
-    cookies = res.headers["set-cookie"];
-  });
+  await request(app)
+    .get(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES)
+    .then((res) => {
+      const $ = cheerio.load(res.text);
+      token = $("[name=_csrf]").val();
+      cookies = res.headers["set-cookie"];
+    });
   return { token, cookies };
 };

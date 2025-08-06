@@ -1,6 +1,7 @@
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils.js";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
+import request from "supertest";
 import * as cheerio from "cheerio";
 import type { AxiosResponse } from "axios";
 import {
@@ -79,13 +80,13 @@ describe("Integration:: enter mfa", () => {
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
     process.env.SUPPORT_REAUTHENTICATION = "1";
 
-    await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA), {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    }).then((res) => {
-      const $ = cheerio.load(res.text);
-      token = $("[name=_csrf]").val();
-      cookies = res.headers["set-cookie"];
-    });
+    await request(app)
+      .get(PATH_NAMES.ENTER_MFA)
+      .then((res) => {
+        const $ = cheerio.load(res.text);
+        token = $("[name=_csrf]").val();
+        cookies = res.headers["set-cookie"];
+      });
   });
 
   beforeEach(() => {
@@ -99,7 +100,7 @@ describe("Integration:: enter mfa", () => {
   });
 
   it("should return check your phone page with reauth analytics properties", async () => {
-    await request(app, (test) => test.get(PATH_NAMES.ENTER_MFA).expect(200));
+    await request(app).get(PATH_NAMES.ENTER_MFA).expect(200);
   });
 
   it("should redirect to rp if user entered 6 incorrect codes in the reauth journey", async () => {
@@ -108,20 +109,15 @@ describe("Integration:: enter mfa", () => {
       success: false,
     });
 
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.ENTER_MFA)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123455",
-        })
-        .expect(
-          "Location",
-          EXAMPLE_REDIRECT_URI.concat("?error=login_required")
-        )
-        .expect(302)
-    );
+    await request(app)
+      .post(PATH_NAMES.ENTER_MFA)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123455",
+      })
+      .expect("Location", EXAMPLE_REDIRECT_URI.concat("?error=login_required"))
+      .expect(302);
   });
 });

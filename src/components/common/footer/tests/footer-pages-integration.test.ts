@@ -1,16 +1,15 @@
 import { describe } from "mocha";
-import { request } from "../../../../../test/utils/test-utils.js";
 import { PATH_NAMES } from "../../../../app.constants.js";
 import { createApp } from "../../../../app.js";
 import { expect } from "chai";
+import request from "supertest";
 
 describe("Integration:: privacy notice link", () => {
   it("should render the privacy notice when the feature flag is disabled", async () => {
     process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "0";
     const app = await createApp();
-    await request(app, (test) => test.get(PATH_NAMES.PRIVACY_POLICY), {
-      expectAnalyticsPropertiesMatchSnapshot: false,
-    })
+    await request(app)
+      .get(PATH_NAMES.PRIVACY_POLICY)
       .expect(200)
       .then((res) => {
         expect(res.text).to.contain("GOV.UK One Login privacy notice");
@@ -21,9 +20,8 @@ describe("Integration:: privacy notice link", () => {
     it(`should redirect to the privacy notice when the feature flag is enabled for ${path}`, async () => {
       process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "1";
       const app = await createApp();
-      await request(app, (test) => test.get(path), {
-        expectAnalyticsPropertiesMatchSnapshot: false,
-      })
+      await request(app)
+        .get(path)
         .expect(302)
         .then((res) => {
           expect(res.headers["location"]).to.equal(
@@ -37,9 +35,9 @@ describe("Integration:: privacy notice link", () => {
     it(`should redirect to the welsh privacy notice when the lng cookie is cy for ${path}`, async () => {
       process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "1";
       const app = await createApp();
-      await request(app, (test) => test.get(path).set("Cookie", ["lng=cy"]), {
-        expectAnalyticsPropertiesMatchSnapshot: false,
-      })
+      await request(app)
+        .get(path)
+        .set("Cookie", ["lng=cy"])
         .expect(302)
         .then((res) => {
           expect(res.headers["location"]).to.equal(
@@ -53,9 +51,8 @@ describe("Integration:: privacy notice link", () => {
     it(`should redirect to the welsh privacy notice when the lng query param is cy for ${path}`, async () => {
       process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "1";
       const app = await createApp();
-      await request(app, (test) => test.get(path + "?lng=cy"), {
-        expectAnalyticsPropertiesMatchSnapshot: false,
-      })
+      await request(app)
+        .get(path + "?lng=cy")
         .expect(302)
         .then((res) => {
           expect(res.headers["location"]).to.equal(

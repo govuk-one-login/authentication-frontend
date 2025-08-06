@@ -1,11 +1,12 @@
 import { PATH_NAMES } from "../../../app.constants.js";
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils.js";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import type { NextFunction, Request, Response } from "express";
 import type express from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import { IdentityProcessingStatus } from "../types.js";
 import esmock from "esmock";
+import request from "supertest";
 
 describe("Integration: prove identity callback", () => {
   let app: express.Application;
@@ -20,13 +21,11 @@ describe("Integration: prove identity callback", () => {
       );
 
       // act
-      await request(app, (test) =>
-        test
-          .get(PATH_NAMES.PROVE_IDENTITY_CALLBACK)
-          // assert
-          .expect(302)
-          .expect("Location", redirectPath)
-      );
+      await request(app)
+        .get(PATH_NAMES.PROVE_IDENTITY_CALLBACK)
+        // assert
+        .expect(302)
+        .expect("Location", redirectPath);
     });
 
     it("should redirect when not on permitted journey to /ipv-callback", async () => {
@@ -35,13 +34,11 @@ describe("Integration: prove identity callback", () => {
       app = await stubMiddlewareAndCreateApp(startingPage);
 
       // act
-      await request(app, (test) =>
-        test
-          .get(PATH_NAMES.PROVE_IDENTITY_CALLBACK)
-          // assert
-          .expect(302)
-          .expect("Location", startingPage)
-      );
+      await request(app)
+        .get(PATH_NAMES.PROVE_IDENTITY_CALLBACK)
+        // assert
+        .expect(302)
+        .expect("Location", startingPage);
     });
   });
 });

@@ -1,5 +1,5 @@
 import { describe } from "mocha";
-import { expect, request, sinon } from "../../../../test/utils/test-utils.js";
+import { expect, sinon } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
 import {
   API_ENDPOINTS,
@@ -7,6 +7,7 @@ import {
   PATH_NAMES,
 } from "../../../app.constants.js";
 import nock from "nock";
+import request from "supertest";
 import { ERROR_CODES } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
@@ -61,15 +62,13 @@ describe("Integration::reset password check email ", () => {
       .once()
       .reply(200, { mfaMethods: [] });
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
-      const $ = cheerio.load(res.text);
-      token = $("[name=_csrf]").val();
-      cookies = res.headers["set-cookie"];
-    });
+    await request(app)
+      .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+      .then((res) => {
+        const $ = cheerio.load(res.text);
+        token = $("[name=_csrf]").val();
+        cookies = res.headers["set-cookie"];
+      });
   });
 
   beforeEach(() => {
@@ -91,9 +90,7 @@ describe("Integration::reset password check email ", () => {
           id: "test-id",
         }),
       });
-    await request(app, (test) =>
-      test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL).expect(200)
-    );
+    await request(app).get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL).expect(200);
   });
 
   it("should return error page when 6 password reset codes requested", async () => {
@@ -102,17 +99,15 @@ describe("Integration::reset password check email ", () => {
       .times(6)
       .reply(400, { code: 1022 });
 
-    await request(app, (test) =>
-      test
-        .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($(".govuk-heading-l").text()).to.contains(
-            "You asked to resend the security code too many times"
-          );
-        })
-        .expect(200)
-    );
+    await request(app)
+      .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($(".govuk-heading-l").text()).to.contains(
+          "You asked to resend the security code too many times"
+        );
+      })
+      .expect(200);
   });
 
   it("should return 2hr error page when 6 incorrect codes entered and flag is turned on", async () => {
@@ -120,18 +115,16 @@ describe("Integration::reset password check email ", () => {
       code: ERROR_CODES.ENTERED_INVALID_PASSWORD_RESET_CODE_MAX_TIMES,
     });
 
-    await request(app, (test) =>
-      test
-        .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($(".govuk-heading-l").text()).to.contains(
-            "You cannot sign in at the moment"
-          );
-          expect($(".govuk-body").text()).to.contains("Wait for 2 hours");
-        })
-        .expect(200)
-    );
+    await request(app)
+      .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($(".govuk-heading-l").text()).to.contains(
+          "You cannot sign in at the moment"
+        );
+        expect($(".govuk-body").text()).to.contains("Wait for 2 hours");
+      })
+      .expect(200);
   });
 
   it("should return error page when blocked from requesting codes", async () => {
@@ -140,59 +133,53 @@ describe("Integration::reset password check email ", () => {
       .once()
       .reply(400, { code: 1023 });
 
-    await request(app, (test) =>
-      test
-        .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($(".govuk-heading-l").text()).to.contains(
-            "You cannot sign in at the moment"
-          );
-        })
-        .expect(200)
-    );
+    await request(app)
+      .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($(".govuk-heading-l").text()).to.contains(
+          "You cannot sign in at the moment"
+        );
+      })
+      .expect(200);
   });
 
   it("should redisplay page with error", async () => {
     nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).reply(400, { code: 1021 });
 
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($("#code-error").text()).to.contain(
-            "The code you entered is not correct"
-          );
-          expect(res.text).to.contain(sessionEmail);
-        })
-        .expect(400)
-    );
+    await request(app)
+      .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123456",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#code-error").text()).to.contain(
+          "The code you entered is not correct"
+        );
+        expect(res.text).to.contain(sessionEmail);
+      })
+      .expect(400);
   });
 
   it("should validate the input", async () => {
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "",
-        })
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($("#code-error").text()).to.contain("Enter the code");
-          expect(res.text).to.contain(sessionEmail);
-        })
-        .expect(400)
-    );
+    await request(app)
+      .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#code-error").text()).to.contain("Enter the code");
+        expect(res.text).to.contain(sessionEmail);
+      })
+      .expect(400);
   });
 
   it("should return internal server error when /reset-password-request API call response is 500", async () => {
@@ -200,9 +187,7 @@ describe("Integration::reset password check email ", () => {
       .post(API_ENDPOINTS.RESET_PASSWORD_REQUEST)
       .once()
       .reply(500, {});
-    await request(app, (test) =>
-      test.get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL).expect(500)
-    );
+    await request(app).get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL).expect(500);
   });
 
   it("should redirect to /reset-password if code is correct", async () => {
@@ -215,18 +200,16 @@ describe("Integration::reset password check email ", () => {
       .post(API_ENDPOINTS.MFA)
       .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
 
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          code: "123456",
-        })
-        .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_SMS)
-        .expect(302)
-    );
+    await request(app)
+      .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123456",
+      })
+      .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_SMS)
+      .expect(302);
   });
 
   [
@@ -245,21 +228,19 @@ describe("Integration::reset password check email ", () => {
         .post(API_ENDPOINTS.VERIFY_CODE)
         .reply(HTTP_STATUS_CODES.BAD_REQUEST, { code: errorCode });
 
-      await request(app, (test) =>
-        test
-          .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
-          .type("form")
-          .set("Cookie", cookies)
-          .send({
-            _csrf: token,
-            code: "123456",
-          })
-          .expect(function (res) {
-            const $ = cheerio.load(res.text);
-            expect($(".govuk-body").text()).to.contains(expectedString);
-          })
-          .expect(200)
-      );
+      await request(app)
+        .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "123456",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($(".govuk-body").text()).to.contains(expectedString);
+        })
+        .expect(200);
     });
 
     it(`should render expected error message when sending SMS OTP code results in ${errorCode} error code`, async () => {
@@ -271,21 +252,19 @@ describe("Integration::reset password check email ", () => {
         code: errorCode,
       });
 
-      await request(app, (test) =>
-        test
-          .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
-          .type("form")
-          .set("Cookie", cookies)
-          .send({
-            _csrf: token,
-            code: "123456",
-          })
-          .expect(function (res) {
-            const $ = cheerio.load(res.text);
-            expect($(".govuk-body").text()).to.contains(expectedString);
-          })
-          .expect(200)
-      );
+      await request(app)
+        .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "123456",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($(".govuk-body").text()).to.contains(expectedString);
+        })
+        .expect(200);
     });
   });
 });

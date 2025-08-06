@@ -1,7 +1,8 @@
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils.js";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import { API_ENDPOINTS, CHANNEL, PATH_NAMES } from "../../../app.constants.js";
 import nock from "nock";
+import request from "supertest";
 import type { NextFunction, Request, Response } from "express";
 import supertest from "supertest";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
@@ -32,12 +33,10 @@ describe("Mfa reset with ipv", () => {
       );
       allowCallToMfaResetAuthorizeEndpointReturningAuthorizeUrl(IPV_DUMMY_URL);
 
-      await request(
-        app,
-        (test) =>
-          test.get(REQUEST_PATH).expect(302).expect("Location", IPV_DUMMY_URL),
-        { expectAnalyticsPropertiesMatchSnapshot: false }
-      );
+      await request(app)
+        .get(REQUEST_PATH)
+        .expect(302)
+        .expect("Location", IPV_DUMMY_URL);
     });
 
     it("should redirect to the mfa reset ipv path when coming from auth app entry", async () => {
@@ -50,12 +49,10 @@ describe("Mfa reset with ipv", () => {
       );
       allowCallToMfaResetAuthorizeEndpointReturningAuthorizeUrl(IPV_DUMMY_URL);
 
-      await request(
-        app,
-        (test) =>
-          test.get(REQUEST_PATH).expect(302).expect("Location", IPV_DUMMY_URL),
-        { expectAnalyticsPropertiesMatchSnapshot: false }
-      );
+      await request(app)
+        .get(REQUEST_PATH)
+        .expect(302)
+        .expect("Location", IPV_DUMMY_URL);
     });
 
     [CHANNEL.STRATEGIC_APP, CHANNEL.GENERIC_APP].forEach((channel) => {
@@ -91,100 +88,93 @@ describe("Mfa reset with ipv", () => {
         CHANNEL.WEB
       );
 
-      await request(app, (test) => test.get(REQUEST_PATH).expect(500), {
-        expectAnalyticsPropertiesMatchSnapshot: false,
+      await request(app).get(REQUEST_PATH).expect(500);
+    });
+
+    describe("Open One login in browser get", () => {
+      const REQUEST_PATH = PATH_NAMES.OPEN_IN_WEB_BROWSER;
+
+      after(() => {
+        sinon.restore();
+      });
+
+      [CHANNEL.STRATEGIC_APP, CHANNEL.GENERIC_APP].forEach((channel) => {
+        it(`should not render the page when coming from an arbitrary page and the channel is ${channel}`, async () => {
+          const previousPath = PATH_NAMES.AUTHORIZE;
+
+          const app = await setupAppWithSessionMiddleware(
+            previousPath,
+            REQUEST_PATH,
+            true,
+            channel
+          );
+
+          await request(app)
+            .get(PATH_NAMES.OPEN_IN_WEB_BROWSER)
+            .expect(302)
+            .expect("Location", previousPath);
+        });
       });
     });
-  });
 
-  describe("Open One login in browser get", () => {
-    const REQUEST_PATH = PATH_NAMES.OPEN_IN_WEB_BROWSER;
+    function allowCallToMfaResetAuthorizeEndpointReturningAuthorizeUrl(
+      url: string
+    ) {
+      const baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    after(() => {
-      sinon.restore();
-    });
-
-    [CHANNEL.STRATEGIC_APP, CHANNEL.GENERIC_APP].forEach((channel) => {
-      it(`should not render the page when coming from an arbitrary page and the channel is ${channel}`, async () => {
-        const previousPath = PATH_NAMES.AUTHORIZE;
-
-        const app = await setupAppWithSessionMiddleware(
-          previousPath,
-          REQUEST_PATH,
-          true,
-          channel
-        );
-
-        await request(
-          app,
-          (test) =>
-            test
-              .get(PATH_NAMES.OPEN_IN_WEB_BROWSER)
-              .expect(302)
-              .expect("Location", previousPath),
-          { expectAnalyticsPropertiesMatchSnapshot: false }
-        );
+      nock(baseApi).post(API_ENDPOINTS.MFA_RESET_AUTHORIZE).once().reply(200, {
+        authorize_url: url,
+        code: 200,
+        success: true,
       });
-    });
+    }
+
+    async function setupAppWithSessionMiddleware(
+      currentNextPath: string,
+      firstRequestPath: string,
+      isAccountRecoveryPermitted: boolean,
+      channel: string
+    ) {
+      const { createApp } = await esmock(
+        "../../../app.js",
+        {},
+        {
+          "../../../middleware/session-middleware.js": {
+            validateSessionMiddleware: sinon.fake(function (
+              req: Request,
+              res: Response,
+              next: NextFunction
+            ): void {
+              //Because we're using supertest to update the state after a first request, we only specifically
+              //set this up for the first request
+              if (req.path === firstRequestPath) {
+                res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+                res.locals.strategicAppChannel =
+                  channel === CHANNEL.STRATEGIC_APP;
+                res.locals.genericAppChannel = channel === CHANNEL.GENERIC_APP;
+                res.locals.webChannel = channel == CHANNEL.WEB;
+                res.locals.isApp =
+                  channel === CHANNEL.STRATEGIC_APP ||
+                  channel === CHANNEL.GENERIC_APP;
+
+                req.session.user = {
+                  email: "test@test.com",
+                  journey: getPermittedJourneyForPath(currentNextPath),
+                  mfaMethodType: "AUTH_APP",
+                  isAccountRecoveryPermitted: isAccountRecoveryPermitted,
+                };
+
+                req.session.client = {
+                  redirectUri: "http://test-redirect.gov.uk/callback",
+                };
+              }
+              next();
+            }),
+          },
+        }
+      );
+
+      return await createApp();
+    }
   });
-
-  function allowCallToMfaResetAuthorizeEndpointReturningAuthorizeUrl(
-    url: string
-  ) {
-    const baseApi = process.env.FRONTEND_API_BASE_URL;
-
-    nock(baseApi).post(API_ENDPOINTS.MFA_RESET_AUTHORIZE).once().reply(200, {
-      authorize_url: url,
-      code: 200,
-      success: true,
-    });
-  }
-
-  async function setupAppWithSessionMiddleware(
-    currentNextPath: string,
-    firstRequestPath: string,
-    isAccountRecoveryPermitted: boolean,
-    channel: string
-  ) {
-    const { createApp } = await esmock(
-      "../../../app.js",
-      {},
-      {
-        "../../../middleware/session-middleware.js": {
-          validateSessionMiddleware: sinon.fake(function (
-            req: Request,
-            res: Response,
-            next: NextFunction
-          ): void {
-            //Because we're using supertest to update the state after a first request, we only specifically
-            //set this up for the first request
-            if (req.path === firstRequestPath) {
-              res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-              res.locals.strategicAppChannel =
-                channel === CHANNEL.STRATEGIC_APP;
-              res.locals.genericAppChannel = channel === CHANNEL.GENERIC_APP;
-              res.locals.webChannel = channel == CHANNEL.WEB;
-              res.locals.isApp =
-                channel === CHANNEL.STRATEGIC_APP ||
-                channel === CHANNEL.GENERIC_APP;
-
-              req.session.user = {
-                email: "test@test.com",
-                journey: getPermittedJourneyForPath(currentNextPath),
-                mfaMethodType: "AUTH_APP",
-                isAccountRecoveryPermitted: isAccountRecoveryPermitted,
-              };
-
-              req.session.client = {
-                redirectUri: "http://test-redirect.gov.uk/callback",
-              };
-            }
-            next();
-          }),
-        },
-      }
-    );
-
-    return await createApp();
-  }
 });

@@ -1,6 +1,7 @@
 import { describe } from "mocha";
-import { sinon, request } from "../../../../../test/utils/test-utils.js";
+import { sinon } from "../../../../../test/utils/test-utils.js";
 import nock from "nock";
+import request from "supertest";
 import * as cheerio from "cheerio";
 import {
   API_ENDPOINTS,
@@ -48,15 +49,13 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL as string;
 
-    await request(
-      app,
-      (test) => test.get(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION),
-      { expectAnalyticsPropertiesMatchSnapshot: false }
-    ).then((res) => {
-      const $ = cheerio.load(res.text);
-      token = $("[name=_csrf]").val();
-      cookies = res.headers["set-cookie"];
-    });
+    await request(app)
+      .get(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
+      .then((res) => {
+        const $ = cheerio.load(res.text);
+        token = $("[name=_csrf]").val();
+        cookies = res.headers["set-cookie"];
+      });
   });
 
   beforeEach(() => {
@@ -69,21 +68,19 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
   });
 
   it("should return resend mfa code page", async () => {
-    await request(app, (test) =>
-      test.get(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION).expect(200)
-    );
+    await request(app)
+      .get(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
+      .expect(200);
   });
 
   it("should return error when csrf not present", async () => {
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
-        .type("form")
-        .send({
-          code: "123456",
-        })
-        .expect(403)
-    );
+    await request(app)
+      .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
+      .type("form")
+      .send({
+        code: "123456",
+      })
+      .expect(403);
   });
 
   it("should redirect to /check-your-phone when new code requested", async () => {
@@ -92,18 +89,16 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          isResendCodeRequest: true,
-        })
-        .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
-        .expect(302)
-    );
+    await request(app)
+      .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        isResendCodeRequest: true,
+      })
+      .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
+      .expect(302);
   });
 
   it("should return 500 error screen when API call fails", async () => {
@@ -111,15 +106,13 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
       errorCode: "1234",
     });
 
-    await request(app, (test) =>
-      test
-        .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
-        .expect(500)
-    );
+    await request(app)
+      .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+      })
+      .expect(500);
   });
 });

@@ -1,6 +1,7 @@
 import { describe } from "mocha";
-import { request, sinon } from "../../../../test/utils/test-utils.js";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
+import request from "supertest";
 import { PATH_NAMES } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
@@ -44,6 +45,6 @@ describe("Integration:: landing", () => {
   });
 
   it("should redirect to /sign-in-or-create", async () => {
-    await request(app, (test) => test.get(PATH_NAMES.ROOT).expect(403));
+    await request(app).get(PATH_NAMES.ROOT).expect(403);
   });
 });
