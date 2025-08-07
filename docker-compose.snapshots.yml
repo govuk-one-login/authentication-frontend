@@ -1,40 +1,78 @@
 services:
+  snapshot-redis:
+    image: redis:6.0.5-alpine
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    networks:
+      - di-snapshot-net
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+      start_period: 1s
+
   di-auth-frontend:
     container_name: snapshot-tests-auth-frontend
     build:
       context: .
-      dockerfile: snapshots.Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
-      - "9230:9230"
     volumes:
       - ./:/app
+    env_file:
+      - .env
     environment:
-      ENVIRONMENT: development
-      ANALYTICS_COOKIE_DOMAIN: localhost
-      SESSION_EXPIRY: 600000000000
-
-      AWS_ACCESS_KEY_ID: ""
-      AWS_SECRET_ACCESS_KEY: ""
-
-      # We ignore `.env` values here, as we're using the docker network for redis.
-      REDIS_PORT: 6379 # This is the default port for Redis
-      REDIS_HOST: redis # This is the name of the service in `docker-compose.yml`
-
-      PORT: 3000
+#      API_KEY: "blah"
+#      ENVIRONMENT: development
+##      ANALYTICS_COOKIE_DOMAIN: localhost
+#      SESSION_EXPIRY: 600000000000
+##
+##      AWS_ACCESS_KEY_ID: ""
+##      AWS_SECRET_ACCESS_KEY: ""
+##
+##      # We ignore `.env` values here, as we're using the docker network for redis.
+##      REDIS_PORT: 6379 # This is the default port for Redis
+##      REDIS_HOST: redis # This is the name of the service in `docker-compose.yml`
+##
+##      PORT: 3000
+#
+##      ANALYTICS_COOKIE_DOMAIN: localhost
+##
+##      AWS_ACCESS_KEY_ID: "aws_access_key_id"
+##      AWS_SECRET_ACCESS_KEY: "aws_secret_access_key"
+#
+#      # We ignore `.env` values here, as we're using the docker network for redis.
+#      REDIS_PORT: 6379 # This is the default port for Redis
+      REDIS_PORT: 6379
+      REDIS_HOST: snapshot-redis # This is the name of the service in `docker-compose.yml`
+#      PORT: 3000
     restart: on-failure
+    depends_on:
+      snapshot-redis:
+        condition: service_healthy
     networks:
-      - di-net
+      - di-snapshot-net
+    healthcheck:
+      test:  wget --spider http://localhost:3000/healthcheck || exit 1
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
-#  snapshot-tests:
-#    container_name: snapshot-tests
-#    build:
-#      context: .
-#      dockerfile: snapshots.Dockerfile
-#    depends_on:
-#      di-auth-frontend:
-#        condition: service_healthy
-#    command: npx playwright test
+  snapshot-tests:
+    container_name: snapshot-tests
+    build:
+      context: .
+      dockerfile: snapshots.Dockerfile
+    depends_on:
+      di-auth-frontend:
+        condition: service_healthy
+    environment:
+      WEBSITE_HOST: http://di-auth-frontend:3000
+    command: npx playwright test
+    networks:
+      - di-snapshot-net
 
 networks:
-  di-net:
+  di-snapshot-net:
