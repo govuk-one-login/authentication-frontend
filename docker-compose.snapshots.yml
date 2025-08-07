@@ -1,0 +1,40 @@
+services:
+  di-auth-frontend:
+    container_name: snapshot-tests-auth-frontend
+    build:
+      context: .
+      dockerfile: snapshots.Dockerfile
+    ports:
+      - "3000:3000"
+      - "9230:9230"
+    volumes:
+      - ./:/app
+    environment:
+      ENVIRONMENT: development
+      ANALYTICS_COOKIE_DOMAIN: localhost
+      SESSION_EXPIRY: 600000000000
+
+      AWS_ACCESS_KEY_ID: ""
+      AWS_SECRET_ACCESS_KEY: ""
+
+      # We ignore `.env` values here, as we're using the docker network for redis.
+      REDIS_PORT: 6379 # This is the default port for Redis
+      REDIS_HOST: redis # This is the name of the service in `docker-compose.yml`
+
+      PORT: 3000
+    restart: on-failure
+    networks:
+      - di-net
+
+#  snapshot-tests:
+#    container_name: snapshot-tests
+#    build:
+#      context: .
+#      dockerfile: snapshots.Dockerfile
+#    depends_on:
+#      di-auth-frontend:
+#        condition: service_healthy
+#    command: npx playwright test
+
+networks:
+  di-net:
