@@ -6,7 +6,11 @@ import {
   CONTACT_US_COUNTRY_MAX_LENGTH,
   CONTACT_US_REFERER_ALLOWLIST,
 } from "../../app.constants.js";
-import type { Questions, ThemeQuestions } from "./types.js";
+import type {
+  FurtherInformationTemplateOptions,
+  Questions,
+  ThemeQuestions,
+} from "./types.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import crypto from "crypto";
 import { logger } from "../../utils/logger.js";
@@ -14,11 +18,16 @@ import {
   getServiceDomain,
   getSupportLinkUrl,
   showWalletContactForm,
-  supportNoPhotoIdContactForms,
 } from "../../config.js";
 import { getContactUsService } from "./contact-us-service.js";
 import { supportTypeIsGovService } from "../../utils/request.js";
-import { getThemeRadioButtonsFromContactFormStructure } from "./structure/contact-us-structure-utils.js";
+import {
+  getHeaderKeyFromTheme,
+  getLegendKeyFromTheme,
+  getThemeRadioButtonsFromStructure,
+  getTitleKeyFromTheme,
+} from "./structure/contact-us-structure-utils.js";
+import { CONTACT_FORM_STRUCTURE } from "./structure/contact-us-structure.js";
 const themeToPageTitle = {
   [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:
     "pages.contactUsQuestions.accountNotFound.title",
@@ -159,7 +168,7 @@ export function contactUsGet(req: Request, res: Response): void {
     referer: encodeValue(referer),
     fromURL: encodeValue(fromURL),
     hrefBack: backLinkHref,
-    radioButtons: getThemeRadioButtonsFromContactFormStructure(),
+    radioButtons: getThemeRadioButtonsFromStructure(CONTACT_FORM_STRUCTURE),
     ...(getAppSessionId(req.query.appSessionId as string) && {
       appSessionId: getAppSessionId(req.query.appSessionId as string),
     }),
@@ -374,33 +383,16 @@ export function contactUsFormPost(req: Request, res: Response): void {
 export function furtherInformationGet(req: Request, res: Response): void {
   const supportLinkURL = getSupportLinkUrl();
   const backLinkHref = prepareBackLink(req, supportLinkURL, serviceDomain);
+  const theme = req.query.theme as string;
 
-  if (!req.query.theme) {
+  if (!theme) {
     return res.redirect(PATH_NAMES.CONTACT_US);
   }
 
-  if (isAppJourney(req.query.appSessionId as string)) {
-    return res.render("contact-us/further-information/index.njk", {
-      theme: req.query.theme,
-      hrefBack: backLinkHref,
-      referer: encodeValue(
-        validateReferer(req.query.referer as string, serviceDomain)
-      ),
-      ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
-        fromURL: encodeValue(
-          validateReferer(req.query.fromURL as string, serviceDomain)
-        ),
-      }),
-      appSessionId: getAppSessionId(req.query.appSessionId as string),
-      ...(getAppErrorCode(req.query.appErrorCode as string) && {
-        appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
-      }),
-      supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
-    });
-  }
+  const themeStructure = CONTACT_FORM_STRUCTURE.get(theme);
 
-  return res.render("contact-us/further-information/index.njk", {
-    theme: req.query.theme,
+  const templateOptions: FurtherInformationTemplateOptions = {
+    theme,
     ...(validateReferer(req.query.fromURL as string, serviceDomain) && {
       fromURL: encodeValue(
         validateReferer(req.query.fromURL as string, serviceDomain)
@@ -410,8 +402,25 @@ export function furtherInformationGet(req: Request, res: Response): void {
     referer: encodeValue(
       validateReferer(req.query.referer as string, serviceDomain)
     ),
-    supportNoPhotoIdContactForms: supportNoPhotoIdContactForms(),
-  });
+    radioButtons: getThemeRadioButtonsFromStructure(themeStructure.subThemes),
+    title: getTitleKeyFromTheme(themeStructure),
+    header: getHeaderKeyFromTheme(themeStructure),
+    legend: getLegendKeyFromTheme(themeStructure),
+  };
+
+  if (isAppJourney(req.query.appSessionId as string)) {
+    templateOptions.appSessionId = getAppSessionId(
+      req.query.appSessionId as string
+    );
+    templateOptions.appErrorCode = getAppErrorCode(
+      req.query.appErrorCode as string
+    );
+  }
+
+  return res.render(
+    "contact-us/further-information/index.njk",
+    templateOptions
+  );
 }
 
 export function furtherInformationPost(req: Request, res: Response): void {

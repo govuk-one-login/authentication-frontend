@@ -10,8 +10,9 @@ import {
   contactUsQuestionsFormPostToSmartAgent,
   contactUsGetFromTriagePage,
 } from "./contact-us-controller.js";
-import { validateContactUsRequest } from "./contact-us-validation.js";
-import { validateContactUsQuestionsRequest } from "./contact-us-questions-validation.js";
+import { validateContactUsRequest } from "./validation/contact-us-validation.js";
+import { validateContactUsQuestionsRequest } from "./validation/contact-us-questions-validation.js";
+import { validateContactUsFurtherInformationRequest } from "./validation/contact-us-further-information-validation.js";
 
 const router = express.Router();
 
@@ -26,7 +27,7 @@ router.post(
 router.get(PATH_NAMES.CONTACT_US_FURTHER_INFORMATION, furtherInformationGet);
 router.post(
   PATH_NAMES.CONTACT_US_FURTHER_INFORMATION,
-  validateContactUsRequest(
+  validateContactUsFurtherInformationRequest(
     "contact-us/further-information/index.njk",
     "subtheme"
   ),
