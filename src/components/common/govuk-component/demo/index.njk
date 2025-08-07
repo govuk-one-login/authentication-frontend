@@ -1,0 +1,12 @@
+{% extends "../../../common/layout/base.njk" %}
+{% from '../govuk-component-macro.njk' import govukComponent %}
+
+{% block content %}
+  <h1 class="govuk-heading-l">
+    Demo page
+  </h1>
+
+  {% for demoComponent in demoComponents %}
+    {{ govukComponent(demoComponent) }}
+  {% endfor %}
+{% endblock %}

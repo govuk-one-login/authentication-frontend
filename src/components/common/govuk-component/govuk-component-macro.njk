@@ -1,0 +1,10 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+
+{% macro govukComponent(component) %}
+  {% if component.type === 'govukRadioButton' %}
+    {{ govukRadios(component.args.component) }}
+  {% elif component.type === 'govukTag' %}
+    {{ govukTag(component.args.component) }}
+  {% endif %}
+{% endmacro %}
