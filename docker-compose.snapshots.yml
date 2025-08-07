@@ -1,0 +1,73 @@
+name: snapshot-tests
+
+services:
+  snapshot-redis:
+    image: redis:6.0.5-alpine
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+      start_period: 1s
+
+  di-auth-frontend:
+    container_name: snapshot-tests-auth-frontend
+    build:
+      context: .
+      dockerfile: snapshots-frontend.Dockerfile
+    ports:
+      - "3001:3000"
+    ipc: host
+    env_file:
+      - .env
+    environment:
+#      API_KEY: "blah"
+#      ENVIRONMENT: development
+##      ANALYTICS_COOKIE_DOMAIN: localhost
+#      SESSION_EXPIRY: 600000000000
+##
+##      AWS_ACCESS_KEY_ID: ""
+##      AWS_SECRET_ACCESS_KEY: ""
+##
+##      # We ignore `.env` values here, as we're using the docker network for redis.
+##      REDIS_PORT: 6379 # This is the default port for Redis
+##      REDIS_HOST: redis # This is the name of the service in `docker-compose.yml`
+##
+##      PORT: 3000
+#
+##      ANALYTICS_COOKIE_DOMAIN: localhost
+##
+##      AWS_ACCESS_KEY_ID: "aws_access_key_id"
+##      AWS_SECRET_ACCESS_KEY: "aws_secret_access_key"
+#
+#      # We ignore `.env` values here, as we're using the docker network for redis.
+#      REDIS_PORT: 6379 # This is the default port for Redis
+      REDIS_PORT: 6379
+      REDIS_HOST: snapshot-redis # This is the name of the service in `docker-compose.yml`
+    depends_on:
+      snapshot-redis:
+        condition: service_healthy
+    healthcheck:
+      test:  wget --spider http://localhost:3000/healthcheck || exit 1
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  snapshot-tests:
+    container_name: snapshot-tests
+    build:
+      context: .
+      dockerfile: snapshots.Dockerfile
+    depends_on:
+      di-auth-frontend:
+        condition: service_healthy
+    environment:
+      WEBSITE_HOST: http://localhost:3001
+    volumes:
+      - ./src/components/contact-us/tests/contact-us-snapshot.test.ts-snapshots:/app/src/components/contact-us/tests/contact-us-snapshot.test.ts-snapshots
+      - ./test-results:/app/test-results
+    command:
+      npx playwright test ${COMMAND:-}
+    network_mode: "host"
