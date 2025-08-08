@@ -194,10 +194,6 @@ locals {
       {
         name  = "USE_REBRAND"
         value = var.use_rebrand
-      },
-      {
-        name  = "SHOW_WALLET_CONTACT_FORM"
-        value = var.show_wallet_contact_form
       }
     ]
 
