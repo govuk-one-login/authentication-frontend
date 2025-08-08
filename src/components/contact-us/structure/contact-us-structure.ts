@@ -1,5 +1,4 @@
 import { CONTACT_US_THEMES } from "../../../app.constants.js";
-import { showWalletContactForm } from "../../../config.js";
 
 export type ContactFormStructure = Map<string, Theme>;
 
@@ -379,7 +378,6 @@ export const CONTACT_FORM_STRUCTURE: ContactFormStructure = new Map([
   [
     CONTACT_US_THEMES.WALLET,
     {
-      isHidden: !showWalletContactForm(),
       radio: {
         mainText: "pages.contactUsPublic.section3.wallet",
       },
