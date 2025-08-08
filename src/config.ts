@@ -47,6 +47,10 @@ export function getKmsKeyId(): string {
   return process.env.ENCRYPTION_KEY_ID;
 }
 
+export function getLocalEncryptionKey(): string {
+  return process.env.LOCAL_ENCRYPTION_KEY;
+}
+
 export function getVitalSignsIntervalSeconds(): number {
   return Number(process.env.VITAL_SIGNS_INTERVAL_SECONDS) || 10;
 }

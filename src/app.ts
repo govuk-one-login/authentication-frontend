@@ -236,16 +236,22 @@ async function createApp(): Promise<express.Application> {
     next();
   });
 
+  // Use in-memory sessions when running locally
+  const sessionStore =
+    getAppEnv() === APP_ENV_NAME.LOCAL
+      ? undefined
+      : getSessionStore(await getRedisConfig());
+
   app.use(
     session({
       name: SESSION_COOKIE_NAME,
-      store: getSessionStore(await getRedisConfig()),
+      store: sessionStore,
       saveUninitialized: false,
       secret: getSessionSecret(),
       unset: "destroy",
       resave: false,
       cookie: getSessionCookieOptions(
-        isProduction,
+        getAppEnv() !== APP_ENV_NAME.LOCAL,
         getSessionExpiry(),
         getSessionSecret()
       ),
