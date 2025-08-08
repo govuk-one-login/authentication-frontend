@@ -400,9 +400,3 @@ variable "use_rebrand" {
   description = "Should the rebranded design system be enabled"
   default     = "0"
 }
-
-variable "show_wallet_contact_form" {
-  type        = string
-  description = "Should show the wallet option in the contact form"
-  default     = "0"
-}

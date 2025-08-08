@@ -194,7 +194,3 @@ export function getPrivacyNoticeRedirectEnabled(): boolean {
 export function useRebrand(): boolean {
   return process.env.USE_REBRAND === "1";
 }
-
-export function showWalletContactForm(): boolean {
-  return process.env.SHOW_WALLET_CONTACT_FORM === "1";
-}

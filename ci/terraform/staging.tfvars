@@ -28,7 +28,6 @@ support_http_keep_alive                             = "1"
 support_mfa_reset_with_ipv                          = "1"
 route_users_to_new_ipv_journey                      = "1"
 use_rebrand                                         = "1"
-show_wallet_contact_form                            = "1"
 
 url_for_support_links = "https://home.staging.account.gov.uk/contact-gov-uk-one-login"
 
