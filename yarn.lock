@@ -727,13 +727,13 @@
     "@eslint/core" "^0.15.1"
     levn "^0.4.1"
 
-"@govuk-one-login/frontend-analytics@3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-analytics/-/frontend-analytics-3.3.0.tgz#e3fab5077f3aa6a9bb429e8f4f127cc96d21623d"
-  integrity sha512-V+HZw+Ar2Yihor1fmvQKOlz8GZPxDJbQFkOY7KCZqVxoiHsFqHO1wyXNSZVwuT+kVWi/Nyb3Qs/1iYx+UcdBLA==
+"@govuk-one-login/frontend-analytics@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-analytics/-/frontend-analytics-4.0.0.tgz#982b7afcc4af35a2a6e5844ab3388da5cdb66b93"
+  integrity sha512-S9ZVmF0BDKtMRY4kUOGhvl2WLt58hELvbCAGqv/bThZ/1ccjdFiHg47f7/0hMS2Z3YfWHTzeDixJ4kdOx8eZNA==
   dependencies:
     copy-webpack-plugin "^12.0.2"
-    loglevel "^1.9.1"
+    loglevel "^1.9.2"
 
 "@govuk-one-login/frontend-device-intelligence@1.2.0":
   version "1.2.0"
@@ -4046,7 +4046,7 @@ log-symbols@^4.1.0:
     chalk "^4.1.0"
     is-unicode-supported "^0.1.0"
 
-loglevel@^1.9.1, loglevel@^1.9.2:
+loglevel@^1.9.2:
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.9.2.tgz#c2e028d6c757720107df4e64508530db6621ba08"
   integrity sha512-HgMmCqIJSAKqo68l0rS2AanEWfkxaZ5wNiEFb5ggm08lDs9Xl2KxBlX3PTcaD2chBM1gXAYf491/M2Rv8Jwayg==
