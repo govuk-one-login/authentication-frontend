@@ -74,7 +74,7 @@ case $DEPLOY_ENV in
         ;;
 esac
 DOCKER_BUILD_PATH="${DOCKER_BUILD_PATH:-.}"
-DOCKERFILE="${DOCKERFILE:-sandpit.Dockerfile}"
+DOCKERFILE="${DOCKERFILE:-dev.Dockerfile}"
 DOCKER_PLATFORM="${DOCKER_PLATFORM:-linux/amd64}"
 GITHUB_SHA="$(git rev-parse HEAD)"
 PUSH_LATEST_TAG="${PUSH_LATEST_TAG:-false}"

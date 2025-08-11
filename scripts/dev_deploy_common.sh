@@ -75,7 +75,7 @@ aws ecr get-login-password --region eu-west-2 |
 
 if [[ $BUILD == "1" ]]; then
     echo "Building image..."
-    docker buildx build --platform=linux/amd64 --file sandpit.Dockerfile -t "${REPO_NAME}" .
+    docker buildx build --platform=linux/amd64 --file dev.Dockerfile -t "${REPO_NAME}" .
     echo "Tagging image..."
     docker tag "${REPO_NAME}:latest" "${REPO_URL}:${IMAGE_TAG}"
 

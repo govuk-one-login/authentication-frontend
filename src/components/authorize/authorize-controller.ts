@@ -6,6 +6,7 @@ import {
   ERROR_LOG_LEVEL,
   COOKIES_CHANNEL,
   CHANNEL,
+  APP_ENV_NAME,
 } from "../../app.constants.js";
 import {
   getNextPathAndUpdateJourney,
@@ -20,7 +21,7 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { authorizeService } from "./authorize-service.js";
 import type {
   AuthorizeServiceInterface,
-  KmsDecryptionServiceInterface,
+  DecryptionServiceInterface,
   JwtServiceInterface,
   StartAuthResponse,
 } from "./types.js";
@@ -33,14 +34,23 @@ import {
   getOrchToAuthExpectedClientId,
   supportReauthentication,
   getOrchStubToAuthExpectedClientId,
+  getAppEnv,
+  getLocalEncryptionKey,
 } from "../../config.js";
 import { logger } from "../../utils/logger.js";
 import type { Claims } from "./claims-config.js";
 import { isReauth, isUpliftRequired } from "../../utils/request.js";
+import { LocalDecryptionService } from "./local-decryption-service.js";
+
+const decryptionService =
+  getAppEnv() === APP_ENV_NAME.LOCAL && getLocalEncryptionKey()
+    ? new LocalDecryptionService()
+    : new KmsDecryptionService();
+
 export function authorizeGet(
   authService: AuthorizeServiceInterface = authorizeService(),
   cookiesConsentService: CookieConsentServiceInterface = cookieConsentService(),
-  kmsService: KmsDecryptionServiceInterface = new KmsDecryptionService(),
+  decryptService: DecryptionServiceInterface = decryptionService,
   jwtService: JwtServiceInterface = new JwtService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
@@ -54,7 +64,7 @@ export function authorizeGet(
       validateQueryParams(clientId, responseType);
 
       const encryptedAuthRequestJWE = req.query.request as string;
-      const authRequestJweDecryptedAsJwt = await kmsService.decrypt(
+      const authRequestJweDecryptedAsJwt = await decryptService.decrypt(
         encryptedAuthRequestJWE
       );
       claims = await jwtService.getPayloadWithValidation(

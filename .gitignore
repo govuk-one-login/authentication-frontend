@@ -121,6 +121,7 @@ test-results/
 keys/
 .vscode/
 .env*
+!.env.local
 
 ci/terraform/.terraform
 ci/terraform/*.plan
