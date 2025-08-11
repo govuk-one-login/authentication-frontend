@@ -99,3 +99,22 @@ export interface SmartAgentTicket {
   message: string;
   customAttributes?: SmartAgentCustomAttributes;
 }
+
+export interface TemplateThemeRadioButtons {
+  value: string;
+  mainTextKey: string;
+  hintTextKey?: string;
+}
+
+export interface FurtherInformationTemplateOptions {
+  hrefBack: string;
+  referer: string;
+  fromURL: string;
+  theme: string;
+  radioButtons: TemplateThemeRadioButtons[];
+  header: string;
+  legend: string;
+  title: string;
+  appSessionId?: string;
+  appErrorCode?: string;
+}

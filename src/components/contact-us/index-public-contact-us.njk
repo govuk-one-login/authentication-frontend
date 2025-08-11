@@ -47,7 +47,7 @@
         {% endif %}
         {% set _ = items.push({
             value: radio.value,
-            text: radio.text | translate
+            text: radio.mainTextKey | translate
         }) %}
     {% endfor %}
 
