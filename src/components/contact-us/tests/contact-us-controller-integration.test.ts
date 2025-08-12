@@ -245,8 +245,7 @@ describe("Integration:: contact us - public user", () => {
     );
   });
 
-  // TODO - AUT-4497 - Unskip this once the content is agreed
-  it.skip("should return validation error when no radio boxes are selected on the wallet contact-us-further-information page", async () => {
+  it("should return validation error when no radio boxes are selected on the wallet contact-us-further-information page", async () => {
     const data = {
       _csrf: token,
       theme: "wallet",
@@ -255,7 +254,7 @@ describe("Integration:: contact us - public user", () => {
       "/contact-us-further-information",
       data,
       "#subtheme-error",
-      "XXXXX"
+      "Select the problem you had with your digital HM Armed Forces Veteran Card"
     );
   });
 
