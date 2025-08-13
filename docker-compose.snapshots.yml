@@ -19,30 +19,14 @@ services:
     ports:
       - "3001:3000"
     ipc: host
-    env_file:
-      - .env
     environment:
-#      API_KEY: "blah"
-#      ENVIRONMENT: development
-##      ANALYTICS_COOKIE_DOMAIN: localhost
-#      SESSION_EXPIRY: 600000000000
-##
-##      AWS_ACCESS_KEY_ID: ""
-##      AWS_SECRET_ACCESS_KEY: ""
-##
-##      # We ignore `.env` values here, as we're using the docker network for redis.
-##      REDIS_PORT: 6379 # This is the default port for Redis
-##      REDIS_HOST: redis # This is the name of the service in `docker-compose.yml`
-##
-##      PORT: 3000
-#
-##      ANALYTICS_COOKIE_DOMAIN: localhost
-##
-##      AWS_ACCESS_KEY_ID: "aws_access_key_id"
-##      AWS_SECRET_ACCESS_KEY: "aws_secret_access_key"
-#
-#      # We ignore `.env` values here, as we're using the docker network for redis.
-#      REDIS_PORT: 6379 # This is the default port for Redis
+      SESSION_SECRET: 000000
+
+      NO_PHOTO_ID_CONTACT_FORMS: 1
+      LANGUAGE_TOGGLE_ENABLED: 1
+      USE_REBRAND: 1
+      SHOW_WALLET_CONTACT_FORM: 1
+
       REDIS_PORT: 6379
       REDIS_HOST: redis # This is the name of the service in `docker-compose.yml`
     depends_on:
