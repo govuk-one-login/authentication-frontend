@@ -119,6 +119,17 @@ form textarea.hidden {
 /* Diagram styles */
 
 #diagram {
+  color-scheme: light dark;
+  --diagram-bg: #ffffff;
+  --diagram-stroke: #333333;
+
+  @media (prefers-color-scheme: dark) {
+    --diagram-bg: #282c34;
+    --diagram-stroke: #818181;
+  }
+}
+
+#diagram {
   position: absolute;
   top: 0;
   left: 0;
@@ -126,12 +137,23 @@ form textarea.hidden {
   bottom: 0;
   flex: 1 1 auto;
   user-select: none;
+  background-color: var(--diagram-bg);
 }
 #diagram > * {
   height: 100%;
   width: 100%;
   max-width: unset !important;
 }
+
+#diagramSvg .flowchart-link {
+  stroke: var(--diagram-stroke) !important;
+}
+
+#diagramSvg .marker {
+  stroke: var(--diagram-stroke) !important;
+  fill: var(--diagram-stroke) !important;
+}
+
 #diagramSvg .highlight.outgoingEdge {
   stroke-width: 3px;
   filter: drop-shadow(1px 0 0 #ffdd00) drop-shadow(-1px 0 0 #ffdd00)
