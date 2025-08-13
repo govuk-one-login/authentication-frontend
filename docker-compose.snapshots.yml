@@ -6,7 +6,7 @@ services:
     ports:
       - "${REDIS_PORT:-6379}:6379"
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 1s
       timeout: 3s
       retries: 5
@@ -34,7 +34,7 @@ services:
       snapshot-redis:
         condition: service_healthy
     healthcheck:
-      test:  wget --spider http://localhost:3000/healthcheck || exit 1
+      test: wget --spider http://localhost:3000/healthcheck || exit 1
       interval: 5s
       timeout: 3s
       retries: 5
@@ -52,6 +52,5 @@ services:
     volumes:
       - ./src/components/contact-us/tests/contact-us-snapshot.test.ts-snapshots:/app/src/components/contact-us/tests/contact-us-snapshot.test.ts-snapshots
       - ./test-results:/app/test-results
-    command:
-      npx playwright test ${COMMAND:-}
+    command: npx playwright test ${COMMAND:-}
     network_mode: "host"

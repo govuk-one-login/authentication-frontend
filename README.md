@@ -302,3 +302,33 @@ yarn lint
 ```
 
 Checks if the code conforms the linting standards.
+
+## Snapshot tests
+
+We use Playwright to do our snapshot tests.
+
+Currently, they are only for the contact us forms so do not use imposter or a spun up backend.
+
+### Running all the Playwright tests
+
+This will run the tests in the same way as in the build pipeline. From the root of the project
+
+- Build the docker containers `docker compose -f docker-compose.snapshots.pipeline.yml build`
+- Run the tests `docker compose -f docker-compose.snapshots.yml up --exit-code-from snapshot-tests`
+- If you get test failures you may need to disconnect from the VPN and try again
+- NOTE: Do not run the playwright tests locally. There are subtle differences between running them in the container
+  and locally and because of the pipeline we want to make sure we only run them in docker. You will also produce darwin
+  screenshots rather than linux.
+
+## Test failures
+
+- If there are failing tests you can look in [test-results](./test-results) to see the actual, expected and diff.
+- Remember, if you have run the tests locally there will likely be failures. Check the instructions above to run them
+  in docker.
+
+### Updating snapshots
+
+If you make a change that affects the appearance of a page then you will need to update the saved snapshot file.
+
+- `docker compose -f docker-compose.snapshots.pipeline.yml build`
+- `NPM_COMMAND=--update-snapshots docker compose -f docker-compose.snapshots.yml up --exit-code-from snapshot-tests`
