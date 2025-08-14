@@ -1987,7 +1987,7 @@
           "radio3": "You had a problem viewing your Veteran Card in the GOV.UK One Login app",
           "radio4": "There was a technical problem (for example you saw an error message)",
           "radio5": "Something else",
-          "errorMessage": "TODO - AUT-4497 - Error message"
+          "errorMessage": "Select the problem you had with your digital HM Armed Forces Veteran Card"
         }
       }
     },
