@@ -84,6 +84,7 @@ import { accountInterventionRouter } from "./components/account-intervention/pas
 import { permanentlyBlockedRouter } from "./components/account-intervention/permanently-blocked/permanently-blocked-router.js";
 import { temporarilyBlockedRouter } from "./components/account-intervention/temporarily-blocked/temporarily-blocked-router.js";
 import { resetPassword2FAAuthAppRouter } from "./components/reset-password-2fa-auth-app/reset-password-2fa-auth-app-routes.js";
+import { templatesRouter } from "./components/templates/templates-routes.js";
 import { setGTM } from "./middleware/analytics-middleware.js";
 import { setCurrentUrlMiddleware } from "./middleware/current-url-middleware.js";
 import { getRedisConfig } from "./utils/redis.js";
@@ -155,7 +156,9 @@ function registerRoutes(app: express.Application) {
   app.use(mfaResetWithIpvRouter);
   app.use(ipvCallbackRouter);
 
+  // Development tools
   if (getAppEnv() !== APP_ENV_NAME.PROD && getAppEnv() !== APP_ENV_NAME.INT) {
+    app.use(templatesRouter);
     app.use(govukComponentRouter);
   }
 }
