@@ -4,6 +4,7 @@ import type {
   AuthStateMachine,
 } from "di-auth/src/components/common/state-machine/state-machine.js";
 import { authStateMachine } from "di-auth/src/components/common/state-machine/state-machine.js";
+import { pages } from "di-auth/src/components/templates/pages.js";
 
 export interface Options {
   includeOptional: boolean;
@@ -24,9 +25,15 @@ interface Transition {
 }
 
 const getMermaidHeader = (graphDirection: "TD" | "LR"): string =>
-  `graph ${graphDirection}`;
+  `graph ${graphDirection}
+    classDef page fill:#ae8,stroke:#000;`;
 
-const renderState = ({ name, id }: State): string => `    ${id}(${name})`;
+const renderState = ({ name, id }: State): string => {
+  if (pages[name]) {
+    return `    ${id}(${name}):::page`;
+  }
+  return `    ${id}(${name})`;
+}
 
 const renderTransition = ({
   source,
@@ -40,8 +47,8 @@ const renderTransition = ({
   return `    ${source}${arrow}${label}${target}`;
 };
 
-const renderClickHandler = ({ id }: State): string =>
-  `    click ${id} call onStateClick(${JSON.stringify(id)})`;
+const renderClickHandler = ({ id, name }: State): string =>
+  `    click ${id} call onStateClick(${JSON.stringify(id)},${JSON.stringify(name)})`;
 
 const getSingleTransitionTarget = (
   transition: TransitionDefinition<AuthStateContext, AnyEventObject>
