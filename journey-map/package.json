@@ -8,10 +8,11 @@
   "type": "module",
   "scripts": {
     "build": "esbuild src/index.ts --bundle --minify --sourcemap --target=chrome135,firefox137,safari18,edge135 --outfile=public/application.js",
+    "build-watch": "npm run build -- --watch=forever",
     "build-server": "tsc --project tsconfig.server.json",
     "start": "NODE_ENV=development tsx watch --clear-screen=false server/app.ts",
     "start-build": "node --enable-source-maps build/app.js",
-    "dev": "npm run build -- --watch=forever & npm run start; wait",
+    "dev": "npm run build-watch & npm run start; wait",
     "tsc": "tsc && tsc --project tsconfig.server.json --noEmit",
     "lint": "eslint src server && prettier src server --check",
     "lint-fix": "eslint --fix src server && prettier src server --write"
