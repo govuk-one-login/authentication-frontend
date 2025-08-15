@@ -13,25 +13,25 @@ interface PageListItem {
   variants: RadioOption[];
 }
 
-const getPageListItems = (): PageListItem[] => {
-  return Object.entries(pages).map(([path, page]) => ({
+const pageListItems: PageListItem[] = Object.entries(pages)
+  .map(([path, page]) => ({
     path,
     variants: Array.isArray(page)
       ? page.map(({ name }) => ({ text: name, value: name }))
       : [],
-  })).sort((a, b) => a.path.localeCompare(b.path));
+  }))
+  .sort((a, b) => a.path.localeCompare(b.path));
+
+export const allTemplatesGet: RequestHandler = (req, res) => {
+  return res.render("templates/index.njk", { pageListItems });
 };
 
-export const allTemplatesGet: RequestHandler = async (req, res) => {
-  res.render("templates/index.njk", { pageListItems: getPageListItems() });
-};
-
-export const allTemplatesPost: RequestHandler = async (req, res) => {
+export const allTemplatesPost: RequestHandler = (req, res) => {
   const templateId = req.body.template;
 
   if (!pages[templateId]) {
     return res.render("templates/index.njk", {
-      pageListItems: getPageListItems(),
+      pageListItems,
       errorState: true,
     });
   }
@@ -45,7 +45,7 @@ export const allTemplatesPost: RequestHandler = async (req, res) => {
   return res.redirect(`/templates${templateId}?${query}`);
 };
 
-export const templatesDisplayGet: RequestHandler = async (req, res) => {
+export const templatesDisplayGet: RequestHandler = (req, res) => {
   const path = `/${req.params.templateId}`;
   const pageVariant = req.query.pageVariant;
 
@@ -54,7 +54,9 @@ export const templatesDisplayGet: RequestHandler = async (req, res) => {
     : pages[path];
 
   if (!page) {
-    logger.error(`Could not find template for ${path} (${pageVariant || "no variant"})`);
+    logger.error(
+      `Could not find template for ${path} (${pageVariant || "no variant"})`
+    );
     res.status(404);
     return res.render("common/errors/404.njk");
   }

@@ -1,5 +1,9 @@
 import * as express from "express";
-import { allTemplatesPost, allTemplatesGet, templatesDisplayGet } from "./templates-controller.js";
+import {
+  allTemplatesPost,
+  allTemplatesGet,
+  templatesDisplayGet,
+} from "./templates-controller.js";
 
 const router = express.Router();
 

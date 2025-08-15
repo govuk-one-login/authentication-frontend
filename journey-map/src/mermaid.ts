@@ -33,7 +33,7 @@ const renderState = ({ name, id }: State): string => {
     return `    ${id}(${name}):::page`;
   }
   return `    ${id}(${name})`;
-}
+};
 
 const renderTransition = ({
   source,

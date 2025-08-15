@@ -84,10 +84,16 @@ const setupStateClickHandlers = (): void => {
 
   const highlightState = (id: string, name: string): void => {
     // Open template on double-click if applicable
-    if ((currentHighlight === id) && (Date.now() - timeClicked < DOUBLE_CLICK_WINDOW_MILLIS)) {
+    if (
+      currentHighlight === id &&
+      Date.now() - timeClicked < DOUBLE_CLICK_WINDOW_MILLIS
+    ) {
       if (pages[name]) {
         const variant = Array.isArray(pages[name]) ? pages[name][0].name : "";
-        window.open(`/templates${name}?lng=en&pageVariant=${encodeURIComponent(variant)}`, "_blank");
+        window.open(
+          `/templates${name}?lng=en&pageVariant=${encodeURIComponent(variant)}`,
+          "_blank"
+        );
       }
     }
 
