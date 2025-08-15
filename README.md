@@ -326,4 +326,4 @@ This will run the tests in the same way as in the build pipeline. From the root 
 If you make a change that affects the appearance of a page then you will need to update the saved snapshot file.
 
 - `docker compose -f docker-compose.snapshots.yml build`
-- `NPM_COMMAND=--update-snapshots docker compose -f docker-compose.snapshots.yml up --exit-code-from playwright`
+- `COMMAND=--update-snapshots docker compose -f docker-compose.snapshots.yml up --exit-code-from playwright`

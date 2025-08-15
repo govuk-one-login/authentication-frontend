@@ -58,3 +58,25 @@ jobs:
       REDIS_HOST: localhost
       REDIS_PORT: 6389
       SMARTAGENT_API_URL: https://uat.smartagent.app/ # Dummy URL for SmartAgent UAT environment
+
+  snapshot-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+      - name: Run snapshot tests
+        run: docker compose -f docker-compose.snapshots.yml up --exit-code-from playwright
+      - name: Upload test artifacts
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: snapshot-test-results
+          path: ./test-results
+      - name: Stop Docker
+        if: ${{ always() }}
+        run: docker compose -f docker-compose.snapshots.yml down
