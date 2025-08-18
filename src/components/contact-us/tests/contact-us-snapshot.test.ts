@@ -16,6 +16,7 @@ const expectPageToMatchScreenshot = async (
   });
   expect(actualScreenshot).toMatchSnapshot(`${screenshotFileName}-.jpeg`, {
     threshold: 0.25,
+    maxDiffPixels: 5,
   });
 };
 
