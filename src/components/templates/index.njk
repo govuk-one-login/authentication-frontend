@@ -38,6 +38,7 @@
         {% if pageListItem.variants | length %}
           {{ govukSelect({
             name: "pageVariant",
+            id: "pageVariant-" + pageListItem.path,
             selected: pageListItem.variants[0].value,
             items: pageListItem.variants
           }) }}
@@ -50,6 +51,7 @@
           name: "hasErrorState",
           items: [
             {
+              id: "hasErrorState-" + pageListItem.path,
               text: "Error",
               value: "true"
             }
