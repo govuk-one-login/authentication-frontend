@@ -735,6 +735,13 @@
     copy-webpack-plugin "^12.0.2"
     loglevel "^1.9.2"
 
+"@govuk-one-login/frontend-analytics@^4.0.0":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-analytics/-/frontend-analytics-4.0.1.tgz#2ede495f5fa2821566a00d2119ddf5bf6e57e296"
+  integrity sha512-BFbIu8Ujh4jdRQFwm77JteBs+x10ikyfmh1LZy1YVaiwlKY9k1GV8J/DDTIEbFdcOjUZK4RMSka/epK5G+mLtg==
+  dependencies:
+    loglevel "^1.9.2"
+
 "@govuk-one-login/frontend-device-intelligence@1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-device-intelligence/-/frontend-device-intelligence-1.2.0.tgz#17142d0da29fa388ba609bdb289f7d043776bf6a"
@@ -755,6 +762,17 @@
     aws-lambda "^1.0.7"
     forwarded-parse "^2.1.2"
     pino "^8.20.0"
+
+"@govuk-one-login/frontend-ui@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/frontend-ui/-/frontend-ui-1.4.1.tgz#09855ace92dac35d2f7eddcd2294894f1fa0aa68"
+  integrity sha512-6mAxs/flaycUH6uQ+SyaypytOBO5BaacwMknns1++AP0Oc7koPKyMb+DS8/tVcWXSHXoEEoiz9gDSZ+W1p/Wqg==
+  dependencies:
+    js-yaml "^4.1.0"
+    pino "8.20.0"
+  optionalDependencies:
+    "@govuk-one-login/frontend-analytics" "^4.0.0"
+    hmpo-components "^7.1.0"
 
 "@govuk-one-login/frontend-vital-signs@0.1.3":
   version "0.1.3"
@@ -2224,7 +2242,7 @@ buffer@^6.0.3:
     base64-js "^1.3.1"
     ieee754 "^1.2.1"
 
-bytes@3.1.2:
+bytes@3.1.2, bytes@^3.1.2:
   version "3.1.2"
   resolved "https://registry.npmjs.org/bytes/-/bytes-3.1.2.tgz"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
@@ -2667,6 +2685,11 @@ decimal.js@^10.5.0:
   version "10.6.0"
   resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.6.0.tgz#e649a43e3ab953a72192ff5983865e509f37ed9a"
   integrity sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==
+
+deep-clone-merge@^1.5.5:
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/deep-clone-merge/-/deep-clone-merge-1.5.5.tgz#1bb2f4df74c52c90223572a869d60e8525ee0dc4"
+  integrity sha512-ldHDqbpMP5VTZ/QrIQ6ikzYy4fWh8WPIfqEwetN/4Pxq/xPnWlnESGN41oam5DEwI+acHznEm1bp5Rn4bp4c0w==
 
 deep-eql@^4.1.3:
   version "4.1.4"
@@ -3567,6 +3590,18 @@ help-me@^5.0.0:
   resolved "https://registry.npmjs.org/help-me/-/help-me-5.0.0.tgz"
   integrity sha512-7xgomUX6ADmcYzFik0HzAxh/73YlKR9bmFzf51CZwR+b6YtzU2m0u49hQCqV6SvlqIqsaxovfwdvbnsw3b/zpg==
 
+hmpo-components@^7.1.0:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/hmpo-components/-/hmpo-components-7.1.1.tgz#d8e53fcf673e30c293f30b66fbe823bce93f5453"
+  integrity sha512-aZiW4hqCF0NT0mdgC4iEy7+xkqArUbybEXtwzT5l/pVatiSUIpSeJw3/dEFR29UoqpE3jmkHqxqr8AV4DAP6uA==
+  dependencies:
+    bytes "^3.1.2"
+    deep-clone-merge "^1.5.5"
+    moment "^2.30.1"
+    underscore "^1.13.7"
+  optionalDependencies:
+    fsevents "~2.3.3"
+
 html-encoding-sniffer@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/html-encoding-sniffer/-/html-encoding-sniffer-4.0.0.tgz#696df529a7cfd82446369dc5193e590a3735b448"
@@ -4154,6 +4189,11 @@ mock-req-res@1.2.1:
   resolved "https://registry.yarnpkg.com/mock-req-res/-/mock-req-res-1.2.1.tgz#01ec8b1ad103e73ed287701f0904423b7d53480b"
   integrity sha512-UCEI1xvq0pnfyTySAWcWeIJhAoHYdt47EWFUZO+qN7lu1dBjZYFUNzuByEGs1NdQ17Isb2LKpt5/dqq8t10gFQ==
 
+moment@^2.30.1:
+  version "2.30.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.30.1.tgz#f8c91c07b7a786e30c59926df530b4eac96974ae"
+  integrity sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
@@ -4427,7 +4467,7 @@ picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.3.1:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
 
-pino-abstract-transport@^1.2.0:
+pino-abstract-transport@^1.1.0, pino-abstract-transport@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/pino-abstract-transport/-/pino-abstract-transport-1.2.0.tgz#97f9f2631931e242da531b5c66d3079c12c9d1b5"
   integrity sha512-Guhh8EZfPCfH+PMXAb6rKOjGQEoy0xlAIn+irODG5kgfYV+BQ0rGYYWTIel3P5mmyXqkYkPmdIkywsn6QKUR1Q==
@@ -4480,6 +4520,23 @@ pino-std-serializers@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pino-std-serializers/-/pino-std-serializers-7.0.0.tgz#7c625038b13718dbbd84ab446bd673dc52259e3b"
   integrity sha512-e906FRY0+tV27iq4juKzSYPbUj2do2X2JX4EzSca1631EB2QJQUqGbDuERal7LCtOpxl6x3+nvo9NPZcmjkiFA==
+
+pino@8.20.0:
+  version "8.20.0"
+  resolved "https://registry.yarnpkg.com/pino/-/pino-8.20.0.tgz#ccfc6fef37b165e006b923834131632a8c4f036b"
+  integrity sha512-uhIfMj5TVp+WynVASaVEJFTncTUe4dHBq6CWplu/vBgvGHhvBvQfxz+vcOrnnBQdORH3izaGEurLfNlq3YxdFQ==
+  dependencies:
+    atomic-sleep "^1.0.0"
+    fast-redact "^3.1.1"
+    on-exit-leak-free "^2.1.0"
+    pino-abstract-transport "^1.1.0"
+    pino-std-serializers "^6.0.0"
+    process-warning "^3.0.0"
+    quick-format-unescaped "^4.0.3"
+    real-require "^0.2.0"
+    safe-stable-stringify "^2.3.1"
+    sonic-boom "^3.7.0"
+    thread-stream "^2.0.0"
 
 pino@9.6.0, pino@^9.0.0:
   version "9.6.0"
@@ -5213,7 +5270,7 @@ thirty-two@^1.0.2:
   resolved "https://registry.npmjs.org/thirty-two/-/thirty-two-1.0.2.tgz"
   integrity sha512-OEI0IWCe+Dw46019YLl6V10Us5bi574EvlJEOcAkB29IzQ/mYD1A6RyNHLjZPiHCmuodxvgF6U+vZO1L15lxVA==
 
-thread-stream@^2.6.0:
+thread-stream@^2.0.0, thread-stream@^2.6.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/thread-stream/-/thread-stream-2.7.0.tgz#d8a8e1b3fd538a6cca8ce69dbe5d3d097b601e11"
   integrity sha512-qQiRWsU/wvNolI6tbbCKd9iKaTnCXsTwVxhhKM6nctPdujTyztjlbUkUTUymidWcMnZ5pWR0ej4a0tjsW021vw==
@@ -5382,6 +5439,11 @@ undefsafe@^2.0.5:
   version "2.0.5"
   resolved "https://registry.npmjs.org/undefsafe/-/undefsafe-2.0.5.tgz"
   integrity sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==
+
+underscore@^1.13.7:
+  version "1.13.7"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.13.7.tgz#970e33963af9a7dda228f17ebe8399e5fbe63a10"
+  integrity sha512-GMXzWtsc57XAtguZgaQViUOzs0KTkk8ojr3/xAxXLITqf/3EMwxC0inyETfDFjH/Krbhuep0HNbbjI9i/q3F3g==
 
 undici-types@~5.26.4:
   version "5.26.5"
