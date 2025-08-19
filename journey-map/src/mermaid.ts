@@ -42,7 +42,8 @@ const renderTransition = ({
   condition,
   optional,
 }: Transition): string => {
-  const label = event ? `|${event}<br/>${condition ?? ""}|` : "";
+  const label =
+    event || condition ? `|${event ?? ""}<br/>${condition ?? ""}|` : "";
   const arrow = optional ? "-.->" : "-->";
   return `    ${source}${arrow}${label}${target}`;
 };
