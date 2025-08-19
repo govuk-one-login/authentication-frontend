@@ -69,15 +69,7 @@ case $DEPLOY_ENV in
     authdev2) ECR_REPO_NAME="authdev2-frontend-image-repository-containerrepository-lvjd0pm7fkxh" ;;
     authdev3) ECR_REPO_NAME="authdev3-frontend-image-repository-containerrepository-km3egd1niwc1" ;;
     dev-apitest) ECR_REPO_NAME="frontend-apitest-image-repository-containerrepository-jgkmxxw0fzjt" ;;
-    build-apitest)
-        ECR_REGISTRY="058264536367.dkr.ecr.eu-west-2.amazonaws.com"
-        ECR_REPO_NAME="frontend-apitest-image-repository-containerrepository-ezd6vzi5su3d"
-        ;;
-    staging-apitest)
-        ECR_REGISTRY="058264536367.dkr.ecr.eu-west-2.amazonaws.com"
-        ECR_REPO_NAME="frontend-apitest-image-repository-containerrepository-ezd6vzi5su3d"
-        ;;
-    integration-apitest)
+    build-apitest|staging-apitest|integration-apitest|production-apitest)
         ECR_REGISTRY="058264536367.dkr.ecr.eu-west-2.amazonaws.com"
         ECR_REPO_NAME="frontend-apitest-image-repository-containerrepository-ezd6vzi5su3d"
         ;;

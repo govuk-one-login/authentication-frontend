@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-envvalue=("authdev1" "authdev2" "authdev3" "dev-apitest" "build-apitest" "staging-apitest" "integration-apitest")
+envvalue=("authdev1" "authdev2" "authdev3" "dev-apitest" "build-apitest" "staging-apitest" "integration-apitest" "production-apitest")
 
 select word in "${envvalue[@]}"; do
   if [[ -z "$word" ]]; then
@@ -27,6 +27,7 @@ case $DEPLOY_ENV in
     build-apitest) export AWS_PROFILE="di-authentication-build-admin" ;;
     staging-apitest) export AWS_PROFILE="di-authentication-staging-admin" ;;
     integration-apitest) export AWS_PROFILE="di-authentication-integration-admin" ;;
+    production-apitest) export AWS_PROFILE="di-authentication-production-admin" ;;
     *) export AWS_PROFILE="di-authentication-development-admin" ;;
 esac
 

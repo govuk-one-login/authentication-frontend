@@ -68,3 +68,13 @@ confirm_changeset = true
 capabilities = "CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND"
 parameter_overrides = "Environment=\"integration\" SubEnvironment=\"none\" VpcStackName=\"vpc\" DeploymentStrategy=\"None\""
 image_repositories = []
+
+[production-apitest.deploy.parameters]
+stack_name = "prod-apitest-frontend"
+resolve_s3 = true
+s3_prefix = "production-apitest-frontend"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND"
+parameter_overrides = "Environment=\"production\" SubEnvironment=\"none\" VpcStackName=\"vpc\" DeploymentStrategy=\"None\""
+image_repositories = []

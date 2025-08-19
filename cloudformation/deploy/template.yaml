@@ -538,11 +538,11 @@ Mappings:
       UseRebrand: "Yes"
       ShowWalletContactForm: "Yes"
     production:
-      DeployServiceDownPage: "Yes"
+      DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
-      frontendApiBaseUrl: https://auth.account.gov.uk/
-      frontendAutoScalingMinCount: 9
-      frontendAutoScalingMaxCount: 240
+      frontendApiBaseUrl: https://86n9innl95-vpce-0db136878c87bf2d0.execute-api.eu-west-2.amazonaws.com/production/
+      frontendAutoScalingMinCount: 1
+      frontendAutoScalingMaxCount: 2
       frontendTaskDefinitionCpu: 1024
       frontendTaskDefinitionMemory: 2048
       cloudwatchLogRetentionInDays: 30
@@ -550,6 +550,11 @@ Mappings:
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5iJXSuxgbfM6ADQVtNNDi7ED5ly5
         +3VZPbjHv+v0AjQ5Ps+avkXWKwOeScG9sS0cDf0utEXi3fN3cEraa9WuKQ==
+        -----END PUBLIC KEY-----
+      orchStubToAuthSigningPublicKey: |
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEIIh7xuVSWAZ8aW3ak20Ile5B9Dfb
+        P/87qEnLLTBZ/8lYCoKVdjMkS/IroHkPcS0laDQa/w0TAPDIqGtsHLI1Rw==
         -----END PUBLIC KEY-----
       accountRecoveryCodeEnteredWrongBlockedMinutes: 120
       codeEnteredWrongBlockedMinutes: 120
@@ -561,13 +566,12 @@ Mappings:
       googleAnalytics4GTMContainerId: "GTM-K4PBJH3"
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
-      migratedDomain: signin.account.gov.uk
+      migratedDomain: apitest.signin.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
-      orchStubToAuth: ""
-      UseAlarmActions: "Yes"
+      UseAlarmActions: "No"
       OrchApiBaseUrl: "https://oidc.account.gov.uk"
       PrivacyNoticeRedirectEnabled: "Yes"
       UseRebrand: "Yes"
@@ -1111,6 +1115,8 @@ Resources:
               Value: !If [UseRebrand, "1", "0"]
             - Name: SHOW_WALLET_CONTACT_FORM
               Value: !If [ShowWalletContactForm, "1", "0"]
+            - Name: SHOW_TEST_BANNER
+              Value: 1
           Secrets:
             - Name: API_KEY
               ValueFrom: !If
@@ -1383,7 +1389,7 @@ Resources:
           - UseSubEnvironment
           - !Sub "origin.signin.${SubEnvironment}.${Environment}.account.gov.uk"
           - !Sub "apitest.signin.${Environment}.account.gov.uk"
-        - "origin.signin.account.gov.uk"
+        - "apitest.signin.account.gov.uk"
       Type: A
       HostedZoneId: !Sub
         - "{{resolve:ssm:/deploy/${env}/signin_route53_hostedzone_id}}"
