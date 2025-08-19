@@ -22,8 +22,9 @@ const NON_TEMPLATE_PATHS = [
 
 describe("template page listing", () => {
   it("should include all template paths", () => {
-    const nonRedirectKeys = Object.values(PATH_NAMES)
-      .filter((p) => !NON_TEMPLATE_PATHS.includes(p));
+    const nonRedirectKeys = Object.values(PATH_NAMES).filter(
+      (p) => !NON_TEMPLATE_PATHS.includes(p)
+    );
 
     expect(pages).to.have.keys(nonRedirectKeys);
   });
