@@ -18,10 +18,34 @@ const EXAMPLE_QR_CODE =
 // TODO: AUT-4441 Parameter validation for each template
 export const pages: Record<string, Page | PageVariant[]> = {
   // Sign in
-  [PATH_NAMES.SIGN_IN_OR_CREATE]: { template: "sign-in-or-create/index.njk" },
-  [PATH_NAMES.ENTER_EMAIL_SIGN_IN]: {
-    template: "enter-email/index-existing-account.njk",
-  },
+  [PATH_NAMES.SIGN_IN_OR_CREATE]: [
+    {
+      name: "default",
+      template: "sign-in-or-create/index.njk",
+    },
+    {
+      name: "generic app",
+      template: "sign-in-or-create/index-generic-app.njk",
+    },
+    {
+      name: "strategic app",
+      template: "sign-in-or-create/index-strategic-app.njk",
+    },
+  ],
+  [PATH_NAMES.ENTER_EMAIL_SIGN_IN]: [
+    {
+      name: "default",
+      template: "enter-email/index-existing-account.njk",
+    },
+    {
+      name: "reauth",
+      template: "enter-email/index-re-enter-email-account.njk",
+    },
+    {
+      name: "lockout",
+      template: "enter-email/index-sign-in-details-entered-too-many-times.njk",
+    },
+  ],
   [PATH_NAMES.ENTER_PASSWORD]: { template: "enter-password/index.njk" },
   [PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS]: {
     template: "enter-password/index-account-exists.njk",
@@ -45,6 +69,16 @@ export const pages: Record<string, Page | PageVariant[]> = {
         phoneNumber: "123",
         isAccountRecoveryPermitted: true,
         hasMultipleMfaMethods: true,
+        mfaIssuePath: "#",
+      },
+    },
+    {
+      name: "uplift",
+      template: "enter-mfa/index-2fa-service-uplift-mobile-phone.njk",
+      options: {
+        phoneNumber: "123",
+        isAccountRecoveryPermitted: true,
+        hasMultipleMfaMethods: false,
         mfaIssuePath: "#",
       },
     },
@@ -204,6 +238,23 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL]: {
     template: "account-created/index.njk",
   },
+
+  // PYI callback
+  [PATH_NAMES.PROVE_IDENTITY_CALLBACK]: [
+    {
+      name: "default",
+      template: "prove-identity-callback/index.njk",
+      options: { serviceName: "Example" },
+    },
+    {
+      name: "new",
+      template: "prove-identity-callback/index-new-spinner.njk",
+      options: {
+        serviceName: "Example",
+        spinnerApiUrl: "/templates/prove-identity-status",
+      },
+    },
+  ],
 
   // Reset password
   [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL]: [
