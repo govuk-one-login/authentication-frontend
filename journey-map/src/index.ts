@@ -4,13 +4,16 @@ import type { Options } from "./mermaid.js";
 import { renderStateMachine } from "./mermaid.js";
 import type { AuthStateContext } from "di-auth/src/components/common/state-machine/state-machine.js";
 import { authStateMachine } from "di-auth/src/components/common/state-machine/state-machine.js";
+import { pages } from "di-auth/src/components/templates/pages.js";
 
 declare global {
   interface Window {
     // Used to define a click handler for use in the mermaid
-    onStateClick?: (name: string) => void;
+    onStateClick?: (id: string, name: string) => void;
   }
 }
+
+const DOUBLE_CLICK_WINDOW_MILLIS = 1000;
 
 const diagramElement = document.getElementById("diagram") as HTMLDivElement;
 const headerContent = document.getElementById(
@@ -76,26 +79,46 @@ const render = async (): Promise<void> => {
 };
 
 const setupStateClickHandlers = (): void => {
-  const highlightState = (state: string): void => {
+  let currentHighlight: string | undefined;
+  let timeClicked = 0;
+
+  const highlightState = (id: string, name: string): void => {
+    // Open template on double-click if applicable
+    if (
+      currentHighlight === id &&
+      Date.now() - timeClicked < DOUBLE_CLICK_WINDOW_MILLIS
+    ) {
+      if (pages[name]) {
+        const variant = Array.isArray(pages[name]) ? pages[name][0].name : "";
+        window.open(
+          `/templates${name}?lng=en&pageVariant=${encodeURIComponent(variant)}`,
+          "_blank"
+        );
+      }
+    }
+
     // Remove existing highlights
     Array.from(document.getElementsByClassName("highlight")).forEach((edge) =>
       edge.classList.remove("highlight", "outgoingEdge", "incomingEdge")
     );
 
     // Add new highlights
-    Array.from(document.getElementsByClassName(`LS-${state}`)).forEach((edge) =>
+    Array.from(document.getElementsByClassName(`LS-${id}`)).forEach((edge) =>
       edge.classList.add("highlight", "outgoingEdge")
     );
-    Array.from(document.getElementsByClassName(`LE-${state}`)).forEach((edge) =>
+    Array.from(document.getElementsByClassName(`LE-${id}`)).forEach((edge) =>
       edge.classList.add("highlight", "incomingEdge")
     );
     Array.from(document.getElementsByClassName("node"))
-      .filter((node) => node.id.startsWith(`flowchart-${state}-`))
+      .filter((node) => node.id.startsWith(`flowchart-${id}-`))
       .forEach((node) => node.classList.add("highlight"));
+
+    currentHighlight = id;
+    timeClicked = Date.now();
   };
 
-  window.onStateClick = async (state: string): Promise<void> => {
-    highlightState(state);
+  window.onStateClick = async (id: string, name: string): Promise<void> => {
+    highlightState(id, name);
   };
 };
 

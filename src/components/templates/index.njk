@@ -1,0 +1,71 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+
+{% set pageTitleName = "All templates" %}
+{% set rowClasses = "govuk-grid-column-full" %}
+
+{% if errorState %}
+    {% set errorText = 'Select a page and a context if appropriate.' %}
+{% endif %}
+
+{% block content %}
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Page</th>
+      <th scope="col" class="govuk-table__header">Variant</th>
+      <th scope="col" class="govuk-table__header">Error State</th>
+      <th scope="col" class="govuk-table__header">Submit</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+
+  {% for pageListItem in pageListItems %}
+  <form action="/templates" method="POST">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    <input type="hidden" name="template" value="{{ pageListItem.path }}">
+
+    <tr class="govuk-table__row">
+      <th scope="row" class="govuk-table__header">
+        {{ pageListItem.path }}
+      </th>
+      <td class="govuk-table__cell">
+        {% if pageListItem.variants | length %}
+          {{ govukSelect({
+            name: "pageVariant",
+            selected: pageListItem.variants[0].value,
+            items: pageListItem.variants
+          }) }}
+        {% else %}
+          <span class="govuk-body">Default</span>
+        {% endif %}
+      </td>
+      <td class="govuk-table__cell">
+        {{ govukCheckboxes({
+          name: "hasErrorState",
+          items: [
+            {
+              text: "Error",
+              value: "true"
+            }
+          ]
+        }) }}
+      </td>
+      <td class="govuk-table__cell">
+        <div style="display: flex; gap: 10px;">
+          <button name="language" value="en" class="govuk-button">En</button>
+          <button name="language" value="cy" class="govuk-button">Cy</button>
+        </div>
+      </td>
+    </tr>
+  </form>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
