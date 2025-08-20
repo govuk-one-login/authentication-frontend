@@ -229,12 +229,6 @@ variable "support_reauthentication" {
   default     = "0"
 }
 
-variable "support_check_email_fraud" {
-  description = "When true enables Fraudulent email checking via Experian lockout"
-  type        = string
-  default     = "1"
-}
-
 variable "default_channel" {
   description = "To set the default channel."
   type        = string

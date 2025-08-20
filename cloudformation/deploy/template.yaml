@@ -1063,8 +1063,6 @@ Resources:
               Value: 1
             - Name: NO_PHOTO_ID_CONTACT_FORMS
               Value: 1
-            - Name: SUPPORT_CHECK_EMAIL_FRAUD
-              Value: 1
             - Name: DEFAULT_CHANNEL
               Value: web
             - Name: LANGUAGE_TOGGLE_ENABLED

@@ -19,8 +19,6 @@ describe("Integration:: check your email", () => {
   let baseApi: string;
 
   before(async () => {
-    process.env.SUPPORT_CHECK_EMAIL_FRAUD = "1";
-
     const { createApp } = await esmock(
       "../../../app",
       {},
@@ -63,7 +61,6 @@ describe("Integration:: check your email", () => {
   after(() => {
     sinon.restore();
     app = undefined;
-    delete process.env.SUPPORT_CHECK_EMAIL_FRAUD;
   });
 
   it("should return verify email page", async () => {

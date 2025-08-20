@@ -152,10 +152,6 @@ locals {
         value = var.no_photo_id_contact_forms
       },
       {
-        name  = "SUPPORT_CHECK_EMAIL_FRAUD"
-        value = var.support_check_email_fraud
-      },
-      {
         name  = "DEFAULT_CHANNEL"
         value = var.default_channel
       },

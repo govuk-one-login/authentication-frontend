@@ -9,7 +9,6 @@ import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
 import type { AccountInterventionsInterface } from "../account-intervention/types.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
-import { supportCheckEmailFraud } from "../../config.js";
 import { isLocked } from "../../utils/lock-helper.js";
 import { logger } from "../../utils/logger.js";
 import type { CheckEmailFraudBlockInterface } from "../check-email-fraud-block/types.js";
@@ -43,23 +42,21 @@ export const checkYourEmailPost = (
       );
       return res.redirect(path);
     }
-    if (supportCheckEmailFraud()) {
-      const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-      try {
-        const checkEmailFraudResponse =
-          await checkEmailFraudService.checkEmailFraudBlock(
-            req.session.user.email,
-            sessionId,
-            clientSessionId,
-            persistentSessionId,
-            req
-          );
-        logger.info(
-          `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
+    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    try {
+      const checkEmailFraudResponse =
+        await checkEmailFraudService.checkEmailFraudBlock(
+          req.session.user.email,
+          sessionId,
+          clientSessionId,
+          persistentSessionId,
+          req
         );
-      } catch (e) {
-        logger.error("Error checking email fraud block", e);
-      }
+      logger.info(
+        `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
+      );
+    } catch (e) {
+      logger.error("Error checking email fraud block", e);
     }
     const verifyCodeRequest = verifyCodePost(
       service,
