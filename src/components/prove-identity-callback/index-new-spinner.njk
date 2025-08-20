@@ -5,6 +5,7 @@
     <form action="/ipv-callback" method="post" novalidate="novalidate">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
         <div id="spinner-container"
+             data-api-url="{{ spinnerApiUrl or '/prove-identity-status' }}"
              data-initial-heading="{{ 'pages.proveIdentityCheckNew.progressivelyEnhancedVersion.initial.heading' | translate }}{{ serviceName }}"
              data-initial-spinnerStateText="{{ 'pages.proveIdentityCheckNew.progressivelyEnhancedVersion.initial.spinnerStateText' | translate }}"
              data-initial-spinnerState="{{ 'pages.proveIdentityCheckNew.progressivelyEnhancedVersion.initial.spinnerState' | translate }}"

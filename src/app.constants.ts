@@ -7,7 +7,6 @@ export const PATH_NAMES = {
   ROOT: "/",
   AUTHORIZE: "/authorize",
   ACCESSIBILITY_STATEMENT: "/accessibility-statement",
-  ACCOUNT_INTERVENTIONS: "/account-interventions",
   TERMS_AND_CONDITIONS: "/terms-and-conditions",
   PRIVACY_POLICY: "/privacy-notice",
   PRIVACY_POLICY_NEW: "/govuk-one-login-privacy-notice",
@@ -26,7 +25,6 @@ export const PATH_NAMES = {
   RESET_PASSWORD_REQUIRED: "/reset-password-required",
   RESET_PASSWORD_REQUEST: "/reset-password-request",
   RESET_PASSWORD_RESEND_CODE: "/reset-password-resend-code",
-  CREATE_ACCOUNT_CHECK_EMAIL: "/check-email",
   CREATE_ACCOUNT_SET_PASSWORD: "/create-password",
   CREATE_ACCOUNT_ENTER_PHONE_NUMBER: "/enter-phone-number",
   CREATE_ACCOUNT_SUCCESSFUL: "/account-created",
@@ -62,7 +60,6 @@ export const PATH_NAMES = {
   COOKIES_POLICY: "/cookies",
   ERROR_PAGE: "/error",
   SECURITY_CODE_ENTERED_EXCEEDED: "/security-code-entered-exceeded",
-  CHANGE_SECURITY_CODES: "/change-security-codes",
   CANNOT_CHANGE_SECURITY_CODES: "/cannot-change-security-codes",
   CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL:
     "/cannot-change-security-codes-identity-fail",

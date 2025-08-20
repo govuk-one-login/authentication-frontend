@@ -38,11 +38,12 @@
         {% if pageListItem.variants | length %}
           {{ govukSelect({
             name: "pageVariant",
+            id: "pageVariant-" + pageListItem.path,
             selected: pageListItem.variants[0].value,
             items: pageListItem.variants
           }) }}
         {% else %}
-          <span class="govuk-body">Default</span>
+          <span class="govuk-body">default</span>
         {% endif %}
       </td>
       <td class="govuk-table__cell">
@@ -50,6 +51,7 @@
           name: "hasErrorState",
           items: [
             {
+              id: "hasErrorState-" + pageListItem.path,
               text: "Error",
               value: "true"
             }

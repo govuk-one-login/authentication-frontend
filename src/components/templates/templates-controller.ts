@@ -2,6 +2,7 @@ import type { RequestHandler } from "express";
 import querystring from "querystring";
 import { pages } from "./pages.js";
 import { logger } from "../../utils/logger.js";
+import { PATH_NAMES } from "../../app.constants.js";
 
 interface RadioOption {
   text: string;
@@ -59,6 +60,12 @@ export const templatesDisplayGet: RequestHandler = (req, res) => {
     );
     res.status(404);
     return res.render("common/errors/404.njk");
+  }
+
+  // Contact forms have a lot of logic and are public anyway
+  // so better to simply use the real thing!
+  if (path === PATH_NAMES.CONTACT_US && pageVariant === "public") {
+    return res.redirect(PATH_NAMES.CONTACT_US);
   }
 
   const renderOptions = {
