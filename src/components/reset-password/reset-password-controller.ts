@@ -108,6 +108,7 @@ export function resetPasswordPost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
+        res,
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
@@ -117,7 +118,6 @@ export function resetPasswordPost(
           mfaMethodType: loginResponse.data.mfaMethodType,
           isMfaMethodVerified: loginResponse.data.mfaMethodVerified,
         },
-        res.locals.sessionId
       )
     );
   };
@@ -130,9 +130,8 @@ export async function resetPasswordRequestGet(
   return res.redirect(
     await getNextPathAndUpdateJourney(
       req,
+      res,
       USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED,
-      null,
-      res.locals.sessionId
     )
   );
 }

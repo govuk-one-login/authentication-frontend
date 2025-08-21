@@ -178,6 +178,7 @@ export function verifyCodePost(
     res.redirect(
       await getNextPathAndUpdateJourney(
         req,
+        res,
         nextEvent,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
@@ -189,7 +190,6 @@ export function verifyCodePost(
             req.path === PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL &&
             req.session.user.withinForcedPasswordResetJourney,
         },
-        res.locals.sessionId
       )
     );
   };

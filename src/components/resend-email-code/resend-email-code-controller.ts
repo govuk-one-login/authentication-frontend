@@ -90,9 +90,8 @@ export function resendEmailCodePost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
+        res,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
-        {},
-        sessionId
       )
     );
   };
@@ -118,11 +117,11 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
+        res,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
         {
           isAccountRecoveryJourney: accountRecoveryJourney,
         },
-        sessionId
       )
     );
   };

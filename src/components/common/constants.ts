@@ -1,7 +1,7 @@
 import { PATH_NAMES } from "../../app.constants.js";
 import type { AuthStateContext } from "./state-machine/state-machine.js";
 import { getNextState } from "./state-machine/state-machine.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export const SECURITY_CODE_ERROR = "actionType";
 
@@ -184,10 +184,12 @@ export async function saveSessionState(req: Request): Promise<void> {
 
 export async function getNextPathAndUpdateJourney(
   req: Request,
+  res: Response,
   event: string,
   ctx?: AuthStateContext,
-  sessionId?: string
 ): Promise<string> {
+  const sessionId = res.locals.sessionId;
+
   const nextState = getNextState(req.path, event, ctx);
 
   req.session.user.journey = {

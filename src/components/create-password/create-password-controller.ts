@@ -43,11 +43,11 @@ export function createPasswordPost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
+        res,
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
         {
           requiresTwoFactorAuth: true,
         },
-        res.locals.sessionId
       )
     );
   };

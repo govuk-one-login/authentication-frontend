@@ -82,9 +82,9 @@ export function howDoYouWantSecurityCodesPost(
       return res.redirect(
         await getNextPathAndUpdateJourney(
           req,
+          res,
           USER_JOURNEY_EVENTS.SELECT_SMS_MFA_METHOD,
           { isPasswordResetJourney },
-          res.locals.sessionId
         )
       );
     }
@@ -94,9 +94,9 @@ export function howDoYouWantSecurityCodesPost(
       return res.redirect(
         await getNextPathAndUpdateJourney(
           req,
+          res,
           USER_JOURNEY_EVENTS.SELECT_AUTH_APP_MFA_METHOD,
           { isPasswordResetJourney },
-          res.locals.sessionId
         )
       );
     }

@@ -65,9 +65,8 @@ export async function enterEmailCreateRequestGet(
   return res.redirect(
     await getNextPathAndUpdateJourney(
       req,
+      res,
       USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT,
-      null,
-      res.locals.sessionId
     )
   );
 }
@@ -176,9 +175,8 @@ export function enterEmailPost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
+        res,
         nextState,
-        null,
-        sessionId
       )
     );
   };
@@ -209,9 +207,8 @@ export function enterEmailCreatePost(
       return res.redirect(
         await getNextPathAndUpdateJourney(
           req,
+          res,
           USER_JOURNEY_EVENTS.ACCOUNT_FOUND_CREATE,
-          null,
-          sessionId
         )
       );
     }
@@ -255,9 +252,8 @@ export function enterEmailCreatePost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
+        res,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
-        null,
-        sessionId
       )
     );
   };

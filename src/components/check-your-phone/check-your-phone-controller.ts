@@ -117,12 +117,12 @@ export const checkYourPhonePost = (
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
+        res,
         USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
           isAccountRecoveryJourney: accountRecoveryEnabledJourney,
         },
-        res.locals.sessionId
       )
     );
   };

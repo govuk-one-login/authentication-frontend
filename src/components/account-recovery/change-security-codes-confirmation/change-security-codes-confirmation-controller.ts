@@ -32,9 +32,8 @@ export async function changeSecurityCodesConfirmationPost(
   req.session.user.accountRecoveryVerifiedMfaType = null;
   const nextPath = await getNextPathAndUpdateJourney(
     req,
+    res,
     USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_COMPLETED,
-    null,
-    res.locals.sessionId
   );
   res.redirect(nextPath);
 }

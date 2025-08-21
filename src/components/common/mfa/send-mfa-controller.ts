@@ -97,13 +97,13 @@ export function sendMfaGeneric(
     if (!isResendCodeRequest) {
       redirectPath = await getNextPathAndUpdateJourney(
         req,
+        res,
         USER_JOURNEY_EVENTS.VERIFY_MFA,
         {
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
           isIdentityRequired: req.session.user.isIdentityRequired,
         },
-        sessionId
       );
     }
 

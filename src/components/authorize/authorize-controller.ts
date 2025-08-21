@@ -135,6 +135,7 @@ export function authorizeGet(
 
     let redirectPath = await getNextPathAndUpdateJourney(
       req,
+      res,
       nextStateEvent,
       {
         requiresUplift: isUpliftRequired(req),
@@ -143,7 +144,6 @@ export function authorizeGet(
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
         isReauthenticationRequired: isReauth(req),
       },
-      sessionId
     );
 
     const cookieConsent = sanitize(startAuthResponse.data.user.cookieConsent);

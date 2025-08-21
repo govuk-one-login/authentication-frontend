@@ -117,13 +117,13 @@ export const enterAuthenticatorAppCodePost = (
     res.redirect(
       await getNextPathAndUpdateJourney(
         req,
+        res,
         USER_JOURNEY_EVENTS.AUTH_APP_CODE_VERIFIED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
         },
-        res.locals.sessionId
       )
     );
   };

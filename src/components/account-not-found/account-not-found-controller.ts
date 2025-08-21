@@ -61,9 +61,8 @@ export function accountNotFoundPost(
     res.redirect(
       await getNextPathAndUpdateJourney(
         req,
+        res,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
-        null,
-        sessionId
       )
     );
   };
