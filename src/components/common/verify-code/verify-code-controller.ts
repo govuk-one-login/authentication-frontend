@@ -2,8 +2,8 @@ import type { Request, Response } from "express";
 import {
   ERROR_CODES,
   getErrorPathByCode,
-  getNextPathAndUpdateJourney,
 } from "../constants.js";
+import { getNextPathAndUpdateJourney } from "../state-machine/state-machine-executor.js";
 import {
   formatValidationError,
   renderBadRequest,

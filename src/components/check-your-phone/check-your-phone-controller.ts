@@ -9,9 +9,9 @@ import type { ExpressRouteFunc } from "../../types.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
-  getNextPathAndUpdateJourney,
   pathWithQueryParam,
 } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";

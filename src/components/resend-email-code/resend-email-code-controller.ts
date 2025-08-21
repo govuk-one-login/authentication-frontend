@@ -3,8 +3,8 @@ import type { ExpressRouteFunc } from "../../types.js";
 import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
 import {
   getErrorPathByCode,
-  getNextPathAndUpdateJourney,
 } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { BadRequestError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";

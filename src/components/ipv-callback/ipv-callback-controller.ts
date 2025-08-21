@@ -8,7 +8,7 @@ import {
 import { logger } from "../../utils/logger.js";
 import { reverificationResultService } from "./reverification-result-service.js";
 import { BadRequestError } from "../../utils/error.js";
-import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import {
   CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,

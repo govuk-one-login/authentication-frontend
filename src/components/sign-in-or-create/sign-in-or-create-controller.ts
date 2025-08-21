@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 export async function signInOrCreateGet(
   req: Request,

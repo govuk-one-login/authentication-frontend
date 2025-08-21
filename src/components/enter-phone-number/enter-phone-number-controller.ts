@@ -6,8 +6,8 @@ import type { SecurityCodeErrorType } from "../common/constants.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
-  getNextPathAndUpdateJourney,
 } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { BadRequestError } from "../../utils/error.js";
 import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";

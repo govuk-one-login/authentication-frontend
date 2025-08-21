@@ -12,8 +12,8 @@ import { mfaService } from "../common/mfa/mfa-service.js";
 import {
   ERROR_CODES,
   getErrorPathByCode,
-  getNextPathAndUpdateJourney,
 } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { ReauthJourneyError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import {

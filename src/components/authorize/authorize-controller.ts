@@ -9,9 +9,9 @@ import {
   APP_ENV_NAME,
 } from "../../app.constants.js";
 import {
-  getNextPathAndUpdateJourney,
   ERROR_CODES,
 } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { BadRequestError, QueryParamsError } from "../../utils/error.js";
 import type { ApiResponseResult, ExpressRouteFunc } from "../../types.js";
 import type { CookieConsentServiceInterface } from "../common/cookie-consent/types.js";

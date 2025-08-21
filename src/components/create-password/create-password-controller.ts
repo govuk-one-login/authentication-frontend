@@ -6,8 +6,8 @@ import { BadRequestError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import {
   ERROR_CODES,
-  getNextPathAndUpdateJourney,
 } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import {
   formatValidationError,
   renderBadRequest,

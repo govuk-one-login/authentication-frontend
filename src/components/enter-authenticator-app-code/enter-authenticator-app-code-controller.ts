@@ -7,8 +7,8 @@ import type {
 import {
   ERROR_CODES,
   getErrorPathByCode,
-  getNextPathAndUpdateJourney,
 } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import {
   getCodeEnteredWrongBlockDurationInMinutes,
   supportReauthentication,

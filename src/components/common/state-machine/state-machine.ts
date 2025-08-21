@@ -1,4 +1,3 @@
-import type { EventType, StateValue } from "xstate";
 import { createMachine } from "xstate";
 import {
   MFA_METHOD_TYPE,
@@ -727,19 +726,6 @@ const authStateMachine = createMachine<AuthStateContext>(
   }
 );
 
-function getNextState(
-  from: StateValue,
-  to: any,
-  ctx?: AuthStateContext
-): { value: string; events: EventType[]; meta: any } {
-  const t = authStateMachine.transition(from, to, ctx);
-  return {
-    value: t.value as string,
-    events: t.nextEvents,
-    meta: t.meta,
-  };
-}
-
 export type AuthStateMachine = typeof authStateMachine;
 
-export { getNextState, USER_JOURNEY_EVENTS, authStateMachine };
+export { USER_JOURNEY_EVENTS, authStateMachine };
