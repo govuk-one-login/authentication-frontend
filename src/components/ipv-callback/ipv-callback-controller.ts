@@ -79,16 +79,14 @@ export function ipvCallbackGet(
         throw new Error(result.data.failure_code);
       }
 
-      return res.redirect(
-        await getNextPathAndUpdateJourney(req, res, event)
-      );
+      return res.redirect(await getNextPathAndUpdateJourney(req, res, event));
     }
 
     res.redirect(
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.IPV_REVERIFICATION_COMPLETED,
+        USER_JOURNEY_EVENTS.IPV_REVERIFICATION_COMPLETED
       )
     );
   };
@@ -125,7 +123,7 @@ export async function cannotChangeSecurityCodesPost(
           res,
           req.session.user.mfaMethodType === MFA_METHOD_TYPE.SMS
             ? USER_JOURNEY_EVENTS.VERIFY_MFA
-            : USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE,
+            : USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE
         )
       );
   }

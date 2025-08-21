@@ -1,9 +1,6 @@
 import type { Request, Response } from "express";
 import type { ExpressRouteFunc } from "src/types.js";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-} from "../common/constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import type { VerifyMfaCodeInterface } from "../enter-authenticator-app-code/types.js";
@@ -97,7 +94,7 @@ export function resetPassword2FAAuthAppPost(
         USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
-        },
+        }
       )
     );
   };

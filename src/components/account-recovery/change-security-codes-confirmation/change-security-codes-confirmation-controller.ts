@@ -33,7 +33,7 @@ export async function changeSecurityCodesConfirmationPost(
   const nextPath = await getNextPathAndUpdateJourney(
     req,
     res,
-    USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_COMPLETED,
+    USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_COMPLETED
   );
   res.redirect(nextPath);
 }

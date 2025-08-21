@@ -1,9 +1,7 @@
 import type { Request, Response } from "express";
 import type { ExpressRouteFunc } from "../../types.js";
 import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
-import {
-  getErrorPathByCode,
-} from "../common/constants.js";
+import { getErrorPathByCode } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { BadRequestError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
@@ -91,7 +89,7 @@ export function resendEmailCodePost(
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
+        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE
       )
     );
   };
@@ -121,7 +119,7 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
         {
           isAccountRecoveryJourney: accountRecoveryJourney,
-        },
+        }
       )
     );
   };

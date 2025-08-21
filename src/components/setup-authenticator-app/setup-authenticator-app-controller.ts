@@ -1,9 +1,7 @@
 import type { Request, Response } from "express";
 import QRCode from "qrcode";
 import type { ExpressRouteFunc } from "../../types.js";
-import {
-  ERROR_CODES,
-} from "../common/constants.js";
+import { ERROR_CODES } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import {
@@ -136,7 +134,7 @@ export function setupAuthenticatorAppPost(
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
           isAccountRecoveryJourney: accountRecoveryEnabledJourney,
-        },
+        }
       )
     );
   };

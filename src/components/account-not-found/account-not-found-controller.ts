@@ -4,9 +4,7 @@ import type { ExpressRouteFunc } from "../../types.js";
 import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
 import { BadRequestError } from "../../utils/error.js";
-import {
-  getErrorPathByCode,
-} from "../common/constants.js";
+import { getErrorPathByCode } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import xss from "xss";
@@ -62,7 +60,7 @@ export function accountNotFoundPost(
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
+        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE
       )
     );
   };

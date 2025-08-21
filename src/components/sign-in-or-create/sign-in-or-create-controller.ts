@@ -32,7 +32,7 @@ export async function signInOrCreatePost(
       res,
       req.body.optionSelected === "create"
         ? USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT
-        : USER_JOURNEY_EVENTS.SIGN_IN,
+        : USER_JOURNEY_EVENTS.SIGN_IN
     )
   );
 }

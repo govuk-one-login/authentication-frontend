@@ -6,9 +6,7 @@ import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation.js";
-import {
-  ERROR_CODES,
-} from "../common/constants.js";
+import { ERROR_CODES } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { BadRequestError } from "../../utils/error.js";
@@ -117,7 +115,7 @@ export function resetPasswordPost(
             req.session.user.isLatestTermsAndConditionsAccepted,
           mfaMethodType: loginResponse.data.mfaMethodType,
           isMfaMethodVerified: loginResponse.data.mfaMethodVerified,
-        },
+        }
       )
     );
   };
@@ -131,7 +129,7 @@ export async function resetPasswordRequestGet(
     await getNextPathAndUpdateJourney(
       req,
       res,
-      USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED,
+      USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED
     )
   );
 }

@@ -9,10 +9,7 @@ import { enterPasswordService } from "./enter-password-service.js";
 import type { EnterPasswordServiceInterface } from "./types.js";
 import type { MfaServiceInterface } from "../common/mfa/types.js";
 import { mfaService } from "../common/mfa/mfa-service.js";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-} from "../common/constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { ReauthJourneyError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
@@ -185,7 +182,7 @@ export function enterPasswordPost(
       clientSessionId,
       persistentSessionId,
       req,
-      res,
+      res
     );
     if (interventionRedirect) {
       return res.redirect(interventionRedirect);
@@ -231,7 +228,7 @@ export function enterPasswordPost(
           mfaMethodType: userLogin.data.mfaMethodType,
           isMfaMethodVerified: userLogin.data.mfaMethodVerified,
           isPasswordChangeRequired: isPasswordChangeRequired,
-        },
+        }
       )
     );
   };
@@ -244,7 +241,7 @@ export function enterPasswordPost(
     clientSessionId: string,
     persistentSessionId: string,
     req: Request,
-    res: Response,
+    res: Response
   ): Promise<string | null> {
     if (!isPasswordChangeRequired || !supportAccountInterventions()) {
       return null;
@@ -267,7 +264,7 @@ export function enterPasswordPost(
       return await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.COMMON_PASSWORD_AND_AIS_STATUS,
+        USER_JOURNEY_EVENTS.COMMON_PASSWORD_AND_AIS_STATUS
       );
     }
 

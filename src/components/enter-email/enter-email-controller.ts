@@ -11,10 +11,7 @@ import type {
   LockoutInformation,
 } from "./types.js";
 import type { SecurityCodeErrorType } from "../common/constants.js";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-} from "../common/constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { BadRequestError } from "../../utils/error.js";
 import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
@@ -66,7 +63,7 @@ export async function enterEmailCreateRequestGet(
     await getNextPathAndUpdateJourney(
       req,
       res,
-      USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT,
+      USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT
     )
   );
 }
@@ -172,13 +169,7 @@ export function enterEmailPost(
       ? USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS
       : USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND;
 
-    return res.redirect(
-      await getNextPathAndUpdateJourney(
-        req,
-        res,
-        nextState,
-      )
-    );
+    return res.redirect(await getNextPathAndUpdateJourney(req, res, nextState));
   };
 }
 
@@ -208,7 +199,7 @@ export function enterEmailCreatePost(
         await getNextPathAndUpdateJourney(
           req,
           res,
-          USER_JOURNEY_EVENTS.ACCOUNT_FOUND_CREATE,
+          USER_JOURNEY_EVENTS.ACCOUNT_FOUND_CREATE
         )
       );
     }
@@ -253,7 +244,7 @@ export function enterEmailCreatePost(
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
+        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE
       )
     );
   };

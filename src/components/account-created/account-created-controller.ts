@@ -17,7 +17,7 @@ export async function accountCreatedPost(
   const nextPath = await getNextPathAndUpdateJourney(
     req,
     res,
-    USER_JOURNEY_EVENTS.ACCOUNT_CREATED,
+    USER_JOURNEY_EVENTS.ACCOUNT_CREATED
   );
 
   res.redirect(nextPath);

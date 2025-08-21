@@ -23,7 +23,7 @@ export function mfaResetWithIpvGet(
       const redirectPath = await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.MFA_RESET_ATTEMPTED_VIA_AUTH_APP,
+        USER_JOURNEY_EVENTS.MFA_RESET_ATTEMPTED_VIA_AUTH_APP
       );
       return res.redirect(redirectPath);
     }
@@ -50,7 +50,7 @@ export function mfaResetWithIpvGet(
     await getNextPathAndUpdateJourney(
       req,
       res,
-      USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INIT,
+      USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INIT
     );
 
     const ipvCoreURL = result.data.authorize_url;

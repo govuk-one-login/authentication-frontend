@@ -8,9 +8,7 @@ import {
   CHANNEL,
   APP_ENV_NAME,
 } from "../../app.constants.js";
-import {
-  ERROR_CODES,
-} from "../common/constants.js";
+import { ERROR_CODES } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { BadRequestError, QueryParamsError } from "../../utils/error.js";
 import type { ApiResponseResult, ExpressRouteFunc } from "../../types.js";
@@ -143,7 +141,7 @@ export function authorizeGet(
         prompt: req.session.client.prompt,
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
         isReauthenticationRequired: isReauth(req),
-      },
+      }
     );
 
     const cookieConsent = sanitize(startAuthResponse.data.user.cookieConsent);

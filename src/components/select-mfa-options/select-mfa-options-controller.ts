@@ -36,7 +36,7 @@ export async function getSecurityCodesPost(
       res,
       isAuthApp
         ? USER_JOURNEY_EVENTS.MFA_OPTION_AUTH_APP_SELECTED
-        : USER_JOURNEY_EVENTS.MFA_OPTION_SMS_SELECTED,
+        : USER_JOURNEY_EVENTS.MFA_OPTION_SMS_SELECTED
     )
   );
 }

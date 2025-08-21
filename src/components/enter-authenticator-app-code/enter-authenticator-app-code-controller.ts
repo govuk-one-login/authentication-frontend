@@ -4,10 +4,7 @@ import type {
   DefaultApiResponse,
   ExpressRouteFunc,
 } from "../../types.js";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-} from "../common/constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import {
   getCodeEnteredWrongBlockDurationInMinutes,
@@ -123,7 +120,7 @@ export const enterAuthenticatorAppCodePost = (
           isIdentityRequired: req.session.user.isIdentityRequired,
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
-        },
+        }
       )
     );
   };

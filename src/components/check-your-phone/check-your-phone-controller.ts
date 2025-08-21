@@ -122,7 +122,7 @@ export const checkYourPhonePost = (
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
           isAccountRecoveryJourney: accountRecoveryEnabledJourney,
-        },
+        }
       )
     );
   };

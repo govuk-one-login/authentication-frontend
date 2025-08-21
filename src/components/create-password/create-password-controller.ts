@@ -4,9 +4,7 @@ import { createPasswordService } from "./create-password-service.js";
 import type { CreatePasswordServiceInterface } from "./types.js";
 import { BadRequestError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
-import {
-  ERROR_CODES,
-} from "../common/constants.js";
+import { ERROR_CODES } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import {
   formatValidationError,
@@ -47,7 +45,7 @@ export function createPasswordPost(
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
         {
           requiresTwoFactorAuth: true,
-        },
+        }
       )
     );
   };

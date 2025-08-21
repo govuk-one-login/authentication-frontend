@@ -11,17 +11,22 @@ interface AuthState extends State<AuthStateContext> {
       optionalPaths?: string[];
     };
   };
-};
+}
 
 export async function getNextPathAndUpdateJourney(
   req: Request,
   res: Response,
   event: string,
-  ctx?: AuthStateContext,
+  ctx?: AuthStateContext
 ): Promise<string> {
   const sessionId = res.locals.sessionId;
+  const currentState = req.path;
 
-  const nextState = authStateMachine.transition(req.path, event, ctx) as AuthState;
+  const nextState = authStateMachine.transition(
+    currentState,
+    event,
+    ctx
+  ) as AuthState;
 
   req.session.user.journey = {
     nextPath: nextState.value,
