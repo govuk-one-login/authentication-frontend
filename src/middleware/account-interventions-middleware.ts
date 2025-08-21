@@ -34,7 +34,6 @@ export function accountInterventionsMiddleware(
         return res.redirect(
           await getNextPathAndUpdateJourney(
             req,
-            req.path,
             USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION
           )
         );
@@ -51,7 +50,6 @@ export function accountInterventionsMiddleware(
           return res.redirect(
             await getNextPathAndUpdateJourney(
               req,
-              req.path,
               USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION
             )
           );
@@ -67,7 +65,6 @@ export function accountInterventionsMiddleware(
         return res.redirect(
           await getNextPathAndUpdateJourney(
             req,
-            req.path,
             USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION
           )
         );

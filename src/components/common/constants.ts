@@ -184,12 +184,11 @@ export async function saveSessionState(req: Request): Promise<void> {
 
 export async function getNextPathAndUpdateJourney(
   req: Request,
-  path: string,
   event: string,
   ctx?: AuthStateContext,
   sessionId?: string
 ): Promise<string> {
-  const nextState = getNextState(path, event, ctx);
+  const nextState = getNextState(req.path, event, ctx);
 
   req.session.user.journey = {
     nextPath: nextState.value,
@@ -207,7 +206,7 @@ export async function getNextPathAndUpdateJourney(
 
   if (!nextState) {
     throw Error(
-      `Invalid user journey. No transition found from ${path} with event ${event} with sessionId ${sessionId}`
+      `Invalid user journey. No transition found from ${req.path} with event ${event} with sessionId ${sessionId}`
     );
   }
 

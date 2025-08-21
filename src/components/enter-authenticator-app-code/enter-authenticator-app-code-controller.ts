@@ -117,7 +117,6 @@ export const enterAuthenticatorAppCodePost = (
     res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
         USER_JOURNEY_EVENTS.AUTH_APP_CODE_VERIFIED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,

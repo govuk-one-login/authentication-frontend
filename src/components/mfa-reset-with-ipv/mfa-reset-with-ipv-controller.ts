@@ -22,7 +22,6 @@ export function mfaResetWithIpvGet(
     if (res.locals.isApp) {
       const redirectPath = await getNextPathAndUpdateJourney(
         req,
-        req.path,
         USER_JOURNEY_EVENTS.MFA_RESET_ATTEMPTED_VIA_AUTH_APP,
         {},
         res.locals.sessionId
@@ -51,7 +50,6 @@ export function mfaResetWithIpvGet(
 
     await getNextPathAndUpdateJourney(
       req,
-      req.path,
       USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INIT,
       null,
       sessionId

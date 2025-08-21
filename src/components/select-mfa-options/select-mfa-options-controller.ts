@@ -33,7 +33,6 @@ export async function getSecurityCodesPost(
   res.redirect(
     await getNextPathAndUpdateJourney(
       req,
-      req.path,
       isAuthApp
         ? USER_JOURNEY_EVENTS.MFA_OPTION_AUTH_APP_SELECTED
         : USER_JOURNEY_EVENTS.MFA_OPTION_SMS_SELECTED,

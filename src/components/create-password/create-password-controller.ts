@@ -43,7 +43,6 @@ export function createPasswordPost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
         {
           requiresTwoFactorAuth: true,

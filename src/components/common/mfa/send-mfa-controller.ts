@@ -97,7 +97,6 @@ export function sendMfaGeneric(
     if (!isResendCodeRequest) {
       redirectPath = await getNextPathAndUpdateJourney(
         req,
-        PATH_NAMES.ENTER_MFA,
         USER_JOURNEY_EVENTS.VERIFY_MFA,
         {
           isLatestTermsAndConditionsAccepted:

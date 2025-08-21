@@ -16,7 +16,6 @@ export async function accountCreatedPost(
 ): Promise<void> {
   const nextPath = await getNextPathAndUpdateJourney(
     req,
-    req.path,
     USER_JOURNEY_EVENTS.ACCOUNT_CREATED,
     res.locals.sessionId
   );

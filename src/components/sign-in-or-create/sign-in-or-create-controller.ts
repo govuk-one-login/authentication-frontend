@@ -29,7 +29,6 @@ export async function signInOrCreatePost(
   res.redirect(
     await getNextPathAndUpdateJourney(
       req,
-      req.path,
       req.body.optionSelected === "create"
         ? USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT
         : USER_JOURNEY_EVENTS.SIGN_IN,

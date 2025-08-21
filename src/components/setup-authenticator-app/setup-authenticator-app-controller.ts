@@ -131,7 +131,6 @@ export function setupAuthenticatorAppPost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
         USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,

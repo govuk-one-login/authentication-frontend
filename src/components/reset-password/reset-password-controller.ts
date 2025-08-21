@@ -108,7 +108,6 @@ export function resetPasswordPost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
@@ -131,7 +130,6 @@ export async function resetPasswordRequestGet(
   return res.redirect(
     await getNextPathAndUpdateJourney(
       req,
-      req.path,
       USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED,
       null,
       res.locals.sessionId

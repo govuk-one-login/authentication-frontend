@@ -178,7 +178,6 @@ export function verifyCodePost(
     res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
         nextEvent,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,

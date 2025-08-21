@@ -91,7 +91,6 @@ export function enterPhoneNumberPost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
         USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER,
         null,
         sessionId

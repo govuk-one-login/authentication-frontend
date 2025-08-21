@@ -221,7 +221,6 @@ export function enterPasswordPost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
         USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
         {
           isLatestTermsAndConditionsAccepted:
@@ -265,7 +264,6 @@ export function enterPasswordPost(
     ) {
       return await getNextPathAndUpdateJourney(
         req,
-        req.path,
         USER_JOURNEY_EVENTS.COMMON_PASSWORD_AND_AIS_STATUS,
         null,
         sessionId

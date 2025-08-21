@@ -135,7 +135,6 @@ export function authorizeGet(
 
     let redirectPath = await getNextPathAndUpdateJourney(
       req,
-      PATH_NAMES.AUTHORIZE,
       nextStateEvent,
       {
         requiresUplift: isUpliftRequired(req),

@@ -380,6 +380,11 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
+      [PATH_NAMES.RESEND_MFA_CODE]: {
+        on: {
+          [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
+        },
+      },
       [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE]: {
         on: {
           [USER_JOURNEY_EVENTS.AUTH_APP_CODE_VERIFIED]: [

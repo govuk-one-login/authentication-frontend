@@ -80,14 +80,13 @@ export function ipvCallbackGet(
       }
 
       return res.redirect(
-        await getNextPathAndUpdateJourney(req, req.path, event, {}, sessionId)
+        await getNextPathAndUpdateJourney(req, event, {}, sessionId)
       );
     }
 
     res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
         USER_JOURNEY_EVENTS.IPV_REVERIFICATION_COMPLETED,
         {},
         sessionId
@@ -124,7 +123,6 @@ export async function cannotChangeSecurityCodesPost(
       return res.redirect(
         await getNextPathAndUpdateJourney(
           req,
-          req.path,
           req.session.user.mfaMethodType === MFA_METHOD_TYPE.SMS
             ? USER_JOURNEY_EVENTS.VERIFY_MFA
             : USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE,
