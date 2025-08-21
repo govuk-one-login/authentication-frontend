@@ -32,7 +32,8 @@ export async function getNextPathAndUpdateJourney(
     nextPath: nextState.value,
     optionalPaths:
       Object.keys(nextState.meta).length > 0
-        ? nextState.meta["AUTH." + nextState.value].optionalPaths
+        ? nextState.meta[`${authStateMachine.id}.${nextState.value}`]
+            .optionalPaths
         : [],
   };
 
