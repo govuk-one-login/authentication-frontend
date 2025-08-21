@@ -689,7 +689,7 @@ const authStateMachine = createMachine<AuthStateContext>(
         context.isLatestTermsAndConditionsAccepted === false,
       requiresUplift: (context) => context.requiresUplift === true,
       isReauthenticationRequired: (context) =>
-        context.isReauthenticationRequired,
+        !!context.isReauthenticationRequired,
       requiresAuthAppUplift: (context) =>
         context.requiresUplift === true &&
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP,
@@ -707,7 +707,7 @@ const authStateMachine = createMachine<AuthStateContext>(
       requiresResetPasswordMFASmsCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
         context.isOnForcedPasswordResetJourney !== true,
-      isPasswordChangeRequired: (context) => context.isPasswordChangeRequired,
+      isPasswordChangeRequired: (context) => !!context.isPasswordChangeRequired,
       is2FASMSPasswordChangeRequired: (context) =>
         context.isPasswordChangeRequired === true &&
         context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
@@ -716,8 +716,8 @@ const authStateMachine = createMachine<AuthStateContext>(
         context.isPasswordChangeRequired === true &&
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.requiresTwoFactorAuth === true,
-      isAccountRecoveryJourney: (context) => context.isAccountRecoveryJourney,
-      isPasswordResetJourney: (context) => context.isPasswordResetJourney,
+      isAccountRecoveryJourney: (context) => !!context.isAccountRecoveryJourney,
+      isPasswordResetJourney: (context) => !!context.isPasswordResetJourney,
     },
   }
 );

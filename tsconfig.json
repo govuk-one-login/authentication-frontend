@@ -9,6 +9,9 @@
     "skipLibCheck": true,
     // do not check types in node_modules folder
     "sourceMap": true,
+    "strict": true,
+    // this rule requires a bit more work to turn on
+    "strictNullChecks": false,
     "outDir": "dist",
     "baseUrl": ".",
     "typeRoots": ["@types", "/node_modules/@types"]

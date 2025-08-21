@@ -1,5 +1,7 @@
 import type { HelmetOptions } from "helmet";
-import type { Request, Response } from "express";
+import type { Response } from "express";
+import type { IncomingMessage } from "http";
+import type { ServerResponse } from "http";
 
 export const helmetConfiguration: HelmetOptions = {
   contentSecurityPolicy: {
@@ -8,8 +10,9 @@ export const helmetConfiguration: HelmetOptions = {
       styleSrc: ["'self'"],
       scriptSrc: [
         "'self'",
-        (req: Request, res: Response): string =>
-          `'nonce-${res.locals.scriptNonce}'`,
+        (req: IncomingMessage, res: ServerResponse): string =>
+          // In our app this will always be an express response
+          `'nonce-${(res as Response).locals.scriptNonce}'`,
         "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
         "https://*.googletagmanager.com",
         "https://www.google-analytics.com",

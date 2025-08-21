@@ -71,7 +71,9 @@ export function authorizeGet(
         authRequestJweDecryptedAsJwt
       );
     } catch (error) {
-      throw new BadRequestError(error.message);
+      throw new BadRequestError(
+        error instanceof Error ? error.message : "Unknown error validating JAR"
+      );
     }
 
     if (claims.govuk_signin_journey_id !== clientSessionId) {
