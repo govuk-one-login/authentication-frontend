@@ -97,6 +97,9 @@ const setupStateClickHandlers = (): void => {
       }
     }
 
+    // flowchart-AUTH./enter-password-1
+    // L_AUTH./authorize_AUTH./enter-password_0
+
     // Remove existing highlights
     Array.from(document.getElementsByClassName("highlight")).forEach((edge) =>
       edge.classList.remove("highlight", "outgoingEdge", "incomingEdge")
@@ -110,7 +113,14 @@ const setupStateClickHandlers = (): void => {
       edge.classList.add("highlight", "incomingEdge")
     );
     Array.from(document.getElementsByClassName("node"))
-      .filter((node) => node.id.startsWith(`flowchart-${id}-`))
+      .filter((node) => {
+        // Remove trailing number from node ID
+        const splitNodeId = node.id.split("-");
+        splitNodeId.pop();
+        const joinedNodeId = splitNodeId.join("-");
+
+        return joinedNodeId === `flowchart-${id}`;
+      })
       .forEach((node) => node.classList.add("highlight"));
 
     currentHighlight = id;
