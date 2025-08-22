@@ -97,7 +97,6 @@ export function resendEmailCodePost(
 
 export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { sessionId } = res.locals;
     const accountRecoveryJourney = isAccountRecoveryJourney(req);
     if (isLocked(req.session.user.codeRequestLock)) {
       const newCodeLink = req.query?.isResendCodeRequest

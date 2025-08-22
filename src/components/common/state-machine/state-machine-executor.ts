@@ -1,17 +1,10 @@
 import type { Request, Response } from "express";
-import { authStateMachine, type AuthStateContext } from "./state-machine.js";
+import {
+  authStateMachine,
+  getNextState,
+  type AuthStateContext,
+} from "./state-machine.js";
 import { saveSessionState } from "../constants.js";
-import type { State } from "xstate";
-
-// Extend the state interface to be more precise
-interface AuthState extends State<AuthStateContext> {
-  value: string;
-  meta: {
-    [id: string]: {
-      optionalPaths?: string[];
-    };
-  };
-}
 
 export async function getNextPathAndUpdateJourney(
   req: Request,
@@ -22,11 +15,7 @@ export async function getNextPathAndUpdateJourney(
   const sessionId = res.locals.sessionId;
   const currentState = req.path;
 
-  const nextState = authStateMachine.transition(
-    currentState,
-    event,
-    ctx
-  ) as AuthState;
+  const nextState = getNextState(currentState, event, ctx);
 
   req.session.user.journey = {
     nextPath: nextState.value,
@@ -40,12 +29,13 @@ export async function getNextPathAndUpdateJourney(
   await saveSessionState(req);
 
   req.log.info(
-    `User journey transitioned from ${req.path} to ${nextState.value} with session id ${sessionId}`
+    `User journey transitioned from ${currentState} to ${nextState.value} with session id ${sessionId}`
   );
 
-  if (!nextState) {
-    throw Error(
-      `Invalid user journey. No transition found from ${req.path} with event ${event} with sessionId ${sessionId}`
+  // If an invalid/unexpected event is supplied Stately will return the same state, likely indicating a bug
+  if (currentState === nextState.value) {
+    req.log.warn(
+      `Invalid user journey. Transition from ${currentState} with event ${event} with sessionId ${sessionId}`
     );
   }
 

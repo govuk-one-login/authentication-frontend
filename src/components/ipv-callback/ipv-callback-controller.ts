@@ -109,7 +109,6 @@ export async function cannotChangeSecurityCodesPost(
   req: Request,
   res: Response
 ): Promise<void> {
-  const { sessionId } = res.locals;
   const cannotChangeHowGetSecurityCodeAction =
     req.body.cannotChangeHowGetSecurityCodeAction;
 

@@ -1,3 +1,4 @@
+import type { State } from "xstate";
 import { createMachine } from "xstate";
 import {
   MFA_METHOD_TYPE,
@@ -726,6 +727,22 @@ const authStateMachine = createMachine<AuthStateContext>(
   }
 );
 
+// Extend the state interface to be more precise
+interface AuthState extends State<AuthStateContext> {
+  value: string;
+  meta: {
+    [id: string]: {
+      optionalPaths?: string[];
+    };
+  };
+}
+
+const getNextState = (
+  stateId: string,
+  event: string,
+  ctx?: AuthStateContext
+): AuthState => authStateMachine.transition(stateId, event, ctx) as AuthState;
+
 export type AuthStateMachine = typeof authStateMachine;
 
-export { USER_JOURNEY_EVENTS, authStateMachine };
+export { getNextState, USER_JOURNEY_EVENTS, authStateMachine };

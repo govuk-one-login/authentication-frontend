@@ -59,7 +59,7 @@ const TEST_ERROR_CODE = "TestErrorCode";
 export const fakeAccountRecoveryService = (
   accountRecoveryPermitted: boolean,
   success = true
-) => {
+): AccountRecoveryInterface => {
   return {
     accountRecovery: sinon.fake.returns({
       success,

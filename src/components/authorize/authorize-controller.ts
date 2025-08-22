@@ -2,7 +2,6 @@ import type { Request, Response } from "express";
 import {
   COOKIE_CONSENT,
   COOKIES_PREFERENCES_SET,
-  PATH_NAMES,
   ERROR_LOG_LEVEL,
   COOKIES_CHANNEL,
   CHANNEL,
