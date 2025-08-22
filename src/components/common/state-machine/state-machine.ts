@@ -6,6 +6,11 @@ import {
   PATH_NAMES,
 } from "../../../app.constants.js";
 
+const INTERMEDIATE_STATES = {
+  PASSWORD_VERIFIED: "password-verified",
+  SIGN_IN_END: "sign-in-end",
+};
+
 const USER_JOURNEY_EVENTS = {
   AUTHENTICATED: "AUTHENTICATED",
   CREDENTIALS_VALIDATED: "CREDENTIALS_VALIDATED",
@@ -182,24 +187,7 @@ const authStateMachine = createMachine<AuthStateContext>(
             PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
           ],
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
-            {
-              target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],
-              cond: "isPasswordChangeRequired",
-            },
-            {
-              target: [PATH_NAMES.GET_SECURITY_CODES],
-              cond: "isAccountPartCreated",
-            },
-            {
-              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
-              cond: "requiresMFAAuthAppCode",
-            },
-            { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
-            {
-              target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
-              cond: "isLatestTermsAndConditionsAccepted",
-            },
-            { target: [PATH_NAMES.AUTH_CODE] },
+            INTERMEDIATE_STATES.PASSWORD_VERIFIED,
           ],
         },
         meta: {
@@ -208,6 +196,7 @@ const authStateMachine = createMachine<AuthStateContext>(
             PATH_NAMES.ACCOUNT_LOCKED,
             PATH_NAMES.SIGN_IN_OR_CREATE,
             PATH_NAMES.RESET_PASSWORD_REQUEST,
+            PATH_NAMES.SIGN_IN_RETRY_BLOCKED,
           ],
         },
       },
@@ -319,32 +308,7 @@ const authStateMachine = createMachine<AuthStateContext>(
             PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
           ],
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
-            {
-              target: [PATH_NAMES.RESET_PASSWORD_2FA_SMS],
-              cond: "is2FASMSPasswordChangeRequired",
-            },
-            {
-              target: [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP],
-              cond: "is2FAAuthAppPasswordChangeRequired",
-            },
-            {
-              target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],
-              cond: "isPasswordChangeRequired",
-            },
-            {
-              target: [PATH_NAMES.GET_SECURITY_CODES],
-              cond: "isAccountPartCreated",
-            },
-            {
-              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
-              cond: "requiresMFAAuthAppCode",
-            },
-            { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
-            {
-              target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
-              cond: "isLatestTermsAndConditionsAccepted",
-            },
-            { target: [PATH_NAMES.AUTH_CODE] },
+            INTERMEDIATE_STATES.PASSWORD_VERIFIED,
           ],
         },
         meta: {
@@ -357,14 +321,36 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
+      [INTERMEDIATE_STATES.PASSWORD_VERIFIED]: {
+        always: [
+          {
+            target: [PATH_NAMES.RESET_PASSWORD_2FA_SMS],
+            cond: "is2FASMSPasswordChangeRequired",
+          },
+          {
+            target: [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP],
+            cond: "is2FAAuthAppPasswordChangeRequired",
+          },
+          {
+            target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],
+            cond: "isPasswordChangeRequired",
+          },
+          {
+            target: [PATH_NAMES.GET_SECURITY_CODES],
+            cond: "isAccountPartCreated",
+          },
+          {
+            target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
+            cond: "requiresMFAAuthAppCode",
+          },
+          { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
+          { target: [INTERMEDIATE_STATES.SIGN_IN_END] },
+        ],
+      },
       [PATH_NAMES.ENTER_MFA]: {
         on: {
           [USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED]: [
-            {
-              target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
-              cond: "isLatestTermsAndConditionsAccepted",
-            },
-            { target: [PATH_NAMES.AUTH_CODE] },
+            { target: [INTERMEDIATE_STATES.SIGN_IN_END] },
           ],
         },
         meta: {
@@ -383,11 +369,7 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE]: {
         on: {
           [USER_JOURNEY_EVENTS.AUTH_APP_CODE_VERIFIED]: [
-            {
-              target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
-              cond: "isLatestTermsAndConditionsAccepted",
-            },
-            { target: [PATH_NAMES.AUTH_CODE] },
+            { target: [INTERMEDIATE_STATES.SIGN_IN_END] },
           ],
         },
         meta: {
@@ -512,11 +494,7 @@ const authStateMachine = createMachine<AuthStateContext>(
               cond: "requiresMFAAuthAppCode",
             },
             { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
-            {
-              target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
-              cond: "isLatestTermsAndConditionsAccepted",
-            },
-            { target: [PATH_NAMES.AUTH_CODE] },
+            { target: [INTERMEDIATE_STATES.SIGN_IN_END] },
           ],
         },
         meta: {
@@ -539,11 +517,7 @@ const authStateMachine = createMachine<AuthStateContext>(
               cond: "requiresMFAAuthAppCode",
             },
             { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
-            {
-              target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
-              cond: "isLatestTermsAndConditionsAccepted",
-            },
-            { target: [PATH_NAMES.AUTH_CODE] },
+            { target: [INTERMEDIATE_STATES.SIGN_IN_END] },
           ],
         },
         meta: {
@@ -562,6 +536,15 @@ const authStateMachine = createMachine<AuthStateContext>(
             PATH_NAMES.PROVE_IDENTITY_CALLBACK_STATUS,
           ],
         },
+      },
+      [INTERMEDIATE_STATES.SIGN_IN_END]: {
+        always: [
+          {
+            target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
+            cond: "needsLatestTermsAndConditions",
+          },
+          { target: [PATH_NAMES.AUTH_CODE] },
+        ],
       },
       [PATH_NAMES.AUTH_CODE]: {
         on: {
@@ -685,7 +668,7 @@ const authStateMachine = createMachine<AuthStateContext>(
   },
   {
     guards: {
-      isLatestTermsAndConditionsAccepted: (context) =>
+      needsLatestTermsAndConditions: (context) =>
         context.isLatestTermsAndConditionsAccepted === false,
       requiresUplift: (context) => context.requiresUplift === true,
       isReauthenticationRequired: (context) =>

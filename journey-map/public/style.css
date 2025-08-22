@@ -161,11 +161,9 @@ form textarea.hidden {
 }
 #diagramSvg .highlight.incomingEdge {
   stroke-width: 3px;
-  filter: drop-shadow(1px 0 0 cyan) drop-shadow(-1px 0 0 cyan)
-    drop-shadow(0 1px 0 cyan) drop-shadow(0 -1px 0 cyan);
+  filter: drop-shadow(1px 0 0 #66ddff) drop-shadow(-1px 0 0 #66ddff)
+    drop-shadow(0 1px 0 #66ddff) drop-shadow(0 -1px 0 #66ddff);
 }
-#diagramSvg .highlight.node .label-container {
+#diagramSvg .highlight.node path {
   stroke-width: 3px;
-  filter: drop-shadow(1px 0 0 #ffdd00) drop-shadow(-1px 0 0 #ffdd00)
-    drop-shadow(0 1px 0 #ffdd00) drop-shadow(0 -1px 0 #ffdd00);
 }
