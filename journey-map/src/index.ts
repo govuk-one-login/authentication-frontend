@@ -97,20 +97,26 @@ const setupStateClickHandlers = (): void => {
       }
     }
 
-    // flowchart-AUTH./enter-password-1
-    // L_AUTH./authorize_AUTH./enter-password_0
-
     // Remove existing highlights
     Array.from(document.getElementsByClassName("highlight")).forEach((edge) =>
       edge.classList.remove("highlight", "outgoingEdge", "incomingEdge")
     );
 
     // Add new highlights
-    Array.from(document.getElementsByClassName(`LS-${id}`)).forEach((edge) =>
-      edge.classList.add("highlight", "outgoingEdge")
-    );
-    Array.from(document.getElementsByClassName(`LE-${id}`)).forEach((edge) =>
-      edge.classList.add("highlight", "incomingEdge")
+    Array.from(document.getElementsByClassName("flowchart-link")).forEach(
+      (edge) => {
+        const splitEdgeId = edge.id.split("_");
+        const edgeStartNodeId = splitEdgeId[1];
+        const edgeEndNodeId = splitEdgeId[2];
+
+        if (edgeStartNodeId === id) {
+          edge.classList.add("highlight", "outgoingEdge");
+        }
+
+        if (edgeEndNodeId === id) {
+          edge.classList.add("highlight", "incomingEdge");
+        }
+      }
     );
     Array.from(document.getElementsByClassName("node"))
       .filter((node) => {
