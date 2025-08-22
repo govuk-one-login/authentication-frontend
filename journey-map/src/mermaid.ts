@@ -25,7 +25,7 @@ interface Transition {
 }
 
 const getMermaidHeader = (graphDirection: "TD" | "LR"): string =>
-  `graph ${graphDirection}
+  `flowchart ${graphDirection}
     classDef page fill:#ae8,stroke:#000;`;
 
 const renderState = ({ name, id }: State): string => {

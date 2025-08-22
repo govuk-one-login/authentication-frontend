@@ -61,6 +61,13 @@ const render = async (): Promise<void> => {
   mermaid.initialize({
     maxTextSize: 100000,
     startOnLoad: false,
+    themeVariables: {
+      useMaxWidth: false,
+    },
+    flowchart: {
+      padding: 0,
+      wrappingWidth: 800,
+    },
     // Required to enable links and callbacks
     // This is (relatively) safe, as we only run on our own generated mermaid charts
     securityLevel: "loose",
