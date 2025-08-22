@@ -61,6 +61,13 @@ const render = async (): Promise<void> => {
   mermaid.initialize({
     maxTextSize: 100000,
     startOnLoad: false,
+    themeVariables: {
+      useMaxWidth: false,
+    },
+    flowchart: {
+      padding: 0,
+      wrappingWidth: 800,
+    },
     // Required to enable links and callbacks
     // This is (relatively) safe, as we only run on our own generated mermaid charts
     securityLevel: "loose",
@@ -103,14 +110,30 @@ const setupStateClickHandlers = (): void => {
     );
 
     // Add new highlights
-    Array.from(document.getElementsByClassName(`LS-${id}`)).forEach((edge) =>
-      edge.classList.add("highlight", "outgoingEdge")
-    );
-    Array.from(document.getElementsByClassName(`LE-${id}`)).forEach((edge) =>
-      edge.classList.add("highlight", "incomingEdge")
+    Array.from(document.getElementsByClassName("flowchart-link")).forEach(
+      (edge) => {
+        const splitEdgeId = edge.id.split("_");
+        const edgeStartNodeId = splitEdgeId[1];
+        const edgeEndNodeId = splitEdgeId[2];
+
+        if (edgeStartNodeId === id) {
+          edge.classList.add("highlight", "outgoingEdge");
+        }
+
+        if (edgeEndNodeId === id) {
+          edge.classList.add("highlight", "incomingEdge");
+        }
+      }
     );
     Array.from(document.getElementsByClassName("node"))
-      .filter((node) => node.id.startsWith(`flowchart-${id}-`))
+      .filter((node) => {
+        // Remove trailing number from node ID
+        const splitNodeId = node.id.split("-");
+        splitNodeId.pop();
+        const joinedNodeId = splitNodeId.join("-");
+
+        return joinedNodeId === `flowchart-${id}`;
+      })
       .forEach((node) => node.classList.add("highlight"));
 
     currentHighlight = id;
