@@ -136,6 +136,13 @@ const setupStateClickHandlers = (): void => {
       })
       .forEach((node) => node.classList.add("highlight"));
 
+    Array.from(document.querySelectorAll(`[data-source="${id}"]`)).forEach(
+      (label) => label.classList.add("highlight", "outgoingEdge")
+    );
+    Array.from(document.querySelectorAll(`[data-target="${id}"]`)).forEach(
+      (label) => label.classList.add("highlight", "incomingEdge")
+    );
+
     currentHighlight = id;
     timeClicked = Date.now();
   };
