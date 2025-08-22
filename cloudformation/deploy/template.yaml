@@ -567,7 +567,7 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.account.gov.uk"
       PrivacyNoticeRedirectEnabled: "Yes"
       UseRebrand: "Yes"
-      ShowWalletContactForm: "No"
+      ShowWalletContactForm: "Yes"
 
 Globals:
   Function:
