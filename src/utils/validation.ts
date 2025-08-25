@@ -96,7 +96,7 @@ export function renderBadRequest(
     errors,
     errorList: uniqueErrorListWithPlaceholdersReplaced,
     ...convertStringBooleanPropertiesToJavaScriptBoolean(req.body),
-    language: req.i18n.language,
+    language: req.i18n?.language,
     contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
     contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
   };

@@ -30,7 +30,7 @@ export function sanitize(value: string): string {
 
 export function splitSecretKeyIntoFragments(secretKey: string): string[] {
   if (secretKey.length > 0) {
-    return secretKey.match(/\w{1,4}/g);
+    return secretKey.match(/\w{1,4}/g) ?? [];
   }
   return [];
 }

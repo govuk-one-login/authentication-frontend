@@ -57,7 +57,10 @@ export class KmsDecryptionService implements DecryptionServiceInterface {
       );
       return new TextDecoder().decode(decryptedPayload);
     } catch (err) {
-      throw new DecryptionError("Error decrypting JWE", err);
+      throw new DecryptionError(
+        "Error decrypting JWE",
+        err instanceof Error ? err : undefined
+      );
     }
   }
 

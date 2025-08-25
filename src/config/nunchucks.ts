@@ -6,6 +6,14 @@ import { getNodeEnv, useRebrand } from "../config.js";
 import { ENVIRONMENT_NAME } from "../app.constants.js";
 import addLanguageParam from "@govuk-one-login/frontend-language-toggle";
 
+interface FilterContext {
+  ctx: {
+    i18n: {
+      language: string;
+    };
+  };
+}
+
 export function configureNunjucks(
   app: express.Application,
   viewsPath: string[]
@@ -16,10 +24,13 @@ export function configureNunjucks(
     noCache: getNodeEnv() !== ENVIRONMENT_NAME.PROD,
   });
 
-  nunjucksEnv.addFilter("translate", function (key: string, options?: any) {
-    const translate = i18next.getFixedT(this.ctx.i18n.language);
-    return translate(key, options);
-  });
+  nunjucksEnv.addFilter(
+    "translate",
+    function (this: FilterContext, key: string, options?: any) {
+      const translate = i18next.getFixedT(this.ctx.i18n.language);
+      return translate(key, options);
+    }
+  );
 
   nunjucksEnv.addFilter(
     "returnLastCharacters",

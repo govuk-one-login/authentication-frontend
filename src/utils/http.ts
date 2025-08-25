@@ -58,7 +58,7 @@ function getSecurityHeaders(path: string, req: Request, baseUrl?: string) {
     personalDataHeaders = createPersonalDataHeaders(url, req);
   } catch (err) {
     logger.warn(
-      `Called with ${url}. Failed to set security headers due to: ${err.message}`
+      `Called with ${url}. Failed to set security headers due to: ${err instanceof Error ? err.message : "Unknown error"}`
     );
   }
   return personalDataHeaders;

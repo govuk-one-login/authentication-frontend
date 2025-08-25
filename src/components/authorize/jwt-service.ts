@@ -30,7 +30,9 @@ export class JwtService implements JwtServiceInterface {
     try {
       claims = await this.validate(jwt);
     } catch (error) {
-      throw new JwtValidationError(error.message);
+      throw new JwtValidationError(
+        error instanceof Error ? error.message : "Unknown error validating JWT"
+      );
     }
 
     if (claims["claim"] !== undefined) {

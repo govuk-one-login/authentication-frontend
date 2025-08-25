@@ -1,6 +1,7 @@
 import { getRequestTaxonomy } from "../utils/taxonomy.js";
 import type { NextFunction, Request, Response } from "express";
 import { getContentId } from "../utils/contentId.js";
+
 type CallbackFunction = (err: Error, html: string) => void;
 
 export function getAnalyticsPropertiesMiddleware(
@@ -30,7 +31,12 @@ export function getAnalyticsPropertiesMiddleware(
         : { contentId, ...taxonomy };
     }
 
-    _render.call(this, view, opts, done);
+    _render.call<Response, [string, object, CallbackFunction], void>(
+      this,
+      view,
+      opts,
+      done
+    );
   };
 
   next();
