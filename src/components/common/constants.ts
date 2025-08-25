@@ -1,6 +1,4 @@
 import { PATH_NAMES } from "../../app.constants.js";
-import type { AuthStateContext } from "./state-machine/state-machine.js";
-import { getNextState } from "./state-machine/state-machine.js";
 import type { Request } from "express";
 
 export const SECURITY_CODE_ERROR = "actionType";
@@ -180,38 +178,6 @@ export async function saveSessionState(req: Request): Promise<void> {
       }
     });
   });
-}
-
-export async function getNextPathAndUpdateJourney(
-  req: Request,
-  path: string,
-  event: string,
-  ctx?: AuthStateContext,
-  sessionId?: string
-): Promise<string> {
-  const nextState = getNextState(path, event, ctx);
-
-  req.session.user.journey = {
-    nextPath: nextState.value,
-    optionalPaths:
-      Object.keys(nextState.meta).length > 0
-        ? nextState.meta["AUTH." + nextState.value].optionalPaths
-        : [],
-  };
-
-  await saveSessionState(req);
-
-  req.log.info(
-    `User journey transitioned from ${req.path} to ${nextState.value} with session id ${sessionId}`
-  );
-
-  if (!nextState) {
-    throw Error(
-      `Invalid user journey. No transition found from ${path} with event ${event} with sessionId ${sessionId}`
-    );
-  }
-
-  return nextState.value;
 }
 
 export const JOURNEY_TYPE = {

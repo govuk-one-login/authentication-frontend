@@ -1,10 +1,8 @@
 import type { Request, Response } from "express";
 import type { ExpressRouteFunc } from "../../types.js";
 import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
-import {
-  getErrorPathByCode,
-  getNextPathAndUpdateJourney,
-} from "../common/constants.js";
+import { getErrorPathByCode } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { BadRequestError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
@@ -90,10 +88,8 @@ export function resendEmailCodePost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
-        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
-        {},
-        sessionId
+        res,
+        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE
       )
     );
   };
@@ -101,7 +97,6 @@ export function resendEmailCodePost(
 
 export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { sessionId } = res.locals;
     const accountRecoveryJourney = isAccountRecoveryJourney(req);
     if (isLocked(req.session.user.codeRequestLock)) {
       const newCodeLink = req.query?.isResendCodeRequest
@@ -119,12 +114,11 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
+        res,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
         {
           isAccountRecoveryJourney: accountRecoveryJourney,
-        },
-        sessionId
+        }
       )
     );
   };

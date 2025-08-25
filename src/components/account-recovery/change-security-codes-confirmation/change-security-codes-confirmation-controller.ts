@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { MFA_METHOD_TYPE } from "../../../app.constants.js";
 import type { ExpressRouteFunc } from "../../../types.js";
 import { USER_JOURNEY_EVENTS } from "../../common/state-machine/state-machine.js";
-import { getNextPathAndUpdateJourney } from "../../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../../common/state-machine/state-machine-executor.js";
 import { getDefaultSmsMfaMethod } from "../../../utils/mfa.js";
 
 export function changeSecurityCodesConfirmationGet(): ExpressRouteFunc {
@@ -32,10 +32,8 @@ export async function changeSecurityCodesConfirmationPost(
   req.session.user.accountRecoveryVerifiedMfaType = null;
   const nextPath = await getNextPathAndUpdateJourney(
     req,
-    req.path,
-    USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_COMPLETED,
-    null,
-    res.locals.sessionId
+    res,
+    USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_COMPLETED
   );
   res.redirect(nextPath);
 }

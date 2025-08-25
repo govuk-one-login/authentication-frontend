@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants.js";
 import type { ExpressRouteFunc, MfaMethod } from "../../types.js";
-import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import type { MfaServiceInterface } from "../common/mfa/types.js";
 import { mfaService } from "../common/mfa/mfa-service.js";
@@ -82,10 +82,9 @@ export function howDoYouWantSecurityCodesPost(
       return res.redirect(
         await getNextPathAndUpdateJourney(
           req,
-          req.path,
+          res,
           USER_JOURNEY_EVENTS.SELECT_SMS_MFA_METHOD,
-          { isPasswordResetJourney },
-          res.locals.sessionId
+          { isPasswordResetJourney }
         )
       );
     }
@@ -95,10 +94,9 @@ export function howDoYouWantSecurityCodesPost(
       return res.redirect(
         await getNextPathAndUpdateJourney(
           req,
-          req.path,
+          res,
           USER_JOURNEY_EVENTS.SELECT_AUTH_APP_MFA_METHOD,
-          { isPasswordResetJourney },
-          res.locals.sessionId
+          { isPasswordResetJourney }
         )
       );
     }

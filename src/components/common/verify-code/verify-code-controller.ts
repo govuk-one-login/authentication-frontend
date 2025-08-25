@@ -1,9 +1,6 @@
 import type { Request, Response } from "express";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-  getNextPathAndUpdateJourney,
-} from "../constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../constants.js";
+import { getNextPathAndUpdateJourney } from "../state-machine/state-machine-executor.js";
 import {
   formatValidationError,
   renderBadRequest,
@@ -176,22 +173,16 @@ export function verifyCodePost(
     }
 
     res.redirect(
-      await getNextPathAndUpdateJourney(
-        req,
-        req.path,
-        nextEvent,
-        {
-          isIdentityRequired: req.session.user.isIdentityRequired,
-          isLatestTermsAndConditionsAccepted:
-            req.session.user.isLatestTermsAndConditionsAccepted,
-          mfaMethodType: req.session.user.enterEmailMfaType,
-          isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
-          isOnForcedPasswordResetJourney:
-            req.path === PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL &&
-            req.session.user.withinForcedPasswordResetJourney,
-        },
-        res.locals.sessionId
-      )
+      await getNextPathAndUpdateJourney(req, res, nextEvent, {
+        isIdentityRequired: req.session.user.isIdentityRequired,
+        isLatestTermsAndConditionsAccepted:
+          req.session.user.isLatestTermsAndConditionsAccepted,
+        mfaMethodType: req.session.user.enterEmailMfaType,
+        isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
+        isOnForcedPasswordResetJourney:
+          req.path === PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL &&
+          req.session.user.withinForcedPasswordResetJourney,
+      })
     );
   };
 }

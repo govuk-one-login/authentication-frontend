@@ -6,10 +6,8 @@ import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation.js";
-import {
-  ERROR_CODES,
-  getNextPathAndUpdateJourney,
-} from "../common/constants.js";
+import { ERROR_CODES } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { BadRequestError } from "../../utils/error.js";
 import type { EnterPasswordServiceInterface } from "../enter-password/types.js";
@@ -108,7 +106,7 @@ export function resetPasswordPost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
+        res,
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
@@ -117,8 +115,7 @@ export function resetPasswordPost(
             req.session.user.isLatestTermsAndConditionsAccepted,
           mfaMethodType: loginResponse.data.mfaMethodType,
           isMfaMethodVerified: loginResponse.data.mfaMethodVerified,
-        },
-        res.locals.sessionId
+        }
       )
     );
   };
@@ -131,10 +128,8 @@ export async function resetPasswordRequestGet(
   return res.redirect(
     await getNextPathAndUpdateJourney(
       req,
-      req.path,
-      USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED,
-      null,
-      res.locals.sessionId
+      res,
+      USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED
     )
   );
 }

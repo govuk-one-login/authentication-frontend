@@ -8,7 +8,7 @@ import {
 import { logger } from "../../utils/logger.js";
 import { reverificationResultService } from "./reverification-result-service.js";
 import { BadRequestError } from "../../utils/error.js";
-import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import {
   CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,
@@ -79,18 +79,14 @@ export function ipvCallbackGet(
         throw new Error(result.data.failure_code);
       }
 
-      return res.redirect(
-        await getNextPathAndUpdateJourney(req, req.path, event, {}, sessionId)
-      );
+      return res.redirect(await getNextPathAndUpdateJourney(req, res, event));
     }
 
     res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
-        USER_JOURNEY_EVENTS.IPV_REVERIFICATION_COMPLETED,
-        {},
-        sessionId
+        res,
+        USER_JOURNEY_EVENTS.IPV_REVERIFICATION_COMPLETED
       )
     );
   };
@@ -113,7 +109,6 @@ export async function cannotChangeSecurityCodesPost(
   req: Request,
   res: Response
 ): Promise<void> {
-  const { sessionId } = res.locals;
   const cannotChangeHowGetSecurityCodeAction =
     req.body.cannotChangeHowGetSecurityCodeAction;
 
@@ -124,12 +119,10 @@ export async function cannotChangeSecurityCodesPost(
       return res.redirect(
         await getNextPathAndUpdateJourney(
           req,
-          req.path,
+          res,
           req.session.user.mfaMethodType === MFA_METHOD_TYPE.SMS
             ? USER_JOURNEY_EVENTS.VERIFY_MFA
-            : USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE,
-          {},
-          sessionId
+            : USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE
         )
       );
   }

@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { generateMfaSecret } from "../../utils/mfa.js";
 import { MFA_METHOD_TYPE } from "../../app.constants.js";
@@ -33,12 +33,10 @@ export async function getSecurityCodesPost(
   res.redirect(
     await getNextPathAndUpdateJourney(
       req,
-      req.path,
+      res,
       isAuthApp
         ? USER_JOURNEY_EVENTS.MFA_OPTION_AUTH_APP_SELECTED
-        : USER_JOURNEY_EVENTS.MFA_OPTION_SMS_SELECTED,
-      null,
-      res.locals.sessionId
+        : USER_JOURNEY_EVENTS.MFA_OPTION_SMS_SELECTED
     )
   );
 }

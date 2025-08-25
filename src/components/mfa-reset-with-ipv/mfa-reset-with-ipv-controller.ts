@@ -3,7 +3,7 @@ import { mfaResetAuthorizeService } from "./mfa-reset-authorize-service.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import type { Request, Response } from "express";
 import { BadRequestError } from "../../utils/error.js";
-import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../app.constants.js";
 export function mfaResetWithIpvGet(
@@ -22,10 +22,8 @@ export function mfaResetWithIpvGet(
     if (res.locals.isApp) {
       const redirectPath = await getNextPathAndUpdateJourney(
         req,
-        req.path,
-        USER_JOURNEY_EVENTS.MFA_RESET_ATTEMPTED_VIA_AUTH_APP,
-        {},
-        res.locals.sessionId
+        res,
+        USER_JOURNEY_EVENTS.MFA_RESET_ATTEMPTED_VIA_AUTH_APP
       );
       return res.redirect(redirectPath);
     }
@@ -51,10 +49,8 @@ export function mfaResetWithIpvGet(
 
     await getNextPathAndUpdateJourney(
       req,
-      req.path,
-      USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INIT,
-      null,
-      sessionId
+      res,
+      USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INIT
     );
 
     const ipvCoreURL = result.data.authorize_url;

@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { getNextPathAndUpdateJourney } from "../components/common/constants.js";
+import { getNextPathAndUpdateJourney } from "../components/common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../components/common/state-machine/state-machine.js";
 import { accountInterventionService } from "../components/account-intervention/account-intervention-service.js";
 import type { ExpressRouteFunc } from "../types.js";
@@ -34,7 +34,7 @@ export function accountInterventionsMiddleware(
         return res.redirect(
           await getNextPathAndUpdateJourney(
             req,
-            req.path,
+            res,
             USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION
           )
         );
@@ -51,7 +51,7 @@ export function accountInterventionsMiddleware(
           return res.redirect(
             await getNextPathAndUpdateJourney(
               req,
-              req.path,
+              res,
               USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION
             )
           );
@@ -67,7 +67,7 @@ export function accountInterventionsMiddleware(
         return res.redirect(
           await getNextPathAndUpdateJourney(
             req,
-            req.path,
+            res,
             USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION
           )
         );

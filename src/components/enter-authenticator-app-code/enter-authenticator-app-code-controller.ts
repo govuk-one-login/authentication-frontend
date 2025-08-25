@@ -4,11 +4,8 @@ import type {
   DefaultApiResponse,
   ExpressRouteFunc,
 } from "../../types.js";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-  getNextPathAndUpdateJourney,
-} from "../common/constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import {
   getCodeEnteredWrongBlockDurationInMinutes,
   supportReauthentication,
@@ -117,14 +114,13 @@ export const enterAuthenticatorAppCodePost = (
     res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
+        res,
         USER_JOURNEY_EVENTS.AUTH_APP_CODE_VERIFIED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
-        },
-        res.locals.sessionId
+        }
       )
     );
   };

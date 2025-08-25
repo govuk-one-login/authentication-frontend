@@ -3,11 +3,8 @@ import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import { redactPhoneNumber } from "../../utils/strings.js";
 import type { SecurityCodeErrorType } from "../common/constants.js";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-  getNextPathAndUpdateJourney,
-} from "../common/constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { BadRequestError } from "../../utils/error.js";
 import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
@@ -91,10 +88,8 @@ export function enterPhoneNumberPost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
-        USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER,
-        null,
-        sessionId
+        res,
+        USER_JOURNEY_EVENTS.VERIFY_PHONE_NUMBER
       )
     );
   };
