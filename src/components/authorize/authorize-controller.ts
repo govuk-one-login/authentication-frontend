@@ -36,7 +36,7 @@ import {
 } from "../../config.js";
 import { logger } from "../../utils/logger.js";
 import type { Claims } from "./claims-config.js";
-import { isReauth, isUpliftRequired } from "../../utils/request.js";
+import { isReauth } from "../../utils/request.js";
 import { LocalDecryptionService } from "./local-decryption-service.js";
 
 const decryptionService =
@@ -137,7 +137,6 @@ export function authorizeGet(
       res,
       nextStateEvent,
       {
-        requiresUplift: isUpliftRequired(req),
         prompt: req.session.client.prompt,
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
         isReauthenticationRequired: isReauth(req),

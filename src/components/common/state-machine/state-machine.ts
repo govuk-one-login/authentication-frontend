@@ -68,7 +68,7 @@ const USER_JOURNEY_EVENTS = {
 
 const defaultContext = {
   isLatestTermsAndConditionsAccepted: true,
-  requiresUplift: false,
+  isUpliftRequired: false,
   requiresTwoFactorAuth: false,
   isIdentityRequired: false,
   prompt: OIDC_PROMPT.NONE,
@@ -675,11 +675,11 @@ const authStateMachine = createMachine<AuthStateContext>(
     guards: {
       needsLatestTermsAndConditions: (context) =>
         context.isLatestTermsAndConditionsAccepted === false,
-      requiresUplift: (context) => context.requiresUplift === true,
+      requiresUplift: (context) => context.isUpliftRequired === true,
       isReauthenticationRequired: (context) =>
         !!context.isReauthenticationRequired,
       requiresAuthAppUplift: (context) =>
-        context.requiresUplift === true &&
+        context.isUpliftRequired === true &&
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP,
       requiresTwoFactorAuth: (context) =>
         context.requiresTwoFactorAuth === true,
