@@ -120,7 +120,6 @@ export const checkYourPhonePost = (
         res,
         USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED,
         {
-          isIdentityRequired: req.session.user.isIdentityRequired,
           isAccountRecoveryJourney: accountRecoveryEnabledJourney,
         }
       )

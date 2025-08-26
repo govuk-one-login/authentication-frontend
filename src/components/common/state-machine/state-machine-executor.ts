@@ -16,7 +16,8 @@ export async function getNextPathAndUpdateJourney(
   const currentState = req.path;
 
   const context = {
-    isLatestTermsAndConditionsAccepted: req.session.user?.isLatestTermsAndConditionsAccepted,
+    isIdentityRequired: !!req.session.user?.isIdentityRequired,
+    isLatestTermsAndConditionsAccepted: !!req.session.user?.isLatestTermsAndConditionsAccepted,
     ...ctx,
   }
 

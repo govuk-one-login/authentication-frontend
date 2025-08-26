@@ -132,7 +132,6 @@ export function setupAuthenticatorAppPost(
         res,
         USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED,
         {
-          isIdentityRequired: req.session.user.isIdentityRequired,
           isAccountRecoveryJourney: accountRecoveryEnabledJourney,
         }
       )

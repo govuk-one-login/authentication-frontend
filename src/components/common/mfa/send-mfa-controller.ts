@@ -96,9 +96,6 @@ export function sendMfaGeneric(
         req,
         res,
         USER_JOURNEY_EVENTS.VERIFY_MFA,
-        {
-          isIdentityRequired: req.session.user.isIdentityRequired,
-        }
       );
     }
 

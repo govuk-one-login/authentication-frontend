@@ -138,7 +138,6 @@ export function authorizeGet(
       nextStateEvent,
       {
         requiresUplift: isUpliftRequired(req),
-        isIdentityRequired: req.session.user.isIdentityRequired,
         prompt: req.session.client.prompt,
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
         isReauthenticationRequired: isReauth(req),

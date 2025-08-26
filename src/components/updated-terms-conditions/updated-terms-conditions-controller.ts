@@ -56,9 +56,6 @@ export function updatedTermsConditionsPost(
           req,
           res,
           USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED,
-          {
-            isIdentityRequired: req.session.user.isIdentityRequired,
-          }
         )
       );
     }
