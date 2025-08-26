@@ -19,6 +19,7 @@ export async function getNextPathAndUpdateJourney(
     isIdentityRequired: !!req.session.user?.isIdentityRequired,
     isLatestTermsAndConditionsAccepted: !!req.session.user?.isLatestTermsAndConditionsAccepted,
     isUpliftRequired: !!req.session.user?.isUpliftRequired,
+    prompt: req.session.client?.prompt,
     ...ctx,
   }
 

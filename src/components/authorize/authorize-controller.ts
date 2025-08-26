@@ -137,7 +137,6 @@ export function authorizeGet(
       res,
       nextStateEvent,
       {
-        prompt: req.session.client.prompt,
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
         isReauthenticationRequired: isReauth(req),
       }
