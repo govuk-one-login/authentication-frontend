@@ -109,7 +109,6 @@ export function resetPasswordPost(
         res,
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
         {
-          requiresTwoFactorAuth: false,
           mfaMethodType: loginResponse.data.mfaMethodType,
           isMfaMethodVerified: loginResponse.data.mfaMethodVerified,
         }

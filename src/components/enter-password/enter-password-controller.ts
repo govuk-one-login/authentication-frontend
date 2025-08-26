@@ -222,7 +222,8 @@ export function enterPasswordPost(
         res,
         USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
         {
-          requiresTwoFactorAuth: userLogin.data.mfaRequired,
+          // TODO: Store this on session and move into state-machine-executor
+          isMfaRequired: userLogin.data.mfaRequired,
           mfaMethodType: userLogin.data.mfaMethodType,
           isMfaMethodVerified: userLogin.data.mfaMethodVerified,
           isPasswordChangeRequired: isPasswordChangeRequired,

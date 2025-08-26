@@ -43,9 +43,6 @@ export function createPasswordPost(
         req,
         res,
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
-        {
-          requiresTwoFactorAuth: true,
-        }
       )
     );
   };

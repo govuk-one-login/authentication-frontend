@@ -69,7 +69,7 @@ const USER_JOURNEY_EVENTS = {
 const defaultContext = {
   isLatestTermsAndConditionsAccepted: true,
   isUpliftRequired: false,
-  requiresTwoFactorAuth: false,
+  isMfaRequired: false,
   isIdentityRequired: false,
   prompt: OIDC_PROMPT.NONE,
   mfaMethodType: MFA_METHOD_TYPE.SMS,
@@ -343,7 +343,7 @@ const authStateMachine = createMachine<AuthStateContext>(
             target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
             cond: "requiresMFAAuthAppCode",
           },
-          { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
+          { target: [PATH_NAMES.ENTER_MFA], cond: "isMfaRequired" },
           { target: [INTERMEDIATE_STATES.SIGN_IN_END] },
         ],
       },
@@ -498,7 +498,6 @@ const authStateMachine = createMachine<AuthStateContext>(
               target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
               cond: "requiresMFAAuthAppCode",
             },
-            { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
             { target: [INTERMEDIATE_STATES.SIGN_IN_END] },
           ],
         },
@@ -521,7 +520,6 @@ const authStateMachine = createMachine<AuthStateContext>(
               target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
               cond: "requiresMFAAuthAppCode",
             },
-            { target: [PATH_NAMES.ENTER_MFA], cond: "requiresTwoFactorAuth" },
             { target: [INTERMEDIATE_STATES.SIGN_IN_END] },
           ],
         },
@@ -681,14 +679,14 @@ const authStateMachine = createMachine<AuthStateContext>(
       requiresAuthAppUplift: (context) =>
         context.isUpliftRequired === true &&
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP,
-      requiresTwoFactorAuth: (context) =>
-        context.requiresTwoFactorAuth === true,
+      isMfaRequired: (context) =>
+        context.isMfaRequired === true,
       isAccountPartCreated: (context) => context.isMfaMethodVerified === false,
       isIdentityRequired: (context) => context.isIdentityRequired === true,
       requiresLogin: (context) => context.prompt === OIDC_PROMPT.LOGIN,
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
-        context.requiresTwoFactorAuth === true,
+        context.isMfaRequired === true,
       requiresResetPasswordMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.isOnForcedPasswordResetJourney !== true,
@@ -699,11 +697,11 @@ const authStateMachine = createMachine<AuthStateContext>(
       is2FASMSPasswordChangeRequired: (context) =>
         context.isPasswordChangeRequired === true &&
         context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
-        context.requiresTwoFactorAuth === true,
+        context.isMfaRequired === true,
       is2FAAuthAppPasswordChangeRequired: (context) =>
         context.isPasswordChangeRequired === true &&
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
-        context.requiresTwoFactorAuth === true,
+        context.isMfaRequired === true,
       isAccountRecoveryJourney: (context) => !!context.isAccountRecoveryJourney,
       isPasswordResetJourney: (context) => !!context.isPasswordResetJourney,
     },
