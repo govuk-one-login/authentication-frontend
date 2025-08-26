@@ -111,8 +111,6 @@ export function resetPasswordPost(
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
           requiresTwoFactorAuth: false,
-          isLatestTermsAndConditionsAccepted:
-            req.session.user.isLatestTermsAndConditionsAccepted,
           mfaMethodType: loginResponse.data.mfaMethodType,
           isMfaMethodVerified: loginResponse.data.mfaMethodVerified,
         }

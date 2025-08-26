@@ -222,8 +222,6 @@ export function enterPasswordPost(
         res,
         USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
         {
-          isLatestTermsAndConditionsAccepted:
-            req.session.user.isLatestTermsAndConditionsAccepted,
           requiresTwoFactorAuth: userLogin.data.mfaRequired,
           mfaMethodType: userLogin.data.mfaMethodType,
           isMfaMethodVerified: userLogin.data.mfaMethodVerified,

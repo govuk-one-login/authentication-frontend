@@ -118,8 +118,6 @@ export const enterAuthenticatorAppCodePost = (
         USER_JOURNEY_EVENTS.AUTH_APP_CODE_VERIFIED,
         {
           isIdentityRequired: req.session.user.isIdentityRequired,
-          isLatestTermsAndConditionsAccepted:
-            req.session.user.isLatestTermsAndConditionsAccepted,
         }
       )
     );

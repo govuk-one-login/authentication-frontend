@@ -175,8 +175,6 @@ export function verifyCodePost(
     res.redirect(
       await getNextPathAndUpdateJourney(req, res, nextEvent, {
         isIdentityRequired: req.session.user.isIdentityRequired,
-        isLatestTermsAndConditionsAccepted:
-          req.session.user.isLatestTermsAndConditionsAccepted,
         mfaMethodType: req.session.user.enterEmailMfaType,
         isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
         isOnForcedPasswordResetJourney:

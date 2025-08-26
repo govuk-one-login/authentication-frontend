@@ -15,7 +15,12 @@ export async function getNextPathAndUpdateJourney(
   const sessionId = res.locals.sessionId;
   const currentState = req.path;
 
-  const nextState = getNextState(currentState, event, ctx);
+  const context = {
+    isLatestTermsAndConditionsAccepted: req.session.user?.isLatestTermsAndConditionsAccepted,
+    ...ctx,
+  }
+
+  const nextState = getNextState(currentState, event, context);
 
   req.session.user.journey = {
     nextPath: nextState.value,
