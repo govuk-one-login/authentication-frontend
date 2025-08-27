@@ -168,6 +168,7 @@ export function enterPasswordPost(
     req.session.user.activeMfaMethodId = userLogin.data.mfaMethods.find(
       (method: MfaMethod) => method.priority === MfaMethodPriority.DEFAULT
     )?.id;
+    req.session.user.isMfaRequired = userLogin.data.mfaRequired;
     req.session.user.isAccountPartCreated = !userLogin.data.mfaMethodVerified;
     req.session.user.isLatestTermsAndConditionsAccepted =
       userLogin.data.latestTermsAndConditionsAccepted;
@@ -222,8 +223,6 @@ export function enterPasswordPost(
         res,
         USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
         {
-          // TODO: Store this on session and move into state-machine-executor
-          isMfaRequired: userLogin.data.mfaRequired,
           isMfaMethodVerified: userLogin.data.mfaMethodVerified,
         }
       )
