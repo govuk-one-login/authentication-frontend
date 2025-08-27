@@ -175,10 +175,6 @@ export function verifyCodePost(
     res.redirect(
       await getNextPathAndUpdateJourney(req, res, nextEvent, {
         mfaMethodType: req.session.user.enterEmailMfaType,
-        isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
-        isOnForcedPasswordResetJourney:
-          req.path === PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL &&
-          req.session.user.withinForcedPasswordResetJourney,
       })
     );
   };

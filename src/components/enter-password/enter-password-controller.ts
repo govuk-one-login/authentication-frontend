@@ -226,7 +226,6 @@ export function enterPasswordPost(
           isMfaRequired: userLogin.data.mfaRequired,
           mfaMethodType: userLogin.data.mfaMethodType,
           isMfaMethodVerified: userLogin.data.mfaMethodVerified,
-          isPasswordChangeRequired: isPasswordChangeRequired,
         }
       )
     );

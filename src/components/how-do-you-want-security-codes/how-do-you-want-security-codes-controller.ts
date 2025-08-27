@@ -84,7 +84,6 @@ export function howDoYouWantSecurityCodesPost(
           req,
           res,
           USER_JOURNEY_EVENTS.SELECT_SMS_MFA_METHOD,
-          { isPasswordResetJourney }
         )
       );
     }
@@ -96,7 +95,6 @@ export function howDoYouWantSecurityCodesPost(
           req,
           res,
           USER_JOURNEY_EVENTS.SELECT_AUTH_APP_MFA_METHOD,
-          { isPasswordResetJourney }
         )
       );
     }

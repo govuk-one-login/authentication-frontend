@@ -5,6 +5,7 @@ import {
   type AuthStateContext,
 } from "./state-machine.js";
 import { saveSessionState } from "../constants.js";
+import { isAccountRecoveryJourneyAndPermitted } from "../../../utils/request.js";
 
 export async function getNextPathAndUpdateJourney(
   req: Request,
@@ -16,8 +17,12 @@ export async function getNextPathAndUpdateJourney(
   const currentState = req.path;
 
   const context = {
+    isAccountRecoveryJourney: isAccountRecoveryJourneyAndPermitted(req),
     isIdentityRequired: !!req.session.user?.isIdentityRequired,
     isLatestTermsAndConditionsAccepted: !!req.session.user?.isLatestTermsAndConditionsAccepted,
+    isPasswordChangeRequired: !!req.session.user?.isPasswordChangeRequired,
+    isPasswordResetJourney: !!req.session.user?.isPasswordResetJourney,
+    isOnForcedPasswordResetJourney: !!req.session.user?.withinForcedPasswordResetJourney,
     ...ctx,
   }
 
