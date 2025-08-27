@@ -6,6 +6,7 @@ import {
   COOKIES_CHANNEL,
   CHANNEL,
   APP_ENV_NAME,
+  OIDC_PROMPT,
 } from "../../app.constants.js";
 import { ERROR_CODES } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
@@ -36,13 +37,34 @@ import {
 } from "../../config.js";
 import { logger } from "../../utils/logger.js";
 import type { Claims } from "./claims-config.js";
-import { isReauth } from "../../utils/request.js";
+import { isReauth, isUpliftRequired } from "../../utils/request.js";
 import { LocalDecryptionService } from "./local-decryption-service.js";
 
 const decryptionService =
   getAppEnv() === APP_ENV_NAME.LOCAL && getLocalEncryptionKey()
     ? new LocalDecryptionService()
     : new KmsDecryptionService();
+
+const getNextStateEvent = (req: Request): string => {
+  // Reauth supersedes all other journeys
+  if (isReauth(req)) {
+    return USER_JOURNEY_EVENTS.REAUTH;
+  }
+
+  // Authenticated users may still need to enter one or more credentials
+  if (req.session.user.isAuthenticated) {
+    if (isUpliftRequired(req)) {
+      return USER_JOURNEY_EVENTS.UPLIFT;
+    }
+    if (req.session.client?.prompt === OIDC_PROMPT.LOGIN) {
+      return USER_JOURNEY_EVENTS.LOGIN;
+    }
+    return USER_JOURNEY_EVENTS.SILENT_LOGIN;
+  }
+
+  // Default
+  return USER_JOURNEY_EVENTS.NO_EXISTING_SESSION;
+};
 
 export function authorizeGet(
   authService: AuthorizeServiceInterface = authorizeService(),
@@ -128,9 +150,7 @@ export function authorizeGet(
     logger.info(`Reauth claim length ${claims.reauthenticate?.length}`);
     logger.info(`Support for reauth is enabled ${supportReauthentication()}`);
 
-    const nextStateEvent = req.session.user.isAuthenticated
-      ? USER_JOURNEY_EVENTS.EXISTING_SESSION
-      : USER_JOURNEY_EVENTS.NO_EXISTING_SESSION;
+    const nextStateEvent = getNextStateEvent(req);
 
     let redirectPath = await getNextPathAndUpdateJourney(
       req,
@@ -138,7 +158,6 @@ export function authorizeGet(
       nextStateEvent,
       {
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
-        isReauthenticationRequired: isReauth(req),
       }
     );
 

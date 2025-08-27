@@ -2,7 +2,6 @@ import type { State } from "xstate";
 import { createMachine } from "xstate";
 import {
   MFA_METHOD_TYPE,
-  OIDC_PROMPT,
   PATH_NAMES,
 } from "../../../app.constants.js";
 
@@ -23,8 +22,11 @@ const USER_JOURNEY_EVENTS = {
   VERIFY_EMAIL_CODE: "VERIFY_EMAIL_CODE",
   ACCOUNT_CREATED: "ACCOUNT_CREATED",
   START: "START",
-  EXISTING_SESSION: "EXISTING_SESSION",
   NO_EXISTING_SESSION: "NO_EXISTING_SESSION",
+  REAUTH: "REAUTH",
+  LOGIN: "LOGIN",
+  UPLIFT: "UPLIFT",
+  SILENT_LOGIN: "SILENT_LOGIN",
   VERIFY_MFA: "VERIFY_MFA",
   PROVE_IDENTITY_CALLBACK: "PROVE_IDENTITY_CALLBACK",
   PROVE_IDENTITY_CALLBACK_STATUS: "PROVE_IDENTITY_CALLBACK_STATUS",
@@ -68,16 +70,13 @@ const USER_JOURNEY_EVENTS = {
 
 const defaultContext = {
   isLatestTermsAndConditionsAccepted: true,
-  isUpliftRequired: false,
   isMfaRequired: false,
   isIdentityRequired: false,
-  prompt: OIDC_PROMPT.NONE,
   mfaMethodType: MFA_METHOD_TYPE.SMS,
   isMfaMethodVerified: true,
   isPasswordChangeRequired: false,
   isAccountRecoveryJourney: false,
   isPasswordResetJourney: false,
-  isReauthenticationRequired: false,
   isOnForcedPasswordResetJourney: false,
 };
 
@@ -91,26 +90,17 @@ const authStateMachine = createMachine<AuthStateContext>(
     states: {
       [PATH_NAMES.AUTHORIZE]: {
         on: {
-          [USER_JOURNEY_EVENTS.EXISTING_SESSION]: [
-            { target: [PATH_NAMES.ENTER_PASSWORD], cond: "requiresLogin" },
+          [USER_JOURNEY_EVENTS.SILENT_LOGIN]: [PATH_NAMES.AUTH_CODE],
+          [USER_JOURNEY_EVENTS.UPLIFT]: [
             {
               target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
-              cond: "requiresAuthAppUplift",
+              cond: "hasAuthAppMfa",
             },
-            { target: [PATH_NAMES.UPLIFT_JOURNEY], cond: "requiresUplift" },
-            {
-              target: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
-              cond: "isReauthenticationRequired",
-            },
-            { target: [PATH_NAMES.AUTH_CODE] },
+            { target: [PATH_NAMES.UPLIFT_JOURNEY] },
           ],
-          [USER_JOURNEY_EVENTS.NO_EXISTING_SESSION]: [
-            {
-              target: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
-              cond: "isReauthenticationRequired",
-            },
-            { target: [PATH_NAMES.SIGN_IN_OR_CREATE] },
-          ],
+          [USER_JOURNEY_EVENTS.LOGIN]: [PATH_NAMES.ENTER_PASSWORD],
+          [USER_JOURNEY_EVENTS.REAUTH]: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
+          [USER_JOURNEY_EVENTS.NO_EXISTING_SESSION]: [PATH_NAMES.SIGN_IN_OR_CREATE],
         },
       },
       [PATH_NAMES.SIGN_IN_OR_CREATE]: {
@@ -494,10 +484,6 @@ const authStateMachine = createMachine<AuthStateContext>(
               target: [PATH_NAMES.GET_SECURITY_CODES],
               cond: "isAccountPartCreated",
             },
-            {
-              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
-              cond: "requiresMFAAuthAppCode",
-            },
             { target: [INTERMEDIATE_STATES.SIGN_IN_END] },
           ],
         },
@@ -515,10 +501,6 @@ const authStateMachine = createMachine<AuthStateContext>(
             {
               target: [PATH_NAMES.GET_SECURITY_CODES],
               cond: "isAccountPartCreated",
-            },
-            {
-              target: [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE],
-              cond: "requiresMFAAuthAppCode",
             },
             { target: [INTERMEDIATE_STATES.SIGN_IN_END] },
           ],
@@ -673,17 +655,12 @@ const authStateMachine = createMachine<AuthStateContext>(
     guards: {
       needsLatestTermsAndConditions: (context) =>
         context.isLatestTermsAndConditionsAccepted === false,
-      requiresUplift: (context) => context.isUpliftRequired === true,
-      isReauthenticationRequired: (context) =>
-        !!context.isReauthenticationRequired,
-      requiresAuthAppUplift: (context) =>
-        context.isUpliftRequired === true &&
-        context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP,
       isMfaRequired: (context) =>
         context.isMfaRequired === true,
       isAccountPartCreated: (context) => context.isMfaMethodVerified === false,
       isIdentityRequired: (context) => context.isIdentityRequired === true,
-      requiresLogin: (context) => context.prompt === OIDC_PROMPT.LOGIN,
+      hasAuthAppMfa: (context) =>
+        context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP,
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
         context.isMfaRequired === true,

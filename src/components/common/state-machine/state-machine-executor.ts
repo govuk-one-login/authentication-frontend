@@ -18,8 +18,6 @@ export async function getNextPathAndUpdateJourney(
   const context = {
     isIdentityRequired: !!req.session.user?.isIdentityRequired,
     isLatestTermsAndConditionsAccepted: !!req.session.user?.isLatestTermsAndConditionsAccepted,
-    isUpliftRequired: !!req.session.user?.isUpliftRequired,
-    prompt: req.session.client?.prompt,
     ...ctx,
   }
 
