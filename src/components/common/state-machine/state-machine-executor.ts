@@ -23,6 +23,7 @@ export async function getNextPathAndUpdateJourney(
     isPasswordChangeRequired: !!req.session.user?.isPasswordChangeRequired,
     isPasswordResetJourney: !!req.session.user?.isPasswordResetJourney,
     isOnForcedPasswordResetJourney: !!req.session.user?.withinForcedPasswordResetJourney,
+    mfaMethodType: req.session.user?.mfaMethodType,
     ...ctx,
   }
 

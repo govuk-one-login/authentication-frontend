@@ -173,9 +173,7 @@ export function verifyCodePost(
     }
 
     res.redirect(
-      await getNextPathAndUpdateJourney(req, res, nextEvent, {
-        mfaMethodType: req.session.user.enterEmailMfaType,
-      })
+      await getNextPathAndUpdateJourney(req, res, nextEvent)
     );
   };
 }

@@ -156,9 +156,6 @@ export function authorizeGet(
       req,
       res,
       nextStateEvent,
-      {
-        mfaMethodType: startAuthResponse.data.user.mfaMethodType,
-      }
     );
 
     const cookieConsent = sanitize(startAuthResponse.data.user.cookieConsent);
@@ -251,6 +248,7 @@ function setSessionDataFromAuthResponse(
   req.session.user.isAuthenticated = startAuthResponse.data.user.authenticated;
   req.session.user.isUpliftRequired =
     startAuthResponse.data.user.upliftRequired;
+  req.session.user.mfaMethodType = startAuthResponse.data.user.mfaMethodType;
   if (startAuthResponse.data.featureFlags) {
     req.session.user.featureFlags = startAuthResponse.data.featureFlags;
   }
