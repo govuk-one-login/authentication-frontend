@@ -222,9 +222,6 @@ export function enterPasswordPost(
         req,
         res,
         USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
-        {
-          isMfaMethodVerified: userLogin.data.mfaMethodVerified,
-        }
       )
     );
   };

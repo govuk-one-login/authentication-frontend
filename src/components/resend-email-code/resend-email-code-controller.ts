@@ -116,9 +116,6 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
         req,
         res,
         USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
-        {
-          isAccountRecoveryJourney: accountRecoveryJourney,
-        }
       )
     );
   };

@@ -68,25 +68,22 @@ const USER_JOURNEY_EVENTS = {
   SELECT_AUTH_APP_MFA_METHOD: "SELECT_AUTH_APP_MFA_METHOD",
 };
 
-const defaultContext = {
-  isLatestTermsAndConditionsAccepted: true,
-  isMfaRequired: false,
-  isIdentityRequired: false,
-  mfaMethodType: MFA_METHOD_TYPE.SMS,
-  isMfaMethodVerified: true,
-  isPasswordChangeRequired: false,
-  isAccountRecoveryJourney: false,
-  isPasswordResetJourney: false,
-  isOnForcedPasswordResetJourney: false,
-};
-
-export type AuthStateContext = Partial<typeof defaultContext>;
+export interface AuthStateContext {
+  isAccountPartCreated: boolean;
+  isAccountRecoveryJourney: boolean;
+  isIdentityRequired: boolean;
+  isLatestTermsAndConditionsAccepted: boolean;
+  isMfaRequired: boolean;
+  isOnForcedPasswordResetJourney: boolean;
+  isPasswordChangeRequired: boolean;
+  isPasswordResetJourney: boolean;
+  mfaMethodType: MFA_METHOD_TYPE | undefined;
+}
 
 const authStateMachine = createMachine<AuthStateContext>(
   {
     id: "AUTH",
     initial: PATH_NAMES.AUTHORIZE,
-    context: defaultContext,
     states: {
       [PATH_NAMES.AUTHORIZE]: {
         on: {
@@ -657,7 +654,7 @@ const authStateMachine = createMachine<AuthStateContext>(
         context.isLatestTermsAndConditionsAccepted === false,
       isMfaRequired: (context) =>
         context.isMfaRequired === true,
-      isAccountPartCreated: (context) => context.isMfaMethodVerified === false,
+      isAccountPartCreated: (context) => context.isAccountPartCreated === true,
       isIdentityRequired: (context) => context.isIdentityRequired === true,
       hasAuthAppMfa: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP,

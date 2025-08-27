@@ -92,6 +92,7 @@ export function resetPasswordPost(
     }
 
     req.session.user.mfaMethodType = loginResponse.data.mfaMethodType;
+    req.session.user.isAccountPartCreated = !loginResponse.data.mfaMethodVerified;
     req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
       req.session.user.mfaMethods,
       { redactedPhoneNumber: loginResponse.data.redactedPhoneNumber }
@@ -109,9 +110,6 @@ export function resetPasswordPost(
         req,
         res,
         USER_JOURNEY_EVENTS.PASSWORD_CREATED,
-        {
-          isMfaMethodVerified: loginResponse.data.mfaMethodVerified,
-        }
       )
     );
   };
