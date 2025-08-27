@@ -301,15 +301,13 @@ async function startServer(app: Application): Promise<{
   closeServer: (callback?: (err?: Error) => void) => Promise<void>;
 }> {
   const port: number | string = process.env.PORT || 3000;
-  let server: Server;
-  let stopVitalSigns: () => void;
 
-  await new Promise<void>((resolve) => {
-    server = app
+  const server = await new Promise<Server>((resolve) => {
+    const server = app
       .listen(port, () => {
         logger.info(`Server listening on port ${port}`);
         app.emit("appStarted");
-        resolve();
+        resolve(server);
       })
       .on("error", (error: Error) => {
         logger.error(`Unable to start server because of ${error.message}`);
@@ -317,11 +315,11 @@ async function startServer(app: Application): Promise<{
 
     server.keepAliveTimeout = 61 * 1000;
     server.headersTimeout = 91 * 1000;
+  });
 
-    stopVitalSigns = frontendVitalSignsInit(server, {
-      staticPaths: [/^\/assets\/.*/, /^\/public\/.*/],
-      interval: getVitalSignsIntervalSeconds() * 1000,
-    });
+  const stopVitalSigns = frontendVitalSignsInit(server, {
+    staticPaths: [/^\/assets\/.*/, /^\/public\/.*/],
+    interval: getVitalSignsIntervalSeconds() * 1000,
   });
 
   const closeServer = async () => {
@@ -347,7 +345,7 @@ const shutdownProcess =
       logger.info("server closed");
       process.exit(0);
     } catch (error) {
-      logger.error(`error closing server: ${error.message}`);
+      logger.error(error, "error closing server");
       process.exit(1);
     }
   };

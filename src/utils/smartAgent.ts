@@ -3,6 +3,7 @@ import type { SmartAgentConfig } from "../config/smartAgent.js";
 import smartAgentConfig from "../config/smartAgent.js";
 import type { SmartAgentTicket } from "../components/contact-us/types.js";
 import { logger } from "./logger.js";
+
 export class SmartAgentService {
   private readonly webformID: string;
   private readonly apiKey: string;
@@ -39,7 +40,7 @@ export class SmartAgentService {
 
         logger.error(error.toJSON());
         throw new Error(
-          `Failed contact form submission to SmartAgent: ${error?.response?.status} ${error?.response?.statusText}. Ticket identifier: ${payload.customAttributes["sa-ticket-id"]}`
+          `Failed contact form submission to SmartAgent: ${error?.response?.status} ${error?.response?.statusText}. Ticket identifier: ${payload.customAttributes?.["sa-ticket-id"]}`
         );
       });
   }
