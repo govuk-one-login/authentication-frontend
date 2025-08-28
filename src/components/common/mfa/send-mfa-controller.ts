@@ -95,7 +95,7 @@ export function sendMfaGeneric(
       redirectPath = await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.VERIFY_MFA,
+        USER_JOURNEY_EVENTS.VERIFY_MFA
       );
     }
 

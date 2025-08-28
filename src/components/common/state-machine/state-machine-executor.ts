@@ -9,7 +9,7 @@ import { saveSessionState } from "../constants.js";
 export async function getNextPathAndUpdateJourney(
   req: Request,
   res: Response,
-  event: string,
+  event: string
 ): Promise<string> {
   const sessionId = res.locals.sessionId;
   const currentState = req.path;
@@ -18,13 +18,15 @@ export async function getNextPathAndUpdateJourney(
     isAccountPartCreated: !!req.session.user?.isAccountPartCreated,
     isAccountRecoveryJourney: !!req.session.user?.isAccountRecoveryJourney,
     isIdentityRequired: !!req.session.user?.isIdentityRequired,
-    isLatestTermsAndConditionsAccepted: !!req.session.user?.isLatestTermsAndConditionsAccepted,
+    isLatestTermsAndConditionsAccepted:
+      !!req.session.user?.isLatestTermsAndConditionsAccepted,
     isMfaRequired: !!req.session.user?.isMfaRequired,
-    isOnForcedPasswordResetJourney: !!req.session.user?.withinForcedPasswordResetJourney,
+    isOnForcedPasswordResetJourney:
+      !!req.session.user?.withinForcedPasswordResetJourney,
     isPasswordChangeRequired: !!req.session.user?.isPasswordChangeRequired,
     isPasswordResetJourney: !!req.session.user?.isPasswordResetJourney,
     mfaMethodType: req.session.user?.mfaMethodType,
-  }
+  };
 
   const nextState = getNextState(currentState, event, context);
 

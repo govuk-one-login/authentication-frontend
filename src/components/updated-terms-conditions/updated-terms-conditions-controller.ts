@@ -55,7 +55,7 @@ export function updatedTermsConditionsPost(
         await getNextPathAndUpdateJourney(
           req,
           res,
-          USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED,
+          USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED
         )
       );
     }

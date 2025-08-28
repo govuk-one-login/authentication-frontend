@@ -115,7 +115,7 @@ export const checkYourPhonePost = (
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED,
+        USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED
       )
     );
   };

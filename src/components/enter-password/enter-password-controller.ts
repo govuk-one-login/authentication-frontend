@@ -221,7 +221,7 @@ export function enterPasswordPost(
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
+        USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED
       )
     );
   };

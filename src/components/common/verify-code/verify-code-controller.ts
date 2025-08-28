@@ -9,11 +9,7 @@ import { BadRequestError } from "../../../utils/error.js";
 import type { VerifyCodeInterface } from "./types.js";
 import type { ExpressRouteFunc } from "../../../types.js";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine.js";
-import {
-  JOURNEY_TYPE,
-  NOTIFICATION_TYPE,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../../app.constants.js";
 import { supportAccountInterventions } from "../../../config.js";
 import type { AccountInterventionsInterface } from "../../account-intervention/types.js";
 import { isSuspendedWithoutUserActions } from "../../../utils/interventions.js";
@@ -172,8 +168,6 @@ export function verifyCodePost(
       if (possibleEarlyReturn) return;
     }
 
-    res.redirect(
-      await getNextPathAndUpdateJourney(req, res, nextEvent)
-    );
+    res.redirect(await getNextPathAndUpdateJourney(req, res, nextEvent));
   };
 }

@@ -42,7 +42,7 @@ export function createPasswordPost(
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.PASSWORD_CREATED,
+        USER_JOURNEY_EVENTS.PASSWORD_CREATED
       )
     );
   };

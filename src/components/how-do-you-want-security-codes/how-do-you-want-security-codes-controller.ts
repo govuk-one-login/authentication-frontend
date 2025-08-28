@@ -37,7 +37,7 @@ export function howDoYouWantSecurityCodesPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const mfaMethodId = req.body["mfa-method-id"];
-    const { email, isPasswordResetJourney, mfaMethods } = req.session.user;
+    const { email, mfaMethods } = req.session.user;
     const selectedMethod = mfaMethods.find(
       (method: MfaMethod) => method.id === mfaMethodId
     );
@@ -83,7 +83,7 @@ export function howDoYouWantSecurityCodesPost(
         await getNextPathAndUpdateJourney(
           req,
           res,
-          USER_JOURNEY_EVENTS.SELECT_SMS_MFA_METHOD,
+          USER_JOURNEY_EVENTS.SELECT_SMS_MFA_METHOD
         )
       );
     }
@@ -94,7 +94,7 @@ export function howDoYouWantSecurityCodesPost(
         await getNextPathAndUpdateJourney(
           req,
           res,
-          USER_JOURNEY_EVENTS.SELECT_AUTH_APP_MFA_METHOD,
+          USER_JOURNEY_EVENTS.SELECT_AUTH_APP_MFA_METHOD
         )
       );
     }

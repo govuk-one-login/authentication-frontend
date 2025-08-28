@@ -57,7 +57,7 @@ const getNextStateEvent = (req: Request): string => {
       return USER_JOURNEY_EVENTS.UPLIFT;
     }
     if (req.session.client?.prompt === OIDC_PROMPT.LOGIN) {
-      return USER_JOURNEY_EVENTS.LOGIN;
+      return USER_JOURNEY_EVENTS.PROMPT_LOGIN;
     }
     return USER_JOURNEY_EVENTS.SILENT_LOGIN;
   }
@@ -155,7 +155,7 @@ export function authorizeGet(
     let redirectPath = await getNextPathAndUpdateJourney(
       req,
       res,
-      nextStateEvent,
+      nextStateEvent
     );
 
     const cookieConsent = sanitize(startAuthResponse.data.user.cookieConsent);

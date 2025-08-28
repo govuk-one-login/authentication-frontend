@@ -127,7 +127,7 @@ export function setupAuthenticatorAppPost(
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED,
+        USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED
       )
     );
   };

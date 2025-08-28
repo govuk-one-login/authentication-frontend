@@ -1,9 +1,6 @@
 import type { State } from "xstate";
 import { createMachine } from "xstate";
-import {
-  MFA_METHOD_TYPE,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants.js";
 
 const INTERMEDIATE_STATES = {
   PASSWORD_VERIFIED: "password-verified",
@@ -24,7 +21,7 @@ const USER_JOURNEY_EVENTS = {
   START: "START",
   NO_EXISTING_SESSION: "NO_EXISTING_SESSION",
   REAUTH: "REAUTH",
-  LOGIN: "LOGIN",
+  PROMPT_LOGIN: "PROMPT_LOGIN",
   UPLIFT: "UPLIFT",
   SILENT_LOGIN: "SILENT_LOGIN",
   VERIFY_MFA: "VERIFY_MFA",
@@ -95,9 +92,11 @@ const authStateMachine = createMachine<AuthStateContext>(
             },
             { target: [PATH_NAMES.UPLIFT_JOURNEY] },
           ],
-          [USER_JOURNEY_EVENTS.LOGIN]: [PATH_NAMES.ENTER_PASSWORD],
+          [USER_JOURNEY_EVENTS.PROMPT_LOGIN]: [PATH_NAMES.ENTER_PASSWORD],
           [USER_JOURNEY_EVENTS.REAUTH]: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
-          [USER_JOURNEY_EVENTS.NO_EXISTING_SESSION]: [PATH_NAMES.SIGN_IN_OR_CREATE],
+          [USER_JOURNEY_EVENTS.NO_EXISTING_SESSION]: [
+            PATH_NAMES.SIGN_IN_OR_CREATE,
+          ],
         },
       },
       [PATH_NAMES.SIGN_IN_OR_CREATE]: {
@@ -651,33 +650,32 @@ const authStateMachine = createMachine<AuthStateContext>(
   {
     guards: {
       needsLatestTermsAndConditions: (context) =>
-        context.isLatestTermsAndConditionsAccepted === false,
-      isMfaRequired: (context) =>
-        context.isMfaRequired === true,
-      isAccountPartCreated: (context) => context.isAccountPartCreated === true,
-      isIdentityRequired: (context) => context.isIdentityRequired === true,
+        !context.isLatestTermsAndConditionsAccepted,
+      isMfaRequired: (context) => context.isMfaRequired,
+      isAccountPartCreated: (context) => context.isAccountPartCreated,
+      isIdentityRequired: (context) => context.isIdentityRequired,
       hasAuthAppMfa: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP,
       requiresMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
-        context.isMfaRequired === true,
+        context.isMfaRequired,
       requiresResetPasswordMFAAuthAppCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
-        context.isOnForcedPasswordResetJourney !== true,
+        !context.isOnForcedPasswordResetJourney,
       requiresResetPasswordMFASmsCode: (context) =>
         context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
-        context.isOnForcedPasswordResetJourney !== true,
-      isPasswordChangeRequired: (context) => !!context.isPasswordChangeRequired,
+        !context.isOnForcedPasswordResetJourney,
+      isPasswordChangeRequired: (context) => context.isPasswordChangeRequired,
       is2FASMSPasswordChangeRequired: (context) =>
-        context.isPasswordChangeRequired === true &&
+        context.isPasswordChangeRequired &&
         context.mfaMethodType === MFA_METHOD_TYPE.SMS &&
-        context.isMfaRequired === true,
+        context.isMfaRequired,
       is2FAAuthAppPasswordChangeRequired: (context) =>
-        context.isPasswordChangeRequired === true &&
+        context.isPasswordChangeRequired &&
         context.mfaMethodType === MFA_METHOD_TYPE.AUTH_APP &&
-        context.isMfaRequired === true,
-      isAccountRecoveryJourney: (context) => !!context.isAccountRecoveryJourney,
-      isPasswordResetJourney: (context) => !!context.isPasswordResetJourney,
+        context.isMfaRequired,
+      isAccountRecoveryJourney: (context) => context.isAccountRecoveryJourney,
+      isPasswordResetJourney: (context) => context.isPasswordResetJourney,
     },
   }
 );
