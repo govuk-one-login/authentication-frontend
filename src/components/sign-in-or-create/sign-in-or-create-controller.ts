@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 export async function signInOrCreateGet(
   req: Request,
@@ -29,12 +29,10 @@ export async function signInOrCreatePost(
   res.redirect(
     await getNextPathAndUpdateJourney(
       req,
-      req.path,
+      res,
       req.body.optionSelected === "create"
         ? USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT
-        : USER_JOURNEY_EVENTS.SIGN_IN,
-      null,
-      res.locals.sessionId
+        : USER_JOURNEY_EVENTS.SIGN_IN
     )
   );
 }

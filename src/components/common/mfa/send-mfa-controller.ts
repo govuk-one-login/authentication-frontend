@@ -5,11 +5,8 @@ import type {
   ExpressRouteFunc,
 } from "../../../types.js";
 import type { MfaServiceInterface } from "./types.js";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-  getNextPathAndUpdateJourney,
-} from "../constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../constants.js";
+import { getNextPathAndUpdateJourney } from "../state-machine/state-machine-executor.js";
 import { BadRequestError } from "../../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine.js";
 import { PATH_NAMES } from "../../../app.constants.js";
@@ -97,14 +94,13 @@ export function sendMfaGeneric(
     if (!isResendCodeRequest) {
       redirectPath = await getNextPathAndUpdateJourney(
         req,
-        PATH_NAMES.ENTER_MFA,
+        res,
         USER_JOURNEY_EVENTS.VERIFY_MFA,
         {
           isLatestTermsAndConditionsAccepted:
             req.session.user.isLatestTermsAndConditionsAccepted,
           isIdentityRequired: req.session.user.isIdentityRequired,
-        },
-        sessionId
+        }
       );
     }
 

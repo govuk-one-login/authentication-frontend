@@ -2,16 +2,13 @@ import type { Request, Response } from "express";
 import {
   COOKIE_CONSENT,
   COOKIES_PREFERENCES_SET,
-  PATH_NAMES,
   ERROR_LOG_LEVEL,
   COOKIES_CHANNEL,
   CHANNEL,
   APP_ENV_NAME,
 } from "../../app.constants.js";
-import {
-  getNextPathAndUpdateJourney,
-  ERROR_CODES,
-} from "../common/constants.js";
+import { ERROR_CODES } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { BadRequestError, QueryParamsError } from "../../utils/error.js";
 import type { ApiResponseResult, ExpressRouteFunc } from "../../types.js";
 import type { CookieConsentServiceInterface } from "../common/cookie-consent/types.js";
@@ -137,7 +134,7 @@ export function authorizeGet(
 
     let redirectPath = await getNextPathAndUpdateJourney(
       req,
-      PATH_NAMES.AUTHORIZE,
+      res,
       nextStateEvent,
       {
         requiresUplift: isUpliftRequired(req),
@@ -145,8 +142,7 @@ export function authorizeGet(
         prompt: req.session.client.prompt,
         mfaMethodType: startAuthResponse.data.user.mfaMethodType,
         isReauthenticationRequired: isReauth(req),
-      },
-      sessionId
+      }
     );
 
     const cookieConsent = sanitize(startAuthResponse.data.user.cookieConsent);

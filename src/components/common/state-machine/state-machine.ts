@@ -1,4 +1,4 @@
-import type { EventType, StateValue } from "xstate";
+import type { State } from "xstate";
 import { createMachine } from "xstate";
 import {
   MFA_METHOD_TYPE,
@@ -366,6 +366,11 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
+      [PATH_NAMES.RESEND_MFA_CODE]: {
+        on: {
+          [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
+        },
+      },
       [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE]: {
         on: {
           [USER_JOURNEY_EVENTS.AUTH_APP_CODE_VERIFIED]: [
@@ -705,18 +710,21 @@ const authStateMachine = createMachine<AuthStateContext>(
   }
 );
 
-function getNextState(
-  from: StateValue,
-  to: any,
-  ctx?: AuthStateContext
-): { value: string; events: EventType[]; meta: any } {
-  const t = authStateMachine.transition(from, to, ctx);
-  return {
-    value: t.value as string,
-    events: t.nextEvents,
-    meta: t.meta,
+// Extend the state interface to be more precise
+interface AuthState extends State<AuthStateContext> {
+  value: string;
+  meta: {
+    [id: string]: {
+      optionalPaths?: string[];
+    };
   };
 }
+
+const getNextState = (
+  stateId: string,
+  event: string,
+  ctx?: AuthStateContext
+): AuthState => authStateMachine.transition(stateId, event, ctx) as AuthState;
 
 export type AuthStateMachine = typeof authStateMachine;
 

@@ -11,11 +11,8 @@ import type {
   LockoutInformation,
 } from "./types.js";
 import type { SecurityCodeErrorType } from "../common/constants.js";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-  getNextPathAndUpdateJourney,
-} from "../common/constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { BadRequestError } from "../../utils/error.js";
 import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
@@ -65,10 +62,8 @@ export async function enterEmailCreateRequestGet(
   return res.redirect(
     await getNextPathAndUpdateJourney(
       req,
-      req.path,
-      USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT,
-      null,
-      res.locals.sessionId
+      res,
+      USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT
     )
   );
 }
@@ -174,15 +169,7 @@ export function enterEmailPost(
       ? USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS
       : USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND;
 
-    return res.redirect(
-      await getNextPathAndUpdateJourney(
-        req,
-        req.path,
-        nextState,
-        null,
-        sessionId
-      )
-    );
+    return res.redirect(await getNextPathAndUpdateJourney(req, res, nextState));
   };
 }
 
@@ -211,10 +198,8 @@ export function enterEmailCreatePost(
       return res.redirect(
         await getNextPathAndUpdateJourney(
           req,
-          req.path,
-          USER_JOURNEY_EVENTS.ACCOUNT_FOUND_CREATE,
-          null,
-          sessionId
+          res,
+          USER_JOURNEY_EVENTS.ACCOUNT_FOUND_CREATE
         )
       );
     }
@@ -258,10 +243,8 @@ export function enterEmailCreatePost(
     return res.redirect(
       await getNextPathAndUpdateJourney(
         req,
-        req.path,
-        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
-        null,
-        sessionId
+        res,
+        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE
       )
     );
   };

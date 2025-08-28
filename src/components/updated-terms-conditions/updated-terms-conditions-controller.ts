@@ -6,7 +6,7 @@ import type { UpdateProfileServiceInterface } from "../common/update-profile/typ
 import { UpdateType } from "../common/update-profile/types.js";
 import { updateProfileService } from "../common/update-profile/update-profile-service.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
-import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 export function updatedTermsConditionsGet(req: Request, res: Response): void {
   res.render("updated-terms-conditions/index.njk");
 }
@@ -54,12 +54,11 @@ export function updatedTermsConditionsPost(
       res.redirect(
         await getNextPathAndUpdateJourney(
           req,
-          req.path,
+          res,
           USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED,
           {
             isIdentityRequired: req.session.user.isIdentityRequired,
-          },
-          sessionId
+          }
         )
       );
     }

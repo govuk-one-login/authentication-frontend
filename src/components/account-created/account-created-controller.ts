@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { getNextPathAndUpdateJourney } from "../common/constants.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 export function accountCreatedGet(req: Request, res: Response): void {
   const { serviceType, name } = req.session.client;
@@ -16,9 +16,8 @@ export async function accountCreatedPost(
 ): Promise<void> {
   const nextPath = await getNextPathAndUpdateJourney(
     req,
-    req.path,
-    USER_JOURNEY_EVENTS.ACCOUNT_CREATED,
-    res.locals.sessionId
+    res,
+    USER_JOURNEY_EVENTS.ACCOUNT_CREATED
   );
 
   res.redirect(nextPath);
