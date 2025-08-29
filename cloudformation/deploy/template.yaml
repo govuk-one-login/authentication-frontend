@@ -466,7 +466,7 @@ Mappings:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
       frontendApiBaseUrl: https://auth.staging.account.gov.uk/
-      frontendAutoScalingMinCount: 9
+      frontendAutoScalingMinCount: 12
       frontendAutoScalingMaxCount: 240
       frontendTaskDefinitionCpu: 1024
       frontendTaskDefinitionMemory: 2048
