@@ -5621,10 +5621,10 @@ xss@1.0.15:
     commander "^2.20.3"
     cssfilter "0.0.10"
 
-xstate@4.26.1:
-  version "4.26.1"
-  resolved "https://registry.yarnpkg.com/xstate/-/xstate-4.26.1.tgz#4fc1afd153f88cf302a9ee2b758f6629e6a829b6"
-  integrity sha512-JLofAEnN26l/1vbODgsDa+Phqa61PwDlxWu8+2pK+YbXf+y9pQSDLRvcYH2H1kkeUBA5fGp+xFL/zfE8jNMw4g==
+xstate@5.20.2:
+  version "5.20.2"
+  resolved "https://registry.yarnpkg.com/xstate/-/xstate-5.20.2.tgz#627249d8aeaf19e045f0cbbdb24815d509fd2130"
+  integrity sha512-GZmLmc+WPKfFRxuTDAxCg0cUhS/ZnWaRD86DO8MKizeK4a050jd5k7UNnIQ2jJDWRig2/r0tmVXeezUNIhoz5Q==
 
 xtend@^4.0.1, xtend@~4.0.1:
   version "4.0.2"
