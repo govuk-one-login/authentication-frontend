@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { NOTIFICATION_TYPE } from "../../app.constants.js";
+import { NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants.js";
 import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
@@ -13,6 +13,8 @@ import { isLocked } from "../../utils/lock-helper.js";
 import { logger } from "../../utils/logger.js";
 import type { CheckEmailFraudBlockInterface } from "../check-email-fraud-block/types.js";
 import { checkEmailFraudBlockService } from "../check-email-fraud-block/check-email-fraud-block-service.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 const TEMPLATE_NAME = "check-your-email/index.njk";
 
 export function checkYourEmailGet(req: Request, res: Response): void {
@@ -42,31 +44,39 @@ export const checkYourEmailPost = (
       );
       return res.redirect(path);
     }
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    try {
-      const checkEmailFraudResponse =
-        await checkEmailFraudService.checkEmailFraudBlock(
-          req.session.user.email,
-          sessionId,
-          clientSessionId,
-          persistentSessionId,
-          req
+
+    const beforeSuccessRedirectCallback = async (
+      req: Request,
+      res: Response
+    ) => {
+      const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+      try {
+        const checkEmailFraudResponse =
+          await checkEmailFraudService.checkEmailFraudBlock(
+            req.session.user.email,
+            sessionId,
+            clientSessionId,
+            persistentSessionId,
+            req
+          );
+        if (checkEmailFraudResponse.data.isBlockedStatus === "DENY") {
+          res.redirect(
+            await getNextPathAndUpdateJourney(
+              req,
+              res,
+              USER_JOURNEY_EVENTS.CANNOT_USE_EMAIL_ADDRESS
+            )
+          );
+          return true;
+        }
+        logger.info(
+          `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
         );
-      if (checkEmailFraudResponse.data.isBlockedStatus) {
-        return res.redirect(
-          await getNextPathAndUpdateJourney(
-            req,
-            res,
-            USER_JOURNEY_EVENTS.CANNOT_USE_EMAIL_ADDRESS
-          )
-        );
+      } catch (e) {
+        logger.error("Error checking email fraud block", e);
       }
-      logger.info(
-        `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
-      );
-    } catch (e) {
-      logger.error("Error checking email fraud block", e);
-    }
+    };
+
     const verifyCodeRequest = verifyCodePost(
       service,
       accountInterventionsService,
@@ -75,6 +85,7 @@ export const checkYourEmailPost = (
         template: TEMPLATE_NAME,
         validationKey: "pages.checkYourEmail.code.validationError.invalidCode",
         validationErrorCode: ERROR_CODES.INVALID_VERIFY_EMAIL_CODE,
+        beforeSuccessRedirectCallback,
       }
     );
     return verifyCodeRequest(req, res);
