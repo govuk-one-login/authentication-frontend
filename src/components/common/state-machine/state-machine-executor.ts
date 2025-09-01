@@ -13,6 +13,7 @@ export async function getNextPathAndUpdateJourney(
 ): Promise<string> {
   const sessionId = res.locals.sessionId;
   const currentState = req.path;
+  const sessionState = req.session.user?.journey?.nextPath;
 
   const context: AuthStateContext = {
     isAccountPartCreated: !!req.session.user?.isAccountPartCreated,
@@ -42,7 +43,16 @@ export async function getNextPathAndUpdateJourney(
   await saveSessionState(req);
 
   req.log.info(
-    `User journey transitioned from ${currentState} to ${nextState.value} with session id ${sessionId}`
+    {
+      transition: {
+        from: currentState,
+        to: nextState.value,
+        event: event,
+        sessionState,
+      },
+      sessionId,
+    },
+    `User journey transition`
   );
 
   // If an invalid/unexpected event is supplied Stately will return the same state, likely indicating a bug
