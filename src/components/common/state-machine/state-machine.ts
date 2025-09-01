@@ -395,9 +395,6 @@ const authStateMachine = createMachine<AuthStateContext>(
       },
       [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL]: {
         on: {
-          [USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION]: [
-            PATH_NAMES.PASSWORD_RESET_REQUIRED,
-          ],
           [USER_JOURNEY_EVENTS.RESET_PASSWORD_CODE_VERIFIED]: [
             {
               target: [PATH_NAMES.RESET_PASSWORD_2FA_SMS],
