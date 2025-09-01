@@ -52,6 +52,15 @@ export const checkYourEmailPost = (
           persistentSessionId,
           req
         );
+      if (checkEmailFraudResponse.data.isBlockedStatus) {
+        return res.redirect(
+          await getNextPathAndUpdateJourney(
+            req,
+            res,
+            USER_JOURNEY_EVENTS.CANNOT_USE_EMAIL_ADDRESS
+          )
+        );
+      }
       logger.info(
         `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
       );
