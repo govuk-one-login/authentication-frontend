@@ -11,7 +11,9 @@ export interface CheckEmailFraudBlockInterface {
   ) => Promise<ApiResponseResult<CheckEmailFraudBlockResponse>>;
 }
 
+type IsBlockedStatus = "ALLOW" | "DENY" | "PENDING"
+
 export interface CheckEmailFraudBlockResponse extends DefaultApiResponse {
   email: string;
-  isBlockedStatus: string;
+  isBlockedStatus: IsBlockedStatus;
 }
