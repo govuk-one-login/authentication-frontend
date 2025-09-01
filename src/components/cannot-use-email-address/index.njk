@@ -1,0 +1,18 @@
+{% extends "common/layout/base.njk" %}
+{% set showBack = true %}
+{% set hrefBack = 'cannot-use-email-address' %}
+
+{% block content %}
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.cannotUseEmailAddress.header' | translate}}</h1>
+
+    <p class="govuk-body">{{'pages.cannotUseEmailAddress.paragraph1' | translate }}</p>
+
+    <h2 class="govuk-heading-m">
+        {{ 'pages.cannotUseEmailAddress.subHeader' | translate }}
+    </h2>
+    <p class="govuk-body">
+        {{'pages.cannotUseEmailAddress.whatYouCanDo.text1' | translate}}
+        <a href="{{'pages.cannotUseEmailAddress.whatYouCanDo.changeEmailLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.cannotUseEmailAddress.whatYouCanDo.changeEmailLinkText'| translate}}</a>
+        {{'pages.cannotUseEmailAddress.whatYouCanDo.text2' | translate}}
+    </p>
+{% endblock %}

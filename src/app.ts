@@ -156,7 +156,7 @@ function registerRoutes(app: express.Application) {
   }
   app.use(mfaResetWithIpvRouter);
   app.use(ipvCallbackRouter);
-  app.use(cannotUseEmailAddressRouter)
+  app.use(cannotUseEmailAddressRouter);
 
   // Development tools
   if (getAppEnv() !== APP_ENV_NAME.PROD && getAppEnv() !== APP_ENV_NAME.INT) {
