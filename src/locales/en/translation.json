@@ -726,6 +726,18 @@
       "signInLinkText": "sign in",
       "paragraph2": "to your GOV.UK One Login."
     },
+    "cannotUseEmailAddress": {
+      "title": "Sorry there is a problem - GOV.UK One Login",
+      "header": "Sorry, there's a problem",
+      "paragraph1": "You cannot use the email address you entered for GOV.UK One Login.",
+      "subHeader": "What you can do",
+      "whatYouCanDo": {
+        "text1": "You need to",
+        "changeEmailLinkHref": "/enter-email-create",
+        "changeEmailLinkText": "try another email address",
+        "text2": "to create a GOV.UK One Login."
+      }
+    },
     "updatedTermsAndConds": {
       "title": "We’ve updated our terms of use",
       "header": "We’ve updated our terms of use",
