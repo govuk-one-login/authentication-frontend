@@ -64,6 +64,7 @@ const USER_JOURNEY_EVENTS = {
   MFA_RESET_ATTEMPTED_VIA_AUTH_APP: "MFA_RESET_ATTEMPTED_VIA_AUTH_APP",
   SELECT_SMS_MFA_METHOD: "SELECT_SMS_MFA_METHOD",
   SELECT_AUTH_APP_MFA_METHOD: "SELECT_AUTH_APP_MFA_METHOD",
+  CANNOT_USE_EMAIL_ADDRESS: "CANNOT_USE_EMAIL_ADDRESS"
 };
 
 const defaultContext = {
@@ -205,6 +206,9 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.EMAIL_CODE_VERIFIED]: [
             PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
           ],
+          [USER_JOURNEY_EVENTS.CANNOT_USE_EMAIL_ADDRESS]: [
+            PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS
+          ]
         },
         meta: {
           optionalPaths: [
@@ -216,6 +220,9 @@ const authStateMachine = createMachine<AuthStateContext>(
             PATH_NAMES.SIGN_IN_OR_CREATE,
           ],
         },
+      },
+      [PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS]: {
+        [USER_JOURNEY_EVENTS.ENTER_EMAIL]: [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT]
       },
       [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]: {
         on: {

@@ -71,6 +71,7 @@ export const PATH_NAMES = {
   MFA_RESET_WITH_IPV: "/mfa-reset-with-ipv",
   IPV_CALLBACK: "/ipv/callback/authorize",
   OPEN_IN_WEB_BROWSER: "/open-one-login-in-web-browser",
+  CANNOT_USE_EMAIL_ADDRESS: "/cannot-use-email-address"
 };
 
 export const HREF_BACK = {
