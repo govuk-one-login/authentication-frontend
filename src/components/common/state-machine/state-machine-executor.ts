@@ -20,7 +20,7 @@ export async function getNextPathAndUpdateJourney(
     isAccountRecoveryJourney: !!req.session.user?.isAccountRecoveryJourney,
     isIdentityRequired: !!req.session.user?.isIdentityRequired,
     isLatestTermsAndConditionsAccepted:
-      !!req.session.user?.isLatestTermsAndConditionsAccepted,
+      req.session.user?.isLatestTermsAndConditionsAccepted ?? true,
     isMfaRequired: !!req.session.user?.isMfaRequired,
     isOnForcedPasswordResetJourney:
       !!req.session.user?.withinForcedPasswordResetJourney,
