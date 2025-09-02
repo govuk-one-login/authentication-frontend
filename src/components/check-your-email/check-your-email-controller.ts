@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants.js";
+import { NOTIFICATION_TYPE } from "../../app.constants.js";
 import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
@@ -55,7 +55,13 @@ export const checkYourEmailPost = (
           req
         );
       if (checkEmailFraudResponse.data.isBlockedStatus) {
-        return res.redirect(await getNextPathAndUpdateJourney(req, res, USER_JOURNEY_EVENTS.CANNOT_USE_EMAIL_ADDRESS))
+        return res.redirect(
+          await getNextPathAndUpdateJourney(
+            req,
+            res,
+            USER_JOURNEY_EVENTS.CANNOT_USE_EMAIL_ADDRESS
+          )
+        );
       }
       logger.info(
         `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
