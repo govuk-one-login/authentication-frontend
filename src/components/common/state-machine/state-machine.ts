@@ -222,9 +222,12 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
       },
       [PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS]: {
-        [USER_JOURNEY_EVENTS.ENTER_EMAIL]: [
-          PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
-        ],
+        meta: {
+          optionalPaths: [
+            PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
+            PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS
+          ],
+        },
       },
       [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]: {
         on: {
