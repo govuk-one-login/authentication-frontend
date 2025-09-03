@@ -99,7 +99,7 @@ async function getExistingUserAndPopulateSessionData(
     setUpAuthAppLocks(req, result.data.lockoutInformation);
   }
 
-  req.session.user.enterEmailMfaType = result.data.mfaMethodType;
+  req.session.user.mfaMethodType = result.data.mfaMethodType;
   req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
     req.session.user.mfaMethods,
     { redactedPhoneNumber: result.data.phoneNumberLastThree }

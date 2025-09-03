@@ -89,7 +89,7 @@ describe("reset password 2fa auth app controller", () => {
           success: true,
         }),
       } as unknown as VerifyMfaCodeInterface;
-      req.session.user.enterEmailMfaType = "AUTH-APP";
+      req.session.user.mfaMethodType = "AUTH-APP";
       req.body.code = "123456";
 
       await resetPassword2FAAuthAppPost(fakeService)(
@@ -109,7 +109,7 @@ describe("reset password 2fa auth app controller", () => {
           },
         }),
       } as unknown as VerifyMfaCodeInterface;
-      req.session.user.enterEmailMfaType = "AUTH-APP";
+      req.session.user.mfaMethodType = "AUTH-APP";
       req.body.code = "123456";
 
       await resetPassword2FAAuthAppPost(fakeService)(

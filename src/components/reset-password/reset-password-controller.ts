@@ -91,6 +91,7 @@ export function resetPasswordPost(
       );
     }
 
+    req.session.user.mfaMethodType = loginResponse.data.mfaMethodType;
     req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
       req.session.user.mfaMethods,
       { redactedPhoneNumber: loginResponse.data.redactedPhoneNumber }
@@ -107,15 +108,7 @@ export function resetPasswordPost(
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.PASSWORD_CREATED,
-        {
-          isIdentityRequired: req.session.user.isIdentityRequired,
-          requiresTwoFactorAuth: false,
-          isLatestTermsAndConditionsAccepted:
-            req.session.user.isLatestTermsAndConditionsAccepted,
-          mfaMethodType: loginResponse.data.mfaMethodType,
-          isMfaMethodVerified: loginResponse.data.mfaMethodVerified,
-        }
+        USER_JOURNEY_EVENTS.PASSWORD_CREATED
       )
     );
   };

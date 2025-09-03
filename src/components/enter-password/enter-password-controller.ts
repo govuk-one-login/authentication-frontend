@@ -168,6 +168,7 @@ export function enterPasswordPost(
     req.session.user.activeMfaMethodId = userLogin.data.mfaMethods.find(
       (method: MfaMethod) => method.priority === MfaMethodPriority.DEFAULT
     )?.id;
+    req.session.user.isMfaRequired = userLogin.data.mfaRequired;
     req.session.user.isAccountPartCreated = !userLogin.data.mfaMethodVerified;
     req.session.user.isLatestTermsAndConditionsAccepted =
       userLogin.data.latestTermsAndConditionsAccepted;
@@ -220,15 +221,7 @@ export function enterPasswordPost(
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
-        {
-          isLatestTermsAndConditionsAccepted:
-            req.session.user.isLatestTermsAndConditionsAccepted,
-          requiresTwoFactorAuth: userLogin.data.mfaRequired,
-          mfaMethodType: userLogin.data.mfaMethodType,
-          isMfaMethodVerified: userLogin.data.mfaMethodVerified,
-          isPasswordChangeRequired: isPasswordChangeRequired,
-        }
+        USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED
       )
     );
   };
