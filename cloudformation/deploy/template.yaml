@@ -320,21 +320,21 @@ Conditions:
           - !Condition UseSubEnvironment
           - Fn::Equals:
               - !FindInMap [
-                EnvironmentConfiguration,
-                !Ref SubEnvironment,
-                ShowWalletContactForm,
-                DefaultValue: "No",
-              ]
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  ShowWalletContactForm,
+                  DefaultValue: "No",
+                ]
               - "Yes"
       - Fn::And:
           - !Condition NotSubEnvironment
           - Fn::Equals:
               - !FindInMap [
-                EnvironmentConfiguration,
-                !Ref Environment,
-                ShowWalletContactForm,
-                DefaultValue: "No",
-              ]
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  ShowWalletContactForm,
+                  DefaultValue: "No",
+                ]
               - "Yes"
 
 Mappings:
@@ -629,14 +629,7 @@ Globals:
       - !Ref CodeSigningConfigArn
       - !Ref AWS::NoValue
     Layers:
-      - !Sub
-        - "{{resolve:secretsmanager:${SecretArn}:SecretString:JAVA_LAYER}}"
-        - SecretArn:
-            !FindInMap [
-              EnvironmentConfiguration,
-              !Ref Environment,
-              dynatraceSecretArn,
-            ]
+      - arn:aws:lambda:eu-west-2:216552277552:layer:Dynatrace_OneAgent_1_313_36_20250507-184408_with_collector_java:1
 
 Resources:
   FrontendECSCluster:
