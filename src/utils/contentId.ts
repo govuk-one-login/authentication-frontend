@@ -126,6 +126,7 @@ const CONTENT_IDS: {
   [PATH_NAMES.UNAVAILABLE_TEMPORARY]: () =>
     "895deac9-e21d-4991-b1f7-9509c2d8c10e",
   [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS]: () => "",
+  [PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS]: () => "9fd51f56-0ca9-4591-93fc-5b2896553b9f"
 };
 
 export function getContentId(
