@@ -225,7 +225,7 @@ const authStateMachine = createMachine<AuthStateContext>(
         meta: {
           optionalPaths: [
             PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
-            PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS
+            PATH_NAMES.SIGN_IN_OR_CREATE,
           ],
         },
       },
