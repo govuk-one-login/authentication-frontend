@@ -33,7 +33,7 @@
 }}
 
 <h1 class="govuk-heading-s govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.createPassword.termsAndConditions.header' | translate}}</h1>
-
+<h2>{{ email }}</h2>
 <p class="govuk-body">
     {{ 'pages.createPassword.termsAndConditions.paragraph1.text1' | translate }}<a {% if not isApp %}target="_blank" rel="noopener noreferrer"{% endif %} href="{{ 'pages.createPassword.termsAndConditions.paragraph1.termsAndConditionsHref' | translate }}" class="govuk-link">{% if isApp %}{{ 'pages.createPassword.termsAndConditions.paragraph1.termsAndConditionsTextApp' | translate }}{% else %}{{ 'pages.createPassword.termsAndConditions.paragraph1.termsAndConditionsText' | translate }}{% endif %}</a>{{ 'pages.createPassword.termsAndConditions.paragraph1.text2' | translate }}
 </p>

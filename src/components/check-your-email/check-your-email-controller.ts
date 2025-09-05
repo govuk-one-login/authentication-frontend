@@ -59,6 +59,9 @@ export const checkYourEmailPost = (
             persistentSessionId,
             req
           );
+        logger.info(
+          `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
+        );
         if (checkEmailFraudResponse.data.isBlockedStatus === "DENY") {
           res.redirect(
             await getNextPathAndUpdateJourney(
@@ -69,9 +72,6 @@ export const checkYourEmailPost = (
           );
           return true;
         }
-        logger.info(
-          `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
-        );
       } catch (e) {
         logger.error("Error checking email fraud block", e);
       }
