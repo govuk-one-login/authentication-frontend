@@ -150,7 +150,7 @@
     "nock": "14.0.10",
     "nodemon": "3.1.10",
     "pino-pretty": "13.0.0",
-    "sass": "1.86.3",
+    "sass": "1.91.0",
     "sinon": "21.0.0",
     "sinon-chai": "3.7.0",
     "supertest": "7.1.4",
