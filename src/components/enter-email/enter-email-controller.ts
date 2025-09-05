@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import {
   JOURNEY_TYPE,
-  NOTIFICATION_TYPE,
+  NOTIFICATION_TYPE, PATH_NAMES,
   WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS,
 } from "../../app.constants.js";
 import type { ExpressRouteFunc } from "../../types.js";
@@ -39,6 +39,7 @@ const BLOCKED_TEMPLATE =
 const EMAIL_ERROR_KEY = "pages.reEnterEmailAccount.enterYourEmailAddressError";
 
 export function enterEmailGet(req: Request, res: Response): void {
+  console.error('in here enterEmailGet', req.session.user.journey)
   const isReAuthenticationRequired = req.session.user.reauthenticate;
 
   if (supportReauthentication() && isReAuthenticationRequired) {
@@ -52,6 +53,14 @@ export function enterEmailGet(req: Request, res: Response): void {
 }
 
 export function enterEmailCreateGet(req: Request, res: Response): void {
+  //would pass in empty email if going from here I think
+  console.error('in here enterEmaiLCreateGet', req.query)
+  if (req.session.user.journey.nextPath === PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS) {
+    console.error("avengers assemble")
+    return res.render("enter-email/index-create-account.njk", {
+      email: "avengers"
+    });
+  }
   return res.render("enter-email/index-create-account.njk");
 }
 
