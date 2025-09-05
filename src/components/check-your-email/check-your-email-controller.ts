@@ -14,6 +14,7 @@ import type { CheckEmailFraudBlockInterface } from "../check-email-fraud-block/t
 import { checkEmailFraudBlockService } from "../check-email-fraud-block/check-email-fraud-block-service.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+
 const TEMPLATE_NAME = "check-your-email/index.njk";
 
 export function checkYourEmailGet(req: Request, res: Response): void {
@@ -58,6 +59,9 @@ export const checkYourEmailPost = (
             persistentSessionId,
             req
           );
+        req.log.info(
+          `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
+        );
         if (checkEmailFraudResponse.data.isBlockedStatus === "DENY") {
           res.redirect(
             await getNextPathAndUpdateJourney(
@@ -68,9 +72,6 @@ export const checkYourEmailPost = (
           );
           return true;
         }
-        req.log.info(
-          `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
-        );
       } catch (e) {
         req.log.error("Error checking email fraud block", e);
       }

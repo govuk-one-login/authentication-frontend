@@ -733,7 +733,7 @@
       "subHeader": "Beth allwch chi ei wneud",
       "whatYouCanDo": {
         "text1": "Mae angen i chi",
-        "changeEmailLinkHref": "/enter-email-create",
+        "changeEmailLinkHref": "/cannot-use-email-address-continue",
         "changeEmailLinkText": "geisio defnyddio cyfeiriad e-bost arall",
         "text2": "i greu GOV.UK One Login."
       }

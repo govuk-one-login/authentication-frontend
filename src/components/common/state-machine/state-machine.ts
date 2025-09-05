@@ -64,6 +64,8 @@ const USER_JOURNEY_EVENTS = {
   SELECT_SMS_MFA_METHOD: "SELECT_SMS_MFA_METHOD",
   SELECT_AUTH_APP_MFA_METHOD: "SELECT_AUTH_APP_MFA_METHOD",
   CANNOT_USE_EMAIL_ADDRESS: "CANNOT_USE_EMAIL_ADDRESS",
+  ENTER_EMAIL_ADDRESS_AFTER_EXPERIAN_CHECK:
+    "ENTER_EMAIL_ADDRESS_AFTER_EXPERIAN_CHECK",
 };
 
 export interface AuthStateContext {
@@ -208,9 +210,16 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
       },
       [PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS]: {
-        [USER_JOURNEY_EVENTS.ENTER_EMAIL]: [
-          PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
-        ],
+        meta: {
+          optionalPaths: [PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS_CONTINUE],
+        },
+      },
+      [PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS_CONTINUE]: {
+        on: {
+          [USER_JOURNEY_EVENTS.ENTER_EMAIL]: [
+            PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
+          ],
+        },
       },
       [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]: {
         on: {

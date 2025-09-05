@@ -733,7 +733,7 @@
       "subHeader": "What you can do",
       "whatYouCanDo": {
         "text1": "You need to",
-        "changeEmailLinkHref": "/enter-email-create",
+        "changeEmailLinkHref": "/cannot-use-email-address-continue",
         "changeEmailLinkText": "try another email address",
         "text2": "to create a GOV.UK One Login."
       }

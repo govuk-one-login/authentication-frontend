@@ -72,6 +72,7 @@ export const PATH_NAMES = {
   IPV_CALLBACK: "/ipv/callback/authorize",
   OPEN_IN_WEB_BROWSER: "/open-one-login-in-web-browser",
   CANNOT_USE_EMAIL_ADDRESS: "/cannot-use-email-address",
+  CANNOT_USE_EMAIL_ADDRESS_CONTINUE: "/cannot-use-email-address-continue",
 };
 
 export const HREF_BACK = {
