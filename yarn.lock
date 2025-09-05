@@ -2763,10 +2763,10 @@ domutils@^3.0.1, domutils@^3.1.0:
     domelementtype "^2.3.0"
     domhandler "^5.0.3"
 
-dotenv@17.2.1:
-  version "17.2.1"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.2.1.tgz#6f32e10faf014883515538dc922a0fb8765d9b32"
-  integrity sha512-kQhDYKZecqnM0fCnzI5eIv5L4cAe/iRI+HqMbO/hbRdTAeXDG+M9FjipUxNfbARuEg4iHIbhnhs78BCHNbSxEQ==
+dotenv@17.2.2:
+  version "17.2.2"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.2.2.tgz#4010cfe1c2be4fc0f46fd3d951afb424bc067ac6"
+  integrity sha512-Sf2LSQP+bOlhKWWyhFsn0UsfdK/kCWRv1iuA2gXAwt3dyNabr6QSj00I2V10pidqz69soatm9ZwZvpQMTIOd5Q==
 
 dunder-proto@^1.0.1:
   version "1.0.1"
@@ -2978,10 +2978,10 @@ eslint@9.31.0:
     natural-compare "^1.4.0"
     optionator "^0.9.3"
 
-esmock@2.7.1:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/esmock/-/esmock-2.7.1.tgz#b425fe78c41163d92a74c245ad151c45b224bc0b"
-  integrity sha512-YgtZ6TSwRbdqFLkJwxVCYkt0rzKpjHb0tbDqSjWvbkm8Uy5Tm5W6ixICb3FVRkAd1uQlLOXiIn7OPY4F4f18cw==
+esmock@2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/esmock/-/esmock-2.7.2.tgz#af8f0116d1b550809f46d2fc36fc24c88c73faf7"
+  integrity sha512-/ilhkWbW4FXgQpRbS0LZpKG1AFkiFZkmapP/868Lqa4hSKgKVtMilFXlQrIMssLzyvpeDVg2Q9L3VInnqYoTAg==
 
 espree@^10.0.1, espree@^10.4.0:
   version "10.4.0"
@@ -3473,10 +3473,10 @@ gopd@^1.2.0:
   resolved "https://registry.yarnpkg.com/gopd/-/gopd-1.2.0.tgz#89f56b8217bdbc8802bd299df6d7f1081d7e51a1"
   integrity sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==
 
-govuk-frontend@5.11.1:
-  version "5.11.1"
-  resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-5.11.1.tgz#06cd64d2bbe0bfd26aa8ce393a348bff14c59f4f"
-  integrity sha512-hJJFpaer4MZLvz/2F9RZ7xZ6FqlzpxL9aw6YWOGK3F1tn419xj2WcVXwOC8Bcj/dc/LanknbWJDGkb+IdkuhTQ==
+govuk-frontend@5.11.2:
+  version "5.11.2"
+  resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-5.11.2.tgz#4c6f5f9617636c002f27c99ba62d2631be7ed19f"
+  integrity sha512-eHV8EMxYNjc+omFhB0HktQ3QmA3ZRdDsgRDlUIik+TpUHerR3XKXpo4zh/OGO2/C2mz65cX0XT0k4QrRFJZU8Q==
 
 graceful-fs@^4.1.2:
   version "4.2.11"
@@ -3938,10 +3938,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-libphonenumber-js@1.12.10:
-  version "1.12.10"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.12.10.tgz#525f7c9ffaea40c21463d3906f52ec3209ea5945"
-  integrity sha512-E91vHJD61jekHHR/RF/E83T/CMoaLXT7cwYA75T4gim4FZjnM6hbJjVIGg7chqlSqRsSvQ3izGmOjHy1SQzcGQ==
+libphonenumber-js@1.12.15:
+  version "1.12.15"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.12.15.tgz#548da03454e94f2fa445fe4fc9fd70c44c0ce16b"
+  integrity sha512-TMDCtIhWUDHh91wRC+wFuGlIzKdPzaTUHHVrIZ3vPUEoNaXFLrsIQ1ZpAeZeXApIF6rvDksMTvjrIQlLKaYxqQ==
 
 locate-path@^5.0.0:
   version "5.0.0"
@@ -4105,10 +4105,10 @@ mkdirp@^1.0.4:
   resolved "https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-mocha@11.7.1:
-  version "11.7.1"
-  resolved "https://registry.yarnpkg.com/mocha/-/mocha-11.7.1.tgz#91948fecd624fb4bd154ed260b7e1ad3910d7c7a"
-  integrity sha512-5EK+Cty6KheMS/YLPPMJC64g5V61gIR25KsRItHw6x4hEKT6Njp1n9LOlH4gpevuwMVS66SXaBBpg+RWZkza4A==
+mocha@11.7.2:
+  version "11.7.2"
+  resolved "https://registry.yarnpkg.com/mocha/-/mocha-11.7.2.tgz#3c0079fe5cc2f8ea86d99124debcc42bb1ab22b5"
+  integrity sha512-lkqVJPmqqG/w5jmmFtiRvtA2jkDyNVUcefFJKb2uyX4dekk8Okgqop3cgbFiaIvj8uCRJVTP5x9dfxGyXm2jvQ==
   dependencies:
     browser-stdout "^1.3.1"
     chokidar "^4.0.1"
@@ -4156,10 +4156,10 @@ negotiator@0.6.3:
   resolved "https://registry.npmjs.org/negotiator/-/negotiator-0.6.3.tgz"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
 
-nock@14.0.9:
-  version "14.0.9"
-  resolved "https://registry.yarnpkg.com/nock/-/nock-14.0.9.tgz#5064d454cbe32fde67b23aab083f9417ca556370"
-  integrity sha512-aVIPgW9WVyb3XPCqfrwETc+hazxzgt8/QvARHAhC6BYHtTsZONUjlXoIB8EGmwqUBkKvOew4yqkGRBmwctdCrw==
+nock@14.0.10:
+  version "14.0.10"
+  resolved "https://registry.yarnpkg.com/nock/-/nock-14.0.10.tgz#d6f4e73e1c6b4b7aa19d852176e68940e15cd19d"
+  integrity sha512-Q7HjkpyPeLa0ZVZC5qpxBt5EyLczFJ91MEewQiIi9taWuA0KB/MDJlUWtON+7dGouVdADTQsf9RA7TZk6D8VMw==
   dependencies:
     "@mswjs/interceptors" "^0.39.5"
     json-stringify-safe "^5.0.1"
