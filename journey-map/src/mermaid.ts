@@ -1,7 +1,8 @@
 import type { AnyEventObject, StateNode, TransitionDefinition } from "xstate";
-import type {
+import {
   AuthStateContext,
   AuthStateMachine,
+  INTERMEDIATE_STATES,
 } from "di-auth/src/components/common/state-machine/state-machine.js";
 import { authStateMachine } from "di-auth/src/components/common/state-machine/state-machine.js";
 import { pages } from "di-auth/src/components/templates/pages.js";
@@ -26,11 +27,15 @@ interface Transition {
 
 const getMermaidHeader = (graphDirection: "TD" | "LR"): string =>
   `flowchart ${graphDirection}
-    classDef page fill:#ae8,stroke:#000;`;
+    classDef page fill:#ae8,stroke:#000;
+    classDef intermediateState fill:#ec8,stroke:#000`;
 
 const renderState = ({ name, id }: State): string => {
   if (pages[name]) {
     return `    ${id}(${name}):::page`;
+  }
+  if (Object.values(INTERMEDIATE_STATES).includes(name)) {
+    return `    ${id}(${name}):::intermediateState`;
   }
   return `    ${id}(${name})`;
 };
