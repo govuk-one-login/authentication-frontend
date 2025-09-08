@@ -727,9 +727,9 @@
       "paragraph2": "i’ch GOV.UK One Login."
     },
     "cannotUseEmailAddress": {
-      "title": "Mae'n ddrwg gennym, mae yna broblem - GOV.UK One Login",
-      "header": "Mae'n ddrwg gennym, mae yna broblem",
-      "paragraph1": "Ni allwch ddefnyddio'r cyfeiriad e-bost rydych wedi ei roi ar gyfer GOV.UK One Login.",
+      "title": "Mae’n ddrwg gennym mae yna broblem",
+      "header": "Mae’n ddrwg gennym, mae yna broblem",
+      "paragraph1": "Ni allwch ddefnyddio’r cyfeiriad e-bost rydych wedi ei roi ar gyfer GOV.UK One Login.",
       "subHeader": "Beth allwch chi ei wneud",
       "whatYouCanDo": {
         "text1": "Mae angen i chi",
