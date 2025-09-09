@@ -81,6 +81,8 @@ export interface UserSession {
   isAccountRecoveryJourney?: boolean;
   accountRecoveryVerifiedMfaType?: string;
   reauthenticate?: string;
+  // TODO: Delete this in follow-up PR
+  enterEmailMfaType?: string;
   withinForcedPasswordResetJourney?: boolean;
   passwordResetTime?: number;
   isPasswordResetJourney?: boolean;

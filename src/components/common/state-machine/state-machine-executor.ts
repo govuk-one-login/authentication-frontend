@@ -26,7 +26,9 @@ export async function getNextPathAndUpdateJourney(
       !!req.session.user?.withinForcedPasswordResetJourney,
     isPasswordChangeRequired: !!req.session.user?.isPasswordChangeRequired,
     isPasswordResetJourney: !!req.session.user?.isPasswordResetJourney,
-    mfaMethodType: req.session.user?.mfaMethodType,
+    // TODO: Consolidate to just mfaMethodType in follow-up PR
+    mfaMethodType:
+      req.session.user?.mfaMethodType ?? req.session.user?.enterEmailMfaType,
   };
 
   const nextState = getNextState(currentState, event, context);
