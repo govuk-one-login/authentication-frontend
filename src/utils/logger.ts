@@ -13,7 +13,6 @@ const logger = pino({
         method: req.method,
         url: req.url,
         from: getRefererFrom(req.headers.referer),
-        headers: req.headers,
       };
     },
     res: (res: Response) => {
