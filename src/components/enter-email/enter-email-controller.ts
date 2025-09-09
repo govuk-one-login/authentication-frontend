@@ -99,8 +99,6 @@ async function getExistingUserAndPopulateSessionData(
     setUpAuthAppLocks(req, result.data.lockoutInformation);
   }
 
-  // TODO: Delete this in follow-up PR
-  req.session.user.enterEmailMfaType = result.data.mfaMethodType;
   req.session.user.mfaMethodType = result.data.mfaMethodType;
   req.session.user.mfaMethods = upsertDefaultSmsMfaMethod(
     req.session.user.mfaMethods,
