@@ -465,7 +465,7 @@ Mappings:
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
-      frontendApiBaseUrl: https://auth.staging.account.gov.uk/
+      frontendApiBaseUrl: https://z02rnzbqw8-vpce-07078f5f005fe5efc.execute-api.eu-west-2.amazonaws.com/staging/
       frontendAutoScalingMinCount: 12
       frontendAutoScalingMaxCount: 240
       frontendTaskDefinitionCpu: 1024
