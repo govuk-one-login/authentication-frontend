@@ -68,7 +68,7 @@ describe("reset password check email controller", () => {
         res as Response
       );
 
-      expect(req.session.user.mfaMethodType).to.eq("SMS");
+      expect(req.session.user.enterEmailMfaType).to.eq("SMS");
       expect(req.session.user.mfaMethods).to.deep.eq(expectedMfaMethods);
       expect(req.session.user.activeMfaMethodId).to.equal(
         TEST_DEFAULT_MFA_METHOD_ID
@@ -284,7 +284,7 @@ describe("reset password check email controller", () => {
       const fakeService = fakeVerifyCodeServiceHelper(true);
       const fakeInterventionsService =
         accountInterventionsFakeHelper(noInterventions);
-      req.session.user.mfaMethodType = "SMS";
+      req.session.user.enterEmailMfaType = "SMS";
       await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
         req as Request,
         res as Response
@@ -299,7 +299,7 @@ describe("reset password check email controller", () => {
       const fakeService = fakeVerifyCodeServiceHelper(true);
       const fakeInterventionsService =
         accountInterventionsFakeHelper(noInterventions);
-      req.session.user.mfaMethodType = "AUTH_APP";
+      req.session.user.enterEmailMfaType = "AUTH_APP";
       await resetPasswordCheckEmailPost(fakeService, fakeInterventionsService)(
         req as Request,
         res as Response
@@ -350,9 +350,9 @@ describe("reset password check email controller", () => {
     });
 
     ["AUTH_APP", "SMS"].forEach((method) => {
-      it(`should redirect to /reset-password without calling the account interventions service when session.user.withinForcedPasswordResetJourney === true and mfaMethodType == ${method}`, async () => {
+      it(`should redirect to /reset-password without calling the account interventions service when session.user.withinForcedPasswordResetJourney === true and enterEmailMfaType == ${method}`, async () => {
         req.session.user.withinForcedPasswordResetJourney = true;
-        req.session.user.mfaMethodType = method;
+        req.session.user.enterEmailMfaType = method;
 
         const fakeInterventionsService =
           accountInterventionsFakeHelper(noInterventions);

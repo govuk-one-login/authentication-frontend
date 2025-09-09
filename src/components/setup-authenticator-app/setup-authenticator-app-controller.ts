@@ -103,9 +103,12 @@ export function setupAuthenticatorAppPost(
       req.session.user.mfaMethods
     );
 
+    const accountRecoveryEnabledJourney =
+      isAccountRecoveryJourneyAndPermitted(req);
+
     let notificationType = NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
 
-    if (isAccountRecoveryJourneyAndPermitted(req)) {
+    if (accountRecoveryEnabledJourney) {
       req.session.user.accountRecoveryVerifiedMfaType =
         MFA_METHOD_TYPE.AUTH_APP;
       notificationType =
@@ -127,7 +130,11 @@ export function setupAuthenticatorAppPost(
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED
+        USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED,
+        {
+          isIdentityRequired: req.session.user.isIdentityRequired,
+          isAccountRecoveryJourney: accountRecoveryEnabledJourney,
+        }
       )
     );
   };

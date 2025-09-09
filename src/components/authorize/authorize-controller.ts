@@ -6,7 +6,6 @@ import {
   COOKIES_CHANNEL,
   CHANNEL,
   APP_ENV_NAME,
-  OIDC_PROMPT,
 } from "../../app.constants.js";
 import { ERROR_CODES } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
@@ -44,27 +43,6 @@ const decryptionService =
   getAppEnv() === APP_ENV_NAME.LOCAL && getLocalEncryptionKey()
     ? new LocalDecryptionService()
     : new KmsDecryptionService();
-
-const getNextStateEvent = (req: Request): string => {
-  // Reauth supersedes all other journeys
-  if (isReauth(req)) {
-    return USER_JOURNEY_EVENTS.REAUTH;
-  }
-
-  // Authenticated users may still need to enter one or more credentials
-  if (req.session.user.isAuthenticated) {
-    if (isUpliftRequired(req)) {
-      return USER_JOURNEY_EVENTS.UPLIFT;
-    }
-    if (req.session.client?.prompt === OIDC_PROMPT.LOGIN) {
-      return USER_JOURNEY_EVENTS.PROMPT_LOGIN;
-    }
-    return USER_JOURNEY_EVENTS.SILENT_LOGIN;
-  }
-
-  // Default
-  return USER_JOURNEY_EVENTS.NO_EXISTING_SESSION;
-};
 
 export function authorizeGet(
   authService: AuthorizeServiceInterface = authorizeService(),
@@ -150,12 +128,21 @@ export function authorizeGet(
     logger.info(`Reauth claim length ${claims.reauthenticate?.length}`);
     logger.info(`Support for reauth is enabled ${supportReauthentication()}`);
 
-    const nextStateEvent = getNextStateEvent(req);
+    const nextStateEvent = req.session.user.isAuthenticated
+      ? USER_JOURNEY_EVENTS.EXISTING_SESSION
+      : USER_JOURNEY_EVENTS.NO_EXISTING_SESSION;
 
     let redirectPath = await getNextPathAndUpdateJourney(
       req,
       res,
-      nextStateEvent
+      nextStateEvent,
+      {
+        requiresUplift: isUpliftRequired(req),
+        isIdentityRequired: req.session.user.isIdentityRequired,
+        prompt: req.session.client.prompt,
+        mfaMethodType: startAuthResponse.data.user.mfaMethodType,
+        isReauthenticationRequired: isReauth(req),
+      }
     );
 
     const cookieConsent = sanitize(startAuthResponse.data.user.cookieConsent);
@@ -248,7 +235,6 @@ function setSessionDataFromAuthResponse(
   req.session.user.isAuthenticated = startAuthResponse.data.user.authenticated;
   req.session.user.isUpliftRequired =
     startAuthResponse.data.user.upliftRequired;
-  req.session.user.mfaMethodType = startAuthResponse.data.user.mfaMethodType;
   if (startAuthResponse.data.featureFlags) {
     req.session.user.featureFlags = startAuthResponse.data.featureFlags;
   }

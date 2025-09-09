@@ -81,7 +81,6 @@ export interface UserSession {
   isAccountRecoveryJourney?: boolean;
   accountRecoveryVerifiedMfaType?: string;
   reauthenticate?: string;
-  // TODO: Delete this in follow-up PR
   enterEmailMfaType?: string;
   withinForcedPasswordResetJourney?: boolean;
   passwordResetTime?: number;
@@ -90,7 +89,6 @@ export interface UserSession {
   isVerifyEmailCodeResendRequired?: boolean;
   channel?: string;
   mfaMethodType?: string;
-  isMfaRequired?: boolean;
   activeMfaMethodId?: string;
   sentOtpMfaMethodIds?: string[];
 }

@@ -12,7 +12,6 @@ import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import esmock from "esmock";
-import type { UserLoginResponse } from "../../enter-password/types.js";
 
 describe("Integration::reset password (in 6 digit code flow)", () => {
   let token: string | string[];
@@ -267,20 +266,8 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
 
   it("should redirect to /auth-code when valid password entered", async () => {
     nock(baseApi).post("/reset-password").once().reply(204);
-    nock(baseApi)
-      .post("/login")
-      .once()
-      .reply(200, {
-        mfaRequired: true,
-        mfaMethodType: "SMS",
-        mfaMethods: buildMfaMethods({
-          id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",
-          phoneNumber: "07123456789",
-          redactedPhoneNumber: "789",
-        }),
-        mfaMethodVerified: true,
-        passwordChangeRequired: false,
-      } as UserLoginResponse);
+    nock(baseApi).post("/login").once().reply(200);
+    nock(baseApi).post("/mfa").once().reply(204);
 
     await request(app)
       .post(ENDPOINT)

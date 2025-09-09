@@ -140,7 +140,7 @@ describe("reset password 2fa SMS controller", () => {
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
-      req.session.user.mfaMethodType = "SMS";
+      req.session.user.enterEmailMfaType = "SMS";
       req.body.code = "123456";
 
       await resetPassword2FASmsPost(fakeService)(
@@ -163,7 +163,7 @@ describe("reset password 2fa SMS controller", () => {
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
-      req.session.user.mfaMethodType = "SMS";
+      req.session.user.enterEmailMfaType = "SMS";
       req.body.code = "123456";
 
       await resetPassword2FASmsPost(fakeService)(

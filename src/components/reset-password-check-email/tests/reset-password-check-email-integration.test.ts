@@ -45,7 +45,7 @@ describe("Integration::reset password check email ", () => {
               }),
               activeMfaMethodId: "test-id",
             };
-            req.session.user.mfaMethodType = "SMS";
+            req.session.user.enterEmailMfaType = "SMS";
             next();
           }),
         },
