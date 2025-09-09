@@ -1,69 +1,74 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { getNextState, USER_JOURNEY_EVENTS } from "../state-machine.js";
-import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../../app.constants.js";
-
-const DEFAULT_CONTEXT = {
-  isAccountPartCreated: false,
-  isAccountRecoveryJourney: false,
-  isIdentityRequired: false,
-  isLatestTermsAndConditionsAccepted: true,
-  isMfaRequired: true,
-  isOnForcedPasswordResetJourney: false,
-  isPasswordChangeRequired: false,
-  isPasswordResetJourney: false,
-  mfaMethodType: MFA_METHOD_TYPE.SMS,
-};
+import {
+  MFA_METHOD_TYPE,
+  OIDC_PROMPT,
+  PATH_NAMES,
+} from "../../../../app.constants.js";
 
 describe("state-machine", () => {
-  describe(`getNextState - ${PATH_NAMES.AUTHORIZE}`, () => {
+  describe(`getNextState - ${PATH_NAMES.AUTHORIZE} on ${USER_JOURNEY_EVENTS.EXISTING_SESSION}`, () => {
     it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.AUTH_CODE}`, () => {
       const nextState = getNextState(
         PATH_NAMES.AUTHORIZE,
-        USER_JOURNEY_EVENTS.SILENT_LOGIN,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.EXISTING_SESSION,
+        {}
       );
       expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
     });
     it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.ENTER_PASSWORD} for prompt login`, () => {
       const nextState = getNextState(
         PATH_NAMES.AUTHORIZE,
-        USER_JOURNEY_EVENTS.PROMPT_LOGIN,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.EXISTING_SESSION,
+        {
+          prompt: OIDC_PROMPT.LOGIN,
+        }
       );
       expect(nextState.value).to.equal(PATH_NAMES.ENTER_PASSWORD);
     });
     it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.UPLIFT_JOURNEY} for uplift`, () => {
       const nextState = getNextState(
         PATH_NAMES.AUTHORIZE,
-        USER_JOURNEY_EVENTS.UPLIFT,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.EXISTING_SESSION,
+        {
+          requiresUplift: true,
+        }
       );
       expect(nextState.value).to.equal(PATH_NAMES.UPLIFT_JOURNEY);
     });
     it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.ENTER_EMAIL_SIGN_IN} for reauth`, () => {
       const nextState = getNextState(
         PATH_NAMES.AUTHORIZE,
-        USER_JOURNEY_EVENTS.REAUTH,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.EXISTING_SESSION,
+        {
+          isReauthenticationRequired: true,
+        }
       );
       expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
     });
-    it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.SIGN_IN_OR_CREATE}`, () => {
-      const nextState = getNextState(
-        PATH_NAMES.AUTHORIZE,
-        USER_JOURNEY_EVENTS.NO_EXISTING_SESSION,
-        DEFAULT_CONTEXT
-      );
-      expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
+  });
+
+  describe(`getNextState - ${PATH_NAMES.AUTHORIZE} on ${USER_JOURNEY_EVENTS.NO_EXISTING_SESSION}`, () => {
+    describe("where isIdentityRequired", () => {
+      it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.SIGN_IN_OR_CREATE}`, () => {
+        const nextState = getNextState(
+          PATH_NAMES.AUTHORIZE,
+          USER_JOURNEY_EVENTS.NO_EXISTING_SESSION,
+          {
+            isIdentityRequired: true,
+          }
+        );
+
+        expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_OR_CREATE);
+      });
     });
   });
   describe("getNextState - login journey (2fa)", () => {
     it("should move from sign or create to enter email when user event is sign in", () => {
       const nextState = getNextState(
         PATH_NAMES.SIGN_IN_OR_CREATE,
-        USER_JOURNEY_EVENTS.SIGN_IN,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.SIGN_IN
       );
       expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
     });
@@ -71,8 +76,7 @@ describe("state-machine", () => {
     it("should move from enter email to enter password when user event is validate credentials", () => {
       const nextState = getNextState(
         PATH_NAMES.ENTER_EMAIL_SIGN_IN,
-        USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS
       );
       expect(nextState.value).to.equal(PATH_NAMES.ENTER_PASSWORD);
     });
@@ -81,7 +85,7 @@ describe("state-machine", () => {
       const nextState = getNextState(
         PATH_NAMES.ENTER_PASSWORD,
         USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
-        DEFAULT_CONTEXT
+        { requiresTwoFactorAuth: true }
       );
       expect(nextState.value).to.equal(PATH_NAMES.ENTER_MFA);
     });
@@ -89,8 +93,7 @@ describe("state-machine", () => {
     it("should move from mfa code verified state to auth code when user event is mfa code verified", () => {
       const nextState = getNextState(
         PATH_NAMES.ENTER_MFA,
-        USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED
       );
       expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
     });
@@ -100,8 +103,7 @@ describe("state-machine", () => {
     it("should move from sign or create to enter email when user event is sign in", () => {
       const nextState = getNextState(
         PATH_NAMES.SIGN_IN_OR_CREATE,
-        USER_JOURNEY_EVENTS.SIGN_IN,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.SIGN_IN
       );
       expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
     });
@@ -109,8 +111,7 @@ describe("state-machine", () => {
     it("should move from enter email to enter password when user event is validate credentials", () => {
       const nextState = getNextState(
         PATH_NAMES.ENTER_EMAIL_SIGN_IN,
-        USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS
       );
       expect(nextState.value).to.equal(PATH_NAMES.ENTER_PASSWORD);
     });
@@ -119,7 +120,7 @@ describe("state-machine", () => {
       const nextState = getNextState(
         PATH_NAMES.ENTER_PASSWORD,
         USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
-        { ...DEFAULT_CONTEXT, isMfaRequired: false }
+        { requiresTwoFactorAuth: false }
       );
       expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
     });
@@ -128,8 +129,7 @@ describe("state-machine", () => {
     it("should move from sign or create to enter email when user event is create account", () => {
       const nextState = getNextState(
         PATH_NAMES.SIGN_IN_OR_CREATE,
-        USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT
       );
       expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT);
     });
@@ -137,8 +137,7 @@ describe("state-machine", () => {
     it("should move from enter email to check your email when email verification code sent event", () => {
       const nextState = getNextState(
         PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
-        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE
       );
       expect(nextState.value).to.equal(PATH_NAMES.CHECK_YOUR_EMAIL);
     });
@@ -146,8 +145,7 @@ describe("state-machine", () => {
     it("should move from check your email to create password when email verified code event", () => {
       const nextState = getNextState(
         PATH_NAMES.CHECK_YOUR_EMAIL,
-        USER_JOURNEY_EVENTS.EMAIL_CODE_VERIFIED,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.EMAIL_CODE_VERIFIED
       );
       expect(nextState.value).to.equal(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD);
     });
@@ -155,8 +153,7 @@ describe("state-machine", () => {
     it("should move from create password to get security codes when password created event", () => {
       const nextState = getNextState(
         PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD,
-        USER_JOURNEY_EVENTS.PASSWORD_CREATED,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.PASSWORD_CREATED
       );
       expect(nextState.value).to.equal(PATH_NAMES.GET_SECURITY_CODES);
     });
@@ -164,8 +161,7 @@ describe("state-machine", () => {
     it("should move from check your phone to account confirmation when phone number verified event", () => {
       const nextState = getNextState(
         PATH_NAMES.CHECK_YOUR_PHONE,
-        USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED
       );
       expect(nextState.value).to.equal(PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL);
     });
@@ -173,8 +169,34 @@ describe("state-machine", () => {
     it("should move from account created to auth code when user successfully has created an account", () => {
       const nextState = getNextState(
         PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL,
-        USER_JOURNEY_EVENTS.ACCOUNT_CREATED,
-        DEFAULT_CONTEXT
+        USER_JOURNEY_EVENTS.ACCOUNT_CREATED
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
+    });
+
+    it("should move from authorize to sign or create when reauthentication is requested and the user is already logged in", () => {
+      const nextState = getNextState(
+        PATH_NAMES.AUTHORIZE,
+        USER_JOURNEY_EVENTS.EXISTING_SESSION,
+        { isReauthenticationRequired: true }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
+    });
+
+    it("should move from authorize to sign or create when reauthentication is requested and the user is not logged in", () => {
+      const nextState = getNextState(
+        PATH_NAMES.AUTHORIZE,
+        USER_JOURNEY_EVENTS.NO_EXISTING_SESSION,
+        { isReauthenticationRequired: true }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
+    });
+
+    it("should move from authorize to auth code create when the user is already logged in", () => {
+      const nextState = getNextState(
+        PATH_NAMES.AUTHORIZE,
+        USER_JOURNEY_EVENTS.EXISTING_SESSION,
+        {}
       );
       expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
     });
@@ -184,33 +206,49 @@ describe("state-machine", () => {
     [
       {
         context: {
-          isMfaRequired: true,
-          isAccountPartCreated: true,
+          requiresTwoFactorAuth: true,
+          isMfaMethodVerified: false,
           mfaMethodType: MFA_METHOD_TYPE.SMS,
         },
         destination: PATH_NAMES.GET_SECURITY_CODES,
       },
       {
         context: {
-          isMfaRequired: false,
+          requiresTwoFactorAuth: true,
+          mfaMethodType: MFA_METHOD_TYPE.SMS,
+          isLatestTermsAndConditionsAccepted: false,
+        },
+        destination: PATH_NAMES.ENTER_MFA,
+      },
+      {
+        context: {
+          requiresTwoFactorAuth: true,
+          mfaMethodType: MFA_METHOD_TYPE.AUTH_APP,
+          isLatestTermsAndConditionsAccepted: false,
+        },
+        destination: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+      },
+      {
+        context: {
+          requiresTwoFactorAuth: false,
           isLatestTermsAndConditionsAccepted: false,
         },
         destination: PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS,
       },
       {
-        context: { isMfaRequired: false, isAccountPartCreated: true },
+        context: { requiresTwoFactorAuth: false, isMfaMethodVerified: false },
         destination: PATH_NAMES.GET_SECURITY_CODES,
       },
       {
         context: {
-          isMfaRequired: false,
+          requiresTwoFactorAuth: false,
           mfaMethodType: MFA_METHOD_TYPE.SMS,
         },
         destination: PATH_NAMES.AUTH_CODE,
       },
       {
         context: {
-          isMfaRequired: false,
+          requiresTwoFactorAuth: false,
           mfaMethodType: MFA_METHOD_TYPE.AUTH_APP,
         },
         destination: PATH_NAMES.AUTH_CODE,
@@ -220,7 +258,7 @@ describe("state-machine", () => {
         const nextState = getNextState(
           PATH_NAMES.RESET_PASSWORD,
           USER_JOURNEY_EVENTS.PASSWORD_CREATED,
-          { ...DEFAULT_CONTEXT, ...test.context }
+          test.context
         );
         expect(nextState.value).to.equal(test.destination);
       });

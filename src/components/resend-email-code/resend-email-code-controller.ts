@@ -115,7 +115,10 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE
+        USER_JOURNEY_EVENTS.SEND_EMAIL_CODE,
+        {
+          isAccountRecoveryJourney: accountRecoveryJourney,
+        }
       )
     );
   };

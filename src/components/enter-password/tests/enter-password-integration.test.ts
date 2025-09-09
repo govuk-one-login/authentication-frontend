@@ -13,7 +13,6 @@ import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import esmock from "esmock";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
-import type { UserLoginResponse } from "../types.js";
 
 describe("Integration::enter password", () => {
   let token: string | string[];
@@ -121,21 +120,17 @@ describe("Integration::enter password", () => {
       .expect(400);
   });
 
-  it("should redirect to /auth-code when password is correct (VTR Cl)", async () => {
+  it("should redirect to /auth-code when password is correct (VTR Cm)", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.LOG_IN_USER)
       .once()
       .reply(200, {
-        mfaRequired: false,
-        mfaMethodType: "SMS",
         mfaMethods: buildMfaMethods({
           id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",
           phoneNumber: "07123456789",
           redactedPhoneNumber: "789",
         }),
-        mfaMethodVerified: true,
-        passwordChangeRequired: false,
-      } as UserLoginResponse);
+      });
 
     await request(app)
       .post(ENDPOINT)
@@ -149,35 +144,6 @@ describe("Integration::enter password", () => {
       .expect(302);
   });
 
-  it("should redirect to /enter-code when password is correct (VTR Cl.Cm)", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.LOG_IN_USER)
-      .once()
-      .reply(200, {
-        mfaRequired: true,
-        mfaMethodType: "SMS",
-        mfaMethods: buildMfaMethods({
-          id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",
-          phoneNumber: "07123456789",
-          redactedPhoneNumber: "789",
-        }),
-        mfaMethodVerified: true,
-        passwordChangeRequired: false,
-      } as UserLoginResponse);
-    nock(baseApi).post("/mfa").once().reply(204);
-
-    await request(app)
-      .post(ENDPOINT)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        password: "password",
-      })
-      .expect("Location", PATH_NAMES.ENTER_MFA)
-      .expect(302);
-  });
-
   it("should redirect to /reset-password-2fa-sms when password is correct and user's MFA is set to SMS when 2FA is not required", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.LOG_IN_USER)
@@ -185,14 +151,13 @@ describe("Integration::enter password", () => {
       .reply(200, {
         mfaRequired: false,
         mfaMethodType: "SMS",
+        passwordChangeRequired: true,
         mfaMethods: buildMfaMethods({
           id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",
           phoneNumber: "07123456789",
           redactedPhoneNumber: "789",
         }),
-        mfaMethodVerified: true,
-        passwordChangeRequired: true,
-      } as UserLoginResponse);
+      });
 
     setupAccountInterventionsResponse(baseApi, noInterventions);
 
@@ -215,14 +180,13 @@ describe("Integration::enter password", () => {
       .reply(200, {
         mfaRequired: true,
         mfaMethodType: "SMS",
+        passwordChangeRequired: true,
         mfaMethods: buildMfaMethods({
           id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",
           phoneNumber: "07123456789",
           redactedPhoneNumber: "789",
         }),
-        mfaMethodVerified: true,
-        passwordChangeRequired: true,
-      } as UserLoginResponse);
+      });
 
     setupAccountInterventionsResponse(baseApi, noInterventions);
 

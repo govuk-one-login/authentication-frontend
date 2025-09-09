@@ -92,9 +92,12 @@ export const checkYourPhonePost = (
       throw new BadRequestError(result.data.message, result.data.code);
     }
 
+    const accountRecoveryEnabledJourney =
+      isAccountRecoveryJourneyAndPermitted(req);
+
     let notificationType = NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION;
 
-    if (isAccountRecoveryJourneyAndPermitted(req)) {
+    if (accountRecoveryEnabledJourney) {
       req.session.user.accountRecoveryVerifiedMfaType = MFA_METHOD_TYPE.SMS;
       notificationType =
         NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION;
@@ -115,7 +118,11 @@ export const checkYourPhonePost = (
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED
+        USER_JOURNEY_EVENTS.PHONE_NUMBER_VERIFIED,
+        {
+          isIdentityRequired: req.session.user.isIdentityRequired,
+          isAccountRecoveryJourney: accountRecoveryEnabledJourney,
+        }
       )
     );
   };

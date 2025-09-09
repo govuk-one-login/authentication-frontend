@@ -41,7 +41,7 @@ describe("Integration::reset password check email ", () => {
                 PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
               ),
             };
-            req.session.user.mfaMethodType = "AUTH_APP";
+            req.session.user.enterEmailMfaType = "AUTH_APP";
             next();
           }),
         },
