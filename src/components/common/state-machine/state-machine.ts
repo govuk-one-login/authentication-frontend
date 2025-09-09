@@ -2,7 +2,7 @@ import type { State } from "xstate";
 import { createMachine } from "xstate";
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants.js";
 
-const INTERMEDIATE_STATES = {
+export const INTERMEDIATE_STATES = {
   PASSWORD_VERIFIED: "password-verified",
   SIGN_IN_END: "sign-in-end",
 };
