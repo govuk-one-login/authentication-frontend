@@ -91,10 +91,7 @@ export function resetPassword2FAAuthAppPost(
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED,
-        {
-          isIdentityRequired: req.session.user.isIdentityRequired,
-        }
+        USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED
       )
     );
   };

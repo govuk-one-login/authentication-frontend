@@ -42,10 +42,7 @@ export function createPasswordPost(
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.PASSWORD_CREATED,
-        {
-          requiresTwoFactorAuth: true,
-        }
+        USER_JOURNEY_EVENTS.PASSWORD_CREATED
       )
     );
   };
