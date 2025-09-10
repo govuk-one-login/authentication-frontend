@@ -3,7 +3,7 @@ import express from "express";
 import "express-async-errors";
 import cookieParser from "cookie-parser";
 import type serveStatic from "serve-static";
-import { logger, loggerMiddleware } from "./utils/logger.js";
+import { addRequestContext, logger, loggerMiddleware } from "./utils/logger.js";
 import { sanitizeRequestMiddleware } from "./middleware/sanitize-request-middleware.js";
 import * as i18nextMiddleware from "i18next-http-middleware";
 import * as path from "path";
@@ -282,6 +282,14 @@ async function createApp(): Promise<express.Application> {
     app.use(setCurrentUrlMiddleware);
   }
   app.use(getAnalyticsPropertiesMiddleware);
+
+  // Attach context to request logs
+  app.use((req, res, next) => {
+    req.log = req.log.child({
+      ...addRequestContext(req, res),
+    });
+    next();
+  });
 
   registerRoutes(app);
 

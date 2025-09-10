@@ -18,11 +18,7 @@ const logger = pino({
     res: (res: Response) => {
       return {
         status: res.statusCode,
-        sessionId: res.locals.sessionId,
-        clientSessionId: res.locals.clientSessionId,
-        persistentSessionId: res.locals.persistentSessionId,
         languageFromCookie: res.locals.language?.toUpperCase(),
-        clientId: res.locals.clientId,
       };
     },
   },
@@ -41,6 +37,18 @@ export function getRefererFrom(referer: string): string {
     return undefined;
   }
 }
+
+export const addRequestContext = (
+  req: Request,
+  res: Response,
+  val?: object,
+): object => ({
+  ...val,
+  clientId: res.locals.clientId,
+  govuk_journey_id: res.locals.clientSessionId ?? "unknown",
+  persistentSessionId: res.locals.persistentSessionId,
+  sessionId: res.locals.sessionId,
+});
 
 const loggerMiddleware = pinoHttp({
   logger,
@@ -69,12 +77,14 @@ const loggerMiddleware = pinoHttp({
   customErrorMessage: function (_req, res) {
     return `request errored with status code: ${res.statusCode}`;
   },
+  customErrorObject: addRequestContext,
   customSuccessMessage: function (_req, res) {
     if (res.statusCode === 404) {
       return "resource not found";
     }
     return `request completed with status code of: ${res.statusCode}`;
   },
+  customSuccessObject: addRequestContext,
   customAttributeKeys: {
     responseTime: "timeTaken",
   },
