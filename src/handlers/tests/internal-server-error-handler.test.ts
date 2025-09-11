@@ -4,6 +4,8 @@ import type { NextFunction, Request, Response } from "express";
 import { sinon } from "../../../test/utils/test-utils.js";
 import { ERROR_MESSAGES, HTTP_STATUS_CODES } from "../../app.constants.js";
 import { serverErrorHandler } from "../internal-server-error-handler.js";
+import { BadRequestError } from "../../utils/error.js";
+import { ERROR_CODES } from "../../components/common/constants.js";
 describe("serverErrorHandler", () => {
   let req: Request;
   let res: Response;
@@ -82,6 +84,22 @@ describe("serverErrorHandler", () => {
 
     expect(renderSpy).to.have.been.calledOnceWith(expectedTemplate);
     expect(res.statusCode).to.equal(HTTP_STATUS_CODES.UNAUTHORIZED);
+  });
+
+  it("should render 500 template with BAD_REQUEST status for BadRequestError with SESSION_ID_MISSING_OR_INVALID code", () => {
+    const err = new BadRequestError(
+      "Session invalid",
+      ERROR_CODES.SESSION_ID_MISSING_OR_INVALID
+    );
+    const renderSpy = sinon.spy(res, "render");
+    const statusSpy = sinon.spy(res, "status");
+
+    serverErrorHandler(err, req, res, next);
+
+    expect(statusSpy).to.have.been.calledOnceWith(
+      HTTP_STATUS_CODES.BAD_REQUEST
+    );
+    expect(renderSpy).to.have.been.calledOnceWith("common/errors/500.njk");
   });
 
   it("should render 500 template if error is not unauthorized and headers have not been sent", () => {
