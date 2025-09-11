@@ -4,7 +4,6 @@ import { USER_JOURNEY_EVENTS } from "../components/common/state-machine/state-ma
 import { accountInterventionService } from "../components/account-intervention/account-intervention-service.js";
 import type { ExpressRouteFunc } from "../types.js";
 import { supportAccountInterventions } from "../config.js";
-import { logger } from "../utils/logger.js";
 import {
   isSuspendedWithoutUserActions,
   passwordHasBeenResetMoreRecentlyThanInterventionApplied,
@@ -56,7 +55,7 @@ export function accountInterventionsMiddleware(
             )
           );
         } else {
-          logger.info(
+          req.log.info(
             `User reset password since intervention applied. Skipping intervention. User reset password timestamp: ${req.session.user.passwordResetTime} intervention applied at timestamp: ${accountInterventionsResponse.data.appliedAt}`
           );
         }

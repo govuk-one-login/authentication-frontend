@@ -7,7 +7,6 @@ import {
   ERROR_MESSAGES,
   PATH_NAMES,
 } from "../app.constants.js";
-import { logger } from "../utils/logger.js";
 import type { MfaMethod } from "../types.js";
 import { MfaMethodPriority } from "../types.js";
 
@@ -82,7 +81,7 @@ export function requiredSessionFieldsMiddleware(
   next: NextFunction
 ): void {
   if (!req.session?.user?.email) {
-    logger.info("required session field 'email' is missing");
+    req.log.info("required session field 'email' is missing");
     return handleSessionError(req, res, next);
   } else {
     return next();

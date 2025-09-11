@@ -14,6 +14,8 @@ import {
   CONTACT_US_COUNTRY_MAX_LENGTH,
 } from "../../../app.constants.js";
 import type { RequestGet, ResponseRedirect } from "../../../types.js";
+import { logger } from "../../../utils/logger.js";
+
 describe("contact us questions controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
@@ -30,6 +32,7 @@ describe("contact us questions controller", () => {
       get: sandbox.fake() as unknown as RequestGet,
       headers: {},
       t: sandbox.fake(),
+      log: logger,
     };
     res = {
       render: sandbox.fake(),

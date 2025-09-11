@@ -30,10 +30,12 @@ import type {
   RequestGet,
   ResponseRedirect,
 } from "../../../types.js";
+import { logger } from "../../../utils/logger.js";
 import { getServiceDomain, getSupportLinkUrl } from "../../../config.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { mockResponse } from "mock-req-res";
 import type { ContactForm } from "../types.js";
+
 describe("contact us controller", () => {
   let sandbox: sinon.SinonSandbox;
   let req: Partial<Request>;
@@ -49,6 +51,7 @@ describe("contact us controller", () => {
       query: {},
       headers: {},
       get: sandbox.fake() as unknown as RequestGet,
+      log: logger,
     };
     res = {
       render: sandbox.fake(),

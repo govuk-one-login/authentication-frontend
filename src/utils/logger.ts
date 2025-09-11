@@ -3,6 +3,8 @@ import { pinoHttp } from "pino-http";
 import { getLogLevel } from "../config.js";
 import type { Request, Response } from "express";
 
+// Global logger for use outside of a request context
+// Per-request logging should use req.log instead so it is populated with request context
 const logger = pino({
   name: "di-auth",
   level: getLogLevel(),
@@ -41,7 +43,7 @@ export function getRefererFrom(referer: string): string {
 export const addRequestContext = (
   req: Request,
   res: Response,
-  val?: object,
+  val?: object
 ): object => ({
   ...val,
   clientId: res.locals.clientId,

@@ -1,7 +1,6 @@
 import type { RequestHandler } from "express";
 import querystring from "querystring";
 import { pages } from "./pages.js";
-import { logger } from "../../utils/logger.js";
 import { PATH_NAMES } from "../../app.constants.js";
 
 interface RadioOption {
@@ -55,7 +54,7 @@ export const templatesDisplayGet: RequestHandler = (req, res) => {
     : pages[path];
 
   if (!page) {
-    logger.error(
+    req.log.error(
       `Could not find template for ${path} (${pageVariant || "no variant"})`
     );
     res.status(404);
