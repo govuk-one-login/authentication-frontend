@@ -1,8 +1,10 @@
 export class BadRequestError extends Error {
   private status: number;
+  public code: string;
   level?: string;
   constructor(message: string, code?: number | string) {
     super(code ? `${code}:${message}` : `${message}`);
+    this.code = code?.toString();
     this.status = 400;
   }
 }
