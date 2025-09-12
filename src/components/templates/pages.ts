@@ -514,4 +514,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS]: {
     template: "contact-us/index-submit-success.njk",
   },
+  [PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS]: {
+    template: "cannot-use-email-address/index.njk",
+  },
 };
