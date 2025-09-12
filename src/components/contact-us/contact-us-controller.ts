@@ -14,11 +14,7 @@ import type {
 import type { ExpressRouteFunc } from "../../types.js";
 import crypto from "crypto";
 import { logger } from "../../utils/logger.js";
-import {
-  getServiceDomain,
-  getSupportLinkUrl,
-  showWalletContactForm,
-} from "../../config.js";
+import { getServiceDomain, getSupportLinkUrl } from "../../config.js";
 import { getContactUsService } from "./contact-us-service.js";
 import { supportTypeIsGovService } from "../../utils/request.js";
 import {
@@ -172,7 +168,6 @@ export function contactUsGet(req: Request, res: Response): void {
     ...(getAppSessionId(req.query.appSessionId as string) && {
       appSessionId: getAppSessionId(req.query.appSessionId as string),
     }),
-    showWalletContactForm: showWalletContactForm(),
   };
 
   return res.render("contact-us/index-public-contact-us.njk", options);
