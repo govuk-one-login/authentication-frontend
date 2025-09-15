@@ -53,7 +53,6 @@ const accountRecoveryRequests: Request[] = [
   { path: PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP },
   { path: PATH_NAMES.RESET_PASSWORD_2FA_SMS },
   { path: PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL },
-  { path: PATH_NAMES.RESET_PASSWORD_REQUIRED },
   { path: PATH_NAMES.RESET_PASSWORD_RESEND_CODE },
 ] as Request[];
 const feedbackRequests: Request[] = [

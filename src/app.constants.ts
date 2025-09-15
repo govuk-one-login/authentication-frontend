@@ -22,8 +22,6 @@ export const PATH_NAMES = {
   RESET_PASSWORD_CHECK_EMAIL: "/reset-password-check-email",
   RESET_PASSWORD: "/reset-password",
   RESET_PASSWORD_2FA_SMS: "/reset-password-2fa-sms",
-  // TODO: Remove in follow-up PR
-  RESET_PASSWORD_REQUIRED: "/reset-password-required",
   RESET_PASSWORD_REQUEST: "/reset-password-request",
   RESET_PASSWORD_RESEND_CODE: "/reset-password-resend-code",
   CREATE_ACCOUNT_SET_PASSWORD: "/create-password",
