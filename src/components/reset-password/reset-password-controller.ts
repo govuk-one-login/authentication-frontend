@@ -17,10 +17,6 @@ import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 const resetPasswordTemplate = "reset-password/index.njk";
 
 export function resetPasswordGet(req: Request, res: Response): void {
-  res.render(resetPasswordTemplate);
-}
-
-export function resetPasswordRequiredGet(req: Request, res: Response): void {
   res.render(resetPasswordTemplate, {
     isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
   });

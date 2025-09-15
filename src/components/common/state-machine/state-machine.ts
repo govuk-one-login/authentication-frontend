@@ -336,7 +336,7 @@ const authStateMachine = createMachine<AuthStateContext>(
             cond: "is2FAAuthAppPasswordChangeRequired",
           },
           {
-            target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],
+            target: [PATH_NAMES.RESET_PASSWORD],
             cond: "isPasswordChangeRequired",
           },
           {
@@ -436,15 +436,7 @@ const authStateMachine = createMachine<AuthStateContext>(
       },
       [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP]: {
         on: {
-          [USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED]: [
-            {
-              target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],
-              cond: "isPasswordChangeRequired",
-            },
-            {
-              target: [PATH_NAMES.RESET_PASSWORD],
-            },
-          ],
+          [USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED]: [PATH_NAMES.RESET_PASSWORD],
         },
         meta: {
           optionalPaths: [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES],
@@ -458,15 +450,7 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION]: [
             PATH_NAMES.UNAVAILABLE_TEMPORARY,
           ],
-          [USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED]: [
-            {
-              target: [PATH_NAMES.RESET_PASSWORD_REQUIRED],
-              cond: "isPasswordChangeRequired",
-            },
-            {
-              target: [PATH_NAMES.RESET_PASSWORD],
-            },
-          ],
+          [USER_JOURNEY_EVENTS.MFA_CODE_VERIFIED]: [PATH_NAMES.RESET_PASSWORD],
         },
         meta: {
           optionalPaths: [

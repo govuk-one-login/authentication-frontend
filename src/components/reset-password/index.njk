@@ -14,12 +14,9 @@
 
     {% if isPasswordChangeRequired %}
         <p class="govuk-body">{{ 'pages.resetPassword.password.paragraphRequired' | translate }}</p>
-        {% set actionUrl = '/reset-password-required' %}
-    {% else %}
-        {% set actionUrl = '/reset-password' %}
     {% endif %}
 
-    <form action="{{ actionUrl }}" method="post" novalidate>
+    <form action="/reset-password" method="post" novalidate>
 
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
