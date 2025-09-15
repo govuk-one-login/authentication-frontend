@@ -490,6 +490,12 @@ const authStateMachine = createMachine<AuthStateContext>(
       },
       [PATH_NAMES.RESET_PASSWORD_REQUIRED]: {
         on: {
+          [USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_PERMANENT,
+          ],
+          [USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION]: [
+            PATH_NAMES.UNAVAILABLE_TEMPORARY,
+          ],
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
             {
               target: [PATH_NAMES.GET_SECURITY_CODES],
