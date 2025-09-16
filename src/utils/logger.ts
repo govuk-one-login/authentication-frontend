@@ -3,6 +3,29 @@ import { pinoHttp } from "pino-http";
 import { getLogLevel } from "../config.js";
 import type { Request, Response } from "express";
 
+const SENSITIVE_PARAMS = ["request", "code"];
+const BASE_PLACEHOLDER = "https://placeholder";
+
+export const redactQueryParams = (
+  url: string | undefined
+): string | undefined => {
+  if (url?.includes("?")) {
+    try {
+      const parsedUrl = new URL(url, BASE_PLACEHOLDER);
+      for (const param of SENSITIVE_PARAMS) {
+        if (parsedUrl.searchParams.has(param)) {
+          parsedUrl.searchParams.set(param, "hidden");
+        }
+      }
+      return parsedUrl.pathname + parsedUrl.search;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      // ignore
+    }
+  }
+  return url;
+};
+
 // Global logger for use outside of a request context
 // Per-request logging should use req.log instead so it is populated with request context
 const logger = pino({
@@ -13,7 +36,7 @@ const logger = pino({
       return {
         id: req.id,
         method: req.method,
-        url: req.url,
+        url: redactQueryParams(req.url),
         from: getRefererFrom(req.headers.referer),
       };
     },
