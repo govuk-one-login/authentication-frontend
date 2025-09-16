@@ -408,7 +408,7 @@ Mappings:
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
-      frontendApiBaseUrl: https://auth.build.account.gov.uk/
+      frontendApiBaseUrl: https://7ecg8e1o73-vpce-042c5d3d97d7438d9.execute-api.eu-west-2.amazonaws.com/build/
       frontendAutoScalingMinCount: 4
       frontendAutoScalingMaxCount: 6
       frontendTaskDefinitionCpu: 512
