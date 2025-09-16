@@ -34,7 +34,6 @@ import {
   getAppEnv,
   getLocalEncryptionKey,
 } from "../../config.js";
-import { logger } from "../../utils/logger.js";
 import type { Claims } from "./claims-config.js";
 import { isReauth, isUpliftRequired } from "../../utils/request.js";
 import { LocalDecryptionService } from "./local-decryption-service.js";
@@ -74,7 +73,7 @@ export function authorizeGet(
     }
 
     if (claims.govuk_signin_journey_id !== clientSessionId) {
-      logger.warn(
+      req.log.warn(
         `clientSessionId in claims (${claims.govuk_signin_journey_id}) does not match one found in cookie (${clientSessionId})`
       );
     }
@@ -115,7 +114,7 @@ export function authorizeGet(
       req.session.user.reauthenticate &&
       startAuthResponse.data.user.isBlockedForReauth
     ) {
-      logger.info(
+      req.log.info(
         `Start response indicates user with session ${res.locals.sessionId} is blocked for reauth, redirecting back to orchestration`
       );
       return res.redirect(
@@ -125,8 +124,8 @@ export function authorizeGet(
 
     req.session.user.isAccountCreationJourney = undefined;
 
-    logger.info(`Reauth claim length ${claims.reauthenticate?.length}`);
-    logger.info(`Support for reauth is enabled ${supportReauthentication()}`);
+    req.log.info(`Reauth claim length ${claims.reauthenticate?.length}`);
+    req.log.info(`Support for reauth is enabled ${supportReauthentication()}`);
 
     const nextStateEvent = req.session.user.isAuthenticated
       ? USER_JOURNEY_EVENTS.EXISTING_SESSION
@@ -223,7 +222,7 @@ function setSessionDataFromClaims(req: Request, claims: Claims) {
   req.session.user.channel = isValidChannel(claims.channel)
     ? claims.channel
     : getDefaultChannel();
-  logger.info(`Channel is set to: ${req.session.user.channel}`);
+  req.log.info(`Channel is set to: ${req.session.user.channel}`);
 }
 
 function setSessionDataFromAuthResponse(

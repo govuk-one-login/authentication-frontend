@@ -10,7 +10,6 @@ import type { AccountInterventionsInterface } from "../account-intervention/type
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import { isLocked } from "../../utils/lock-helper.js";
-import { logger } from "../../utils/logger.js";
 import type { CheckEmailFraudBlockInterface } from "../check-email-fraud-block/types.js";
 import { checkEmailFraudBlockService } from "../check-email-fraud-block/check-email-fraud-block-service.js";
 const TEMPLATE_NAME = "check-your-email/index.njk";
@@ -52,11 +51,11 @@ export const checkYourEmailPost = (
           persistentSessionId,
           req
         );
-      logger.info(
+      req.log.info(
         `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`
       );
     } catch (e) {
-      logger.error("Error checking email fraud block", e);
+      req.log.error("Error checking email fraud block", e);
     }
     const verifyCodeRequest = verifyCodePost(
       service,

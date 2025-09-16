@@ -17,7 +17,6 @@ import { HTTP_STATUS_CODES } from "../app.constants.js";
 import { ApiError } from "./error.js";
 import type { Request } from "express";
 import { createPersonalDataHeaders } from "@govuk-one-login/frontend-passthrough-headers";
-import { logger } from "./logger.js";
 import { Agent } from "https";
 
 type CustomAxiosRequestHeaders = Partial<AxiosRequestHeaders>;
@@ -57,7 +56,7 @@ function getSecurityHeaders(path: string, req: Request, baseUrl?: string) {
     url = new URL(path, basePath).toString();
     personalDataHeaders = createPersonalDataHeaders(url, req);
   } catch (err) {
-    logger.warn(
+    req.log.warn(
       `Called with ${url}. Failed to set security headers due to: ${err instanceof Error ? err.message : "Unknown error"}`
     );
   }

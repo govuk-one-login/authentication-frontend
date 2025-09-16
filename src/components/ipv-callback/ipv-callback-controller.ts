@@ -5,7 +5,6 @@ import {
   isReverificationResultFailedResponse,
   REVERIFICATION_ERROR_CODE,
 } from "./types.js";
-import { logger } from "../../utils/logger.js";
 import { reverificationResultService } from "./reverification-result-service.js";
 import { BadRequestError } from "../../utils/error.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
@@ -64,7 +63,7 @@ export function ipvCallbackGet(
       state
     );
 
-    logger.info(
+    req.log.info(
       `Reverification result for session id ${res.locals.sessionId} is success: ${result.success}`
     );
 

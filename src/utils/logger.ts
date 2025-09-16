@@ -3,6 +3,31 @@ import { pinoHttp } from "pino-http";
 import { getLogLevel } from "../config.js";
 import type { Request, Response } from "express";
 
+const SENSITIVE_PARAMS = ["request", "code"];
+const BASE_PLACEHOLDER = "https://placeholder";
+
+export const redactQueryParams = (
+  url: string | undefined
+): string | undefined => {
+  if (url?.includes("?")) {
+    try {
+      const parsedUrl = new URL(url, BASE_PLACEHOLDER);
+      for (const param of SENSITIVE_PARAMS) {
+        if (parsedUrl.searchParams.has(param)) {
+          parsedUrl.searchParams.set(param, "hidden");
+        }
+      }
+      return parsedUrl.pathname + parsedUrl.search;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      // ignore
+    }
+  }
+  return url;
+};
+
+// Global logger for use outside of a request context
+// Per-request logging should use req.log instead so it is populated with request context
 const logger = pino({
   name: "di-auth",
   level: getLogLevel(),
@@ -11,18 +36,14 @@ const logger = pino({
       return {
         id: req.id,
         method: req.method,
-        url: req.url,
+        url: redactQueryParams(req.url),
         from: getRefererFrom(req.headers.referer),
       };
     },
     res: (res: Response) => {
       return {
         status: res.statusCode,
-        sessionId: res.locals.sessionId,
-        clientSessionId: res.locals.clientSessionId,
-        persistentSessionId: res.locals.persistentSessionId,
         languageFromCookie: res.locals.language?.toUpperCase(),
-        clientId: res.locals.clientId,
       };
     },
   },
@@ -41,6 +62,18 @@ export function getRefererFrom(referer: string): string {
     return undefined;
   }
 }
+
+export const addRequestContext = (
+  req: Request,
+  res: Response,
+  val?: object
+): object => ({
+  ...val,
+  clientId: res.locals.clientId,
+  govuk_journey_id: res.locals.clientSessionId ?? "unknown",
+  persistentSessionId: res.locals.persistentSessionId,
+  sessionId: res.locals.sessionId,
+});
 
 const loggerMiddleware = pinoHttp({
   logger,
@@ -69,12 +102,14 @@ const loggerMiddleware = pinoHttp({
   customErrorMessage: function (_req, res) {
     return `request errored with status code: ${res.statusCode}`;
   },
+  customErrorObject: addRequestContext,
   customSuccessMessage: function (_req, res) {
     if (res.statusCode === 404) {
       return "resource not found";
     }
     return `request completed with status code of: ${res.statusCode}`;
   },
+  customSuccessObject: addRequestContext,
   customAttributeKeys: {
     responseTime: "timeTaken",
   },

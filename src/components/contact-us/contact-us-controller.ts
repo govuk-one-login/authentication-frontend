@@ -136,12 +136,12 @@ export function contactUsGet(req: Request, res: Response): void {
 
   if (req.query.fromURL) {
     fromURL = validateReferer(req.query.fromURL as string, serviceDomain);
-    logger.info(`fromURL query param received with value ${fromURL}`);
+    req.log.info(`fromURL query param received with value ${fromURL}`);
   }
 
   if (req.query.referer) {
     referer = validateReferer(req.query.referer as string, serviceDomain);
-    logger.info(`referer with referer query param ${referer}`);
+    req.log.info(`referer with referer query param ${referer}`);
   }
 
   if (req.headers?.referer?.includes(REFERER)) {
@@ -150,9 +150,9 @@ export function contactUsGet(req: Request, res: Response): void {
         new URL(req.get(REFERER)).searchParams.get(REFERER),
         serviceDomain
       );
-      logger.info(`referer with referer header param ${referer}`);
+      req.log.info(`referer with referer header param ${referer}`);
     } catch {
-      logger.warn(
+      req.log.warn(
         `unable to parse referer with referer param ${req.get(REFERER)}`
       );
     }
@@ -566,8 +566,8 @@ export function contactUsQuestionsFormPostToSmartAgent(
           : undefined,
     });
 
-    logger.info(
-      `Support ticket submitted to SmartAgent with id ${ticketIdentifier} for session ${res.locals.sessionId}`
+    req.log.info(
+      `Support ticket submitted to SmartAgent with id ${ticketIdentifier}`
     );
     return res.redirect(PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS);
   };
