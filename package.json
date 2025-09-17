@@ -63,8 +63,8 @@
     "semi": true
   },
   "dependencies": {
-    "@aws-sdk/client-kms": "3.879.0",
-    "@aws-sdk/client-ssm": "3.879.0",
+    "@aws-sdk/client-kms": "3.890.0",
+    "@aws-sdk/client-ssm": "3.890.0",
     "@eslint/eslintrc": "3.3.1",
     "@eslint/js": "9.34.0",
     "@govuk-one-login/frontend-analytics": "4.0.0",
