@@ -8,6 +8,6 @@
     "NODE_ENV": "development"
   },
   "events": {
-    "restart": "yarn run copy-assets"
+    "restart": "npm run copy-assets"
   }
 }
