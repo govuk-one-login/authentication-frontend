@@ -8,4 +8,4 @@ WORKDIR /app
 
 EXPOSE $PORT
 
-CMD yarn install && yarn test:dev-evironment-variables && yarn copy-assets && yarn dev
+CMD npm ci && npm run test:dev-evironment-variables && npm run copy-assets && npm run dev

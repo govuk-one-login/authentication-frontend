@@ -6,9 +6,9 @@ ENV PORT 2000
 USER node
 WORKDIR /home/node/app
 COPY --chown=node:node package.json ./
-COPY --chown=node:node yarn.lock ./
+COPY --chown=node:node package-lock.json ./
 
-RUN yarn install
+RUN npm ci --ignore-scripts
 
 COPY --chown=node:node dev-app.js ./
 COPY --chown=node:node dev-app-orchstub.js ./
@@ -16,4 +16,4 @@ COPY --chown=node:node .env ./
 
 EXPOSE $PORT
 
-CMD ["yarn", "dummy-server"]
+CMD ["npm", "run", "dummy-server"]
