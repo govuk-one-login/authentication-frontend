@@ -49,14 +49,14 @@ repos:
         types_or:
           - javascript
           - ts
-        entry: yarn run eslint --fix
+        entry: npm run eslint --fix
         pass_filenames: true
       - id: prettier
         name: Run prettier
         language: node
         types: [text]
         stages: [pre-commit]
-        entry: yarn run prettier --write --ignore-unknown
+        entry: npm run pretty --write --ignore-unknown
         pass_filenames: true
       - id: tfupdate-lock
         name: Update terraform provider locks
