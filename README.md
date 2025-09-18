@@ -80,7 +80,7 @@ To find out if the application has started, open a console window on the fronten
 If things do not appear to be working it can be a good idea to start with a clean deployment:
 
 ```shell script
-yarn clean
+npm run clean
 ```
 
 Additionaly delete the Docker images for all the frontend services in docker-compose.yml.
@@ -138,7 +138,7 @@ If the app is run in a container then the tests are run there too:
 ```shell script
 docker exec -it di-authentication-frontend_di-auth-frontend /bin/sh
 
-yarn run test:unit
+npm run run test:unit
 ```
 
 ### Restarting the app
@@ -191,7 +191,7 @@ If you're having problems running locally, try these steps first:
 
 </details>
 
-## Other useful yarn commands
+## Other useful npm run commands
 
 Remember to run these commands in the docker container itself.
 
@@ -200,7 +200,7 @@ Remember to run these commands in the docker container itself.
 > Generate and view documentation of the user journey state machine
 
 ```shell script
-yarn dev:render-user-journey-documentation
+npm run dev:render-user-journey-documentation
 ```
 
 ### Development
@@ -208,7 +208,7 @@ yarn dev:render-user-journey-documentation
 > To run the app in development mode with nodemon watching the files
 
 ```shell script
-yarn dev
+npm run dev
 ```
 
 Starts a nodemon server serving the files from the `dist/`
@@ -219,7 +219,7 @@ directory.
 > To build the app
 
 ```shell script
-yarn build
+npm run build
 ```
 
 ### Start
@@ -227,7 +227,7 @@ yarn build
 > To run the built app
 
 ```shell script
-yarn start
+npm run start
 ```
 
 Starts a node server pointing to the entry point found in
@@ -238,7 +238,7 @@ the build directory.
 > To run the unit tests
 
 ```shell script
-yarn test:unit
+npm run test:unit
 ```
 
 Runs all unit tests found in the `tests/unit/` directory
@@ -261,7 +261,7 @@ In both cases frontend must have started successfully with the message 'Server l
 > To run the integration tests
 
 ```shell script
-REDIS_PORT=6379 REDIS_HOST=localhost yarn test:integration
+REDIS_PORT=6379 REDIS_HOST=localhost npm run test:integration
 ```
 
 #### Running integration tests in IntelliJ
@@ -274,10 +274,10 @@ Extra Mocha configuration is required to make the integration tests run. This is
 
 ### Install dependencies
 
-> To install dependencies, run yarn install
+> To install dependencies, run npm run install
 
 ```shell script
-yarn install
+npm run install
 ```
 
 Installs the dependencies required to run the application.
@@ -287,7 +287,7 @@ Installs the dependencies required to run the application.
 > To get a coverage report
 
 ```shell script
-yarn test:coverage
+npm run test:coverage
 ```
 
 ### Linting
@@ -295,7 +295,7 @@ yarn test:coverage
 > To run lint checks
 
 ```shell script
-yarn lint
+npm run lint
 ```
 
 Checks if the code conforms the linting standards.
