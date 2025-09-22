@@ -63,19 +63,14 @@ export function getRefererFrom(referer: string): string {
   }
 }
 
-export const addRequestContext = (
-  req: Request,
-  res: Response,
-  val?: object
-): object => ({
-  ...val,
+export const getRequestContext = (req: Request, res: Response): object => ({
   clientId: res.locals.clientId,
-  govuk_journey_id: res.locals.clientSessionId ?? "unknown",
+  govuk_journey_id: res.locals.clientSessionId,
   persistentSessionId: res.locals.persistentSessionId,
   sessionId: res.locals.sessionId,
 });
 
-const loggerMiddleware = pinoHttp({
+const loggerMiddleware = pinoHttp<Request, Response>({
   logger,
   wrapSerializers: false,
   autoLogging: {
@@ -102,14 +97,20 @@ const loggerMiddleware = pinoHttp({
   customErrorMessage: function (_req, res) {
     return `request errored with status code: ${res.statusCode}`;
   },
-  customErrorObject: addRequestContext,
+  customErrorObject: (req, res, err, obj) => ({
+    ...obj,
+    ...getRequestContext(req, res),
+  }),
   customSuccessMessage: function (_req, res) {
     if (res.statusCode === 404) {
       return "resource not found";
     }
     return `request completed with status code of: ${res.statusCode}`;
   },
-  customSuccessObject: addRequestContext,
+  customSuccessObject: (req, res, obj) => ({
+    ...obj,
+    ...getRequestContext(req, res),
+  }),
   customAttributeKeys: {
     responseTime: "timeTaken",
   },
