@@ -40,6 +40,7 @@ router.get(
   PATH_NAMES.RESET_PASSWORD_REQUIRED,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  accountInterventionsMiddleware(true, false),
   resetPasswordRequiredGet
 );
 
