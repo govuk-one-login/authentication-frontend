@@ -10,25 +10,20 @@ declare global {
   interface Window {
     // Used to define a click handler for use in the mermaid
     onStateClick?: (id: string, name: string) => void;
+    // Initialiser functions called from the HTML
+    initialiseAuthJourneyMap: () => void;
+    initialiseContactFormJourneyMap: () => void;
   }
 }
 
 const DOUBLE_CLICK_WINDOW_MILLIS = 1000;
 
 const diagramElement = document.getElementById("diagram") as HTMLDivElement;
-const headerContent = document.getElementById(
-  "header-content"
-) as HTMLDivElement;
-const headerToggle = document.getElementById(
-  "header-toggle"
-) as HTMLButtonElement;
-const form = document.getElementById("configuration-form") as HTMLFormElement;
-const contextToggle = document.getElementById(
-  "overrideContext"
-) as HTMLInputElement;
-const contextInput = document.getElementById("context") as HTMLTextAreaElement;
 
-const setupHeaderToggleClickHandlers = (): void => {
+const setupHeaderToggleClickHandlers = ({
+  headerContent,
+  headerToggle,
+}: HeaderOptions): void => {
   headerToggle.addEventListener("click", () => {
     if (headerContent.classList.toggle("hidden")) {
       headerToggle.innerText = "Show header";
@@ -152,7 +147,11 @@ const setupStateClickHandlers = (): void => {
   };
 };
 
-const setupFormHandlers = (): void => {
+const setupFormHandlers = ({
+  contextInput,
+  contextToggle,
+  form,
+}: HeaderOptions): void => {
   form.addEventListener("change", async (event) => {
     event.preventDefault();
     await render();
@@ -164,22 +163,49 @@ const setupFormHandlers = (): void => {
   contextInput.value = JSON.stringify(authStateMachine.context, undefined, 2);
 };
 
-const initialise = async (): Promise<void> => {
-  setupHeaderToggleClickHandlers();
+interface HeaderOptions {
+  headerContent: HTMLDivElement;
+  headerToggle: HTMLButtonElement;
+  form: HTMLFormElement;
+  contextToggle: HTMLInputElement;
+  contextInput: HTMLTextAreaElement;
+}
+
+const initialise = async (options: {
+  header?: HeaderOptions;
+}): Promise<void> => {
+  if (options.header) setupHeaderToggleClickHandlers(options.header);
   setupStateClickHandlers();
-  setupFormHandlers();
+  if (options.header) setupFormHandlers(options.header);
   render();
 };
 
-declare global {
-  interface Window {
-    initialiseAuthJourneyMap: () => void;
-    initialiseContactFormJourneyMap: () => void;
-  }
-}
-
 window.initialiseAuthJourneyMap = () => {
-  initialise().catch(console.error);
+  const headerContent = document.getElementById(
+    "header-content"
+  ) as HTMLDivElement;
+  const headerToggle = document.getElementById(
+    "header-toggle"
+  ) as HTMLButtonElement;
+  const form = document.getElementById("configuration-form") as HTMLFormElement;
+  const contextToggle = document.getElementById(
+    "overrideContext"
+  ) as HTMLInputElement;
+  const contextInput = document.getElementById(
+    "context"
+  ) as HTMLTextAreaElement;
+
+  initialise({
+    header: {
+      headerContent,
+      headerToggle,
+      form,
+      contextToggle,
+      contextInput,
+    },
+  }).catch(console.error);
 };
 
-window.initialiseContactFormJourneyMap = () => {};
+window.initialiseContactFormJourneyMap = () => {
+  initialise({}).catch(console.error);
+};
