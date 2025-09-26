@@ -171,4 +171,15 @@ const initialise = async (): Promise<void> => {
   render();
 };
 
-initialise().catch(console.error);
+declare global {
+  interface Window {
+    initialiseAuthJourneyMap: () => void;
+    initialiseContactFormJourneyMap: () => void;
+  }
+}
+
+window.initialiseAuthJourneyMap = () => {
+  initialise().catch(console.error);
+};
+
+window.initialiseContactFormJourneyMap = () => {};
