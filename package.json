@@ -92,7 +92,7 @@
     "i18next": "25.4.2",
     "i18next-fs-backend": "2.6.0",
     "i18next-http-middleware": "3.8.0",
-    "jose": "5.10.0",
+    "jose": "6.1.0",
     "jsdom": "26.1.0",
     "libphonenumber-js": "1.12.15",
     "nunjucks": "3.2.4",
