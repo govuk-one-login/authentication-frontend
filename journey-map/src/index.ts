@@ -1,10 +1,11 @@
 import mermaid from "mermaid";
 import svgPanZoom from "svg-pan-zoom";
 import type { Options } from "./mermaid.js";
-import { renderStateMachine } from "./mermaid.js";
+import { generateStateMachineMermaid } from "./mermaid.js";
 import type { AuthStateContext } from "di-auth/src/components/common/state-machine/state-machine.js";
 import { authStateMachine } from "di-auth/src/components/common/state-machine/state-machine.js";
 import { pages } from "di-auth/src/components/templates/pages.js";
+import AuthStateMachineHelper from "./journeyMap/AuthStateMachineHelper.js";
 
 declare global {
   interface Window {
@@ -48,9 +49,7 @@ const parseOptions = (formData: FormData): Options => ({
   context: parseContext(formData),
 });
 
-const render = async (): Promise<void> => {
-  const options = parseOptions(new FormData(form));
-  const stateMachineMermaid = await renderStateMachine(options);
+const renderMermaidSvg = async (stateMachineMermaid: string): Promise<void> => {
   console.debug(stateMachineMermaid);
 
   mermaid.initialize({
@@ -154,7 +153,7 @@ const setupFormHandlers = ({
 }: HeaderOptions): void => {
   form.addEventListener("change", async (event) => {
     event.preventDefault();
-    await render();
+    // await render();
   });
   contextToggle.addEventListener("change", (event) => {
     event.preventDefault();
@@ -174,10 +173,21 @@ interface HeaderOptions {
 const initialise = async (options: {
   header?: HeaderOptions;
 }): Promise<void> => {
-  if (options.header) setupHeaderToggleClickHandlers(options.header);
+  let stateMachineMermaid: string;
+
   setupStateClickHandlers();
-  if (options.header) setupFormHandlers(options.header);
-  render();
+  if (options.header) {
+    setupHeaderToggleClickHandlers(options.header);
+    setupFormHandlers(options.header);
+    const formOptions = parseOptions(new FormData(options.header.form));
+    stateMachineMermaid = await generateStateMachineMermaid(
+      new AuthStateMachineHelper(formOptions)
+    );
+  } else {
+    stateMachineMermaid = "";
+  }
+
+  await renderMermaidSvg(stateMachineMermaid);
 };
 
 window.initialiseAuthJourneyMap = () => {

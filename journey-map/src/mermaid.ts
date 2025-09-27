@@ -3,7 +3,7 @@ import {
   INTERMEDIATE_STATES,
 } from "di-auth/src/components/common/state-machine/state-machine.js";
 import { pages } from "di-auth/src/components/templates/pages.js";
-import AuthStateMachineHelper from "./journeyMap/AuthStateMachineHelper.js";
+import StateMachineHelper from "./journeyMap/StateMachineHelper.js";
 
 export interface Options {
   includeOptional: boolean;
@@ -57,10 +57,11 @@ const renderTransition = ({
 const renderClickHandler = ({ id, name }: State): string =>
   `    click ${id} call onStateClick(${JSON.stringify(id)},${JSON.stringify(name)})`;
 
-export const renderStateMachine = async (options: Options): Promise<string> => {
-  const authStateMachineHelper = new AuthStateMachineHelper(options);
+export const generateStateMachineMermaid = async (
+  stateMachineHelper: StateMachineHelper
+): Promise<string> => {
   const { states, transitions } =
-    authStateMachineHelper.getReachableStatesAndTransitions();
+    stateMachineHelper.getReachableStatesAndTransitions();
 
   return `
 ${getMermaidHeader("LR")}
