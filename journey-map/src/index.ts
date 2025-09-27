@@ -4,6 +4,7 @@ import { generateStateMachineMermaid } from "./mermaid.js";
 import { authStateMachine } from "di-auth/src/components/common/state-machine/state-machine.js";
 import AuthStateMachineHelper from "./journeyMap/AuthStateMachineHelper.js";
 import StateMachineHelper from "./journeyMap/StateMachineHelper.js";
+import ContactFormStateMachineHelper from "./journeyMap/ContactFormStateMachineHelper.js";
 
 declare global {
   interface Window {
@@ -169,9 +170,13 @@ const initialise = async (options: {
 
     await renderAuthStateMachine();
   } else {
-    // setupStateClickHandlers();
+    const contactFormStateMachineHelper = new ContactFormStateMachineHelper();
 
-    const stateMachineMermaid = "";
+    setupStateClickHandlers(contactFormStateMachineHelper);
+
+    const stateMachineMermaid = await generateStateMachineMermaid(
+      contactFormStateMachineHelper
+    );
     await renderMermaidSvg(stateMachineMermaid);
   }
 };
