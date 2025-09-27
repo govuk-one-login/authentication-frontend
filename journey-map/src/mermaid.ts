@@ -28,8 +28,12 @@ const getMermaidHeader = (graphDirection: "TD" | "LR"): string =>
     classDef page fill:#ae8,stroke:#000;
     classDef intermediateState fill:#ec8,stroke:#000`;
 
-const renderState = ({ name, id }: State): string => {
-  if (pages[name]) {
+const renderState = (
+  state: State,
+  stateMachineHelper: StateMachineHelper
+): string => {
+  const { id, name } = state;
+  if (stateMachineHelper.getClickAction(state)) {
     return `    ${id}(${name}):::page`;
   }
   if (Object.values(INTERMEDIATE_STATES).includes(name)) {
@@ -65,7 +69,7 @@ export const generateStateMachineMermaid = async (
 
   return `
 ${getMermaidHeader("LR")}
-${states.map(renderState).join("\n")}
+${states.map((state) => renderState(state, stateMachineHelper)).join("\n")}
 ${states.map(renderClickHandler).join("\n")}
 ${transitions.map(renderTransition).join("\n")}
   `;
