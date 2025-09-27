@@ -12,10 +12,10 @@ export interface Options {
 }
 
 export default class AuthStateMachineHelper extends StateMachineHelper {
-  private readonly options: Options;
-  constructor(options: Options) {
+  private readonly formElement: HTMLFormElement;
+  constructor(formElement: HTMLFormElement) {
     super();
-    this.options = options;
+    this.formElement = formElement;
   }
 
   getReachableStatesAndTransitions(): {
@@ -36,7 +36,7 @@ export default class AuthStateMachineHelper extends StateMachineHelper {
       const activeTransitions = this.getTransitions(
         stateMachine,
         state,
-        this.options
+        this.parseOptions(new FormData(this.formElement))
       );
       transitions.push(...activeTransitions);
 
@@ -56,6 +56,25 @@ export default class AuthStateMachineHelper extends StateMachineHelper {
     }
 
     return { states, transitions };
+  }
+
+  private parseOptions(formData: FormData): Options {
+    return {
+      includeOptional: formData
+        .getAll("otherOption")
+        .includes("includeOptional"),
+      context: this.parseContext(formData),
+    };
+  }
+
+  private parseContext(formData: FormData): AuthStateContext | undefined {
+    if (formData.getAll("otherOption").includes("overrideContext")) {
+      try {
+        return JSON.parse(formData.get("context") as string);
+      } catch (err) {
+        console.warn(err);
+      }
+    }
   }
 
   private getTransitions(

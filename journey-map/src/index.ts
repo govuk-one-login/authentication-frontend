@@ -1,8 +1,6 @@
 import mermaid from "mermaid";
 import svgPanZoom from "svg-pan-zoom";
-import type { Options } from "./mermaid.js";
 import { generateStateMachineMermaid } from "./mermaid.js";
-import type { AuthStateContext } from "di-auth/src/components/common/state-machine/state-machine.js";
 import { authStateMachine } from "di-auth/src/components/common/state-machine/state-machine.js";
 import { pages } from "di-auth/src/components/templates/pages.js";
 import AuthStateMachineHelper from "./journeyMap/AuthStateMachineHelper.js";
@@ -33,21 +31,6 @@ const setupHeaderToggleClickHandlers = ({
     }
   });
 };
-
-const parseContext = (formData: FormData): AuthStateContext | undefined => {
-  if (formData.getAll("otherOption").includes("overrideContext")) {
-    try {
-      return JSON.parse(formData.get("context") as string);
-    } catch (err) {
-      console.warn(err);
-    }
-  }
-};
-
-const parseOptions = (formData: FormData): Options => ({
-  includeOptional: formData.getAll("otherOption").includes("includeOptional"),
-  context: parseContext(formData),
-});
 
 const renderMermaidSvg = async (stateMachineMermaid: string): Promise<void> => {
   console.debug(stateMachineMermaid);
@@ -176,9 +159,8 @@ const initialise = async (options: {
 
   if (options.header) {
     const renderAuthStateMachine = async (formElement: HTMLFormElement) => {
-      const formOptions = parseOptions(new FormData(formElement));
       const stateMachineMermaid = await generateStateMachineMermaid(
-        new AuthStateMachineHelper(formOptions)
+        new AuthStateMachineHelper(formElement)
       );
       await renderMermaidSvg(stateMachineMermaid);
     };
