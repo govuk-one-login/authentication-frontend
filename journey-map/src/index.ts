@@ -146,14 +146,13 @@ const setupStateClickHandlers = (): void => {
   };
 };
 
-const setupFormHandlers = ({
-  contextInput,
-  contextToggle,
-  form,
-}: HeaderOptions): void => {
+const setupFormHandlers = (
+  { contextInput, contextToggle, form }: HeaderOptions,
+  renderFormStateMachine: (formElement: HTMLFormElement) => Promise<void>
+): void => {
   form.addEventListener("change", async (event) => {
     event.preventDefault();
-    // await render();
+    await renderFormStateMachine(form);
   });
   contextToggle.addEventListener("change", (event) => {
     event.preventDefault();
@@ -173,21 +172,25 @@ interface HeaderOptions {
 const initialise = async (options: {
   header?: HeaderOptions;
 }): Promise<void> => {
-  let stateMachineMermaid: string;
-
   setupStateClickHandlers();
-  if (options.header) {
-    setupHeaderToggleClickHandlers(options.header);
-    setupFormHandlers(options.header);
-    const formOptions = parseOptions(new FormData(options.header.form));
-    stateMachineMermaid = await generateStateMachineMermaid(
-      new AuthStateMachineHelper(formOptions)
-    );
-  } else {
-    stateMachineMermaid = "";
-  }
 
-  await renderMermaidSvg(stateMachineMermaid);
+  if (options.header) {
+    const renderAuthStateMachine = async (formElement: HTMLFormElement) => {
+      const formOptions = parseOptions(new FormData(formElement));
+      const stateMachineMermaid = await generateStateMachineMermaid(
+        new AuthStateMachineHelper(formOptions)
+      );
+      await renderMermaidSvg(stateMachineMermaid);
+    };
+
+    setupHeaderToggleClickHandlers(options.header);
+    setupFormHandlers(options.header, renderAuthStateMachine);
+
+    await renderAuthStateMachine(options.header.form);
+  } else {
+    const stateMachineMermaid = "";
+    await renderMermaidSvg(stateMachineMermaid);
+  }
 };
 
 window.initialiseAuthJourneyMap = () => {
