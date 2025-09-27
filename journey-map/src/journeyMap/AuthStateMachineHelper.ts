@@ -5,6 +5,7 @@ import {
 } from "../../../src/components/common/state-machine/state-machine.js";
 import type { AnyEventObject, StateNode, TransitionDefinition } from "xstate";
 import StateMachineHelper, { State, Transition } from "./StateMachineHelper.js";
+import { pages } from "../../../src/components/templates/pages.js";
 
 export interface Options {
   includeOptional: boolean;
@@ -139,5 +140,18 @@ export default class AuthStateMachineHelper extends StateMachineHelper {
       );
     }
     return transition.target[0].id;
+  }
+
+  getClickAction(state: State): (() => void) | undefined {
+    const name = state.name;
+    if (pages[name]) {
+      return () => {
+        const variant = Array.isArray(pages[name]) ? pages[name][0].name : "";
+        window.open(
+          `/templates${name}?lng=en&pageVariant=${encodeURIComponent(variant)}`,
+          "_blank"
+        );
+      };
+    }
   }
 }

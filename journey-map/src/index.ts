@@ -2,8 +2,8 @@ import mermaid from "mermaid";
 import svgPanZoom from "svg-pan-zoom";
 import { generateStateMachineMermaid } from "./mermaid.js";
 import { authStateMachine } from "di-auth/src/components/common/state-machine/state-machine.js";
-import { pages } from "di-auth/src/components/templates/pages.js";
 import AuthStateMachineHelper from "./journeyMap/AuthStateMachineHelper.js";
+import StateMachineHelper from "./journeyMap/StateMachineHelper.js";
 
 declare global {
   interface Window {
@@ -62,23 +62,20 @@ const renderMermaidSvg = async (stateMachineMermaid: string): Promise<void> => {
   });
 };
 
-const setupStateClickHandlers = (): void => {
+const setupStateClickHandlers = (
+  stateMachineHelper: StateMachineHelper
+): void => {
   let currentHighlight: string | undefined;
   let timeClicked = 0;
 
   const highlightState = (id: string, name: string): void => {
+    const clickAction = stateMachineHelper.getClickAction({ id, name });
     // Open template on double-click if applicable
     if (
       currentHighlight === id &&
       Date.now() - timeClicked < DOUBLE_CLICK_WINDOW_MILLIS
     ) {
-      if (pages[name]) {
-        const variant = Array.isArray(pages[name]) ? pages[name][0].name : "";
-        window.open(
-          `/templates${name}?lng=en&pageVariant=${encodeURIComponent(variant)}`,
-          "_blank"
-        );
-      }
+      if (clickAction) clickAction();
     }
 
     // Remove existing highlights
@@ -155,21 +152,25 @@ interface HeaderOptions {
 const initialise = async (options: {
   header?: HeaderOptions;
 }): Promise<void> => {
-  setupStateClickHandlers();
-
   if (options.header) {
-    const renderAuthStateMachine = async (formElement: HTMLFormElement) => {
+    const authStateMachineHelper = new AuthStateMachineHelper(
+      options.header.form
+    );
+    const renderAuthStateMachine = async () => {
       const stateMachineMermaid = await generateStateMachineMermaid(
-        new AuthStateMachineHelper(formElement)
+        authStateMachineHelper
       );
       await renderMermaidSvg(stateMachineMermaid);
     };
 
+    setupStateClickHandlers(authStateMachineHelper);
     setupHeaderToggleClickHandlers(options.header);
     setupFormHandlers(options.header, renderAuthStateMachine);
 
-    await renderAuthStateMachine(options.header.form);
+    await renderAuthStateMachine();
   } else {
+    // setupStateClickHandlers();
+
     const stateMachineMermaid = "";
     await renderMermaidSvg(stateMachineMermaid);
   }

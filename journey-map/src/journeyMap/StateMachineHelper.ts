@@ -16,4 +16,6 @@ export default abstract class StateMachineHelper {
     states: State[];
     transitions: Transition[];
   };
+
+  abstract getClickAction(state: State): (() => void) | undefined;
 }
