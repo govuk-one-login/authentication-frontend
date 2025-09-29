@@ -20,17 +20,16 @@ export function getAnalyticsPropertiesMiddleware(
     const contentId = getContentId(req);
 
     res.locals.httpStatusCode = res.statusCode;
+    res.locals.contentId = contentId;
 
     let done = callback;
     let opts;
 
     if (isCallbackFunction(options)) {
       done = options;
-      opts = { contentId, ...taxonomy };
+      opts = { ...taxonomy };
     } else {
-      opts = options
-        ? { contentId, ...options, ...taxonomy }
-        : { contentId, ...taxonomy };
+      opts = options ? { ...options, ...taxonomy } : { ...taxonomy };
     }
 
     _render.call<Response, [string, object, CallbackFunction], void>(
