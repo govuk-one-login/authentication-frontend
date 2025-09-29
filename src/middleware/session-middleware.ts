@@ -5,6 +5,7 @@ import { getAppEnv } from "../config.js";
 import {
   ERROR_LOG_LEVEL,
   ERROR_MESSAGES,
+  HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../app.constants.js";
 import type { MfaMethod } from "../types.js";
@@ -101,7 +102,7 @@ function handleSessionError(
     }
   });
 
-  res.status(401);
+  res.status(HTTP_STATUS_CODES.UNAUTHORIZED);
 
   const referrer = req.get("Referrer");
   const isReferrerInternal =
