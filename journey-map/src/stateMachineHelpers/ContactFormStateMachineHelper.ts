@@ -89,7 +89,7 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
       } else if (pathParts.length === 3) {
         const themeKey = pathParts[1].replaceAll("-", "_");
         const subThemeKey = pathParts[2].replaceAll("-", "_");
-        path = `/contact-us-questions?theme=${themeKey}&subTheme=${subThemeKey}`;
+        path = `/contact-us-questions?theme=${themeKey}&subtheme=${subThemeKey}`;
       }
 
       window.open(path, "_blank");

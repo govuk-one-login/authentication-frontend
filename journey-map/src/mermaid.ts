@@ -2,8 +2,7 @@ import {
   AuthStateContext,
   INTERMEDIATE_STATES,
 } from "di-auth/src/components/common/state-machine/state-machine.js";
-import { pages } from "di-auth/src/components/templates/pages.js";
-import StateMachineHelper from "./journeyMap/StateMachineHelper.js";
+import StateMachineHelper from "./stateMachineHelpers/StateMachineHelper.js";
 
 export interface Options {
   includeOptional: boolean;

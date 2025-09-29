@@ -2,9 +2,9 @@ import mermaid from "mermaid";
 import svgPanZoom from "svg-pan-zoom";
 import { generateStateMachineMermaid } from "./mermaid.js";
 import { authStateMachine } from "di-auth/src/components/common/state-machine/state-machine.js";
-import AuthStateMachineHelper from "./journeyMap/AuthStateMachineHelper.js";
-import StateMachineHelper from "./journeyMap/StateMachineHelper.js";
-import ContactFormStateMachineHelper from "./journeyMap/ContactFormStateMachineHelper.js";
+import AuthStateMachineHelper from "./stateMachineHelpers/AuthStateMachineHelper.js";
+import StateMachineHelper from "./stateMachineHelpers/StateMachineHelper.js";
+import ContactFormStateMachineHelper from "./stateMachineHelpers/ContactFormStateMachineHelper.js";
 
 declare global {
   interface Window {
