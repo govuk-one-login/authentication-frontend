@@ -19,6 +19,8 @@ export function getAnalyticsPropertiesMiddleware(
     const taxonomy = getRequestTaxonomy(req);
     const contentId = getContentId(req);
 
+    res.locals.httpStatusCode = res.statusCode;
+
     let done = callback;
     let opts;
 
