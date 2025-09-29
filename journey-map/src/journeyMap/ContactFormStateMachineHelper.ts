@@ -12,7 +12,7 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
     const states: State[] = [];
     const transitions: Transition[] = [];
 
-    const baseId = "contact_us";
+    const baseId = "contact-us";
 
     states.push({
       name: "Contact Us",
@@ -20,7 +20,7 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
     });
 
     CONTACT_FORM_STRUCTURE.forEach((theme, themeKey) => {
-      const themeId = `${baseId}.${themeKey}`;
+      const themeId = `${baseId}.${themeKey}`.replaceAll("_", "-");
       states.push({
         name: theme.nextPageContent,
         id: themeId,
@@ -31,7 +31,7 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
       });
 
       theme.subThemes?.forEach((subTheme, subThemeKey) => {
-        const subThemeId = `${themeId}.${subThemeKey}`;
+        const subThemeId = `${themeId}.${subThemeKey}`.replaceAll("_", "-");
         states.push({
           name: subTheme.nextPageContent,
           id: subThemeId,
@@ -57,7 +57,7 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
       if (pathParts.length === 1) {
         path = "/contact-us";
       } else if (pathParts.length === 2) {
-        const themeKey = pathParts[1];
+        const themeKey = pathParts[1].replaceAll("-", "_");
         const theme = CONTACT_FORM_STRUCTURE.get(themeKey) as Theme;
         if (theme.subThemes) {
           path = `/contact-us-further-information?theme=${themeKey}`;
@@ -65,8 +65,8 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
           path = `/contact-us-questions?theme=${themeKey}`;
         }
       } else if (pathParts.length === 3) {
-        const themeKey = pathParts[1];
-        const subThemeKey = pathParts[2];
+        const themeKey = pathParts[1].replaceAll("-", "_");
+        const subThemeKey = pathParts[2].replaceAll("-", "_");
         path = `/contact-us-questions?theme=${themeKey}&subTheme=${subThemeKey}`;
       }
 
