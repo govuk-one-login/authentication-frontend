@@ -4,7 +4,7 @@
             .DI.analyticsGa4
             .pageViewTracker
             .trackOnPageLoad({
-                statusCode: '{{ga4Params.statusCode}}',
+                statusCode: '{{ ga4Params.statusCode | default(httpStatusCode, false) }}',
                 englishPageTitle: '{{ga4Params.englishPageTitle}}',
                 taxonomy_level1: '{{ ga4Params.taxonomyLevel1 | default(taxonomyLevel1, false) }}',
                 taxonomy_level2: '{{ ga4Params.taxonomyLevel2 | default(taxonomyLevel2, false) }}',
