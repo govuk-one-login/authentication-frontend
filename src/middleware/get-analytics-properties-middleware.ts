@@ -19,17 +19,20 @@ export function getAnalyticsPropertiesMiddleware(
     const taxonomy = getRequestTaxonomy(req);
     const contentId = getContentId(req);
 
-    res.locals.httpStatusCode = res.statusCode;
-    res.locals.contentId = contentId;
+    res.locals.analyticsProperties = {
+      httpStatusCode: res.statusCode,
+      contentId,
+      taxonomy,
+    };
 
     let done = callback;
     let opts;
 
     if (isCallbackFunction(options)) {
       done = options;
-      opts = { ...taxonomy };
+      opts = {};
     } else {
-      opts = options ? { ...options, ...taxonomy } : { ...taxonomy };
+      opts = options ? { ...options } : {};
     }
 
     _render.call<Response, [string, object, CallbackFunction], void>(
