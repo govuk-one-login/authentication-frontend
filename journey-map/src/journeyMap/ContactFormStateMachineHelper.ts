@@ -3,6 +3,28 @@ import {
   CONTACT_FORM_STRUCTURE,
   Theme,
 } from "../../../src/components/contact-us/structure/contact-us-structure.js";
+import translations from "../../../src/locales/en/translation.json";
+
+interface Translation {
+  [key: string]: string | Translation;
+}
+
+function getTranslationForKeys(keys: string[], obj: Translation): string {
+  const key = keys.shift();
+  if (!key) return "UNKNOWN";
+  const val = obj[key];
+
+  if (typeof val === "string") {
+    return val;
+  } else {
+    return getTranslationForKeys(keys, val);
+  }
+}
+
+function getTranslationForDotPath(path: string): string {
+  const keys = path.split(".");
+  return getTranslationForKeys(keys, translations);
+}
 
 export default class ContactFormStateMachineHelper extends StateMachineHelper {
   getReachableStatesAndTransitions(): {
@@ -22,7 +44,7 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
     CONTACT_FORM_STRUCTURE.forEach((theme, themeKey) => {
       const themeId = `${baseId}.${themeKey}`.replaceAll("_", "-");
       states.push({
-        name: theme.nextPageContent,
+        name: getTranslationForDotPath(`${theme.nextPageContent}.title`),
         id: themeId,
       });
       transitions.push({
@@ -33,7 +55,7 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
       theme.subThemes?.forEach((subTheme, subThemeKey) => {
         const subThemeId = `${themeId}.${subThemeKey}`.replaceAll("_", "-");
         states.push({
-          name: subTheme.nextPageContent,
+          name: getTranslationForDotPath(`${subTheme.nextPageContent}.title`),
           id: subThemeId,
         });
         transitions.push({
