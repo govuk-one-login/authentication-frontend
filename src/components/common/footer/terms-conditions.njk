@@ -172,7 +172,7 @@
     <a href="https://www.gov.uk/government/organisations/government-digital-service/about" class="govuk-link">{{'pages.termsAndConditions.section11.paragraph2.linkText' | translate}}</a>.
   </p>
 
-{% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
+{% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
 {%- include "ga4-opl/template.njk" -%}
 
 {% endblock %}
