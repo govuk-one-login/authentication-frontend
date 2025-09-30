@@ -158,7 +158,7 @@ describe("Integration:: check your email", () => {
       .once()
       .reply(HTTP_STATUS_CODES.OK, {
         email: "test@test.com",
-        isBlockedStatus: "Pending",
+        isBlockedStatus: "PENDING",
       });
 
     await request(app)
@@ -184,7 +184,7 @@ describe("Integration:: check your email", () => {
       .once()
       .reply(HTTP_STATUS_CODES.OK, {
         email: "test@test.com",
-        isBlockedStatus: "Pending",
+        isBlockedStatus: "PENDING",
       });
 
     await request(app)
@@ -215,7 +215,7 @@ describe("Integration:: check your email", () => {
       .once()
       .reply(HTTP_STATUS_CODES.OK, {
         email: "test@test.com",
-        isBlockedStatus: "Pending",
+        isBlockedStatus: "PENDING",
       });
 
     await request(app)
@@ -230,6 +230,32 @@ describe("Integration:: check your email", () => {
         "Location",
         `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.EmailMaxRetries}`
       )
+      .expect(302);
+  });
+
+  it("should redirect to cannot use email address page when email experian check fails", async () => {
+    nock(baseApi)
+      .post(API_ENDPOINTS.VERIFY_CODE)
+      .once()
+      .reply(HTTP_STATUS_CODES.NO_CONTENT, {});
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.CHECK_EMAIL_FRAUD_BLOCK)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email: "test@test.com",
+        isBlockedStatus: "DENY",
+      });
+
+    await request(app)
+      .post(PATH_NAMES.CHECK_YOUR_EMAIL)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "123456",
+      })
+      .expect("Location", PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS)
       .expect(302);
   });
 });
