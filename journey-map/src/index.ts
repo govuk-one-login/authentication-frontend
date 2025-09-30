@@ -5,6 +5,8 @@ import { authStateMachine } from "di-auth/src/components/common/state-machine/st
 import AuthStateMachineHelper from "./stateMachineHelpers/AuthStateMachineHelper.js";
 import StateMachineHelper from "./stateMachineHelpers/StateMachineHelper.js";
 import ContactFormStateMachineHelper from "./stateMachineHelpers/ContactFormStateMachineHelper.js";
+import i18next from "i18next";
+import translations from "../../src/locales/en/translation.json";
 
 declare global {
   interface Window {
@@ -208,5 +210,16 @@ window.initialiseAuthJourneyMap = () => {
 };
 
 window.initialiseContactFormJourneyMap = () => {
-  initialise({}).catch(console.error);
+  i18next
+    .init({
+      lng: "en",
+      resources: {
+        en: {
+          translation: translations,
+        },
+      },
+    })
+    .then(() => {
+      initialise({}).catch(console.error);
+    });
 };
