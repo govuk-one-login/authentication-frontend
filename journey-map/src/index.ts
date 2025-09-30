@@ -146,7 +146,7 @@ const setupFormHandlers = (
   contextInput.value = JSON.stringify(authStateMachine.context, undefined, 2);
 };
 
-window.initialiseAuthJourneyMap = async () => {
+export const initialiseAuthJourneyMap = async () => {
   const headerContent = document.getElementById(
     "header-content"
   ) as HTMLDivElement;
@@ -176,7 +176,7 @@ window.initialiseAuthJourneyMap = async () => {
   await renderAuthStateMachine();
 };
 
-window.initialiseContactFormJourneyMap = async () => {
+export const initialiseContactFormJourneyMap = async () => {
   await i18next.init({
     lng: "en",
     resources: {

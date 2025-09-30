@@ -7,7 +7,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --minify --sourcemap --target=chrome135,firefox137,safari18,edge135 --outfile=public/application.js",
+    "build": "esbuild src/index.ts --bundle --minify --sourcemap --target=chrome135,firefox137,safari18,edge135 --outfile=public/application.js --format=esm",
     "build-watch": "npm run build -- --watch=forever",
     "build-server": "tsc --project tsconfig.server.json",
     "start": "NODE_ENV=development tsx watch --clear-screen=false server/app.ts",
