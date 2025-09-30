@@ -22,10 +22,10 @@ const DOUBLE_CLICK_WINDOW_MILLIS = 1000;
 
 const diagramElement = document.getElementById("diagram") as HTMLDivElement;
 
-const setupHeaderToggleClickHandlers = ({
-  headerContent,
-  headerToggle,
-}: HeaderOptions): void => {
+const setupHeaderToggleClickHandlers = (
+  headerContent: HTMLDivElement,
+  headerToggle: HTMLButtonElement
+): void => {
   headerToggle.addEventListener("click", () => {
     if (headerContent.classList.toggle("hidden")) {
       headerToggle.innerText = "Show header";
@@ -130,7 +130,9 @@ const setupStateClickHandlers = (
 };
 
 const setupFormHandlers = (
-  { contextInput, contextToggle, form }: HeaderOptions,
+  contextInput: HTMLTextAreaElement,
+  contextToggle: HTMLInputElement,
+  form: HTMLFormElement,
   renderFormStateMachine: (formElement: HTMLFormElement) => Promise<void>
 ): void => {
   form.addEventListener("change", async (event) => {
@@ -144,46 +146,7 @@ const setupFormHandlers = (
   contextInput.value = JSON.stringify(authStateMachine.context, undefined, 2);
 };
 
-interface HeaderOptions {
-  headerContent: HTMLDivElement;
-  headerToggle: HTMLButtonElement;
-  form: HTMLFormElement;
-  contextToggle: HTMLInputElement;
-  contextInput: HTMLTextAreaElement;
-}
-
-const initialise = async (options: {
-  header?: HeaderOptions;
-}): Promise<void> => {
-  if (options.header) {
-    const authStateMachineHelper = new AuthStateMachineHelper(
-      options.header.form
-    );
-    const renderAuthStateMachine = async () => {
-      const stateMachineMermaid = await generateStateMachineMermaid(
-        authStateMachineHelper
-      );
-      await renderMermaidSvg(stateMachineMermaid);
-    };
-
-    setupStateClickHandlers(authStateMachineHelper);
-    setupHeaderToggleClickHandlers(options.header);
-    setupFormHandlers(options.header, renderAuthStateMachine);
-
-    await renderAuthStateMachine();
-  } else {
-    const contactFormStateMachineHelper = new ContactFormStateMachineHelper();
-
-    setupStateClickHandlers(contactFormStateMachineHelper);
-
-    const stateMachineMermaid = await generateStateMachineMermaid(
-      contactFormStateMachineHelper
-    );
-    await renderMermaidSvg(stateMachineMermaid);
-  }
-};
-
-window.initialiseAuthJourneyMap = () => {
+window.initialiseAuthJourneyMap = async () => {
   const headerContent = document.getElementById(
     "header-content"
   ) as HTMLDivElement;
@@ -198,28 +161,37 @@ window.initialiseAuthJourneyMap = () => {
     "context"
   ) as HTMLTextAreaElement;
 
-  initialise({
-    header: {
-      headerContent,
-      headerToggle,
-      form,
-      contextToggle,
-      contextInput,
-    },
-  }).catch(console.error);
+  const authStateMachineHelper = new AuthStateMachineHelper(form);
+  const renderAuthStateMachine = async () => {
+    const stateMachineMermaid = await generateStateMachineMermaid(
+      authStateMachineHelper
+    );
+    await renderMermaidSvg(stateMachineMermaid);
+  };
+
+  setupStateClickHandlers(authStateMachineHelper);
+  setupHeaderToggleClickHandlers(headerContent, headerToggle);
+  setupFormHandlers(contextInput, contextToggle, form, renderAuthStateMachine);
+
+  await renderAuthStateMachine();
 };
 
-window.initialiseContactFormJourneyMap = () => {
-  i18next
-    .init({
-      lng: "en",
-      resources: {
-        en: {
-          translation: translations,
-        },
+window.initialiseContactFormJourneyMap = async () => {
+  await i18next.init({
+    lng: "en",
+    resources: {
+      en: {
+        translation: translations,
       },
-    })
-    .then(() => {
-      initialise({}).catch(console.error);
-    });
+    },
+  });
+
+  const contactFormStateMachineHelper = new ContactFormStateMachineHelper();
+
+  setupStateClickHandlers(contactFormStateMachineHelper);
+
+  const stateMachineMermaid = await generateStateMachineMermaid(
+    contactFormStateMachineHelper
+  );
+  await renderMermaidSvg(stateMachineMermaid);
 };
