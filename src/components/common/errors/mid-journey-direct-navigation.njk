@@ -12,7 +12,7 @@
     <a href="{{'error.midJourneyError.content.govUKHomepageButtonHref' | translate}}" class="govuk-link govuk-body" id="govUkHomeLink">{{ 'error.midJourneyError.content.paragraph1.text3' | translate }}</a>.
 </p>
 
-{% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, contentId: "", loggedInStatus: false, dynamic: false } %}
+{% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, contentId: "", loggedInStatus: false, dynamic: false } %}
 {%- include "ga4-opl/template.njk" -%}
 
 {% endblock %}

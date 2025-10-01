@@ -4,14 +4,14 @@
             .DI.analyticsGa4
             .pageViewTracker
             .trackOnPageLoad({
-                statusCode: '{{ga4Params.statusCode}}',
+                statusCode: '{{ ga4Params.statusCode | default(analyticsProperties.httpStatusCode, false) }}',
                 englishPageTitle: '{{ga4Params.englishPageTitle}}',
-                taxonomy_level1: '{{ ga4Params.taxonomyLevel1 | default(taxonomyLevel1, false) }}',
-                taxonomy_level2: '{{ ga4Params.taxonomyLevel2 | default(taxonomyLevel2, false) }}',
-                taxonomy_level3: '{{ ga4Params.taxonomyLevel3 | default(taxonomyLevel3, false) }}',
-                taxonomy_level4: '{{ ga4Params.taxonomyLevel4 | default(taxonomyLevel4, false) }}',
-                taxonomy_level5: '{{ ga4Params.taxonomyLevel5 | default(taxonomyLevel5, false) }}',
-                content_id: '{{ ga4Params.contentId | default(contentId, false) }}',
+                taxonomy_level1: '{{ ga4Params.taxonomyLevel1 | default(analyticsProperties.taxonomy.taxonomyLevel1, false) }}',
+                taxonomy_level2: '{{ ga4Params.taxonomyLevel2 | default(analyticsProperties.taxonomy.taxonomyLevel2, false) }}',
+                taxonomy_level3: '{{ ga4Params.taxonomyLevel3 | default(analyticsProperties.taxonomy.taxonomyLevel3, false) }}',
+                taxonomy_level4: '{{ ga4Params.taxonomyLevel4 | default(analyticsProperties.taxonomy.taxonomyLevel4, false) }}',
+                taxonomy_level5: '{{ ga4Params.taxonomyLevel5 | default(analyticsProperties.taxonomy.taxonomyLevel5, false) }}',
+                content_id: '{{ ga4Params.contentId | default(analyticsProperties.contentId, false) }}',
                 logged_in_status: {{ga4Params.loggedInStatus}},
                 dynamic: {{ga4Params.dynamic}}
             });
