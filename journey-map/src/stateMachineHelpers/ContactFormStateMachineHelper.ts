@@ -6,8 +6,10 @@ import {
 import i18next from "i18next";
 
 export default class ContactFormStateMachineHelper extends StateMachineHelper {
-  private readonly BASE_ID = "contact-us";
-  private readonly SUBMIT_SUCCESS_ID = `${this.BASE_ID}-submit-success`;
+  private readonly CONTACT_US_ID = "contact-us";
+  private readonly CONTACT_US_GOV_SERVICE_ID = `${this.CONTACT_US_ID}-gov-service`;
+  private readonly CONTACT_US_TRIAGE_ID = `${this.CONTACT_US_ID}-triage`;
+  private readonly CONTACT_US_SUBMIT_SUCCESS_ID = `${this.CONTACT_US_ID}-submit-success`;
 
   getReachableStatesAndTransitions(): {
     states: State[];
@@ -18,22 +20,41 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
 
     states.push({
       name: "Contact Us",
-      id: this.BASE_ID,
+      id: this.CONTACT_US_ID,
+    });
+
+    states.push({
+      name: "Contact Us - Gov Service",
+      id: this.CONTACT_US_GOV_SERVICE_ID,
+    });
+
+    states.push({
+      name: "Contact Us - Triage",
+      id: this.CONTACT_US_TRIAGE_ID,
+    });
+    transitions.push({
+      source: this.CONTACT_US_TRIAGE_ID,
+      target: this.CONTACT_US_ID,
+    });
+    transitions.push({
+      source: this.CONTACT_US_TRIAGE_ID,
+      target: `${this.CONTACT_US_ID}.id-check-app`,
+      condition: "theme is id_check_app",
     });
 
     states.push({
       name: "Submit Success",
-      id: this.SUBMIT_SUCCESS_ID,
+      id: this.CONTACT_US_SUBMIT_SUCCESS_ID,
     });
 
     CONTACT_FORM_STRUCTURE.forEach((theme, themeKey) => {
-      const themeId = `${this.BASE_ID}.${themeKey}`.replaceAll("_", "-");
+      const themeId = `${this.CONTACT_US_ID}.${themeKey}`.replaceAll("_", "-");
       states.push({
         name: i18next.t(`${theme.nextPageContent}.title`),
         id: themeId,
       });
       transitions.push({
-        source: this.BASE_ID,
+        source: this.CONTACT_US_ID,
         target: themeId,
       });
 
@@ -50,13 +71,13 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
           });
           transitions.push({
             source: subThemeId,
-            target: this.SUBMIT_SUCCESS_ID,
+            target: this.CONTACT_US_SUBMIT_SUCCESS_ID,
           });
         });
       } else {
         transitions.push({
           source: themeId,
-          target: this.SUBMIT_SUCCESS_ID,
+          target: this.CONTACT_US_SUBMIT_SUCCESS_ID,
         });
       }
     });
@@ -68,18 +89,21 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
   }
 
   getClickAction(state: State): (() => void) | undefined {
+    if (state.id === this.CONTACT_US_TRIAGE_ID) {
+      return undefined;
+    }
+
     return () => {
       const idParts = state.id.split(".");
 
-      let path;
+      let path = "/";
       if (idParts.length === 1) {
-        switch (idParts[0]) {
-          case this.BASE_ID:
-            path = "/contact-us";
-            break;
-          case this.SUBMIT_SUCCESS_ID:
-            path = "/contact-us-submit-success";
-            break;
+        if (idParts[0] === this.CONTACT_US_ID) {
+          path = "/contact-us";
+        } else if (idParts[0] === this.CONTACT_US_GOV_SERVICE_ID) {
+          path = "/contact-us?supportType=GOV_SERVICE";
+        } else if (idParts[0] === this.CONTACT_US_SUBMIT_SUCCESS_ID) {
+          path = "/contact-us-submit-success";
         }
       } else if (idParts.length === 2) {
         const themeKey = idParts[1].replaceAll("-", "_");
