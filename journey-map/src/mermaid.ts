@@ -1,40 +1,16 @@
-import {
-  AuthStateContext,
-  INTERMEDIATE_STATES,
-} from "di-auth/src/components/common/state-machine/state-machine.js";
-import StateMachineHelper from "./stateMachineHelpers/StateMachineHelper.js";
+import { INTERMEDIATE_STATES } from "di-auth/src/components/common/state-machine/state-machine.js";
 import { stringToUtf8Hex } from "./helpers/hexHelper.js";
-
-export interface Options {
-  includeOptional: boolean;
-  context?: AuthStateContext;
-}
-
-interface State {
-  name: string;
-  id: string;
-}
-
-interface Transition {
-  source: string;
-  target: string;
-  event?: string;
-  condition?: string;
-  optional?: boolean;
-}
+import { State, StateMachineConfig, Transition } from "./index.js";
 
 const getMermaidHeader = (graphDirection: "TD" | "LR"): string =>
   `flowchart ${graphDirection}
     classDef page fill:#ae8,stroke:#000;
     classDef intermediateState fill:#ec8,stroke:#000`;
 
-const renderState = (
-  state: State,
-  stateMachineHelper: StateMachineHelper
-): string => {
+const renderState = (state: State): string => {
   const { id, name } = state;
   const hexId = stringToUtf8Hex(id);
-  if (stateMachineHelper.getClickAction(state)) {
+  if (state.onClick) {
     return `    ${hexId}(${name}):::page`;
   }
   if (Object.values(INTERMEDIATE_STATES).includes(name)) {
@@ -61,20 +37,19 @@ const renderTransition = ({
   return `    ${hexSource}${arrow}${label}${hexTarget}`;
 };
 
-const renderClickHandler = ({ id, name }: State): string => {
+const renderClickHandler = ({ id }: State): string => {
   const hexId = stringToUtf8Hex(id);
-  return `    click ${hexId} call onStateClick(${JSON.stringify(hexId)},${JSON.stringify(name)})`;
+  return `    click ${hexId} call onStateClick(${JSON.stringify(hexId)})`;
 };
 
 export const generateStateMachineMermaid = async (
-  stateMachineHelper: StateMachineHelper
+  stateMachineConfig: StateMachineConfig
 ): Promise<string> => {
-  const { states, transitions } =
-    stateMachineHelper.getReachableStatesAndTransitions();
+  const { states, transitions } = stateMachineConfig;
 
   return `
 ${getMermaidHeader("LR")}
-${states.map((state) => renderState(state, stateMachineHelper)).join("\n")}
+${states.map((state) => renderState(state)).join("\n")}
 ${states.map(renderClickHandler).join("\n")}
 ${transitions.map(renderTransition).join("\n")}
   `;

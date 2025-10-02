@@ -4,13 +4,26 @@ import {
   authStateMachine,
 } from "../../../src/components/common/state-machine/state-machine.js";
 import type { AnyEventObject, StateNode, TransitionDefinition } from "xstate";
-import StateMachineHelper, { State, Transition } from "./StateMachineHelper.js";
+import StateMachineHelper from "./StateMachineHelper.js";
 import { pages } from "../../../src/components/templates/pages.js";
+import { State, StateMachineConfig, Transition } from "../index.js";
 
 export interface Options {
   includeOptional: boolean;
   context?: AuthStateContext;
 }
+
+const openPageIfExists = (name: string) => {
+  if (pages[name]) {
+    return () => {
+      const variant = Array.isArray(pages[name]) ? pages[name][0].name : "";
+      window.open(
+        `/templates${name}?lng=en&pageVariant=${encodeURIComponent(variant)}`,
+        "_blank"
+      );
+    };
+  }
+};
 
 export default class AuthStateMachineHelper extends StateMachineHelper {
   private readonly formElement: HTMLFormElement;
@@ -19,10 +32,7 @@ export default class AuthStateMachineHelper extends StateMachineHelper {
     this.formElement = formElement;
   }
 
-  getReachableStatesAndTransitions(): {
-    states: State[];
-    transitions: Transition[];
-  } {
+  getReachableStatesAndTransitions(): StateMachineConfig {
     const stateMachine = authStateMachine;
     const xStates = [...stateMachine.initialStateNodes];
 
@@ -31,7 +41,11 @@ export default class AuthStateMachineHelper extends StateMachineHelper {
 
     for (const state of xStates) {
       // Record this state
-      states.push({ name: state.key, id: state.id });
+      states.push({
+        name: state.key,
+        id: state.id,
+        onClick: openPageIfExists(state.key),
+      });
 
       // Find transitions from this state
       const activeTransitions = this.getTransitions(
@@ -48,9 +62,13 @@ export default class AuthStateMachineHelper extends StateMachineHelper {
             xStates.push(stateMachine.getStateNodeById(transition.target));
           }
         } else {
+          const targetStateName = transition.target.substring(
+            stateMachine.id.length + 1
+          );
           states.push({
-            name: transition.target.substring(stateMachine.id.length + 1),
+            name: targetStateName,
             id: transition.target,
+            onClick: openPageIfExists(targetStateName),
           });
         }
       });
@@ -140,18 +158,5 @@ export default class AuthStateMachineHelper extends StateMachineHelper {
       );
     }
     return transition.target[0].id;
-  }
-
-  getClickAction(state: State): (() => void) | undefined {
-    const name = state.name;
-    if (pages[name]) {
-      return () => {
-        const variant = Array.isArray(pages[name]) ? pages[name][0].name : "";
-        window.open(
-          `/templates${name}?lng=en&pageVariant=${encodeURIComponent(variant)}`,
-          "_blank"
-        );
-      };
-    }
   }
 }

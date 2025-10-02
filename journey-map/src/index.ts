@@ -3,7 +3,6 @@ import svgPanZoom from "svg-pan-zoom";
 import { generateStateMachineMermaid } from "./mermaid.js";
 import { authStateMachine } from "di-auth/src/components/common/state-machine/state-machine.js";
 import AuthStateMachineHelper from "./stateMachineHelpers/AuthStateMachineHelper.js";
-import StateMachineHelper from "./stateMachineHelpers/StateMachineHelper.js";
 import ContactFormStateMachineHelper from "./stateMachineHelpers/ContactFormStateMachineHelper.js";
 import i18next from "i18next";
 import translations from "../../src/locales/en/translation.json";
@@ -17,6 +16,25 @@ declare global {
     initialiseAuthJourneyMap: () => void;
     initialiseContactFormJourneyMap: () => void;
   }
+}
+
+export interface StateMachineConfig {
+  states: State[];
+  transitions: Transition[];
+}
+
+export interface State {
+  name: string;
+  id: string;
+  onClick?: () => void;
+}
+
+export interface Transition {
+  source: string;
+  target: string;
+  event?: string;
+  condition?: string;
+  optional?: boolean;
 }
 
 const DOUBLE_CLICK_WINDOW_MILLIS = 1000;
@@ -66,17 +84,15 @@ const renderMermaidSvg = async (stateMachineMermaid: string): Promise<void> => {
   });
 };
 
-const setupStateClickHandlers = (
-  stateMachineHelper: StateMachineHelper
-): void => {
+const setupStateClickHandlers = (states: State[]): void => {
   let currentHighlight: string | undefined;
   let timeClicked = 0;
 
-  const highlightState = (hexId: string, name: string): void => {
-    const clickAction = stateMachineHelper.getClickAction({
-      id: utf8HexToString(hexId),
-      name,
-    });
+  const highlightState = (hexId: string): void => {
+    const stateId = utf8HexToString(hexId);
+    const matchingState = states.find((state) => state.id === stateId);
+
+    const clickAction = matchingState?.onClick;
     // Open template on double-click if applicable
     if (
       currentHighlight === hexId &&
@@ -128,8 +144,8 @@ const setupStateClickHandlers = (
     timeClicked = Date.now();
   };
 
-  window.onStateClick = async (id: string, name: string): Promise<void> => {
-    highlightState(id, name);
+  window.onStateClick = async (id: string): Promise<void> => {
+    highlightState(id);
   };
 };
 
@@ -166,14 +182,14 @@ export const initialiseAuthJourneyMap = async () => {
   ) as HTMLTextAreaElement;
 
   const authStateMachineHelper = new AuthStateMachineHelper(form);
+  const stateMachine =
+    authStateMachineHelper.getReachableStatesAndTransitions();
   const renderAuthStateMachine = async () => {
-    const stateMachineMermaid = await generateStateMachineMermaid(
-      authStateMachineHelper
-    );
+    const stateMachineMermaid = await generateStateMachineMermaid(stateMachine);
     await renderMermaidSvg(stateMachineMermaid);
   };
 
-  setupStateClickHandlers(authStateMachineHelper);
+  setupStateClickHandlers(stateMachine.states);
   setupHeaderToggleClickHandlers(headerContent, headerToggle);
   setupFormHandlers(contextInput, contextToggle, form, renderAuthStateMachine);
 
@@ -191,11 +207,11 @@ export const initialiseContactFormJourneyMap = async () => {
   });
 
   const contactFormStateMachineHelper = new ContactFormStateMachineHelper();
+  const stateMachine =
+    contactFormStateMachineHelper.getReachableStatesAndTransitions();
 
-  setupStateClickHandlers(contactFormStateMachineHelper);
+  setupStateClickHandlers(stateMachine.states);
 
-  const stateMachineMermaid = await generateStateMachineMermaid(
-    contactFormStateMachineHelper
-  );
+  const stateMachineMermaid = await generateStateMachineMermaid(stateMachine);
   await renderMermaidSvg(stateMachineMermaid);
 };
