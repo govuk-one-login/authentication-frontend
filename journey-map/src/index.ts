@@ -7,6 +7,7 @@ import StateMachineHelper from "./stateMachineHelpers/StateMachineHelper.js";
 import ContactFormStateMachineHelper from "./stateMachineHelpers/ContactFormStateMachineHelper.js";
 import i18next from "i18next";
 import translations from "../../src/locales/en/translation.json";
+import { utf8HexToString } from "./helpers/hexHelper.js";
 
 declare global {
   interface Window {
@@ -71,11 +72,14 @@ const setupStateClickHandlers = (
   let currentHighlight: string | undefined;
   let timeClicked = 0;
 
-  const highlightState = (id: string, name: string): void => {
-    const clickAction = stateMachineHelper.getClickAction({ id, name });
+  const highlightState = (hexId: string, name: string): void => {
+    const clickAction = stateMachineHelper.getClickAction({
+      id: utf8HexToString(hexId),
+      name,
+    });
     // Open template on double-click if applicable
     if (
-      currentHighlight === id &&
+      currentHighlight === hexId &&
       Date.now() - timeClicked < DOUBLE_CLICK_WINDOW_MILLIS
     ) {
       if (clickAction) clickAction();
@@ -93,11 +97,11 @@ const setupStateClickHandlers = (
         const edgeStartNodeId = splitEdgeId[1];
         const edgeEndNodeId = splitEdgeId[2];
 
-        if (edgeStartNodeId === id) {
+        if (edgeStartNodeId === hexId) {
           edge.classList.add("highlight", "outgoingEdge");
         }
 
-        if (edgeEndNodeId === id) {
+        if (edgeEndNodeId === hexId) {
           edge.classList.add("highlight", "incomingEdge");
         }
       }
@@ -109,18 +113,18 @@ const setupStateClickHandlers = (
         splitNodeId.pop();
         const joinedNodeId = splitNodeId.join("-");
 
-        return joinedNodeId === `flowchart-${id}`;
+        return joinedNodeId === `flowchart-${hexId}`;
       })
       .forEach((node) => node.classList.add("highlight"));
 
-    Array.from(document.querySelectorAll(`[data-source="${id}"]`)).forEach(
+    Array.from(document.querySelectorAll(`[data-source="${hexId}"]`)).forEach(
       (label) => label.classList.add("highlight", "outgoingEdge")
     );
-    Array.from(document.querySelectorAll(`[data-target="${id}"]`)).forEach(
+    Array.from(document.querySelectorAll(`[data-target="${hexId}"]`)).forEach(
       (label) => label.classList.add("highlight", "incomingEdge")
     );
 
-    currentHighlight = id;
+    currentHighlight = hexId;
     timeClicked = Date.now();
   };
 
