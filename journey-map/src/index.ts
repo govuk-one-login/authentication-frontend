@@ -2,8 +2,8 @@ import mermaid from "mermaid";
 import svgPanZoom from "svg-pan-zoom";
 import { generateStateMachineMermaid } from "./mermaid.js";
 import { authStateMachine } from "di-auth/src/components/common/state-machine/state-machine.js";
-import AuthStateMachineHelper from "./stateMachineHelpers/AuthStateMachineHelper.js";
-import ContactFormStateMachineHelper from "./stateMachineHelpers/ContactFormStateMachineHelper.js";
+import { getAuthStateMachineConfig } from "./stateMachineHelpers/AuthStateMachineHelper.js";
+import { getContactFormStateMachineConfig } from "./stateMachineHelpers/ContactFormStateMachineHelper.js";
 import i18next from "i18next";
 import translations from "../../src/locales/en/translation.json";
 import { utf8HexToString } from "./helpers/hexHelper.js";
@@ -181,19 +181,18 @@ export const initialiseAuthJourneyMap = async () => {
     "context"
   ) as HTMLTextAreaElement;
 
-  const authStateMachineHelper = new AuthStateMachineHelper(form);
-  const stateMachine =
-    authStateMachineHelper.getReachableStatesAndTransitions();
-  const renderAuthStateMachine = async () => {
-    const stateMachineMermaid = await generateStateMachineMermaid(stateMachine);
+  const renderAuthStateMachine = async (formElement: HTMLFormElement) => {
+    const stateMachineConfig = getAuthStateMachineConfig(formElement);
+    const stateMachineMermaid =
+      await generateStateMachineMermaid(stateMachineConfig);
     await renderMermaidSvg(stateMachineMermaid);
+    setupStateClickHandlers(stateMachineConfig.states);
   };
 
-  setupStateClickHandlers(stateMachine.states);
   setupHeaderToggleClickHandlers(headerContent, headerToggle);
   setupFormHandlers(contextInput, contextToggle, form, renderAuthStateMachine);
 
-  await renderAuthStateMachine();
+  await renderAuthStateMachine(form);
 };
 
 export const initialiseContactFormJourneyMap = async () => {
@@ -206,12 +205,11 @@ export const initialiseContactFormJourneyMap = async () => {
     },
   });
 
-  const contactFormStateMachineHelper = new ContactFormStateMachineHelper();
-  const stateMachine =
-    contactFormStateMachineHelper.getReachableStatesAndTransitions();
+  const stateMachineConfig = getContactFormStateMachineConfig();
 
-  setupStateClickHandlers(stateMachine.states);
+  setupStateClickHandlers(stateMachineConfig.states);
 
-  const stateMachineMermaid = await generateStateMachineMermaid(stateMachine);
+  const stateMachineMermaid =
+    await generateStateMachineMermaid(stateMachineConfig);
   await renderMermaidSvg(stateMachineMermaid);
 };
