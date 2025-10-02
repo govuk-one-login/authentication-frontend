@@ -4,6 +4,7 @@ import {
   Theme,
 } from "../../../src/components/contact-us/structure/contact-us-structure.js";
 import i18next from "i18next";
+import { CONTACT_US_THEMES } from "../../../src/app.constants.js";
 
 export default class ContactFormStateMachineHelper extends StateMachineHelper {
   private readonly CONTACT_US_ID = "contact-us";
@@ -38,7 +39,7 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
     });
     transitions.push({
       source: this.CONTACT_US_TRIAGE_ID,
-      target: `${this.CONTACT_US_ID}.id-check-app`,
+      target: `${this.CONTACT_US_ID}.${CONTACT_US_THEMES.ID_CHECK_APP}`,
       condition: "theme is id_check_app",
     });
 
@@ -48,7 +49,7 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
     });
 
     CONTACT_FORM_STRUCTURE.forEach((theme, themeKey) => {
-      const themeId = `${this.CONTACT_US_ID}.${themeKey}`.replaceAll("_", "-");
+      const themeId = `${this.CONTACT_US_ID}.${themeKey}`;
       states.push({
         name: i18next.t(`${theme.nextPageContent}.title`),
         id: themeId,
@@ -60,7 +61,7 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
 
       if (theme.subThemes) {
         theme.subThemes.forEach((subTheme, subThemeKey) => {
-          const subThemeId = `${themeId}.${subThemeKey}`.replaceAll("_", "-");
+          const subThemeId = `${themeId}.${subThemeKey}`;
           states.push({
             name: i18next.t(`${subTheme.nextPageContent}.title`),
             id: subThemeId,
@@ -106,7 +107,7 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
           path = "/contact-us-submit-success";
         }
       } else if (idParts.length === 2) {
-        const themeKey = idParts[1].replaceAll("-", "_");
+        const themeKey = idParts[1];
         const theme = CONTACT_FORM_STRUCTURE.get(themeKey) as Theme;
         if (theme.subThemes) {
           path = `/contact-us-further-information?theme=${themeKey}`;
@@ -114,8 +115,8 @@ export default class ContactFormStateMachineHelper extends StateMachineHelper {
           path = `/contact-us-questions?theme=${themeKey}`;
         }
       } else if (idParts.length === 3) {
-        const themeKey = idParts[1].replaceAll("-", "_");
-        const subThemeKey = idParts[2].replaceAll("-", "_");
+        const themeKey = idParts[1];
+        const subThemeKey = idParts[2];
         path = `/contact-us-questions?theme=${themeKey}&subtheme=${subThemeKey}`;
       }
 
