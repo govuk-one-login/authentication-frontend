@@ -166,7 +166,7 @@ const setupFormHandlers = (
   contextInput.value = JSON.stringify(authStateMachine.context, undefined, 2);
 };
 
-export const initialiseAuthJourneyMap = async () => {
+const initialiseAuthJourneyMap = async () => {
   const headerContent = document.getElementById(
     "header-content"
   ) as HTMLDivElement;
@@ -195,7 +195,7 @@ export const initialiseAuthJourneyMap = async () => {
   await renderAuthStateMachine(form);
 };
 
-export const initialiseContactFormJourneyMap = async () => {
+const initialiseContactFormJourneyMap = async () => {
   await i18next.init({
     lng: "en",
     resources: {
@@ -212,4 +212,30 @@ export const initialiseContactFormJourneyMap = async () => {
   const stateMachineMermaid =
     await generateStateMachineMermaid(stateMachineConfig);
   await renderMermaidSvg(stateMachineMermaid);
+};
+
+interface JourneyMapType {
+  initialiser: () => Promise<void>;
+  name: string;
+}
+
+const JOURNEY_MAP_TYPES = new Map<string, JourneyMapType>([
+  ["auth", { initialiser: initialiseAuthJourneyMap, name: "Authentication" }],
+  [
+    "contact-form",
+    { initialiser: initialiseContactFormJourneyMap, name: "Contact Form" },
+  ],
+]);
+
+export const initialiseJourneyMap = async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const journeyMapType = urlParams.get("journeyMapType") || "auth";
+  const journeyMapInitialiser =
+    JOURNEY_MAP_TYPES.get(journeyMapType)?.initialiser;
+
+  if (journeyMapInitialiser) {
+    await journeyMapInitialiser();
+  } else {
+    console.error("No journey map found");
+  }
 };
