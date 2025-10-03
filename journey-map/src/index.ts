@@ -219,6 +219,7 @@ interface JourneyMapType {
   name: string;
 }
 
+const JOURNEY_MAP_TYPE_QUERY_PARAM = "journeyMapType";
 const JOURNEY_MAP_TYPES = new Map<string, JourneyMapType>([
   ["auth", { initialiser: initialiseAuthJourneyMap, name: "Authentication" }],
   [
@@ -228,8 +229,18 @@ const JOURNEY_MAP_TYPES = new Map<string, JourneyMapType>([
 ]);
 
 export const initialiseJourneyMap = async () => {
+  // Initialise header bar
+  const headerBar = document.getElementById("header-bar") as HTMLDivElement;
+  JOURNEY_MAP_TYPES.forEach((journeyMapType, journeyMapId) => {
+    const pageLink = document.createElement("a");
+    pageLink.innerText = journeyMapType.name;
+    pageLink.href = `?${JOURNEY_MAP_TYPE_QUERY_PARAM}=${journeyMapId}`;
+    headerBar.insertAdjacentElement("beforeend", pageLink);
+  });
+
+  // Initialise diagram
   const urlParams = new URLSearchParams(window.location.search);
-  const journeyMapType = urlParams.get("journeyMapType") || "auth";
+  const journeyMapType = urlParams.get(JOURNEY_MAP_TYPE_QUERY_PARAM) || "auth";
   const journeyMapInitialiser =
     JOURNEY_MAP_TYPES.get(journeyMapType)?.initialiser;
 
