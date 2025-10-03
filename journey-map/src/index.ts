@@ -2,11 +2,11 @@ import mermaid from "mermaid";
 import svgPanZoom from "svg-pan-zoom";
 import { generateStateMachineMermaid } from "./mermaid.js";
 import { authStateMachine } from "di-auth/src/components/common/state-machine/state-machine.js";
-import { getAuthStateMachineConfig } from "./stateMachineHelpers/AuthStateMachineHelper.js";
-import { getContactFormStateMachineConfig } from "./stateMachineHelpers/ContactFormStateMachineHelper.js";
+import { getAuthStateMachineConfig } from "./stateMachineHelpers/auth-state-machine-helper.js";
+import { getContactFormStateMachineConfig } from "./stateMachineHelpers/contact-form-state-machine-helper.js";
 import i18next from "i18next";
 import translations from "../../src/locales/en/translation.json";
-import { utf8HexToString } from "./helpers/hexHelper.js";
+import { utf8HexToString } from "./helpers/hex-helper.js";
 
 declare global {
   interface Window {

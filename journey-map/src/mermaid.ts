@@ -1,5 +1,5 @@
 import { INTERMEDIATE_STATES } from "di-auth/src/components/common/state-machine/state-machine.js";
-import { stringToUtf8Hex } from "./helpers/hexHelper.js";
+import { stringToUtf8Hex } from "./helpers/hex-helper.js";
 import { State, StateMachineConfig, Transition } from "./index.js";
 
 const getMermaidHeader = (graphDirection: "TD" | "LR"): string =>
