@@ -9,7 +9,8 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "outDir": "build"
+    "outDir": "build",
+    "resolveJsonModule": true
   },
   "include": ["src"]
 }
