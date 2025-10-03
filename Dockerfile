@@ -34,11 +34,11 @@ COPY --from=oneagent_codemodules / /
 ENV LD_PRELOAD=/opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so
 
 WORKDIR /app
-COPY --chown=node:node --from=builder /app/package*.json ./
-COPY --chown=node:node --from=builder /app/node_modules/ node_modules
-COPY --chown=node:node --from=builder /app/dist/ dist
-COPY --chown=node:node --from=journey_map_builder /app/journey-map/public journey-map/public
-COPY --chown=node:node docker-entrypoint.sh /docker-entrypoint.sh
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules/ node_modules
+COPY --from=builder /app/dist/ dist
+COPY --from=journey_map_builder /app/journey-map/public journey-map/public
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 ENV NODE_ENV="production"
 ENV PORT=3000
