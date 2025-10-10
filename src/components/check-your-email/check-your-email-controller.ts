@@ -73,7 +73,7 @@ export const checkYourEmailPost = (
           return true;
         }
       } catch (e) {
-        req.log.error("Error checking email fraud block", e);
+        req.log.error(e, "Error checking email fraud block");
       }
     };
     const verifyCodeRequest = verifyCodePost(
