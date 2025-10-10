@@ -1,8 +1,8 @@
 import "express-session";
 import type { UserSessionClient } from "../../src/types.js";
-declare module "express-session" {
-  import type { UserSession } from "../../src/types.ts";
+import type { UserSession } from "../../src/types.ts";
 
+declare module "express-session" {
   interface SessionData {
     user: UserSession;
     client: UserSessionClient;

@@ -3,7 +3,7 @@ import { NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants.js";
 import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
-import type { ExpressRouteFunc, MfaMethod, SmsMfaMethod } from "../../types.js";
+import type { ExpressRouteFunc, SmsMfaMethod } from "../../types.js";
 import type { SecurityCodeErrorType } from "../common/constants.js";
 import { ERROR_CODES } from "../common/constants.js";
 import type { AccountRecoveryInterface } from "../common/account-recovery/types.js";
@@ -81,14 +81,14 @@ export const enterMfaPost = (
 };
 
 export function enterMfaTemplateParametersFromRequest(req: Request): any {
-  const activeMfaMethod: SmsMfaMethod = req.session.user.mfaMethods.find(
-    (mfaMethod: MfaMethod) =>
-      mfaMethod.id === req.session.user.activeMfaMethodId
-  );
+  const activeMfaMethod = req.session.user.mfaMethods.find(
+    (mfaMethod) => mfaMethod.id === req.session.user.activeMfaMethodId
+  ) as SmsMfaMethod | undefined;
+
   const hasMultipleMfaMethods = req.session.user.mfaMethods?.length > 1;
 
   return {
-    phoneNumber: activeMfaMethod.redactedPhoneNumber,
+    phoneNumber: activeMfaMethod?.redactedPhoneNumber,
     isAccountRecoveryPermitted: req.session.user.isAccountRecoveryPermitted,
     hasMultipleMfaMethods,
     mfaIssuePath: hasMultipleMfaMethods

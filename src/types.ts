@@ -87,7 +87,7 @@ export interface UserSession {
   isSignInJourney?: boolean;
   isVerifyEmailCodeResendRequired?: boolean;
   channel?: string;
-  mfaMethodType?: string;
+  mfaMethodType?: MFA_METHOD_TYPE;
   isMfaRequired?: boolean;
   activeMfaMethodId?: string;
   sentOtpMfaMethodIds?: string[];

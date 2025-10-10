@@ -1,12 +1,55 @@
-declare namespace Express {
-  import type pino from "pino";
-  interface Request {
-    i18n?: {
+import type pino from "pino";
+import type { Taxonomy } from "../utils/taxonomy.ts";
+
+declare global {
+  namespace Express {
+    export interface Request {
+      i18n?: {
+        language?: string;
+      };
+      t: TFunction;
+      csrfToken?: () => string;
+      log: pino.Logger;
+      generatedSessionId?: string;
+    }
+
+    export interface Locals {
+      // Session IDs
+      sessionId?: string;
+      clientSessionId?: string;
+      persistentSessionId?: string;
+      clientId?: string;
+
+      // Security
+      scriptNonce?: string;
+      csrfToken?: string;
+
+      // Analytics
+      ga4ContainerId?: string;
+      isGa4Enabled?: string;
+      analyticsCookieDomain?: string;
+      analyticsProperties?: {
+        httpStatusCode: number;
+        contentId: string;
+        taxonomy: Taxonomy;
+      };
+
+      // Language
+      languageToggleEnabled?: boolean;
       language?: string;
-    };
-    t: TFunction;
-    csrfToken?: () => string;
-    log: pino.Logger;
-    generatedSessionId?: string;
+      htmlLang?: string;
+
+      // App
+      strategicAppChannel?: boolean;
+      webChannel?: boolean;
+      genericAppChannel?: boolean;
+      isApp?: boolean;
+
+      // Misc
+      currentUrl?: URL;
+      showTestBanner?: boolean;
+      accountManagementUrl?: string;
+      contactUsLinkUrl?: string;
+    }
   }
 }

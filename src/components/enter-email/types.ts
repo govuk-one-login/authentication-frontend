@@ -1,16 +1,17 @@
+import type { MFA_METHOD_TYPE } from "src/app.constants.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
 import type { Request } from "express";
 
 export interface UserExists extends DefaultApiResponse {
   email: string;
   doesUserExist: boolean;
-  mfaMethodType: string;
+  mfaMethodType: MFA_METHOD_TYPE;
   phoneNumberLastThree?: string;
   lockoutInformation?: LockoutInformation[];
 }
 export interface LockoutInformation {
   lockType: string;
-  mfaMethodType: string;
+  mfaMethodType: MFA_METHOD_TYPE;
   lockTTL: string;
   journeyType: string;
 }
