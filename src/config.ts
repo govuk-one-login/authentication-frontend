@@ -198,3 +198,7 @@ export function useRebrand(): boolean {
 export function supportPasskeyUsage(): boolean {
   return process.env.SUPPORT_PASSKEY_USAGE === "1";
 }
+
+export function supportPasskeyRegistration(): boolean {
+  return process.env.SUPPORT_PASSKEY_REGISTRATION === "1";
+}
