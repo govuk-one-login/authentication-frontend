@@ -93,6 +93,7 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             "PRIVACY_NOTICE_REDIRECT_ENABLED": 1,
             "USE_REBRAND": 1,
             "SUPPORT_PASSKEY_USAGE": 1,
+            "SUPPORT_PASSKEY_REGISTRATION": 1,
         },
     },
     {
