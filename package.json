@@ -75,6 +75,7 @@
     "@govuk-one-login/spinner": "1.1.1",
     "@otplib/core": "12.0.1",
     "@otplib/plugin-base32-enc-dec": "12.0.1",
+    "@simplewebauthn/browser": "13.2.2",
     "axios": "1.12.2",
     "connect-redis": "8.1.0",
     "cookie-parser": "1.4.7",
