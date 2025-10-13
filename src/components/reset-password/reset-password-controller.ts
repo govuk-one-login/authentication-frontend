@@ -13,12 +13,13 @@ import { BadRequestError } from "../../utils/error.js";
 import type { EnterPasswordServiceInterface } from "../enter-password/types.js";
 import { enterPasswordService } from "../enter-password/enter-password-service.js";
 import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
+import { isPasswordChangeRequired } from "../../utils/request.js";
 
 const resetPasswordTemplate = "reset-password/index.njk";
 
 export function resetPasswordGet(req: Request, res: Response): void {
   res.render(resetPasswordTemplate, {
-    isPasswordChangeRequired: req.session.user.isPasswordChangeRequired,
+    isPasswordChangeRequired: isPasswordChangeRequired(req),
   });
 }
 

@@ -11,6 +11,7 @@ import {
   clientUsesOneLoginOptionally,
   supportTypeIsGovService,
   urlContains,
+  isPasswordChangeRequired,
 } from "./request.js";
 const CONTENT_IDS: {
   [path: string]: ContentIdFunction;
@@ -96,7 +97,10 @@ const CONTENT_IDS: {
       : "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
   [PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION]: () =>
     "8247477c-3e33-4dae-9528-22e7ed44efb3",
-  [PATH_NAMES.RESET_PASSWORD]: () => "c8520c6c-9f09-4edf-8c99-7123a3991cfc",
+  [PATH_NAMES.RESET_PASSWORD]: (req: Request) =>
+    isPasswordChangeRequired(req)
+      ? "48da381e-71a4-48bf-9580-e26fae197134"
+      : "c8520c6c-9f09-4edf-8c99-7123a3991cfc",
   [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP]: () =>
     "943b41f4-8262-417f-8866-c0639319ccf0",
   [PATH_NAMES.RESET_PASSWORD_2FA_SMS]: () => "",
@@ -110,7 +114,7 @@ const CONTENT_IDS: {
     return "b78d016b-0f2c-4599-9c2f-76b3a6397997";
   },
   [PATH_NAMES.RESET_PASSWORD_REQUIRED]: () =>
-    "c8520c6c-9f09-4edf-8c99-7123a3991cfc",
+    "48da381e-71a4-48bf-9580-e26fae197134",
   [PATH_NAMES.RESET_PASSWORD_RESEND_CODE]: () =>
     "7b663466-8001-436f-b10b-e6ac581d39aa",
   [PATH_NAMES.SECURITY_CODE_INVALID]: () =>

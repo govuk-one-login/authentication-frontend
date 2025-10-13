@@ -10,6 +10,7 @@ import {
   clientUsesOneLoginOptionally,
   supportTypeIsGovService,
   urlContains,
+  isPasswordChangeRequired,
 } from "./request.js";
 import {
   CONTACT_US_THEMES,
@@ -59,6 +60,28 @@ describe("request utilities", () => {
       expect(
         isUpliftRequired({
           session: { user: { isUpliftRequired: true } },
+        } as any as Request)
+      ).to.equal(true);
+    });
+  });
+
+  describe("isPasswordChangeRequired", () => {
+    it(`returns false when required properties are not in the request`, async () => {
+      expect(isPasswordChangeRequired(blankRequest)).to.equal(false);
+    });
+
+    it(`returns false when used property is false`, async () => {
+      expect(
+        isPasswordChangeRequired({
+          session: { user: { isPasswordChangeRequired: false } },
+        } as any as Request)
+      ).to.equal(false);
+    });
+
+    it(`returns true when used property is true`, async () => {
+      expect(
+        isPasswordChangeRequired({
+          session: { user: { isPasswordChangeRequired: true } },
         } as any as Request)
       ).to.equal(true);
     });
