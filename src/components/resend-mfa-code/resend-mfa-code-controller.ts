@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { ExpressRouteFunc, MfaMethod, SmsMfaMethod } from "../../types.js";
+import type { ExpressRouteFunc, SmsMfaMethod } from "../../types.js";
 import { mfaService } from "../common/mfa/mfa-service.js";
 import type { MfaServiceInterface } from "../common/mfa/types.js";
 import { sendMfaGeneric } from "../common/mfa/send-mfa-controller.js";
@@ -37,10 +37,9 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
       includeReauthentication: true,
     });
 
-    const activeMfaMethod: SmsMfaMethod = req.session.user.mfaMethods.find(
-      (mfaMethod: MfaMethod) =>
-        mfaMethod.id === req.session.user.activeMfaMethodId
-    );
+    const activeMfaMethod = req.session.user.mfaMethods.find(
+      (mfaMethod) => mfaMethod.id === req.session.user.activeMfaMethodId
+    ) as SmsMfaMethod | undefined;
 
     res.render("resend-mfa-code/index.njk", {
       redactedPhoneNumber: activeMfaMethod?.redactedPhoneNumber,

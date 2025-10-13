@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { ExpressRouteFunc, MfaMethod } from "src/types.js";
+import type { ExpressRouteFunc, SmsMfaMethod } from "src/types.js";
 import type { SecurityCodeErrorType } from "../common/constants.js";
 import { ERROR_CODES, pathWithQueryParam } from "../common/constants.js";
 import {
@@ -44,15 +44,15 @@ export function resetPassword2FASmsGet(): ExpressRouteFunc {
 
     const { mfaMethods } = req.session.user;
 
-    const phoneNumber = req.session.user.mfaMethods.find(
-      (mfaMethod: MfaMethod) =>
-        mfaMethod.id === req.session.user.activeMfaMethodId
-    )?.redactedPhoneNumber;
+    const activeMfaMethod = req.session.user.mfaMethods.find(
+      (mfaMethod) => mfaMethod.id === req.session.user.activeMfaMethodId
+    ) as SmsMfaMethod | undefined;
+
     const hasMultipleMfaMethods = mfaMethods?.length > 1;
     const chooseMfaMethodHref = PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES;
 
     return res.render(TEMPLATE_NAME, {
-      phoneNumber,
+      phoneNumber: activeMfaMethod?.redactedPhoneNumber,
       resendCodeLink: RESEND_CODE_LINK,
       hasMultipleMfaMethods,
       chooseMfaMethodHref,

@@ -1,3 +1,4 @@
+import type { MFA_METHOD_TYPE } from "src/app.constants.js";
 import type {
   ApiResponseResult,
   DefaultApiResponse,
@@ -17,7 +18,7 @@ export interface ResetPasswordCheckEmailServiceInterface {
 }
 
 export interface ResetPasswordRequestResponse extends DefaultApiResponse {
-  mfaMethodType: string;
+  mfaMethodType: MFA_METHOD_TYPE;
   mfaMethods: MfaMethod[];
   phoneNumberLastThree: string;
 }
