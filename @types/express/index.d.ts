@@ -45,6 +45,10 @@ declare global {
       genericAppChannel?: boolean;
       isApp?: boolean;
 
+      // Feature flags
+      supportPasskeyUsage?: boolean;
+      supportPasskeyRegistration?: boolean;
+
       // Misc
       currentUrl?: URL;
       showTestBanner?: boolean;

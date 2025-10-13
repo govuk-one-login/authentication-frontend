@@ -337,6 +337,29 @@ Conditions:
                 ]
               - "Yes"
 
+  SupportPasskeyRegistration:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  SupportPasskeyRegistration,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  SupportPasskeyRegistration,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   ElasticLoadBalancerAccountIds:
@@ -364,6 +387,7 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.authdev1.sandpit.account.gov.uk"
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
+      SupportPasskeyRegistration: "Yes"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       frontendApiBaseUrl: https://auth.authdev2.sandpit.account.gov.uk/
@@ -385,6 +409,7 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.authdev2.sandpit.account.gov.uk"
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
+      SupportPasskeyRegistration: "Yes"
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: "https://auth.authdev3.dev.account.gov.uk"
@@ -401,6 +426,7 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.authdev3.dev.account.gov.uk"
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
+      SupportPasskeyRegistration: "Yes"
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -432,6 +458,7 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.dev.account.gov.uk"
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
+      SupportPasskeyRegistration: "Yes"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -463,6 +490,7 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.build.account.gov.uk"
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
+      SupportPasskeyRegistration: "No"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -501,6 +529,7 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.staging.account.gov.uk"
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
+      SupportPasskeyRegistration: "No"
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -534,6 +563,7 @@ Mappings:
       PrivacyNoticeRedirectEnabled: "Yes"
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
+      SupportPasskeyRegistration: "No"
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -569,6 +599,7 @@ Mappings:
       PrivacyNoticeRedirectEnabled: "Yes"
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
+      SupportPasskeyRegistration: "No"
 
 Globals:
   Function:
@@ -1098,6 +1129,8 @@ Resources:
               Value: !If [UseRebrand, "1", "0"]
             - Name: SUPPORT_PASSKEY_USAGE
               Value: !If [SupportPasskeyUsage, "1", "0"]
+            - Name: SUPPORT_PASSKEY_REGISTRATION
+              Value: !If [SupportPasskeyRegistration, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If
