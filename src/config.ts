@@ -194,3 +194,7 @@ export function getPrivacyNoticeRedirectEnabled(): boolean {
 export function useRebrand(): boolean {
   return process.env.USE_REBRAND === "1";
 }
+
+export function supportPasskeyUsage(): boolean {
+  return process.env.SUPPORT_PASSKEY_USAGE === "1";
+}
