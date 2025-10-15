@@ -77,3 +77,11 @@
 {% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, taxonomyLevel1: "authentication", taxonomyLevel2: "Home", loggedInStatus: false, dynamic: true } %}
 {%- include "ga4-opl/template.njk" -%}
 {% endblock %}
+
+{% block scripts %}
+  {% if supportPasskeyUsage or supportPasskeyRegistration %}
+    <script {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
+      console.log(`browserSupportsWebAuthn ${SimpleWebAuthnBrowser.browserSupportsWebAuthn()}`)
+    </script>
+  {% endif %}
+{% endblock %}

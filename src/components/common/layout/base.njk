@@ -12,6 +12,9 @@
 
 {% block head %}
     <link href="/public/style.css" rel="stylesheet">
+    {% if supportPasskeyUsage or supportPasskeyRegistration %}
+      <script src="/public/scripts/simplewebauthn-browser.min.js" {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}></script>
+    {% endif %}
     {% block headMetaData %}{% endblock %}
 {% endblock %}
 
