@@ -5,7 +5,6 @@ import {
   resetPasswordGet,
   resetPasswordPost,
   resetPasswordRequestGet,
-  resetPasswordRequiredGet,
 } from "./reset-password-controller.js";
 import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
@@ -36,12 +35,13 @@ router.post(
   resetPasswordPost()
 );
 
+// TODO: Remove in follow-up PR
 router.get(
   PATH_NAMES.RESET_PASSWORD_REQUIRED,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   accountInterventionsMiddleware(true, false),
-  resetPasswordRequiredGet
+  resetPasswordGet
 );
 
 router.post(
