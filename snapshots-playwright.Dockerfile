@@ -7,7 +7,7 @@ COPY ./src ./src
 RUN yarn install
 
 
-FROM mcr.microsoft.com/playwright:v1.55.0-noble AS playwright
+FROM mcr.microsoft.com/playwright:v1.56.1-noble AS playwright
 
 WORKDIR /app
 
