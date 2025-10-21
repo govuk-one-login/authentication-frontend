@@ -279,10 +279,18 @@ export const pages: Record<string, Page | PageVariant[]> = {
     template: "reset-password-check-email/index-reset-password-resend-code.njk",
     options: { email: "example@account.gov.uk" },
   },
-  [PATH_NAMES.RESET_PASSWORD]: {
-    template: "reset-password/index.njk",
-    options: { isPasswordChangeRequired: false },
-  },
+  [PATH_NAMES.RESET_PASSWORD]: [
+    {
+      name: "default",
+      template: "reset-password/index.njk",
+      options: { isPasswordChangeRequired: false },
+    },
+    {
+      name: "required",
+      template: "reset-password/index.njk",
+      options: { isPasswordChangeRequired: true },
+    },
+  ],
   [PATH_NAMES.RESET_PASSWORD_2FA_SMS]: {
     template: "reset-password-2fa-sms/index.njk",
     options: {
@@ -298,10 +306,6 @@ export const pages: Record<string, Page | PageVariant[]> = {
       hasMultipleMfaMethods: false,
       chooseMfaMethodHref: "#",
     },
-  },
-  [PATH_NAMES.RESET_PASSWORD_REQUIRED]: {
-    template: "reset-password/index.njk",
-    options: { isPasswordChangeRequired: true },
   },
 
   // MFA Reset

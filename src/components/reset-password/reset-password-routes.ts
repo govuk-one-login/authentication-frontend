@@ -35,21 +35,4 @@ router.post(
   resetPasswordPost()
 );
 
-// TODO: Remove in follow-up PR
-router.get(
-  PATH_NAMES.RESET_PASSWORD_REQUIRED,
-  validateSessionMiddleware,
-  allowUserJourneyMiddleware,
-  accountInterventionsMiddleware(true, false),
-  resetPasswordGet
-);
-
-router.post(
-  PATH_NAMES.RESET_PASSWORD_REQUIRED,
-  validateSessionMiddleware,
-  allowUserJourneyMiddleware,
-  validateResetPasswordRequest(),
-  resetPasswordPost()
-);
-
 export { router as resetPasswordRouter };

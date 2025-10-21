@@ -490,30 +490,6 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
-      [PATH_NAMES.RESET_PASSWORD_REQUIRED]: {
-        on: {
-          [USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION]: [
-            PATH_NAMES.UNAVAILABLE_PERMANENT,
-          ],
-          [USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION]: [
-            PATH_NAMES.UNAVAILABLE_TEMPORARY,
-          ],
-          [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
-            {
-              target: [PATH_NAMES.GET_SECURITY_CODES],
-              cond: "isAccountPartCreated",
-            },
-            { target: [INTERMEDIATE_STATES.SIGN_IN_END] },
-          ],
-        },
-        meta: {
-          optionalPaths: [
-            PATH_NAMES.ENTER_EMAIL_SIGN_IN,
-            PATH_NAMES.ACCOUNT_LOCKED,
-            PATH_NAMES.SIGN_IN_OR_CREATE,
-          ],
-        },
-      },
       [PATH_NAMES.PROVE_IDENTITY_CALLBACK]: {
         type: "final",
         meta: {
