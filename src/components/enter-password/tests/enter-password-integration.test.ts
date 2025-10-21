@@ -204,7 +204,7 @@ describe("Integration::enter password", () => {
         _csrf: token,
         password: "password",
       })
-      .expect("Location", PATH_NAMES.RESET_PASSWORD_REQUIRED)
+      .expect("Location", PATH_NAMES.RESET_PASSWORD)
       .expect(302);
   });
 

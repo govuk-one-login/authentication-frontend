@@ -8,7 +8,6 @@ import {
   resetPasswordGet,
   resetPasswordPost,
   resetPasswordRequestGet,
-  resetPasswordRequiredGet,
 } from "../reset-password-controller.js";
 import type { ResetPasswordServiceInterface } from "../types.js";
 import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants.js";
@@ -17,6 +16,7 @@ import { mockResponse } from "mock-req-res";
 import type { EnterPasswordServiceInterface } from "../../enter-password/types.js";
 import { ERROR_CODES } from "../../common/constants.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+
 const TEST_SCENARIO_PARAMETERS = [
   {
     supportPasswordResetRequired: "0",
@@ -58,17 +58,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL
       );
-    });
-  });
-
-  describe("resetPasswordRequiredGet", () => {
-    it("should render the reset password required page", () => {
-      req.session.user.isPasswordChangeRequired = true;
-      resetPasswordRequiredGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith("reset-password/index.njk", {
-        isPasswordChangeRequired: true,
-      });
     });
   });
 

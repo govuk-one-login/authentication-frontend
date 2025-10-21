@@ -11,6 +11,9 @@ export const isReauth = (req: Request): boolean =>
 export const isUpliftRequired = (req: Request): boolean =>
   Boolean(req.session?.user?.isUpliftRequired);
 
+export const isPasswordChangeRequired = (req: Request): boolean =>
+  Boolean(req.session?.user?.isPasswordChangeRequired);
+
 export const isAccountRecoveryJourney = (req: Request): boolean =>
   Boolean(req.session?.user?.isAccountRecoveryJourney);
 
