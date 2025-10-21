@@ -25,7 +25,8 @@ services:
     environment:
       WEBSITE_HOST: http://localhost:4401
     volumes:
-      - ./src/components/contact-us/tests/contact-us-snapshot.test.ts-snapshots:/app/src/components/contact-us/tests/contact-us-snapshot.test.ts-snapshots
+      - ./src:/app/src
+      - ./test:/app/test
       - ./test-results:/app/test-results
     command: npx playwright test ${COMMAND:-}
     network_mode: "host"

@@ -1,24 +1,7 @@
-import type { Page } from "@playwright/test";
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
+import { expectPageToMatchScreenshot } from "../../../../test/helpers/screenshot-helper.js";
 import { CONTACT_FORM_STRUCTURE } from "../structure/contact-us-structure.js";
 import type { Theme } from "../structure/contact-us-structure.js";
-
-const expectPageToMatchScreenshot = async (
-  page: Page,
-  pathToNavigateTo: string,
-  screenshotFileName: string
-) => {
-  await page.goto(pathToNavigateTo);
-  const actualScreenshot = await page.screenshot({
-    fullPage: true,
-    type: "jpeg",
-    quality: 20,
-  });
-  expect(actualScreenshot).toMatchSnapshot(`${screenshotFileName}-.jpeg`, {
-    threshold: 0.25,
-    maxDiffPixels: 5,
-  });
-};
 
 test.describe("Snapshot:: contact us - public user", () => {
   ["en", "cy"].forEach((lng: string) => {
