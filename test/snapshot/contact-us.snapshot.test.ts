@@ -1,7 +1,14 @@
 import { test } from "@playwright/test";
-import { expectPageToMatchScreenshot } from "../../../../test/helpers/screenshot-helper.js";
-import { CONTACT_FORM_STRUCTURE } from "../structure/contact-us-structure.js";
-import type { Theme } from "../structure/contact-us-structure.js";
+import { CONTACT_FORM_STRUCTURE } from "../../src/components/contact-us/structure/contact-us-structure.js";
+import type { Theme } from "../../src/components/contact-us/structure/contact-us-structure.js";
+import {
+  dismissCookies,
+  expectPageToMatchScreenshot,
+} from "./snapshot-helper.js";
+
+test.beforeEach(async ({ context }) => {
+  await dismissCookies(context);
+});
 
 test.describe("Snapshot:: contact us - public user", () => {
   ["en", "cy"].forEach((lng: string) => {

@@ -5,8 +5,8 @@ dotenv.config();
 
 export default defineConfig({
   workers: 10,
-  testDir: "./src",
-  testMatch: "**/*-snapshot.test.ts",
+  testDir: "./test",
+  testMatch: "**/*.snapshot.test.ts",
   projects: [
     {
       name: "chromium",
