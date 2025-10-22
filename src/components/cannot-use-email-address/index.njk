@@ -14,7 +14,7 @@
         <a href="{{'pages.cannotUseEmailAddress.whatYouCanDo.changeEmailLinkHref'| translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.cannotUseEmailAddress.whatYouCanDo.changeEmailLinkText'| translate}}</a>
         {{'pages.cannotUseEmailAddress.whatYouCanDo.text2' | translate}}
     </p>
-{% endblock %}
 
 {% set ga4Params = { nonce: scriptNonce, statusCode: "200", englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
 {%- include "ga4-opl/template.njk" -%}
+{% endblock %}
