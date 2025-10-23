@@ -1004,6 +1004,7 @@
           "bulletPoint11": "some form fields limit how many characters can be entered in them, which can make it difficult to enter information when using assistive technologies",
           "bulletPoint12": "buttons that show ‘spinner’ animations do not adhere to your reduced motion settings",
           "bulletPoint13": "the information in the cookie banner content is not the same on all pages it appears on",
+          "bulletPoint14": "if you use a screenreader and prove your identity by answering questions about benefits you receive, the landmarks on these pages will be different to landmarks in the rest of the journey",
           "paragraph2": {
             "text1": "Go to the ",
             "link": {
