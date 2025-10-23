@@ -41,7 +41,7 @@ test.describe("Snapshot:: contact us - public user", () => {
       });
 
       CONTACT_FORM_STRUCTURE.forEach((theme: Theme, themeKey: string) => {
-        test.describe.parallel(themeKey, () => {
+        test.describe(themeKey, () => {
           if (theme.subThemes) {
             const subThemeFurtherInformationPath = `/contact-us-further-information?theme=${themeKey}&lng=${lng}`;
             test(`should render ${subThemeFurtherInformationPath}`, async ({
