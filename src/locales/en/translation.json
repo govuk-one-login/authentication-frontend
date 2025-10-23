@@ -1080,7 +1080,8 @@
           "listItem9": "Links in the header and footer that you may expect to open in a new tab sometimes open in the same tab. This fails WCAG 2.2 Guideline 3.2 (Predictable).",
           "listItem10": "Some form fields limit how many characters can be entered, which can make it difficult to enter information if you are using assistive technologies. This fails WCAG 2.2 success criterion 3.3.1 (Error Identification).",
           "listItem11": "Buttons that show ‘spinner’ animations do not adhere to your reduced motion settings. This fails WCAG 2.2 success criterion 2.2.2 (Pause, Stop, Hide).",
-          "listItem12": "The information in the cookie banner content is not the same on all pages it appears on. This fails WCAG 2.2 success criterion 3.2.6 (Consistent Help)."
+          "listItem12": "The information in the cookie banner content is not the same on all pages it appears on. This fails WCAG 2.2 success criterion 3.2.6 (Consistent Help).",
+          "listItem13": "Landmarks are not the same on all pages. If you use a screenreader and prove your identity by answering questions about benefits you receive, the landmarks on these pages will be different to landmarks in the rest of the journey."
         },
         "webchat": {
           "header": "Non compliance with the accessibility regulations for the GOV.UK One Login webchat",
