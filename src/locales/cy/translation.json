@@ -2410,6 +2410,14 @@
       "provingIdentityProblemAnsweringSecurityQuestions": {
         "title": "Problem yn ateb cwestiynau diogelwch",
         "header": "Problem yn ateb cwestiynau diogelwch",
+        "answeringQuestionsAbout": {
+          "label": "Beth oeddech chi’n ateb cwestiynau amdano?",
+          "reasons": {
+            "financialInformation": "Gwybodaeth ariannol, fel benthyciadau, cardiau credyd, cyfrifon banc neu forgeisi",
+            "pip": "Taliad Annibyniaeth Personol (PIP)",
+            "notSure": "Nid wyf yn siŵr"
+          }
+        },
         "section1": {
           "label": "Unrhyw beth arall rydych angen dweud wrthym?",
           "hint": "Er enghraifft, os ydych am ychwanegu mwy o fanylion"

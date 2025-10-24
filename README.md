@@ -304,7 +304,7 @@ Checks if the code conforms the linting standards.
 
 We use Playwright to do our snapshot tests.
 
-Currently, they are only for the contact us forms, configured in the `contact-us-snapshot.test.ts` file.
+All snapshot test files are suffixed `.snapshot.test.ts`
 
 ### Running all the Playwright tests
 
@@ -312,8 +312,8 @@ This will run the tests in the same way as in the build pipeline. From the root 
 
 - Build the docker containers `docker compose -f docker-compose.snapshots.yml build`
 - Run the tests `docker compose -f docker-compose.snapshots.yml up --exit-code-from playwright`
-- NOTE: Do not run the playwright tests locally. There are subtle differences between running them in the container
-  and locally and because of the pipeline we want to make sure we only run them in docker.
+- **NOTE**: Do not run the Playwright tests outside of Docker. There are subtle differences between running them in the container
+  and locally and because of the pipeline we want to make sure we only run them in Docker.
 
 ## Test failures
 
