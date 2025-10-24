@@ -2416,7 +2416,8 @@
             "financialInformation": "Gwybodaeth ariannol, fel benthyciadau, cardiau credyd, cyfrifon banc neu forgeisi",
             "pip": "Taliad Annibyniaeth Personol (PIP)",
             "notSure": "Nid wyf yn siŵr"
-          }
+          },
+          "errorMessage": "Dewiswch am beth roeddech yn ateb cwestiynau"
         },
         "section1": {
           "label": "Unrhyw beth arall rydych angen dweud wrthym?",
