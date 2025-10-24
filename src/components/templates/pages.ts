@@ -14,7 +14,6 @@ interface PageVariant extends Page {
 const EXAMPLE_QR_CODE =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIQAAACECAYAAABRRIOnAAAAAklEQVR4AewaftIAAAN6SURBVO3BQa5bRwADweZA979yx4ssuBrgQdK3nbAq/sLMvw4z5TBTDjPlMFMOM+UwUw4z5TBTDjPlMFMOM+UwUw4z5TBTDjPlxZuS8JNU3pGEG5WWhKbyRBJ+kso7DjPlMFMOM+XFh6l8UhJukvCEyk0SnkhCU7lR+aQkfNJhphxmymGmvPiyJDyh8g6VloSWhKbSVFoSvikJT6h802GmHGbKYaa8+I9TeSIJTeX/5DBTDjPlMFNe/OVUWhJuVG5UWhKayn/ZYaYcZsphprz4MpWfpNKS8EQSnlB5h8qf5DBTDjPlMFNefFgSflISmsoTSWgqLQk3SWgqN0n4kx1mymGmHGbKizep/E2S0FRuVFoSnlD5mxxmymGmHGbKizcloal8UhKayhMqLQktCTcqTeUmCTcqN0l4QuWTDjPlMFMOM+XFD0vCjUpTeUcSmkpLwk0SnlC5ScKf7DBTDjPlMFPiL3xREm5UbpLQVG6S0FRaEj5J5SYJNyotCU2lJeFG5R2HmXKYKYeZ8uLLVG6S0FSayk0SmkpLwhMqTyThRuWTVFoSPukwUw4z5TBTXrwpCTcqLQlPJKGpNJUblU9KQlO5ScKNSlP5nQ4z5TBTDjPlxQ9TuUlCU3lHEppKS0JTaUm4SUJTaSotCe9IQlP5pMNMOcyUw0x58WEqn5SEJ1SeUHmHyk0SbpJwo3KThKbyjsNMOcyUw0x58WVJuFFpKk8koSXhiSQ0labSknCThKbSktBUWhJaEppKS8InHWbKYaYcZsqLL1NpSbhJwhMqn5SEG5WWhJsk3CShqbQk3Kh80mGmHGbKYabEX/iLJeEJlZskNJWbJDSVJ5LQVH6nw0w5zJTDTHnxpiT8JJWm8o4kNJWWhKbyRBKayicloam84zBTDjPlMFNefJjKJyXhiSQ8ofJEEp5Q+SaVTzrMlMNMOcyUF1+WhCdUPkmlJeEJlZaEmyR8UhKeUHnHYaYcZsphprz4j0tCU2lJ+EkqT6i0JHzTYaYcZsphprz4n1NpSbhR+aYk3Ki0JHzSYaYcZsphprz4MpXfSeUmCTcqLQlPqLQk3Kj8ToeZcpgph5ny4sOS8JOS8EQS3qHSktBUblRuktBUftJhphxmymGmxF+Y+ddhphxmymGmHGbKYaYcZsphphxmymGmHGbKYaYcZsphphxmymGm/ANs8XkgbQ6z9gAAAABJRU5ErkJggg==";
 
-// TODO: AUT-4439 Screenshot test across each of these pages
 // TODO: AUT-4441 Parameter validation for each template
 export const pages: Record<string, Page | PageVariant[]> = {
   // Sign in
@@ -515,9 +514,6 @@ export const pages: Record<string, Page | PageVariant[]> = {
       template: "contact-us/index-gov-service-contact-us.njk",
     },
   ],
-  [PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS]: {
-    template: "contact-us/index-submit-success.njk",
-  },
   [PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS]: {
     template: "cannot-use-email-address/index.njk",
   },
