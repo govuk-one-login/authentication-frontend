@@ -360,6 +360,29 @@ Conditions:
                 ]
               - "Yes"
 
+  EnableDwpKbvContactFormChanges:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref SubEnvironment,
+                EnableDwpKbvContactFormChanges,
+                DefaultValue: "No",
+              ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref Environment,
+                EnableDwpKbvContactFormChanges,
+                DefaultValue: "No",
+              ]
+              - "Yes"
+
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   ElasticLoadBalancerAccountIds:
@@ -388,6 +411,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
+      EnableDwpKbvContactFormChanges: "Yes"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       frontendApiBaseUrl: https://auth.authdev2.sandpit.account.gov.uk/
@@ -410,6 +434,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
+      EnableDwpKbvContactFormChanges: "Yes"
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: "https://auth.authdev3.dev.account.gov.uk"
@@ -427,6 +452,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
+      EnableDwpKbvContactFormChanges: "Yes"
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -459,6 +485,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
+      EnableDwpKbvContactFormChanges: "Yes"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -491,6 +518,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
+      EnableDwpKbvContactFormChanges: "Yes"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -530,6 +558,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
+      EnableDwpKbvContactFormChanges: "Yes"
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -564,6 +593,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
+      EnableDwpKbvContactFormChanges: "No"
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -600,6 +630,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
+      EnableDwpKbvContactFormChanges: "No"
 
 Globals:
   Function:
@@ -1131,6 +1162,8 @@ Resources:
               Value: !If [SupportPasskeyUsage, "1", "0"]
             - Name: SUPPORT_PASSKEY_REGISTRATION
               Value: !If [SupportPasskeyRegistration, "1", "0"]
+            - Name: ENABLE_DWP_KBV_CONTACT_FORM_CHANGES
+              Value: !If [EnableDwpKbvContactFormChanges, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If
