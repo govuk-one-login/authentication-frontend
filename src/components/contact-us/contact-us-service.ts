@@ -184,6 +184,9 @@ export function getContactUsService(
         : "no";
     }
 
+    customAttributes["sa-tag-answering-questions-about"] =
+      contactForm.answeringQuestionsAbout;
+
     customAttributes["sa-tag-primary-intent-user-selection"] =
       contactForm.themeQuestions.themeQuestion;
 
