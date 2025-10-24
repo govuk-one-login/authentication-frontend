@@ -3,7 +3,6 @@ import { defaultSmartAgentClient } from "../../utils/smartAgent.js";
 import type {
   ContactForm,
   Descriptions,
-  OptionalData,
   Questions,
   SmartAgentCustomAttributes,
   Themes,
@@ -124,7 +123,6 @@ export function getContactUsService(
 ): ContactUsService {
   function formatSmartAgentMessageField(
     descriptions: Descriptions,
-    optionalData: OptionalData,
     questions: Questions
   ) {
     const message = [];
@@ -185,6 +183,9 @@ export function getContactUsService(
         ? "yes"
         : "no";
     }
+
+    customAttributes["sa-tag-answering-questions-about"] =
+      contactForm.answeringQuestionsAbout;
 
     customAttributes["sa-tag-primary-intent-user-selection"] =
       contactForm.themeQuestions.themeQuestion;
@@ -279,7 +280,6 @@ export function getContactUsService(
       email: contactForm.email,
       message: formatSmartAgentMessageField(
         contactForm.descriptions,
-        contactForm.optionalData,
         contactForm.questions
       ),
       customAttributes: createSmartAgentCustomAttributes(contactForm),

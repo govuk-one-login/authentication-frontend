@@ -2409,6 +2409,15 @@
       "provingIdentityProblemAnsweringSecurityQuestions": {
         "title": "A problem answering security questions",
         "header": "A problem answering security questions",
+        "answeringQuestionsAbout": {
+          "label": "What were you answering questions about?",
+          "reasons": {
+            "financialInformation": "Financial information, such as loans, credit cards, bank accounts or mortgages",
+            "pip": "Personal Independence Payment (PIP)",
+            "notSure": "I’m not sure"
+          },
+          "errorMessage": "Select what you were answering questions about"
+        },
         "section1": {
           "label": "Anything else you need to tell us?",
           "hint": "For example, if you want to add more detail"
