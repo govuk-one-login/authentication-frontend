@@ -685,6 +685,42 @@ describe("Integration:: contact us - public user", () => {
     });
   });
 
+  describe("when a user had a problem with their national insurance number", () => {
+    it("should return validation error when user has not described which problem they had", async () => {
+      const data = {
+        _csrf: token,
+        theme: "proving_identity",
+        subtheme: "proving_identity_problem_with_national_insurance_number",
+        contact: "false",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#problemWithNationalInsuranceNumber-error",
+        "What problem were you having with your National Insurance number?"
+      );
+    });
+  });
+
+  describe("when a user had a problem answering security questions", () => {
+    it("should return validation error when user has not selected what they're answering questions about", async () => {
+      const data = {
+        _csrf: token,
+        theme: "proving_identity",
+        subtheme: "proving_identity_problem_answering_security_questions",
+        issueDescription: "issue description",
+        serviceTryingToUse: "service trying to use",
+        contact: "false",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#answeringQuestionsAbout-error",
+        "Select what you were answering questions about"
+      );
+    });
+  });
+
   describe("when a user had a problem taking a photo of your identity document using the GOV.UK ID Check app", () => {
     it("should return validation error when user has not selected which identity document they were using", async () => {
       const data = {
@@ -699,23 +735,6 @@ describe("Integration:: contact us - public user", () => {
         data,
         "#identityDocumentUsed-error",
         "Select which identity document you were using"
-      );
-    });
-  });
-
-  describe("when a user had a problem with their national insurance number", () => {
-    it("should return validation error when user has not described which problem they had", async () => {
-      const data = {
-        _csrf: token,
-        theme: "proving_identity",
-        subtheme: "proving_identity_problem_with_national_insurance_number",
-        contact: "false",
-      };
-      await expectValidationErrorOnPost(
-        "/contact-us-questions",
-        data,
-        "#problemWithNationalInsuranceNumber-error",
-        "What problem were you having with your National Insurance number?"
       );
     });
   });

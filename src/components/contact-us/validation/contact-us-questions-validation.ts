@@ -70,6 +70,20 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           { value, lng: req.i18n.lng }
         );
       }),
+    body("answeringQuestionsAbout")
+      .if(body("theme").equals("proving_identity"))
+      .if(
+        body("subtheme").equals(
+          "proving_identity_problem_answering_security_questions"
+        )
+      )
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.answeringQuestionsAbout.errorMessage",
+          { value, lng: req.i18n.lng }
+        );
+      }),
     body("identityDocumentUsed")
       .if(body("theme").equals("proving_identity"))
       .if(
