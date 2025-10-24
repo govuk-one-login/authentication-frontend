@@ -13,36 +13,38 @@
     <input type="hidden" name="referer" value="{{referer}}"/>
     {% include 'contact-us/questions/_id-check-app-hidden-fields.njk' %}
 
-  {{ govukRadios({
-    name: "answeringQuestionsAbout",
-    fieldset: {
-      legend: {
-        text: 'pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.answeringQuestionsAbout.label' | translate,
-        isPageHeading: false,
-        classes: "govuk-fieldset__legend--s"
-      }
-    },
-    items: [
-      {
-        value: 'financialInformation',
-        checked: problemWith === 'financialInformation',
-        text: 'pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.answeringQuestionsAbout.reasons.financialInformation' | translate
-      },
-      {
-        value: 'pip',
-        checked: problemWith === 'pip',
-        text: 'pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.answeringQuestionsAbout.reasons.pip' | translate
-      },
-      {
-        value: 'notSure',
-        checked: problemWith === 'notSure',
-        text: 'pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.answeringQuestionsAbout.reasons.notSure' | translate
-      }
-    ],
-    errorMessage: {
-      text: errors['answeringQuestionsAbout'].text
-    } if (errors['answeringQuestionsAbout'])
-  }) }}
+    {% if enableDwpKbvContactFormChanges %}
+      {{ govukRadios({
+        name: "answeringQuestionsAbout",
+        fieldset: {
+          legend: {
+            text: 'pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.answeringQuestionsAbout.label' | translate,
+            isPageHeading: false,
+            classes: "govuk-fieldset__legend--s"
+          }
+        },
+        items: [
+          {
+            value: 'financialInformation',
+            checked: problemWith === 'financialInformation',
+            text: 'pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.answeringQuestionsAbout.reasons.financialInformation' | translate
+          },
+          {
+            value: 'pip',
+            checked: problemWith === 'pip',
+            text: 'pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.answeringQuestionsAbout.reasons.pip' | translate
+          },
+          {
+            value: 'notSure',
+            checked: problemWith === 'notSure',
+            text: 'pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.answeringQuestionsAbout.reasons.notSure' | translate
+          }
+        ],
+        errorMessage: {
+          text: errors['answeringQuestionsAbout'].text
+        } if (errors['answeringQuestionsAbout'])
+      }) }}
+    {% endif %}
 
     {{ govukCharacterCount({
         label: {
