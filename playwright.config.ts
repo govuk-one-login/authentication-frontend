@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export default defineConfig({
+  fullyParallel: true,
   workers: 10,
   testDir: "./test",
   testMatch: "**/*.snapshot.test.ts",
