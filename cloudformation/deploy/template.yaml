@@ -462,7 +462,7 @@ Mappings:
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
-      frontendApiBaseUrl: https://7ecg8e1o73-vpce-042c5d3d97d7438d9.execute-api.eu-west-2.amazonaws.com/build/
+      frontendApiBaseUrl: https://auth.build.account.gov.uk/
       frontendAutoScalingMinCount: 4
       frontendAutoScalingMaxCount: 6
       frontendTaskDefinitionCpu: 512
@@ -494,7 +494,7 @@ Mappings:
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
-      frontendApiBaseUrl: https://z02rnzbqw8-vpce-07078f5f005fe5efc.execute-api.eu-west-2.amazonaws.com/staging/
+      frontendApiBaseUrl: https://auth.staging.account.gov.uk/
       frontendAutoScalingMinCount: 12
       frontendAutoScalingMaxCount: 240
       frontendTaskDefinitionCpu: 1024
