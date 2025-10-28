@@ -533,7 +533,7 @@ Mappings:
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
-      frontendApiBaseUrl: https://auth.integration.account.gov.uk/
+      frontendApiBaseUrl: https://db10ia9pr6-vpce-0df10df14d851e1c9.execute-api.eu-west-2.amazonaws.com/integration/
       frontendAutoScalingMinCount: 2
       frontendAutoScalingMaxCount: 4
       frontendTaskDefinitionCpu: 512
