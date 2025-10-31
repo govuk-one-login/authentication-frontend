@@ -496,6 +496,16 @@ export function createTicketIdentifier(appSessionId: string): string {
   }
 }
 
+function getReasonForAnsweringQuestionsAbout(req: Request): string | undefined {
+  const reason = req.body.answeringQuestionsAbout;
+  if (!reason) return;
+
+  return req.t(
+    `pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.answeringQuestionsAbout.reasons.${reason}`,
+    { lng: "en" }
+  );
+}
+
 export function contactUsQuestionsFormPostToSmartAgent(
   service = getContactUsService()
 ): ExpressRouteFunc {
@@ -564,6 +574,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
                 ),
             }
           : undefined,
+      answeringQuestionsAbout: getReasonForAnsweringQuestionsAbout(req),
     });
 
     req.log.info(
