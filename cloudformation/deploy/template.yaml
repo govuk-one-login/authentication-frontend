@@ -368,7 +368,7 @@ Mappings:
   EnvironmentConfiguration:
     authdev1:
       cloudfrontDistributionStackName: "authdev1-cloudfront"
-      frontendApiBaseUrl: https://auth.authdev1.sandpit.account.gov.uk/
+      frontendApiBaseUrl: https://5fgwu5kpd2-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev1/
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENB3csRUIdoaTHNn079Jl7JpiXzxF
@@ -390,7 +390,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
-      frontendApiBaseUrl: https://auth.authdev2.sandpit.account.gov.uk/
+      frontendApiBaseUrl: https://nw0dah7bxk-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev2/
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/Yz722IDLN1mPqkPTihkwAkp/rUm
@@ -412,7 +412,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
-      frontendApiBaseUrl: "https://auth.authdev3.dev.account.gov.uk"
+      frontendApiBaseUrl: https://y3s69ubaz5-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev3/
       orchToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEyu7XCXkDyxhHrmoOfLrl6tcd9e9V
@@ -430,7 +430,7 @@ Mappings:
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
-      frontendApiBaseUrl: https://auth.dev.account.gov.uk/
+      frontendApiBaseUrl: https://cmm2f5oyob-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/dev/
       frontendAutoScalingMinCount: 1
       frontendAutoScalingMaxCount: 2
       frontendTaskDefinitionCpu: 512
