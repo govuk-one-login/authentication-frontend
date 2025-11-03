@@ -7,6 +7,7 @@ import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import esmock from "esmock";
+import { AnsweringQuestionsAboutReason } from "../contact-us-controller.js";
 
 describe("Integration:: contact us - public user", () => {
   let token: string | string[];
@@ -705,20 +706,63 @@ describe("Integration:: contact us - public user", () => {
   });
 
   describe("when a user had a problem answering security questions", () => {
-    it("should return validation error when user has not selected what they're answering questions about", async () => {
-      const data = {
+    let baseData: object;
+
+    before(() => {
+      baseData = {
         _csrf: token,
         theme: "proving_identity",
         subtheme: "proving_identity_problem_answering_security_questions",
         issueDescription: "issue description",
         serviceTryingToUse: "service trying to use",
         contact: "false",
+        formType: "provingIdentityProblemAnsweringSecurityQuestions",
       };
-      await expectValidationErrorOnPost(
-        "/contact-us-questions",
-        data,
-        "#answeringQuestionsAbout-error",
-        "Select what you were answering questions about"
+    });
+
+    describe("when answeringQuestionsAbout reason is valid", () => {
+      Object.values(AnsweringQuestionsAboutReason).forEach((reason) => {
+        it(`should submit successfully if reason is ${reason}`, async () => {
+          nock(smartAgentApiUrl).post("/").once().reply(200);
+
+          const data = { ...baseData, answeringQuestionsAbout: reason };
+
+          await request(app)
+            .post(PATH_NAMES.CONTACT_US_QUESTIONS)
+            .type("form")
+            .set("Cookie", cookies)
+            .send(data)
+            .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
+            .expect(302);
+        });
+      });
+    });
+
+    describe("when answeringQuestionsAboutReason is invalid", () => {
+      it("should return validation error when user has not selected what they're answering questions about", async () => {
+        const data = { ...baseData };
+
+        await expectValidationErrorOnPost(
+          PATH_NAMES.CONTACT_US_QUESTIONS,
+          data,
+          "#answeringQuestionsAbout-error",
+          "Select what you were answering questions about"
+        );
+      });
+
+      ["unknown_reason", undefined].forEach((reason) =>
+        it(`should fail submitting if reason is ${reason}`, async () => {
+          nock(smartAgentApiUrl).post("/").once().reply(200);
+
+          const data = { ...baseData, answeringQuestionsAbout: reason };
+
+          await request(app)
+            .post(PATH_NAMES.CONTACT_US_QUESTIONS)
+            .type("form")
+            .set("Cookie", cookies)
+            .send(data)
+            .expect(400);
+        })
       );
     });
   });

@@ -496,8 +496,16 @@ export function createTicketIdentifier(appSessionId: string): string {
   }
 }
 
+export enum AnsweringQuestionsAboutReason {
+  FINANCIAL_INFORMATION = "financialInformation",
+  PIP = "pip",
+  NOT_SURE = "notSure",
+}
+
 function getReasonForAnsweringQuestionsAbout(req: Request): string | undefined {
-  const reason = req.body.answeringQuestionsAbout;
+  const reason = req.body.answeringQuestionsAbout
+    ? (req.body.answeringQuestionsAbout as AnsweringQuestionsAboutReason)
+    : undefined;
   if (!reason) return;
 
   return req.t(
