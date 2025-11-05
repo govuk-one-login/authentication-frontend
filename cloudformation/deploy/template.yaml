@@ -430,7 +430,7 @@ Mappings:
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
-      frontendApiBaseUrl: https://cmm2f5oyob-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/dev/
+      frontendApiBaseUrl: https://tze402cnbk-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/dev/
       frontendAutoScalingMinCount: 1
       frontendAutoScalingMaxCount: 2
       frontendTaskDefinitionCpu: 512
