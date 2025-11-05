@@ -22,6 +22,7 @@ describe("cannot use email address controller", () => {
     it("should render the cannot use email address view", () => {
       cannotUseEmailAddressGet(req, res);
 
+      expect(res.status).to.have.been.calledWith(403);
       expect(res.render).to.have.been.calledWith(
         "cannot-use-email-address/index.njk"
       );
