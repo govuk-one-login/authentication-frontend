@@ -727,7 +727,7 @@
       "paragraph2": "to your GOV.UK One Login."
     },
     "cannotUseEmailAddress": {
-      "title": "Sorry there is a problem",
+      "title": "Sorry, there’s a problem",
       "header": "Sorry, there’s a problem",
       "paragraph1": "You cannot use the email address you entered for GOV.UK One Login.",
       "subHeader": "What you can do",
