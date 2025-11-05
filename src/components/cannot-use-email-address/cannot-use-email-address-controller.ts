@@ -3,7 +3,7 @@ import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machi
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 
 export function cannotUseEmailAddressGet(req: Request, res: Response): void {
-  return res.render("cannot-use-email-address/index.njk");
+  return res.status(403).render("cannot-use-email-address/index.njk");
 }
 
 export async function cannotUseEmailAddressContinueGet(
