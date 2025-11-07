@@ -8,7 +8,7 @@ set -euo pipefail
 
 if [[ -n "${AWS_VAULT:-}" ]]; then
   # shellcheck disable=SC2016
-  echo 'WARNING: aws-vault / gds-cli are deprecated and should no longer be used. Instead, run the script directly (ie. `./deploy-sandpit.sh`)' >&2
+  echo 'WARNING: aws-vault / gds-cli are deprecated and should no longer be used. Instead, run the script directly (ie. `./deploy-authdevs.sh`)' >&2
   echo "In future, this script will error and exit here, not show a warning." >&2
 fi
 
