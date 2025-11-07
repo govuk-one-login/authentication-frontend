@@ -19,28 +19,6 @@ repos:
         exclude: ^(ci|.github)/.*|docker-compose.*|.pre-commit-config.yaml$
         files: template\.ya?ml$
 
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.96.2
-    hooks:
-      - id: terraform_fmt
-
-  - repo: local
-    hooks:
-      - id: tflint
-        name: Run tflint (terraform linter)
-        files: ^ci/terraform/
-        require_serial: true
-        types_or:
-          - hcl
-          - terraform
-        language: golang
-        additional_dependencies:
-          - github.com/terraform-linters/tflint@v0.55.0
-        entry: scripts/tflint.py
-        args:
-          - --minimum-failure-severity=warning
-          - --fix
-
   - repo: local
     hooks:
       - id: eslint
@@ -58,29 +36,6 @@ repos:
         stages: [pre-commit]
         entry: yarn run prettier --write --ignore-unknown
         pass_filenames: true
-      - id: tfupdate-lock
-        name: Update terraform provider locks
-        files: ^ci/terraform/site.tf$
-        pass_filenames: false
-        types:
-          - file
-        language: golang
-        additional_dependencies:
-          - github.com/minamijoyo/tfupdate@v0.8.5
-        entry: tfupdate lock
-        args:
-          - --platform
-          - linux_amd64
-          - --platform
-          - linux_arm64
-          - --platform
-          - darwin_amd64
-          - --platform
-          - darwin_arm64
-          - --platform
-          - windows_amd64
-          - -r
-          - ci/terraform
 
   - repo: https://github.com/lalten/check-gha-pinning
     rev: v1.3.0

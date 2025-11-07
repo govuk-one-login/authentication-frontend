@@ -41,8 +41,7 @@ while [[ $# -gt 0 ]]; do
     -b | --build)
         BUILD=1
         ;;
-    -d | --deploy | -t | --terraform)
-        # -t|--terraform kept there for now, because old habits die hard
+    -d | --deploy)
         DEPLOY=1
         ;;
     --destroy)

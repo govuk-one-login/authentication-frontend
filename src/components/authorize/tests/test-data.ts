@@ -18,7 +18,7 @@ export function createMockClaims(): Claims {
     redirect_uri: "UNKNOWN",
     exp: timestamp + 1000,
     iat: timestamp,
-    client_name: "di-auth-stub-relying-party-sandpit",
+    client_name: "di-auth-stub-relying-party-authdev1",
     is_one_login_service: false,
     rp_sector_host: "https://rp.sector.uri",
     jti: "fvvMWAladDtl35O_xyBTRLwwojA",
