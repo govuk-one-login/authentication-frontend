@@ -72,6 +72,7 @@ export const PATH_NAMES = {
   OPEN_IN_WEB_BROWSER: "/open-one-login-in-web-browser",
   CANNOT_USE_EMAIL_ADDRESS: "/cannot-use-email-address",
   CANNOT_USE_EMAIL_ADDRESS_CONTINUE: "/cannot-use-email-address-continue",
+  WELL_KNOWN_APPLE_ASSOCIATION: "/.well-known/apple-app-site-association",
 };
 
 export const HREF_BACK = {
