@@ -41,7 +41,7 @@ jobs:
         uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
 
       - name: Assume AWS DEPLOYER role in tooling acct
-        uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4.3.1
+        uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 # v5.1.0
         with:
           role-to-assume: ${{ secrets.deployer_role }}
           aws-region: ${{ inputs.aws-region }}
@@ -51,7 +51,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
 
       - name: Login to GDS Dev Dynatrace Container Registry
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
           registry: "${{ secrets.dynatrace_registry }}.live.dynatrace.com"
           username: ${{ secrets.dynatrace_registry }}
@@ -60,7 +60,7 @@ jobs:
       - name: Build image metadata
         id: metadata
         if: github
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
+        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893 # v5.9.0
         with:
           images: |
             "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ecr_repo }}"
