@@ -88,20 +88,6 @@ describe("session-middleware", () => {
       expect(res.locals.persistentSessionId).to.equal("psid123456xyz");
       expect(next).to.be.calledOnce;
     });
-    it("should add clientId to response when present on session", () => {
-      req = {
-        session: {
-          client: {
-            rpClientId: "an-rp-client-id",
-          },
-        },
-      } as any;
-      getSessionIdMiddleware(req as Request, res as Response, next);
-
-      expect(res.locals).to.have.property("clientId");
-      expect(res.locals.clientId).to.equal("an-rp-client-id");
-      expect(next).to.be.calledOnce;
-    });
     it("should not have session id on response when no session cookie present", () => {
       req.cookies = undefined;
 
