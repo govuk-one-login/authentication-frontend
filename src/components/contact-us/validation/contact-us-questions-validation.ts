@@ -16,7 +16,11 @@ import {
   internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
   internationalPhoneNumberMustHaveLengthWithoutSpacesInRange,
 } from "../../common/phone-number/phone-number-validation.js";
-import { generatePageTitle } from "../contact-us-controller.js";
+import {
+  AnsweringQuestionsAboutReason,
+  generatePageTitle,
+} from "../contact-us-controller.js";
+import { enableDwpKbvContactFormChanges } from "../../../config.js";
 const sanitizeFreeTextValue: CustomSanitizer = function sanitizeFreeTextValue(
   value: string
 ) {
@@ -69,6 +73,37 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           "pages.contactUsQuestions.takingPhotoOfIdProblem.identityDocument.errorMessage",
           { value, lng: req.i18n.lng }
         );
+      }),
+    body("answeringQuestionsAbout")
+      .if(body("theme").equals("proving_identity"))
+      .if(
+        body("subtheme").equals(
+          "proving_identity_problem_answering_security_questions"
+        )
+      )
+      .if(enableDwpKbvContactFormChanges)
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.answeringQuestionsAbout.errorMessage",
+          { value, lng: req.i18n.lng }
+        );
+      }),
+    body("answeringQuestionsAbout")
+      .if(body("theme").equals("proving_identity"))
+      .if(
+        body("subtheme").equals(
+          "proving_identity_problem_answering_security_questions"
+        )
+      )
+      .if(enableDwpKbvContactFormChanges)
+      .custom((value) => {
+        if (!Object.values(AnsweringQuestionsAboutReason).includes(value)) {
+          throw new Error();
+          // You'd only land in this error if modifying the request body,
+          // so no need for a friendly error message here.
+        }
+        return true;
       }),
     body("identityDocumentUsed")
       .if(body("theme").equals("proving_identity"))

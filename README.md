@@ -304,7 +304,7 @@ Checks if the code conforms the linting standards.
 
 We use Playwright to do our snapshot tests.
 
-Currently, they are only for the contact us forms, configured in the `contact-us-snapshot.test.ts` file.
+All snapshot test files are suffixed `.snapshot.test.ts`
 
 ### Running all the Playwright tests
 
@@ -312,8 +312,8 @@ This will run the tests in the same way as in the build pipeline. From the root 
 
 - Build the docker containers `docker compose -f docker-compose.snapshots.yml build`
 - Run the tests `docker compose -f docker-compose.snapshots.yml up --exit-code-from playwright`
-- NOTE: Do not run the playwright tests locally. There are subtle differences between running them in the container
-  and locally and because of the pipeline we want to make sure we only run them in docker.
+- **NOTE**: Do not run the Playwright tests outside of Docker. There are subtle differences between running them in the container
+  and locally and because of the pipeline we want to make sure we only run them in Docker.
 
 ## Test failures
 
@@ -327,3 +327,24 @@ If you make a change that affects the appearance of a page then you will need to
 
 - `docker compose -f docker-compose.snapshots.yml build`
 - `COMMAND=--update-snapshots docker compose -f docker-compose.snapshots.yml up --exit-code-from playwright`
+
+## Making changes to environment variables
+
+When you want to add an environment variable, make sure to modify the following places:
+
+- `template.yaml`
+  - The Cloudformation template. It configured environment variables for hosted containers.
+  - You may need to make changes to these areas of the file:
+    - `Mappings / EnvironmentConfiguration` - the settings for an individual environment
+    - `Conditions` - how the EnvironmentConfiguration is extracted into a Cloudformation variable
+    - `Resources / TaskDefinition / Properties / ContainerDefinitions` - how the Cloudformation variable is mapped into an environment variable in the container
+- `config.ts`
+  - This file contains functions to read in environment variables.
+  - Create a function for every environment variable used.
+- `_create_env_file.py`
+  - This script generates your `.env` file.
+  - Add each new environment variable to the generator function.
+  - Make sure to re-run the script after modifying the file.
+- `.env.local`
+  - This file is used by test runners.
+  - Add each new environment variable to the file.

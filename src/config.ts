@@ -202,3 +202,7 @@ export function supportPasskeyUsage(): boolean {
 export function supportPasskeyRegistration(): boolean {
   return process.env.SUPPORT_PASSKEY_REGISTRATION === "1";
 }
+
+export function enableDwpKbvContactFormChanges(): boolean {
+  return process.env.ENABLE_DWP_KBV_CONTACT_FORM_CHANGES === "1";
+}

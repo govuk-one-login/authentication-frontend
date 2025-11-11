@@ -7,6 +7,7 @@ import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import esmock from "esmock";
+import { AnsweringQuestionsAboutReason } from "../contact-us-controller.js";
 
 describe("Integration:: contact us - public user", () => {
   let token: string | string[];
@@ -15,6 +16,8 @@ describe("Integration:: contact us - public user", () => {
   let smartAgentApiUrl: string;
 
   before(async () => {
+    process.env.ENABLE_DWP_KBV_CONTACT_FORM_CHANGES = "1";
+
     const { createApp } = await esmock(
       "../../../app.js",
       {},
@@ -685,6 +688,85 @@ describe("Integration:: contact us - public user", () => {
     });
   });
 
+  describe("when a user had a problem with their national insurance number", () => {
+    it("should return validation error when user has not described which problem they had", async () => {
+      const data = {
+        _csrf: token,
+        theme: "proving_identity",
+        subtheme: "proving_identity_problem_with_national_insurance_number",
+        contact: "false",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions",
+        data,
+        "#problemWithNationalInsuranceNumber-error",
+        "What problem were you having with your National Insurance number?"
+      );
+    });
+  });
+
+  describe("when a user had a problem answering security questions", () => {
+    let baseData: object;
+
+    before(() => {
+      baseData = {
+        _csrf: token,
+        theme: "proving_identity",
+        subtheme: "proving_identity_problem_answering_security_questions",
+        issueDescription: "issue description",
+        serviceTryingToUse: "service trying to use",
+        contact: "false",
+        formType: "provingIdentityProblemAnsweringSecurityQuestions",
+      };
+    });
+
+    describe("when answeringQuestionsAbout reason is valid", () => {
+      Object.values(AnsweringQuestionsAboutReason).forEach((reason) => {
+        it(`should submit successfully if reason is ${reason}`, async () => {
+          nock(smartAgentApiUrl).post("/").once().reply(200);
+
+          const data = { ...baseData, answeringQuestionsAbout: reason };
+
+          await request(app)
+            .post(PATH_NAMES.CONTACT_US_QUESTIONS)
+            .type("form")
+            .set("Cookie", cookies)
+            .send(data)
+            .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
+            .expect(302);
+        });
+      });
+    });
+
+    describe("when answeringQuestionsAboutReason is invalid", () => {
+      it("should return validation error when user has not selected what they're answering questions about", async () => {
+        const data = { ...baseData };
+
+        await expectValidationErrorOnPost(
+          PATH_NAMES.CONTACT_US_QUESTIONS,
+          data,
+          "#answeringQuestionsAbout-error",
+          "Select what you were answering questions about"
+        );
+      });
+
+      ["unknown_reason", undefined].forEach((reason) =>
+        it(`should fail submitting if reason is ${reason}`, async () => {
+          nock(smartAgentApiUrl).post("/").once().reply(200);
+
+          const data = { ...baseData, answeringQuestionsAbout: reason };
+
+          await request(app)
+            .post(PATH_NAMES.CONTACT_US_QUESTIONS)
+            .type("form")
+            .set("Cookie", cookies)
+            .send(data)
+            .expect(400);
+        })
+      );
+    });
+  });
+
   describe("when a user had a problem taking a photo of your identity document using the GOV.UK ID Check app", () => {
     it("should return validation error when user has not selected which identity document they were using", async () => {
       const data = {
@@ -699,23 +781,6 @@ describe("Integration:: contact us - public user", () => {
         data,
         "#identityDocumentUsed-error",
         "Select which identity document you were using"
-      );
-    });
-  });
-
-  describe("when a user had a problem with their national insurance number", () => {
-    it("should return validation error when user has not described which problem they had", async () => {
-      const data = {
-        _csrf: token,
-        theme: "proving_identity",
-        subtheme: "proving_identity_problem_with_national_insurance_number",
-        contact: "false",
-      };
-      await expectValidationErrorOnPost(
-        "/contact-us-questions",
-        data,
-        "#problemWithNationalInsuranceNumber-error",
-        "What problem were you having with your National Insurance number?"
       );
     });
   });

@@ -5,6 +5,7 @@ import {
   getLanguageToggleEnabled,
   supportPasskeyUsage,
   supportPasskeyRegistration,
+  enableDwpKbvContactFormChanges,
 } from "../config.js";
 import { generateNonce } from "../utils/strings.js";
 export async function setLocalVarsMiddleware(
@@ -18,5 +19,6 @@ export async function setLocalVarsMiddleware(
   res.locals.languageToggleEnabled = getLanguageToggleEnabled();
   res.locals.supportPasskeyUsage = supportPasskeyUsage();
   res.locals.supportPasskeyRegistration = supportPasskeyRegistration();
+  res.locals.enableDwpKbvContactFormChanges = enableDwpKbvContactFormChanges();
   next();
 }

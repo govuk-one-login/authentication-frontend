@@ -16,6 +16,7 @@ export interface ContactForm {
   problemWith?: string;
   fromURL?: string;
   suspectUnauthorisedAccess?: SuspectUnauthorisedAccess;
+  answeringQuestionsAbout?: string;
 }
 
 export interface OptionalData {
@@ -92,6 +93,7 @@ export interface SmartAgentCustomAttributes {
   "sa-tag-location"?: string;
   "sa-tag-has-received-unwarranted-security-code"?: string;
   "sa-tag-has-unknown-activity-history"?: string;
+  "sa-tag-answering-questions-about"?: string;
 }
 
 export interface SmartAgentTicket {

@@ -496,6 +496,24 @@ export function createTicketIdentifier(appSessionId: string): string {
   }
 }
 
+export enum AnsweringQuestionsAboutReason {
+  FINANCIAL_INFORMATION = "financialInformation",
+  PIP = "pip",
+  NOT_SURE = "notSure",
+}
+
+function getReasonForAnsweringQuestionsAbout(req: Request): string | undefined {
+  const reason = req.body.answeringQuestionsAbout
+    ? (req.body.answeringQuestionsAbout as AnsweringQuestionsAboutReason)
+    : undefined;
+  if (!reason) return;
+
+  return req.t(
+    `pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.answeringQuestionsAbout.reasons.${reason}`,
+    { lng: "en" }
+  );
+}
+
 export function contactUsQuestionsFormPostToSmartAgent(
   service = getContactUsService()
 ): ExpressRouteFunc {
@@ -564,6 +582,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
                 ),
             }
           : undefined,
+      answeringQuestionsAbout: getReasonForAnsweringQuestionsAbout(req),
     });
 
     req.log.info(
