@@ -17,7 +17,10 @@ import {
   PATH_NAMES,
 } from "../../../../app.constants.js";
 import { updateProfileService } from "../update-profile-service.js";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
 describe("update profile service", () => {
   const httpInstance = new Http();
@@ -42,24 +45,22 @@ describe("update profile service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, clientSessionId, email, diPersistentSessionId } =
-      commonVariables;
+    const { email } = commonVariables;
     const req = createMockRequest(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
+    const res = createMockResponse();
     const profileInformation = true;
     const updateProfileType = UpdateType.CAPTURE_CONSENT;
 
     const result = await service.updateProfile(
-      sessionId,
-      clientSessionId,
       email,
       {
         profileInformation,
         updateProfileType,
       },
-      diPersistentSessionId,
-      req
+      req,
+      res
     );
 
     const expectedApiCallDetails = {

@@ -18,8 +18,10 @@ import {
 } from "../../../../app.constants.js";
 import type { VerifyMfaCodeInterface } from "../../../enter-authenticator-app-code/types.js";
 import { verifyMfaCodeService } from "../verify-mfa-code-service.js";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
-import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../../test/helpers/mock-request-helper.js";
 describe("verify mfa code service", () => {
   const httpInstance = new Http();
   const service: VerifyMfaCodeInterface = verifyMfaCodeService(httpInstance);
@@ -36,11 +38,10 @@ describe("verify mfa code service", () => {
   });
 
   it("successfully calls the API to verify an mfa code", async () => {
-    const { sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_MFA, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
+    const res = createMockResponse();
     const axiosResponse = Promise.resolve({
       data: {},
       status: HTTP_STATUS_CODES.NO_CONTENT,
@@ -61,10 +62,8 @@ describe("verify mfa code service", () => {
     const result = await service.verifyMfaCode(
       mfaMethodType,
       code,
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
       req,
+      res,
       journeyType,
       profileInformation
     );

@@ -1,15 +1,13 @@
 import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface SendNotificationServiceInterface {
   sendNotification: (
-    sessionId: string,
-    clientSessionId: string,
     email: string,
     notificationType: string,
-    persistentSessionId: string,
     userLanguage: string,
     req: Request,
+    res: Response,
     journeyType?: string,
     phoneNumber?: string,
     requestNewCode?: boolean

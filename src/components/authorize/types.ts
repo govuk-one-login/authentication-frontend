@@ -1,7 +1,7 @@
 import type { MFA_METHOD_TYPE } from "../../app.constants.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
 import type { Claims } from "./claims-config.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface StartRequestParameters {
   authenticated: boolean;
@@ -44,10 +44,8 @@ export interface UserSessionInfo {
 
 export interface AuthorizeServiceInterface {
   start: (
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     req: Request,
+    res: Response,
     startRequestParameters: StartRequestParameters
   ) => Promise<ApiResponseResult<StartAuthResponse>>;
 }

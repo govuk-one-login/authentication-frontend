@@ -29,16 +29,13 @@ export function resetPasswordPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email, withinForcedPasswordResetJourney } = req.session.user;
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const newPassword = req.body.password;
 
     const updatePasswordResponse = await resetService.updatePassword(
       newPassword,
-      sessionId,
-      clientSessionId,
-      persistentSessionId,
       withinForcedPasswordResetJourney,
-      req
+      req,
+      res
     );
 
     if (!updatePasswordResponse.success) {
@@ -73,12 +70,10 @@ export function resetPasswordPost(
     req.session.user.passwordResetTime = Date.now();
 
     const loginResponse = await loginService.loginUser(
-      sessionId,
       email,
       newPassword,
-      clientSessionId,
-      persistentSessionId,
-      req
+      req,
+      res
     );
 
     if (!loginResponse.success) {

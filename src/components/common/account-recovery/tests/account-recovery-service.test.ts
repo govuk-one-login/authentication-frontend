@@ -12,7 +12,10 @@ import {
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../../test/helpers/service-test-helper.js";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../../app.constants.js";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
 describe("account recovery service", () => {
   const httpInstance = new Http();
@@ -31,11 +34,11 @@ describe("account recovery service", () => {
   });
 
   it("successfully calls the API to perform an account recovery request", async () => {
-    const { sessionId, clientSessionId, email, diPersistentSessionId } =
-      commonVariables;
+    const { email } = commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
+    const res = createMockResponse();
     const axiosResponse = Promise.resolve({
       data: {},
       status: 200,
@@ -43,13 +46,7 @@ describe("account recovery service", () => {
     });
     postStub.resolves(axiosResponse);
 
-    const result = await service.accountRecovery(
-      sessionId,
-      clientSessionId,
-      email,
-      diPersistentSessionId,
-      req
-    );
+    const result = await service.accountRecovery(email, req, res);
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.ACCOUNT_RECOVERY,

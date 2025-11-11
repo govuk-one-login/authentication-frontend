@@ -4,7 +4,7 @@ import type {
   MfaMethod,
 } from "../../types.js";
 import type { JOURNEY_TYPE, MFA_METHOD_TYPE } from "../../app.constants.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface UserLoginResponse extends DefaultApiResponse {
   redactedPhoneNumber?: string;
@@ -18,12 +18,10 @@ export interface UserLoginResponse extends DefaultApiResponse {
 
 export interface EnterPasswordServiceInterface {
   loginUser: (
-    sessionId: string,
     email: string,
     password: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     req: Request,
+    res: Response,
     journeyType?: JOURNEY_TYPE
   ) => Promise<ApiResponseResult<UserLoginResponse>>;
 }

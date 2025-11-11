@@ -10,26 +10,20 @@ import {
 } from "../../utils/http.js";
 import type { ApiResponseResult } from "../../types.js";
 import { API_ENDPOINTS } from "../../app.constants.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export function mfaResetAuthorizeService(
   axios: Http = http
 ): MfaResetAuthorizeInterface {
   const ipvRedirectUrl = async function (
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     req: Request,
+    res: Response,
     email: string,
     orchestrationRedirectUrl: string
   ): Promise<ApiResponseResult<MfaResetAuthorizeResponse>> {
     const config = getInternalRequestConfigWithSecurityHeaders(
-      {
-        sessionId: sessionId,
-        clientSessionId: clientSessionId,
-        persistentSessionId: persistentSessionId,
-      },
       req,
+      res,
       API_ENDPOINTS.MFA_RESET_AUTHORIZE
     );
 

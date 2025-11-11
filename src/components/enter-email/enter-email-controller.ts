@@ -72,18 +72,9 @@ async function getExistingUserAndPopulateSessionData(
   enterEmailService: EnterEmailServiceInterface,
   req: Request,
   res: Response,
-  sessionId: string,
-  email: string,
-  clientSessionId: string,
-  persistentSessionId: string
+  email: string
 ): Promise<boolean | void> {
-  const result = await enterEmailService.userExists(
-    sessionId,
-    email,
-    clientSessionId,
-    persistentSessionId,
-    req
-  );
+  const result = await enterEmailService.userExists(email, req, res);
 
   if (!result.success) {
     if (result.data.code === ERROR_CODES.ACCOUNT_LOCKED) {
@@ -115,17 +106,14 @@ export function enterEmailPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const email = req.body.email;
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     req.session.user.email = email.toLowerCase();
 
     if (isReauth(req)) {
       const checkReauth = await checkReauthService.checkReauthUsers(
-        sessionId,
         email,
         req.session.user.reauthenticate,
-        clientSessionId,
-        persistentSessionId,
-        req
+        req,
+        res
       );
 
       if (!checkReauth.success) {
@@ -158,10 +146,7 @@ export function enterEmailPost(
       service,
       req,
       res,
-      sessionId,
-      email,
-      clientSessionId,
-      persistentSessionId
+      email
     );
     if (doesUserExist === undefined) return;
 
@@ -179,7 +164,6 @@ export function enterEmailCreatePost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const email = req.body.email.toLowerCase();
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     req.session.user.email = email;
 
@@ -187,10 +171,7 @@ export function enterEmailCreatePost(
       service,
       req,
       res,
-      sessionId,
-      email,
-      clientSessionId,
-      persistentSessionId
+      email
     );
     if (doesUserExist === undefined) return;
 
@@ -205,13 +186,11 @@ export function enterEmailCreatePost(
     }
 
     const sendNotificationResponse = await notificationService.sendNotification(
-      sessionId,
-      clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_EMAIL,
-      persistentSessionId,
       xss(req.cookies.lng as string),
       req,
+      res,
       JOURNEY_TYPE.REGISTRATION
     );
 

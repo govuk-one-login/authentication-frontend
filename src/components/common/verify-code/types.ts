@@ -1,15 +1,13 @@
 import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
 import type { JOURNEY_TYPE } from "../../../app.constants.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface VerifyCodeInterface {
   verifyCode: (
-    sessionId: string,
     code: string,
     notificationType: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     req: Request,
+    res: Response,
     mfaMethodId: string,
     journeyType: JOURNEY_TYPE
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;

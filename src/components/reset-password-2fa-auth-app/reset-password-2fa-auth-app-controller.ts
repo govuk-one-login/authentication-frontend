@@ -47,15 +47,11 @@ export function resetPassword2FAAuthAppPost(
   service: VerifyMfaCodeInterface = verifyMfaCodeService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
     const result = await service.verifyMfaCode(
       MFA_METHOD_TYPE.AUTH_APP,
       req.body["code"],
-      sessionId,
-      clientSessionId,
-      persistentSessionId,
       req,
+      res,
       JOURNEY_TYPE.PASSWORD_RESET_MFA
     );
 

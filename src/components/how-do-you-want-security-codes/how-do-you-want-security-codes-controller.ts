@@ -53,17 +53,12 @@ export function howDoYouWantSecurityCodesPost(
         req.session.user.sentOtpMfaMethodIds ??= [];
 
         if (!req.session.user.sentOtpMfaMethodIds.includes(mfaMethodId)) {
-          const { sessionId, clientSessionId, persistentSessionId } =
-            res.locals;
-
           const result = await mfaCodeService.sendMfaCode(
-            sessionId,
-            clientSessionId,
             email,
-            persistentSessionId,
             false,
             xss(req.cookies.lng as string),
             req,
+            res,
             req.session.user.activeMfaMethodId,
             getJourneyTypeFromUserSession(req.session.user, {
               includeReauthentication: true,

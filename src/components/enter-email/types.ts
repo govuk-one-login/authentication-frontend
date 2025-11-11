@@ -1,6 +1,6 @@
 import type { MFA_METHOD_TYPE } from "src/app.constants.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface UserExists extends DefaultApiResponse {
   email: string;
@@ -18,10 +18,8 @@ export interface LockoutInformation {
 
 export interface EnterEmailServiceInterface {
   userExists: (
-    sessionId: string,
     emailAddress: string,
-    clientSessionId: string,
-    persistentSessionId: string,
-    req: Request
+    req: Request,
+    res: Response
   ) => Promise<ApiResponseResult<UserExists>>;
 }

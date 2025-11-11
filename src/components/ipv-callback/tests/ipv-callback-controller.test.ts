@@ -1,7 +1,10 @@
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import sinon from "sinon";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../test/helpers/mock-request-helper.js";
 import {
   CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,
   MFA_METHOD_TYPE,
@@ -59,7 +62,7 @@ describe("ipv callback controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
-  const { sessionId, clientSessionId, diPersistentSessionId, email } =
+  const { sessionId, journeyId, diPersistentSessionId, email } =
     commonVariables;
 
   const AUTH_CODE = "5678";
@@ -70,18 +73,13 @@ describe("ipv callback controller", () => {
     req.query = { code: AUTH_CODE, state: STATE };
     req.session.user.email = email;
     req.session.id = sessionId;
-    req.cookies.gs = sessionId + clientSessionId;
+    req.cookies.gs = sessionId + journeyId;
     req.cookies.aps = sessionId;
     req.session.user.journey = {
       nextPath: PATH_NAMES.IPV_CALLBACK,
       optionalPaths: [],
     };
-    res = mockResponse();
-    res.locals = {
-      sessionId,
-      clientSessionId,
-      persistentSessionId: diPersistentSessionId,
-    };
+    res = createMockResponse();
   });
 
   afterEach(() => {
@@ -101,15 +99,7 @@ describe("ipv callback controller", () => {
 
       expect(
         fakeServiceReturningSuccess.getReverificationResult
-      ).to.have.been.calledWith(
-        sessionId,
-        clientSessionId,
-        diPersistentSessionId,
-        req,
-        email,
-        AUTH_CODE,
-        STATE
-      );
+      ).to.have.been.calledWith(req, res, email, AUTH_CODE, STATE);
       expect(res.redirect).to.have.been.calledWith(
         PATH_NAMES.GET_SECURITY_CODES
       );

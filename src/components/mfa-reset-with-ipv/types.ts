@@ -1,5 +1,5 @@
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface MfaResetAuthorizeResponse extends DefaultApiResponse {
   authorize_url: string;
@@ -7,10 +7,8 @@ export interface MfaResetAuthorizeResponse extends DefaultApiResponse {
 
 export interface MfaResetAuthorizeInterface {
   ipvRedirectUrl: (
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     req: Request,
+    res: Response,
     email: string,
     orchestrationRedirectUrl: string
   ) => Promise<ApiResponseResult<MfaResetAuthorizeResponse>>;

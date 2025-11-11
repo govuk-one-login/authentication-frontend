@@ -16,9 +16,7 @@ declare global {
     export interface Locals {
       // Session IDs
       sessionId?: string;
-      clientSessionId?: string;
       persistentSessionId?: string;
-      clientId?: string;
 
       // Security
       scriptNonce?: string;

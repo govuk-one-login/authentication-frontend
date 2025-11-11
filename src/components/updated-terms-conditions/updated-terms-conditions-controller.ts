@@ -16,7 +16,6 @@ export function updatedTermsConditionsPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const termsAndConditionsResult = req.body.termsAndConditionsResult;
     const resultMap: any = {
       govUk: EXTERNAL_LINKS.GOV_UK,
@@ -36,15 +35,13 @@ export function updatedTermsConditionsPost(
 
     if (termsAndConditionsResult === "accept") {
       const result = await service.updateProfile(
-        sessionId,
-        clientSessionId,
         email,
         {
           updateProfileType: UpdateType.UPDATE_TERMS_CONDS,
           profileInformation: true,
         },
-        persistentSessionId,
-        req
+        req,
+        res
       );
 
       if (!result.success) {

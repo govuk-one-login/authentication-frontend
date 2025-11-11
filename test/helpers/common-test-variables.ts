@@ -3,7 +3,7 @@ export const commonVariables = {
   email: "joe.bloggs@example.com",
   sessionId: "123456-djjad",
   diPersistentSessionId: "dips-123456-abc",
-  clientSessionId: "00000-djjad",
+  journeyId: "00000-djjad",
   ip: "123.123.123.123",
   apiKey: "apiKey",
   auditEncodedString:

@@ -79,8 +79,6 @@ describe("send mfa controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
         "active_mfa_method_id",
         JOURNEY_TYPE.REAUTHENTICATION
       );
@@ -125,8 +123,6 @@ describe("send mfa controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
         undefined
       );
     });
@@ -164,8 +160,6 @@ describe("send mfa controller", () => {
         JOURNEY_TYPE.REAUTHENTICATION
       );
       expect(fakeService.sendMfaCode).to.have.been.calledOnceWithExactly(
-        sinon.match.any,
-        sinon.match.any,
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,

@@ -14,17 +14,10 @@ export function proveIdentityCallbackGetOrPost(
   service: ProveIdentityCallbackServiceInterface = proveIdentityCallbackService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const clientName = req.session.client.name;
     const email = req.session.user.email;
 
-    const response = await service.processIdentity(
-      email,
-      sessionId,
-      clientSessionId,
-      persistentSessionId,
-      req
-    );
+    const response = await service.processIdentity(email, req, res);
 
     if (response.data.status === IdentityProcessingStatus.INTERVENTION) {
       return res.redirect(response.data.redirectUrl);
@@ -45,12 +38,7 @@ export function proveIdentityCallbackGetOrPost(
     let redirectPath;
 
     if (response.data.status === IdentityProcessingStatus.COMPLETED) {
-      redirectPath = await service.generateSuccessfulRpReturnUrl(
-        sessionId,
-        clientSessionId,
-        persistentSessionId,
-        req
-      );
+      redirectPath = await service.generateSuccessfulRpReturnUrl(req, res);
     } else {
       redirectPath = createServiceRedirectErrorUrl(
         req.session.client.rpRedirectUri,
@@ -68,17 +56,10 @@ export function proveIdentityStatusCallbackGet(
   service: ProveIdentityCallbackServiceInterface = proveIdentityCallbackService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response, next: NextFunction) {
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const email = req.session.user.email;
 
     try {
-      const response = await service.processIdentity(
-        email,
-        sessionId,
-        clientSessionId,
-        persistentSessionId,
-        req
-      );
+      const response = await service.processIdentity(email, req, res);
 
       if (response.data.status === IdentityProcessingStatus.PROCESSING) {
         res.status(HTTP_STATUS_CODES.OK).json({

@@ -19,12 +19,10 @@ export function createPasswordPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const result = await service.signUpUser(
-      res.locals.sessionId,
-      res.locals.clientSessionId,
       req.session.user.email,
       req.body.password,
-      res.locals.persistentSessionId,
-      req
+      req,
+      res
     );
 
     if (!result.success) {

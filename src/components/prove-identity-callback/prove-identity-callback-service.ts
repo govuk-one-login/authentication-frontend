@@ -10,7 +10,7 @@ import type {
   ProcessIdentityResponse,
   ProveIdentityCallbackServiceInterface,
 } from "./types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 import { getApiBaseUrl } from "../../config.js";
 import type { AuthCodeResponse } from "../auth-code/types.js";
 import { ApiError } from "../../utils/error.js";
@@ -23,21 +23,15 @@ export function proveIdentityCallbackService(
 ): ProveIdentityCallbackServiceInterface {
   const identityProcessed = async function (
     email: string,
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
-    req: Request
+    req: Request,
+    res: Response
   ): Promise<ApiResponseResult<ProcessIdentityResponse>> {
     const response = await axios.client.post<ProcessIdentityResponse>(
       API_ENDPOINTS.IPV_PROCESSING_IDENTITY,
       { email: email },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId: sessionId,
-          clientSessionId: clientSessionId,
-          persistentSessionId: persistentSessionId,
-        },
         req,
+        res,
         API_ENDPOINTS.IPV_PROCESSING_IDENTITY
       )
     );
@@ -45,20 +39,16 @@ export function proveIdentityCallbackService(
     return createApiResponse<ProcessIdentityResponse>(response);
   };
   const generateSuccessfulRpReturnUrl = async function (
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
-    req: Request
+    req: Request,
+    res: Response
   ): Promise<string> {
     const config = getInternalRequestConfigWithSecurityHeaders(
+      req,
+      res,
+      API_ENDPOINTS.AUTH_CODE,
       {
         baseURL: getApiBaseUrl(),
-        sessionId: sessionId,
-        clientSessionId: clientSessionId,
-        persistentSessionId: persistentSessionId,
-      },
-      req,
-      API_ENDPOINTS.AUTH_CODE
+      }
     );
     const response = await axios.client.get(API_ENDPOINTS.AUTH_CODE, config);
     const result = createApiResponse<AuthCodeResponse>(response);

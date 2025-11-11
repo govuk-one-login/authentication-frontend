@@ -96,8 +96,6 @@ describe("setup-authenticator-app controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
         JOURNEY_TYPE.ACCOUNT_RECOVERY,
         sinon.match.any
       );
@@ -119,13 +117,11 @@ describe("setup-authenticator-app controller", () => {
 
       expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.calledOnceWith(
-        undefined,
-        undefined,
         "t@t.com",
         NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
-        undefined,
         "",
-        req
+        req,
+        res
       );
 
       expect(res.redirect).to.have.calledWith(
@@ -153,13 +149,11 @@ describe("setup-authenticator-app controller", () => {
 
       expect(fakeMfAService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.calledOnceWith(
-        undefined,
-        undefined,
         "t@t.com",
         NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION,
-        undefined,
         "",
-        req
+        req,
+        res
       );
 
       expect(res.redirect).to.have.calledWith(

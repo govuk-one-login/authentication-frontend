@@ -4,16 +4,14 @@ import type {
   DefaultApiResponse,
   MfaMethod,
 } from "../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface ResetPasswordCheckEmailServiceInterface {
   resetPasswordRequest: (
     email: string,
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     withinForcedPasswordResetJourney: boolean,
-    req: Request
+    req: Request,
+    res: Response
   ) => Promise<ApiResponseResult<ResetPasswordRequestResponse>>;
 }
 

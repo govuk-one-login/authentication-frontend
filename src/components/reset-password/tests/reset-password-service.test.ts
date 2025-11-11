@@ -16,8 +16,10 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants.js";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
-import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../test/helpers/mock-request-helper.js";
 describe("reset password service", () => {
   const httpInstance = new Http();
   const service: ResetPasswordServiceInterface =
@@ -41,21 +43,18 @@ describe("reset password service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
     const newPassword = "abcdef";
     const isForcedPasswordReset = false;
     const req = createMockRequest(PATH_NAMES.RESET_PASSWORD, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
+    const res = createMockResponse();
 
     const result = await service.updatePassword(
       newPassword,
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
       isForcedPasswordReset,
-      req
+      req,
+      res
     );
 
     const expectedApiCallDetails = {
