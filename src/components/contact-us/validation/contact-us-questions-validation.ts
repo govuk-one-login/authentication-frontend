@@ -20,6 +20,7 @@ import {
   AnsweringQuestionsAboutReason,
   generatePageTitle,
 } from "../contact-us-controller.js";
+import { enableDwpKbvContactFormChanges } from "../../../config.js";
 const sanitizeFreeTextValue: CustomSanitizer = function sanitizeFreeTextValue(
   value: string
 ) {
@@ -80,6 +81,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           "proving_identity_problem_answering_security_questions"
         )
       )
+      .if(enableDwpKbvContactFormChanges)
       .notEmpty()
       .withMessage((value, { req }) => {
         return req.t(
@@ -94,6 +96,7 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           "proving_identity_problem_answering_security_questions"
         )
       )
+      .if(enableDwpKbvContactFormChanges)
       .custom((value) => {
         if (!Object.values(AnsweringQuestionsAboutReason).includes(value)) {
           throw new Error();
