@@ -220,7 +220,7 @@ function setSessionDataFromClaims(req: Request, claims: Claims) {
     }
   }
 
-  req.session.client.govuk_signin_journey_id = claims.govuk_signin_journey_id;
+  req.session.client.journeyId = claims.govuk_signin_journey_id;
   req.session.client.serviceType = claims.service_type;
   req.session.client.name = claims.client_name;
   req.session.client.cookieConsentEnabled = claims.cookie_consent_shared;

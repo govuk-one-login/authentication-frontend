@@ -66,7 +66,7 @@ export function getRefererFrom(referer: string): string {
 export const getRequestContext = (req: Request, res: Response): object => ({
   clientId: req.session?.client?.rpClientId,
   govuk_signin_journey_id:
-    req.session?.client?.govuk_signin_journey_id ?? res.locals.clientSessionId,
+    req.session?.client?.journeyId ?? res.locals.clientSessionId,
   persistentSessionId: res.locals.persistentSessionId,
   sessionId: res.locals.sessionId,
 });

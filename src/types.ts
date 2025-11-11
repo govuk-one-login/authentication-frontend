@@ -94,7 +94,7 @@ export interface UserSession {
 }
 
 export interface UserSessionClient {
-  govuk_signin_journey_id?: string;
+  journeyId?: string;
   name?: string;
   serviceType?: string;
   cookieConsentEnabled?: boolean;
