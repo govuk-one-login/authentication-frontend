@@ -194,7 +194,7 @@ class StateGetter:
                 "AWS auth error: SSO Profile %s could not be found. Ensure you've set "
                 "up your AWS profiles correctly, as-per "
                 "https://govukverify.atlassian.net/l/cp/fcp74bCB (How to deploy to "
-                "sandpit / authdev# environments). If you have done this and are "
+                "authdev# environments). If you have done this and are "
                 "still seeing this error, you probably don't have access to this AWS "
                 "account. Please contact the team for help.",
                 aws_profile_name,
@@ -262,41 +262,13 @@ class StateGetter:
 
     @cached_property
     def _api_remote_state(self):
-        state_json = cached_get_json_from_s3(
-            self.s3_client,
-            self.state_bucket,
-            f"frontend-{self.deployment_name}-terraform.tfstate",
-        )
-        resources = state_json["resources"]
-        return next(
-            resource
-            for resource in resources
-            if resource["mode"] == "data"
-            and resource["type"] == "terraform_remote_state"
-            and resource["name"] == "api"
-        )
+        # Terraform state access removed - this functionality is no longer available
+        raise NotImplementedError("Terraform state access has been removed")
 
     @cached_property
     def _ecs_task_environment(self):
-        state_json = cached_get_json_from_s3(
-            self.s3_client,
-            self.state_bucket,
-            f"frontend-{self.deployment_name}-terraform.tfstate",
-        )
-        resources = state_json["resources"]
-        definitions = next(
-            resource
-            for resource in resources
-            if resource["mode"] == "managed"
-            and resource["type"] == "aws_ecs_task_definition"
-            and resource["name"] == "frontend_task_definition"
-        )["instances"][0]["attributes"]["container_definitions"]
-        definitions = json.loads(definitions)
-        return next(
-            definition["environment"]
-            for definition in definitions
-            if definition["name"] == "frontend-application"
-        )
+        # Terraform state access removed - this functionality is no longer available
+        raise NotImplementedError("Terraform state access has been removed")
 
     def get_api_remote_state_value(self, key: str):
         api_remote_state = self._api_remote_state
@@ -500,7 +472,7 @@ def main(
 
 
 NAMED_ENVIRONMENTS = [
-    "sandpit",
+    "authdev3",
     "dev",
     "authdev1",
     "authdev2",
@@ -521,7 +493,7 @@ def base_command(deploy_env: str):
         )
         sys.exit(1)
 
-    if deploy_env in ["sandpit", "build"]:
+    if deploy_env in ["build"]:
         _aws_profile_name = "gds-di-development-admin"
         _state_bucket_name = "digital-identity-dev-tfstate"
     elif re.match(r"^authdev[0-9]+$", deploy_env) or deploy_env == "dev":

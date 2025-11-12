@@ -2,7 +2,7 @@
 
 ## Startup settings
 
-The Authentication frontend is the first application to migrate to the new strategic AWS accounts, using DevPlatform secure pipelines. The backend and data stores are still running from the old AWS accounts. The old style of deployment is via the auth-deploy-pipeline using Terraform. These terraform modules are the primary sources of the secrets listed here. The secrets are manually copied verbatim to the new AWS accounts so the frontend can establish connections to the backend and data stores at startup.
+The Authentication frontend is the first application to migrate to the new strategic AWS accounts, using DevPlatform secure pipelines. The backend and data stores are still running from the old AWS accounts. The secrets are manually copied verbatim to the new AWS accounts so the frontend can establish connections to the backend and data stores at startup.
 
 The [Startup settings](https://govukverify.atlassian.net/wiki/spaces/LO/pages/4389699622/Startup+settings) confluence page explains how the authentication frontend uses each secret or parameter, which entry in the old AWS account it is copied from (if applicable), and how it was generated.
 
@@ -20,7 +20,7 @@ It uses the dedicated GitHub workflow [build-deploy-frontend-dev](../../.github/
 
 ### Command-line tooling
 
-SAM deploy frontend to new authdevs via command line uses the existing [deploy-authdevs.sh](../../deploy-authdevs.sh) script. The UI hasn't changed, deployment functionality has been added for the new environments that use cloudformation template and sam deploy, instead of terraform.
+SAM deploy frontend to new authdevs via command line uses the existing [deploy-authdevs.sh](../../deploy-authdevs.sh) script. The UI hasn't changed, deployment functionality has been added for the new environments that use cloudformation template and sam deploy.
 
 Users will see two new environment options. The "-sp" authdev deployments switch to running [scripts/dev_sam_deploy.sh](../../scripts/dev_sam_deploy.sh). It builds the frontend docker image, runs `sam build` and `sam deploy` to deploy frontend. All existing usage options are supported
 

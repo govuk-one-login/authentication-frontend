@@ -123,8 +123,7 @@ keys/
 .env*
 !.env.local
 
-ci/terraform/.terraform
-ci/terraform/*.plan
+
 .infracost
 src/authentication_frontend.egg-info/
 .venv
