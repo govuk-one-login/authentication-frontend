@@ -1,0 +1,440 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: " Authdevs bastion host for SSM tunneling to private APIs"
+
+Parameters:
+  VpcStackName:
+    Type: String
+    Description: Name of the VPC stack to import values from
+    Default: vpc
+
+  InstanceType:
+    Type: String
+    Default: t4g.micro
+    AllowedValues: [t4g.micro, t4g.small, t4g.medium]
+    Description: EC2 instance type (ARM-based)
+
+Resources:
+  # IAM Role for Authdev1 SSM access
+  SSMRoleAuthdev1:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "${AWS::StackName}-SSMRole-authdev1"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-SSMRole-authdev1"
+        - Key: Environment
+          Value: authdev1
+
+  # IAM Role for Authdev2 SSM access
+  SSMRoleAuthdev2:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "${AWS::StackName}-SSMRole-authdev2"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-SSMRole-authdev2"
+        - Key: Environment
+          Value: authdev2
+
+  # IAM Role for Dev SSM access
+  SSMRoleDev:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "${AWS::StackName}-SSMRole-dev"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-SSMRole-dev"
+        - Key: Environment
+          Value: dev
+
+  # Instance Profile for Authdev1
+  SSMInstanceProfileAuthdev1:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: !Sub "${AWS::StackName}-SSMInstanceProfile-authdev1"
+      Roles:
+        - !Ref SSMRoleAuthdev1
+
+  # Instance Profile for Authdev2
+  SSMInstanceProfileAuthdev2:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: !Sub "${AWS::StackName}-SSMInstanceProfile-authdev2"
+      Roles:
+        - !Ref SSMRoleAuthdev2
+
+  # Instance Profile for Dev
+  SSMInstanceProfileDev:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: !Sub "${AWS::StackName}-SSMInstanceProfile-dev"
+      Roles:
+        - !Ref SSMRoleDev
+
+  # Security Group
+  BastionSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub "${AWS::StackName}-bastion-sg"
+      GroupDescription: Security group for SSM bastion host
+      VpcId:
+        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-bastion-sg"
+
+  # Bastion Host Instance Authdev1
+  BastionInstanceAuthdev1:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0a3a2f225ee59368f # Amazon Linux 2023 ARM64
+      InstanceType: !Ref InstanceType
+      SubnetId:
+        Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdA"
+      SecurityGroupIds:
+        - !Ref BastionSecurityGroup
+      IamInstanceProfile: !Ref SSMInstanceProfileAuthdev1
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum update -y
+          yum install -y amazon-ssm-agent nginx amazon-cloudwatch-agent
+          systemctl enable amazon-ssm-agent
+          systemctl start amazon-ssm-agent
+
+          # Configure CloudWatch Agent
+          cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json << 'EOF'
+          {
+            "logs": {
+              "logs_collected": {
+                "files": {
+                  "collect_list": [
+                    {
+                      "file_path": "/var/log/nginx/access.log",
+                      "log_group_name": "${AWS::StackName}-nginx-access-authdev1",
+                      "log_stream_name": "{instance_id}"
+                    },
+                    {
+                      "file_path": "/var/log/messages",
+                      "log_group_name": "${AWS::StackName}-system-authdev1",
+                      "log_stream_name": "{instance_id}"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+          EOF
+
+          # Start CloudWatch Agent
+          /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
+
+          # Configure nginx reverse proxy for Frontend API
+          cat > /etc/nginx/conf.d/frontend-api-proxy.conf << 'EOF'
+          server {
+              listen 80;
+              server_name _;
+
+              # Debug request details
+              add_header X-Debug-Host $host;
+              add_header X-Debug-Uri $request_uri;
+
+              location / {
+                  # Add stage name to request path
+                  rewrite ^/(.*) /authdev1/$1 break;
+
+                  # Set proper API Gateway Host header for routing
+                  proxy_set_header Host 5fgwu5kpd2.execute-api.eu-west-2.amazonaws.com;
+
+                  # Proxy to VPC endpoint
+                  proxy_pass https://5fgwu5kpd2.vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com;
+
+                  # Forward all headers
+                  proxy_set_header Authorization $http_authorization;
+                  proxy_set_header X-API-Key $http_x_api_key;
+                  proxy_set_header Session-Id $http_session_id;
+                  proxy_set_header Client-Session-Id $http_client_session_id;
+                  proxy_set_header di-persistent-session-id $http_di_persistent_session_id;
+                  proxy_set_header Reauthenticate $http_reauthenticate;
+                  proxy_set_header User-Language $http_user_language;
+                  proxy_pass_request_headers on;
+
+                  # Add additional headers for debugging
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Original-URI $request_uri;
+
+                  # SSL verification settings for connecting to VPC endpoint
+                  proxy_ssl_verify off;
+              }
+          }
+          EOF
+
+          systemctl enable nginx
+          systemctl start nginx
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-authdev1"
+        - Key: Purpose
+          Value: SSM-Tunneling
+        - Key: Environment
+          Value: authdev1
+
+  # Bastion Host Instance Authdev2
+  BastionInstanceAuthdev2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0a3a2f225ee59368f # Amazon Linux 2023 ARM64
+      InstanceType: !Ref InstanceType
+      SubnetId:
+        Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdA"
+      SecurityGroupIds:
+        - !Ref BastionSecurityGroup
+      IamInstanceProfile: !Ref SSMInstanceProfileAuthdev2
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum update -y
+          yum install -y amazon-ssm-agent nginx amazon-cloudwatch-agent
+          systemctl enable amazon-ssm-agent
+          systemctl start amazon-ssm-agent
+
+          # Configure CloudWatch Agent
+          cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json << 'EOF'
+          {
+            "logs": {
+              "logs_collected": {
+                "files": {
+                  "collect_list": [
+                    {
+                      "file_path": "/var/log/nginx/access.log",
+                      "log_group_name": "${AWS::StackName}-nginx-access-authdev2",
+                      "log_stream_name": "{instance_id}"
+                    },
+                    {
+                      "file_path": "/var/log/messages",
+                      "log_group_name": "${AWS::StackName}-system-authdev2",
+                      "log_stream_name": "{instance_id}"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+          EOF
+
+          # Start CloudWatch Agent
+          /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
+
+          # Configure nginx reverse proxy for Frontend API
+          cat > /etc/nginx/conf.d/frontend-api-proxy.conf << 'EOF'
+          server {
+              listen 80;
+              server_name _;
+
+              # Debug request details
+              add_header X-Debug-Host $host;
+              add_header X-Debug-Uri $request_uri;
+
+              location / {
+                  # Add stage name to request path
+                  rewrite ^/(.*) /authdev2/$1 break;
+
+                  # Set proper API Gateway Host header for routing
+                  proxy_set_header Host nw0dah7bxk.execute-api.eu-west-2.amazonaws.com;
+
+                  # Proxy to VPC endpoint
+                  proxy_pass https://nw0dah7bxk.vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com;
+
+                  # Forward all headers
+                  proxy_set_header Authorization $http_authorization;
+                  proxy_set_header X-API-Key $http_x_api_key;
+                  proxy_set_header Session-Id $http_session_id;
+                  proxy_set_header Client-Session-Id $http_client_session_id;
+                  proxy_set_header di-persistent-session-id $http_di_persistent_session_id;
+                  proxy_set_header Reauthenticate $http_reauthenticate;
+                  proxy_set_header User-Language $http_user_language;
+                  proxy_pass_request_headers on;
+
+                  # Add additional headers for debugging
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Original-URI $request_uri;
+
+                  # SSL verification settings for connecting to VPC endpoint
+                  proxy_ssl_verify off;
+              }
+          }
+          EOF
+
+          systemctl enable nginx
+          systemctl start nginx
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-authdev2"
+        - Key: Purpose
+          Value: SSM-Tunneling
+        - Key: Environment
+          Value: authdev2
+
+  # Bastion Host Instance Dev
+  BastionInstanceDev:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0a3a2f225ee59368f # Amazon Linux 2023 ARM64
+      InstanceType: !Ref InstanceType
+      SubnetId:
+        Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdA"
+      SecurityGroupIds:
+        - !Ref BastionSecurityGroup
+      IamInstanceProfile: !Ref SSMInstanceProfileDev
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum update -y
+          yum install -y amazon-ssm-agent nginx amazon-cloudwatch-agent
+          systemctl enable amazon-ssm-agent
+          systemctl start amazon-ssm-agent
+
+          # Configure CloudWatch Agent
+          cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json << 'EOF'
+          {
+            "logs": {
+              "logs_collected": {
+                "files": {
+                  "collect_list": [
+                    {
+                      "file_path": "/var/log/nginx/access.log",
+                      "log_group_name": "${AWS::StackName}-nginx-access-dev",
+                      "log_stream_name": "{instance_id}"
+                    },
+                    {
+                      "file_path": "/var/log/messages",
+                      "log_group_name": "${AWS::StackName}-system-dev",
+                      "log_stream_name": "{instance_id}"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+          EOF
+
+          # Start CloudWatch Agent
+          /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
+
+          # Configure nginx reverse proxy for Frontend API
+          cat > /etc/nginx/conf.d/frontend-api-proxy.conf << 'EOF'
+          server {
+              listen 80;
+              server_name _;
+
+              # Debug request details
+              add_header X-Debug-Host $host;
+              add_header X-Debug-Uri $request_uri;
+
+              location / {
+                  # Add stage name to request path
+                  rewrite ^/(.*) /dev/$1 break;
+
+                  # Set proper API Gateway Host header for routing
+                  proxy_set_header Host tze402cnbk.execute-api.eu-west-2.amazonaws.com;
+
+                  # Proxy to VPC endpoint
+                  proxy_pass https://tze402cnbk.vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com;
+
+                  # Forward all headers
+                  proxy_set_header Authorization $http_authorization;
+                  proxy_set_header X-API-Key $http_x_api_key;
+                  proxy_set_header Session-Id $http_session_id;
+                  proxy_set_header Client-Session-Id $http_client_session_id;
+                  proxy_set_header di-persistent-session-id $http_di_persistent_session_id;
+                  proxy_set_header Reauthenticate $http_reauthenticate;
+                  proxy_set_header User-Language $http_user_language;
+                  proxy_pass_request_headers on;
+
+                  # Add additional headers for debugging
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Original-URI $request_uri;
+
+                  # SSL verification settings for connecting to VPC endpoint
+                  proxy_ssl_verify off;
+              }
+          }
+          EOF
+
+          systemctl enable nginx
+          systemctl start nginx
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-dev"
+        - Key: Purpose
+          Value: SSM-Tunneling
+        - Key: Environment
+          Value: dev
+
+Outputs:
+  BastionInstanceAuthdev1Id:
+    Description: Instance ID of the authdev1 bastion host
+    Value: !Ref BastionInstanceAuthdev1
+    Export:
+      Name: !Sub "${AWS::StackName}-BastionInstanceAuthdev1Id"
+
+  CloudWatchLogGroupsAuthdev1:
+    Description: CloudWatch log groups for authdev1 monitoring
+    Value: !Sub "${AWS::StackName}-nginx-access-authdev1, ${AWS::StackName}-system-authdev1"
+
+  BastionInstanceAuthdev2Id:
+    Description: Instance ID of the authdev2 bastion host
+    Value: !Ref BastionInstanceAuthdev2
+    Export:
+      Name: !Sub "${AWS::StackName}-BastionInstanceAuthdev2Id"
+
+  CloudWatchLogGroupsAuthdev2:
+    Description: CloudWatch log groups for authdev2 monitoring
+    Value: !Sub "${AWS::StackName}-nginx-access-authdev2, ${AWS::StackName}-system-authdev2"
+
+  BastionInstanceDevId:
+    Description: Instance ID of the dev bastion host
+    Value: !Ref BastionInstanceDev
+    Export:
+      Name: !Sub "${AWS::StackName}-BastionInstanceDevId"
+
+  CloudWatchLogGroupsDev:
+    Description: CloudWatch log groups for dev monitoring
+    Value: !Sub "${AWS::StackName}-nginx-access-dev, ${AWS::StackName}-system-dev"

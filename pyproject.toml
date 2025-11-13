@@ -2,14 +2,7 @@
 version = "0.1.0"
 name = "authentication-frontend"
 dependencies = [
-    "boto3",
-    "botocore",
-    "jmespath",
-    "python-dateutil",
     "python-dotenv",
-    "s3transfer",
-    "six",
-    "urllib3",
     "click"
 ]
 
