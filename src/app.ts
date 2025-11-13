@@ -104,6 +104,7 @@ import { csrfSynchronisedProtection } from "./utils/csrf.js";
 import { govukComponentRouter } from "./components/common/govuk-component/demo/govuk-component-routes.js";
 import { cannotUseEmailAddressRouter } from "./components/cannot-use-email-address/cannot-use-email-address-routes.js";
 import { wellKnownRouter } from "./components/well-known/well-known-routes.js";
+import { initialiseUserHistoryMiddleware } from "./middleware/initialise-user-history-middleware.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -280,6 +281,7 @@ async function createApp(): Promise<express.Application> {
   app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
   app.use(initialiseSessionMiddleware);
+  app.use(initialiseUserHistoryMiddleware)
   app.use(crossDomainTrackingMiddleware);
   app.use(outboundContactUsLinksMiddleware);
   if (getLanguageToggleEnabled()) {

@@ -44,6 +44,7 @@ declare global {
       webChannel?: boolean;
       genericAppChannel?: boolean;
       isApp?: boolean;
+      history?: string[]
 
       // Feature flags
       supportPasskeyUsage?: boolean;
