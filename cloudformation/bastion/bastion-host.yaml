@@ -1,0 +1,153 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Minimal bastion host for SSM tunneling to private APIs"
+
+Parameters:
+  VpcStackName:
+    Type: String
+    Description: Name of the VPC stack to import values from
+    Default: vpc
+
+  InstanceType:
+    Type: String
+    Default: t4g.micro
+    AllowedValues: [t4g.micro, t4g.small, t4g.medium]
+    Description: EC2 instance type (ARM-based)
+
+Resources:
+  # IAM Role for SSM access
+  SSMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "${AWS::StackName}-SSMRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-SSMRole"
+
+  # Instance Profile
+  SSMInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: !Sub "${AWS::StackName}-SSMInstanceProfile"
+      Roles:
+        - !Ref SSMRole
+
+  # Security Group
+  BastionSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub "${AWS::StackName}-bastion-sg"
+      GroupDescription: Security group for SSM bastion host
+      VpcId:
+        Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          DestinationSecurityGroupId:
+            Fn::ImportValue: !Sub "${VpcStackName}-AWSServicesEndpointSecurityGroupId"
+          Description: HTTPS to VPC endpoints
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          DestinationSecurityGroupId:
+            Fn::ImportValue: !Sub "${VpcStackName}-AWSServicesEndpointSecurityGroupId"
+          Description: HTTP to VPC endpoints
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-bastion-sg"
+
+  # Bastion Host Instance
+  BastionInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0a3a2f225ee59368f # Amazon Linux 2023 ARM64
+      InstanceType: !Ref InstanceType
+      SubnetId:
+        Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdA"
+      SecurityGroupIds:
+        - !Ref BastionSecurityGroup
+      IamInstanceProfile: !Ref SSMInstanceProfile
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum update -y
+          yum install -y amazon-ssm-agent squid amazon-cloudwatch-agent
+          systemctl enable amazon-ssm-agent
+          systemctl start amazon-ssm-agent
+
+          # Configure CloudWatch Agent
+          cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json << 'EOF'
+          {
+            "logs": {
+              "logs_collected": {
+                "files": {
+                  "collect_list": [
+                    {
+                      "file_path": "/var/log/squid/access.log",
+                      "log_group_name": "${AWS::StackName}-squid-access",
+                      "log_stream_name": "{instance_id}"
+                    },
+                    {
+                      "file_path": "/var/log/messages",
+                      "log_group_name": "${AWS::StackName}-system",
+                      "log_stream_name": "{instance_id}"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+          EOF
+
+          # Start CloudWatch Agent
+          /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
+
+          # Configure Squid proxy for API Gateway
+          cat > /etc/squid/squid.conf << 'EOF'
+          http_port 3128
+          http_access allow all
+          cache deny all
+          access_log /var/log/squid/access.log
+          http_access allow CONNECT
+          forwarded_for on
+          dns_nameservers 8.8.8.8 8.8.4.4
+          EOF
+
+          systemctl enable squid
+          systemctl start squid
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-SSM-Bastion"
+        - Key: Purpose
+          Value: SSM-Tunneling
+
+Outputs:
+  BastionInstanceId:
+    Description: Instance ID of the bastion host
+    Value: !Ref BastionInstance
+    Export:
+      Name: !Sub "${AWS::StackName}-BastionInstanceId"
+
+  SecurityGroupId:
+    Description: Security Group ID of the bastion host
+    Value: !Ref BastionSecurityGroup
+    Export:
+      Name: !Sub "${AWS::StackName}-SecurityGroupId"
+
+  UsageInstructions:
+    Description: How to use this bastion host
+    Value: !Sub 'export BASTION_INSTANCE_ID="${BastionInstance}"'
+
+  CloudWatchLogGroups:
+    Description: CloudWatch log groups for monitoring
+    Value: !Sub "${AWS::StackName}-squid-access, ${AWS::StackName}-system"
