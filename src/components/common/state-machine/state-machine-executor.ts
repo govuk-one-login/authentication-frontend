@@ -41,10 +41,6 @@ export async function getNextPathAndUpdateJourney(
     history: [...req.session.user.journey?.history ?? [], req.path]
   };
 
-  res.locals.history.push(req.path)
-
-  console.error('user.journey', req.session.user.journey)
-
   await saveSessionState(req);
 
   req.log.info(
