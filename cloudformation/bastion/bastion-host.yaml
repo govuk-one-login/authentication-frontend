@@ -50,18 +50,9 @@ Resources:
       VpcId:
         Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
       SecurityGroupEgress:
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          DestinationSecurityGroupId:
-            Fn::ImportValue: !Sub "${VpcStackName}-AWSServicesEndpointSecurityGroupId"
-          Description: HTTPS to VPC endpoints
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          DestinationSecurityGroupId:
-            Fn::ImportValue: !Sub "${VpcStackName}-AWSServicesEndpointSecurityGroupId"
-          Description: HTTP to VPC endpoints
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-bastion-sg"
@@ -81,7 +72,7 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash
           yum update -y
-          yum install -y amazon-ssm-agent squid amazon-cloudwatch-agent
+          yum install -y amazon-ssm-agent nginx amazon-cloudwatch-agent
           systemctl enable amazon-ssm-agent
           systemctl start amazon-ssm-agent
 
@@ -93,8 +84,8 @@ Resources:
                 "files": {
                   "collect_list": [
                     {
-                      "file_path": "/var/log/squid/access.log",
-                      "log_group_name": "${AWS::StackName}-squid-access",
+                      "file_path": "/var/log/nginx/access.log",
+                      "log_group_name": "${AWS::StackName}-nginx-access",
                       "log_stream_name": "{instance_id}"
                     },
                     {
@@ -112,19 +103,49 @@ Resources:
           # Start CloudWatch Agent
           /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
 
-          # Configure Squid proxy for API Gateway
-          cat > /etc/squid/squid.conf << 'EOF'
-          http_port 3128
-          http_access allow all
-          cache deny all
-          access_log /var/log/squid/access.log
-          http_access allow CONNECT
-          forwarded_for on
-          dns_nameservers 8.8.8.8 8.8.4.4
+          # Configure nginx reverse proxy for Frontend API
+          cat > /etc/nginx/conf.d/frontend-api-proxy.conf << 'EOF'
+          server {
+              listen 80;
+              server_name _;
+
+              # Debug request details
+              add_header X-Debug-Host $host;
+              add_header X-Debug-Uri $request_uri;
+
+              location / {
+                  # Add stage name to request path
+                  rewrite ^/(.*) /authdev2/$1 break;
+
+                  # Set proper API Gateway Host header for routing
+                  proxy_set_header Host nw0dah7bxk.execute-api.eu-west-2.amazonaws.com;
+
+                  # Proxy to VPC endpoint
+                  proxy_pass https://nw0dah7bxk.vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com;
+
+                  # Forward all headers
+                  proxy_set_header Authorization $http_authorization;
+                  proxy_set_header X-API-Key $http_x_api_key;
+                  proxy_set_header Session-Id $http_session_id;
+                  proxy_set_header Client-Session-Id $http_client_session_id;
+                  proxy_set_header di-persistent-session-id $http_di_persistent_session_id;
+                  proxy_set_header Reauthenticate $http_reauthenticate;
+                  proxy_set_header User-Language $http_user_language;
+                  proxy_pass_request_headers on;
+
+                  # Add additional headers for debugging
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Original-URI $request_uri;
+
+                  # SSL verification settings for connecting to VPC endpoint
+                  proxy_ssl_verify off;
+              }
+          }
           EOF
 
-          systemctl enable squid
-          systemctl start squid
+          systemctl enable nginx
+          systemctl start nginx
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-SSM-Bastion"
@@ -150,4 +171,4 @@ Outputs:
 
   CloudWatchLogGroups:
     Description: CloudWatch log groups for monitoring
-    Value: !Sub "${AWS::StackName}-squid-access, ${AWS::StackName}-system"
+    Value: !Sub "${AWS::StackName}-nginx-access, ${AWS::StackName}-system"
