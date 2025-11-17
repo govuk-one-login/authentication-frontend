@@ -393,7 +393,6 @@ Key configuration in `.env` file:
 
 ```bash
 FRONTEND_API_BASE_URL=http://localhost:8888
-FRONTEND_API_KEY=L1f6J7gHpv9U9J2tiMaAPjjcu8RIyeJ2gMpMTNOa
 ```
 
 ## Troubleshooting
