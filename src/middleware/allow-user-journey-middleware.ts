@@ -3,8 +3,11 @@ import { authStateMachine } from "../components/common/state-machine/state-machi
 import { saveSessionState } from "../components/common/constants.js";
 export function transitionForbidden(req: Request): boolean {
   const nextPath = req.session.user.journey.nextPath;
+  const previousPath = req.session.user.journey.previousPath;
+  // if req.path === previousPath then pop off history
   return (
     nextPath !== req.path &&
+    previousPath !== req.path &&
     !req.session.user.journey.optionalPaths.includes(req.path)
   );
 }
@@ -14,6 +17,7 @@ export function allowUserJourneyMiddleware(
   res: Response,
   next: NextFunction
 ): void {
+  // could check if the last place you can be in here
   if (transitionForbidden(req)) {
     const nextPath = req.session.user.journey.nextPath;
     req.log.warn(

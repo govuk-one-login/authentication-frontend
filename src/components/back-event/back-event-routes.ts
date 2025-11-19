@@ -12,10 +12,11 @@ router.get(
 );
 
 function backEventGet(req: Request, res: Response) {
-  const previousPage = req.session.user.journey?.history?.slice(-1)[0] || "/";
+  const previousPath = req.session.user.journey?.history?.slice(-1)[0] || "/";
+  // req.session.user.journey.previousPath = previousPath;
   req.session.user.journey.history.pop();
   logger.info(`history cuz ${req.session.user.journey.history}`)
-  return res.redirect(previousPage);
+  return res.redirect(previousPath);
 }
 
 export { router };

@@ -52,6 +52,7 @@ export interface PlaceholderReplacement {
 
 export interface UserJourney {
   nextPath: string;
+  previousPath: string;
   optionalPaths: string[];
   history: string[]
 }

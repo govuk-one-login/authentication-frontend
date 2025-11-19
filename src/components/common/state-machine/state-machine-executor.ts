@@ -38,6 +38,7 @@ export async function getNextPathAndUpdateJourney(
   const nextState = getNextState(currentState, event, context);
 
   req.session.user.journey = {
+    previousPath: req.path,
     nextPath: nextState.value,
     optionalPaths:
       Object.keys(nextState.meta).length > 0
@@ -47,11 +48,15 @@ export async function getNextPathAndUpdateJourney(
     history: [...req.session.user.journey?.history ?? [], req.path]
   };
 
+  // Have an array which contains all paths that would delete the history
+  // if the req.path is included, make the history an empty array
+  // need to make sure that the controller behaves accordingly if a back event is received from one of these pages
+
   await saveSessionState(req);
 
   req.log.info(
     {
-      personalLog: res.locals.history,
+      personalLog: req.session.user.journey,
       transition: {
         from: currentState,
         to: nextState.value,

@@ -111,9 +111,9 @@ const authStateMachine = createMachine<AuthStateContext>(
             PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
           ],
         },
-        meta: {
-          optionalPaths: [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST],
-        },
+        // meta: {
+        //   optionalPaths: [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST],
+        // },
       },
       [PATH_NAMES.ENTER_EMAIL_SIGN_IN]: {
         on: {
@@ -150,11 +150,14 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.ACCOUNT_FOUND_CREATE]: [
             PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS,
           ],
-          [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.CHECK_YOUR_EMAIL],
+          [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: {
+            target: PATH_NAMES.CHECK_YOUR_EMAIL,
+            meta: {reversible: true}
+          },
         },
-        meta: {
-          optionalPaths: [PATH_NAMES.SIGN_IN_OR_CREATE],
-        },
+        // meta: {
+        //   optionalPaths: [PATH_NAMES.SIGN_IN_OR_CREATE],
+        // },
       },
       [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST]: {
         on: {
@@ -200,16 +203,16 @@ const authStateMachine = createMachine<AuthStateContext>(
             PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS,
           ],
         },
-        meta: {
-          optionalPaths: [
-            PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
-            PATH_NAMES.RESEND_EMAIL_CODE,
-            PATH_NAMES.SECURITY_CODE_WAIT,
-            PATH_NAMES.SECURITY_CODE_INVALID,
-            PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
-            PATH_NAMES.SIGN_IN_OR_CREATE,
-          ],
-        },
+        // meta: {
+        //   optionalPaths: [
+        //     PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
+        //     PATH_NAMES.RESEND_EMAIL_CODE,
+        //     PATH_NAMES.SECURITY_CODE_WAIT,
+        //     PATH_NAMES.SECURITY_CODE_INVALID,
+        //     PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+        //     PATH_NAMES.SIGN_IN_OR_CREATE,
+        //   ],
+        // },
       },
       [PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS]: {
         meta: {
