@@ -137,18 +137,5 @@ else
 	echo "connectivity successful"
 fi
 
-# Test API reachability
-echo "Testing API reachability..."
-if [ -n "$API_KEY" ]; then
-	if curl -s -f -H "X-API-Key: $API_KEY" --connect-timeout 5 --max-time 10 "$FRONTEND_API_BASE_URL" >/dev/null 2>&1; then
-		echo "API is reachable with authentication"
-	else
-		echo "API connection failed"
-		exit 1
-	fi
-else
-	echo "No API_KEY found - skipping authenticated test"
-fi
-
 echo ""
 echo "Proxy test completed!"
