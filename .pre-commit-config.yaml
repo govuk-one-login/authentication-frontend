@@ -12,6 +12,11 @@ repos:
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
 
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+
   - repo: https://github.com/aws-cloudformation/cfn-lint
     rev: v1.21.0
     hooks:
@@ -26,6 +31,22 @@ repos:
 
   - repo: local
     hooks:
+      - id: shfmt
+        name: shfmt (shell scripts)
+        language: golang
+        additional_dependencies:
+          - mvdan.cc/sh/v3/cmd/shfmt@v3.10.0
+        entry: shfmt
+        types:
+          - file
+          - shell
+        exclude_types:
+          - zsh
+        args:
+          - -w # write
+          - -s # simplify
+          - -l # list files that differ
+        exclude: gradlew|pre-commit.sh
       - id: tflint
         name: Run tflint (terraform linter)
         files: ^ci/terraform/

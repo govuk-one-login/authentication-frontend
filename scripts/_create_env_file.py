@@ -4,16 +4,13 @@ import logging
 import os
 import re
 import shutil
+import subprocess
 import sys
 from datetime import datetime
-from functools import cache, cached_property
-from io import BytesIO
 from pathlib import Path
 from typing import Iterable, TypedDict
 
-import boto3
 import click
-from botocore import exceptions as boto3_exceptions
 from dotenv import dotenv_values
 
 logging.basicConfig(level=logging.INFO)
@@ -53,7 +50,6 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
         },
     },
     {
-        # pylint: disable=line-too-long
         "header": "SmartAgent configuration for Support form submission - Ask for values",
         "variables": {
             "SMARTAGENT_API_KEY": {
@@ -155,221 +151,8 @@ DEFAULT_USER_VARIABLE_LOOKUP = {
 }
 
 
-@cache
-def cached_get_json_from_s3(s3_client, bucket, path) -> dict:
-    f = BytesIO()
-    s3_client.download_fileobj(bucket, path, f)
-    return json.loads(f.getvalue())
-
-
 class FatalError(Exception):
     pass
-
-
-class StateGetter:
-    boto_client: boto3.Session
-    s3_client: boto3.client
-    dynamodb_client: boto3.client
-
-    def __init__(self, deployment_name: str, state_bucket: str, aws_profile_name: str):
-        self.deployment_name = deployment_name
-        self.state_bucket = state_bucket
-        try:
-            self.boto_client = boto3.Session(profile_name=aws_profile_name)
-            self._validate_aws_credentials()
-            self.s3_client = self.boto_client.client("s3")
-            self.dynamodb_client = self.boto_client.client("dynamodb")
-        except (
-            boto3_exceptions.TokenRetrievalError,
-            boto3_exceptions.SSOTokenLoadError,
-        ) as e:
-            logger.fatal(
-                "AWS auth error: Your SSO session has expired. Please run `aws sso "
-                "login --profile %s` to refresh your session.",
-                aws_profile_name,
-            )
-            raise FatalError from e
-        except boto3_exceptions.ProfileNotFound as e:
-            logger.fatal(
-                "AWS auth error: SSO Profile %s could not be found. Ensure you've set "
-                "up your AWS profiles correctly, as-per "
-                "https://govukverify.atlassian.net/l/cp/fcp74bCB (How to deploy to "
-                "sandpit / authdev# environments). If you have done this and are "
-                "still seeing this error, you probably don't have access to this AWS "
-                "account. Please contact the team for help.",
-                aws_profile_name,
-            )
-            raise FatalError from e
-        except boto3_exceptions.BotoCoreError as e:
-            logger.exception(
-                "Unexpected AWS error. This could be a VPN problem. maybe. Are you "
-                "connected to the VPN?",
-            )
-            raise FatalError from e
-        except Exception as e:  # pylint: disable=broad-except
-            logger.exception("Unexpected error")
-            raise FatalError from e
-        try:
-            if not self._check_environment_exists():
-                logger.fatal(
-                    "Environment %s does not exist. Please check you have the correct "
-                    "name",
-                    deployment_name,
-                )
-                raise FatalError("Environment does not exist")
-        except PermissionError as e:
-            logger.fatal(
-                "You do not have permission to access S3 on this environment. This "
-                "is most likely because you are not connected to the VPN."
-            )
-            raise FatalError from e
-        except LookupError as e:
-            logger.exception(
-                "Unexpected Error while checking if environment exists. This could "
-                "be a VPN problem. Use the stack trace to diagnose."
-            )
-            raise FatalError from e
-
-    def _check_environment_exists(self):
-        try:
-            self._api_remote_state
-        except boto3_exceptions.ClientError as e:
-            if e.response["Error"]["Code"] == "404":
-                return False
-            if e.response["Error"]["Code"] == "403":
-                raise PermissionError from e
-            raise LookupError("Error checking if environment exists") from e
-        return True
-
-    def _validate_aws_credentials(self):
-        self.boto_client.client("sts").get_caller_identity()
-
-    def get_stub_hostname_clientid_from_dynamodb(self):
-        hostname_regex = re.compile(r"^https://(rp-\w+\.\w+\.stubs\.account\.gov\.uk)")
-        paginator = self.dynamodb_client.get_paginator("scan")
-        iterator = paginator.paginate(
-            TableName=f"{self.deployment_name}-client-registry",
-            Select="SPECIFIC_ATTRIBUTES",
-            ProjectionExpression="ClientID, SectorIdentifierUri",
-        )
-        for page in iterator:
-            for item in page["Items"]:
-                if "SectorIdentifierUri" in item:
-                    search = hostname_regex.search(item["SectorIdentifierUri"]["S"])
-                    if search:
-                        return search.group(1), item["ClientID"]["S"]
-        raise ValueError("Stub hostname not found in DynamoDB")
-
-    @cached_property
-    def _api_remote_state(self):
-        state_json = cached_get_json_from_s3(
-            self.s3_client,
-            self.state_bucket,
-            f"frontend-{self.deployment_name}-terraform.tfstate",
-        )
-        resources = state_json["resources"]
-        return next(
-            resource
-            for resource in resources
-            if resource["mode"] == "data"
-            and resource["type"] == "terraform_remote_state"
-            and resource["name"] == "api"
-        )
-
-    @cached_property
-    def _ecs_task_environment(self):
-        state_json = cached_get_json_from_s3(
-            self.s3_client,
-            self.state_bucket,
-            f"frontend-{self.deployment_name}-terraform.tfstate",
-        )
-        resources = state_json["resources"]
-        definitions = next(
-            resource
-            for resource in resources
-            if resource["mode"] == "managed"
-            and resource["type"] == "aws_ecs_task_definition"
-            and resource["name"] == "frontend_task_definition"
-        )["instances"][0]["attributes"]["container_definitions"]
-        definitions = json.loads(definitions)
-        return next(
-            definition["environment"]
-            for definition in definitions
-            if definition["name"] == "frontend-application"
-        )
-
-    def get_api_remote_state_value(self, key: str):
-        api_remote_state = self._api_remote_state
-        try:
-            return api_remote_state["instances"][0]["attributes"]["outputs"]["value"][
-                key
-            ]
-        except KeyError as e:
-            raise KeyError(f"Key {key} not found in api remote state") from e
-
-    def get_ecs_task_environment_value(self, key: str):
-        ecs_task_environment = self._ecs_task_environment
-        try:
-            return next(
-                env["value"] for env in ecs_task_environment if env["name"] == key
-            )
-        except KeyError as e:
-            raise KeyError(f"Key {key} not found in ecs task environment") from e
-
-
-def get_static_variables(
-    deployment_name: str,
-    aws_profile_name: str,
-    state_getter: StateGetter,
-) -> list[EnvFileSection]:
-    try:
-        stub_hostname, client_id = (
-            state_getter.get_stub_hostname_clientid_from_dynamodb()
-        )
-    except ValueError as e:
-        logger.error("Error getting stub hostname from DynamoDB: %s", e)
-        raise FatalError from e
-    return [
-        {
-            "variables": {
-                "DEPLOYMENT_NAME": deployment_name,
-                "AWS_PROFILE": aws_profile_name,
-                "API_BASE_URL": state_getter.get_api_remote_state_value("base_url"),
-                "FRONTEND_API_BASE_URL": state_getter.get_api_remote_state_value(
-                    "frontend_api_base_url"
-                ),
-            },
-        },
-        {
-            "variables": {
-                "STUB_HOSTNAME": stub_hostname,
-                "API_KEY": state_getter.get_ecs_task_environment_value("API_KEY"),
-                "TEST_CLIENT_ID": client_id,
-                "URL_FOR_SUPPORT_LINKS": state_getter.get_ecs_task_environment_value(
-                    "URL_FOR_SUPPORT_LINKS"
-                ),
-                "ORCH_TO_AUTH_CLIENT_ID": state_getter.get_ecs_task_environment_value(
-                    "ORCH_TO_AUTH_CLIENT_ID"
-                ),
-                "ENCRYPTION_KEY_ID": state_getter.get_ecs_task_environment_value(
-                    "ENCRYPTION_KEY_ID"
-                ),
-                "ORCH_TO_AUTH_AUDIENCE": get_signin_url(deployment_name),
-                "ORCH_TO_AUTH_SIGNING_KEY": state_getter.get_ecs_task_environment_value(
-                    "ORCH_TO_AUTH_SIGNING_KEY"
-                ),
-                "ORCH_STUB_TO_AUTH_AUDIENCE": get_signin_url(deployment_name)
-                if "dev" in deployment_name
-                else "",
-                "ORCH_STUB_TO_AUTH_CLIENT_ID": state_getter.get_ecs_task_environment_value(
-                    "ORCH_STUB_TO_AUTH_CLIENT_ID"
-                ),
-                "ORCH_STUB_TO_AUTH_SIGNING_KEY": state_getter.get_ecs_task_environment_value(
-                    "ORCH_STUB_TO_AUTH_SIGNING_KEY"
-                ),
-            },
-        },
-    ]
 
 
 def get_signin_url(deployment_name: str) -> str:
@@ -377,6 +160,180 @@ def get_signin_url(deployment_name: str) -> str:
         return "https://signin.{}.dev.account.gov.uk/".format(deployment_name)
     else:
         return "https://signin.{}.account.gov.uk/".format(deployment_name)
+
+
+def get_api_key_from_secrets_manager(deployment_name: str, aws_profile: str) -> str:
+    """Fetch API key from AWS Secrets Manager using AWS CLI."""
+    secret_name = f"/{deployment_name}/frontend-api-key"
+
+    try:
+        cmd = [
+            "aws",
+            "secretsmanager",
+            "get-secret-value",
+            "--secret-id",
+            secret_name,
+            "--profile",
+            aws_profile,
+            "--output",
+            "json",
+        ]
+
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        secret_data = json.loads(result.stdout)
+        return secret_data["SecretString"]
+
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Failed to fetch API key from Secrets Manager: {e.stderr}")
+        return "L1f6J7gHpv9U9J2tiMaAPjjcu8RIyeJ2gMpMTNOa"  # fallback
+    except Exception as e:
+        logger.error(f"Error fetching API key: {e}")
+        return "L1f6J7gHpv9U9J2tiMaAPjjcu8RIyeJ2gMpMTNOa"  # fallback
+
+
+def get_static_variables(deployment_name: str) -> list[EnvFileSection]:
+    """Get static variables from CloudFormation template."""
+
+    template_path = (
+        Path(__file__).parent.parent / "cloudformation" / "deploy" / "template.yaml"
+    )
+
+    try:
+        with open(template_path, "r") as f:
+            content = f.read()
+
+        # Parse EnvironmentConfiguration mapping manually
+        env_configs = {}
+        lines = content.split("\n")
+        in_env_config = False
+        current_env = None
+        current_key = None
+        current_value = []
+        in_multiline = False
+
+        for i, line in enumerate(lines):
+            if "EnvironmentConfiguration:" in line:
+                in_env_config = True
+                continue
+
+            if not in_env_config:
+                continue
+
+            # Stop if we hit another top-level mapping
+            if (
+                line
+                and not line.startswith(" ")
+                and line != "EnvironmentConfiguration:"
+            ):
+                break
+
+            # Environment name (4 spaces indentation)
+            if (
+                line.startswith("    ")
+                and not line.startswith("      ")
+                and line.strip().endswith(":")
+            ):
+                if in_multiline and current_key and current_env:
+                    env_configs[current_env][current_key] = "\n".join(
+                        current_value
+                    ).strip()
+                    current_value = []
+                    in_multiline = False
+
+                current_env = line.strip().rstrip(":")
+                env_configs[current_env] = {}
+                continue
+
+            # Property key-value (6 spaces indentation)
+            if current_env and line.startswith("      ") and ":" in line:
+                if in_multiline and current_key:
+                    env_configs[current_env][current_key] = "\n".join(
+                        current_value
+                    ).strip()
+                    current_value = []
+                    in_multiline = False
+
+                key, value = line.split(":", 1)
+                key = key.strip()
+                value = value.strip()
+
+                if value == "|":
+                    current_key = key
+                    in_multiline = True
+                    current_value = []
+                else:
+                    env_configs[current_env][key] = value.strip('"')
+
+            # Multi-line value content (8 spaces indentation)
+            elif in_multiline and line.startswith("        "):
+                current_value.append(line[8:])
+
+        # Handle final multiline value
+        if in_multiline and current_key and current_env:
+            env_configs[current_env][current_key] = "\n".join(current_value).strip()
+
+    except FileNotFoundError:
+        logger.error(f"CloudFormation template not found: {template_path}")
+        raise FatalError(f"CloudFormation template not found: {template_path}")
+    except Exception as e:
+        logger.error(f"Error parsing CloudFormation template: {e}")
+        raise FatalError(f"Error parsing CloudFormation template: {e}")
+
+    if deployment_name not in env_configs:
+        raise ValueError(
+            f"Environment {deployment_name} not found in CloudFormation template"
+        )
+
+    env_data = env_configs[deployment_name]
+
+    # Determine AWS profile based on environment
+    if re.match(r"^authdev[0-9]+$", deployment_name) or deployment_name == "dev":
+        aws_profile = "di-auth-development-admin"
+    else:
+        aws_profile = "unknown"
+
+    # Fetch API key from Secrets Manager
+    api_key = get_api_key_from_secrets_manager(deployment_name, aws_profile)
+
+    return [
+        {
+            "variables": {
+                "DEPLOYMENT_NAME": deployment_name,
+                "AWS_PROFILE": aws_profile,
+                "API_BASE_URL": env_data.get(
+                    "OrchApiBaseUrl",
+                    f"https://oidc.{deployment_name}.dev.account.gov.uk"
+                    if deployment_name.startswith("authdev")
+                    else f"https://oidc.{deployment_name}.account.gov.uk",
+                ),
+                "FRONTEND_API_BASE_URL": "http://localhost:8888",
+            },
+        },
+        {
+            "variables": {
+                "STUB_HOSTNAME": "rp-dev.build.stubs.account.gov.uk",
+                "API_KEY": {
+                    "value": api_key,
+                    "comment": f"Fetched from AWS Secrets Manager: /{deployment_name}/frontend-api-key",
+                },
+                "TEST_CLIENT_ID": "rPEUe0hRrHqf0i0es1gYjKxE5ceGN7VK",
+                "URL_FOR_SUPPORT_LINKS": "https://home.build.account.gov.uk/contact-gov-uk-one-login",
+                "ORCH_TO_AUTH_CLIENT_ID": "orchestrationAuth",
+                "ENCRYPTION_KEY_ID": f"alias/{deployment_name}-authentication-encryption-key-alias",
+                "ORCH_TO_AUTH_AUDIENCE": get_signin_url(deployment_name),
+                "ORCH_TO_AUTH_SIGNING_KEY": env_data.get(
+                    "orchToAuthSigningPublicKey", ""
+                ),
+                "ORCH_STUB_TO_AUTH_AUDIENCE": get_signin_url(deployment_name)
+                if "dev" in deployment_name
+                else "",
+                "ORCH_STUB_TO_AUTH_CLIENT_ID": "orchestrationAuth",
+                "ORCH_STUB_TO_AUTH_SIGNING_KEY": env_data.get(
+                    "orchStubToAuthSigningPublicKey", ""
+                ),
+            },
+        },
+    ]
 
 
 def get_user_variables(
@@ -439,54 +396,53 @@ def build_lines_from_section(sections: list[EnvFileSection]) -> Iterable[str]:
         yield ""
 
 
+def replace_env_references(content: str, deployment_name: str) -> str:
+    """Replace environment-specific references in content."""
+    content = re.sub(r"\bauthdev2\b", deployment_name, content)
+    return content
+
+
 def build_env_file_lines(
     deployment_name: str,
     static_sections: list[EnvFileSection],
     user_sections: list[EnvFileSection],
 ) -> Iterable[str]:
-    # pylint: disable=line-too-long
     yield from [
         f"# This file was generated with `build-env.sh {deployment_name}` at {datetime.now().isoformat()}.\n",
         "# You may update variables between this line and the 'DO NOT EDIT BELOW THIS LINE' marker.\n",
     ]
 
     yield from build_lines_from_section(user_sections)
-    yield "# DO NOT EDIT BELOW THIS LINE"  # Mark the end of user-editable variables
+    yield "# DO NOT EDIT BELOW THIS LINE"
     yield f"# The following variables should be updated by rerunning `build-env.sh {deployment_name}`"
     yield "# Any manual changes made below this line will be lost.\n"
     yield from build_lines_from_section(static_sections)
 
 
-def main(
-    deployment_name: str,
-    aws_profile_name: str,
-    dotenv_file: Path,
-    state_getter: StateGetter,
-):
+def main(deployment_name: str, dotenv_file: Path):
     start_time = datetime.now()
-    static_variables = get_static_variables(
-        deployment_name, aws_profile_name, state_getter
-    )
+    static_variables = get_static_variables(deployment_name)
     user_variables = get_user_variables(dotenv_file, static_variables)
 
     env_file_lines = build_env_file_lines(
         deployment_name, static_variables, user_variables
     )
 
-    # Create a backup of the existing .env file
+    env_content = "\n".join(env_file_lines)
+    env_content = replace_env_references(env_content, deployment_name)
+
     try:
         dotenv_file_backup = dotenv_file.with_suffix(dotenv_file.suffix + ".bak")
         logger.info("Backing up %s to %s", dotenv_file, dotenv_file_backup)
         shutil.copy2(dotenv_file, dotenv_file_backup)
     except FileNotFoundError:
         logger.warning("No existing .env file found to back up.")
-    # pylint: disable=broad-except
     except Exception as e:
         logger.error("Error backing up %s: %s", dotenv_file, e)
         raise FatalError from e
 
     try:
-        dotenv_file.write_text("\n".join(env_file_lines))
+        dotenv_file.write_text(env_content)
     except OSError as e:
         logger.error("Error writing to %s: %s", dotenv_file, e)
         raise FatalError from e
@@ -499,14 +455,7 @@ def main(
     )
 
 
-NAMED_ENVIRONMENTS = [
-    "sandpit",
-    "dev",
-    "authdev1",
-    "authdev2",
-    "build",
-    "staging",
-]
+NAMED_ENVIRONMENTS = ["dev", "authdev1", "authdev2"]
 
 
 @click.command()
@@ -521,22 +470,8 @@ def base_command(deploy_env: str):
         )
         sys.exit(1)
 
-    if deploy_env in ["sandpit", "build"]:
-        _aws_profile_name = "gds-di-development-admin"
-        _state_bucket_name = "digital-identity-dev-tfstate"
-    elif re.match(r"^authdev[0-9]+$", deploy_env) or deploy_env == "dev":
-        _aws_profile_name = "di-auth-development-admin"
-        _state_bucket_name = "di-auth-development-tfstate"
-    elif deploy_env == "staging":
-        _aws_profile_name = "di-auth-staging-admin"
-        _state_bucket_name = "di-auth-staging-tfstate"
-    else:
-        logger.fatal(f"Unknown or unsupported environment: {deploy_env}")
-        sys.exit(1)
-
     try:
-        state_getter = StateGetter(deploy_env, _state_bucket_name, _aws_profile_name)
-        main(deploy_env, _aws_profile_name, Path(".env"), state_getter)
+        main(deploy_env, Path(".env"))
     except FatalError:
         sys.exit(1)
 
