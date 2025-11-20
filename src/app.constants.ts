@@ -73,7 +73,7 @@ export const PATH_NAMES = {
   CANNOT_USE_EMAIL_ADDRESS: "/cannot-use-email-address",
   CANNOT_USE_EMAIL_ADDRESS_CONTINUE: "/cannot-use-email-address-continue",
   WELL_KNOWN_APPLE_ASSOCIATION: "/.well-known/apple-app-site-association",
-} as const;
+}
 
 // type PathHistoryConfig = {
 //   [k in typeof PATH_NAMES[keyof typeof PATH_NAMES]]: {
@@ -87,14 +87,14 @@ type PathHistoryConfig2 = Record<typeof PATH_NAMES[keyof typeof PATH_NAMES], {
   shouldDeleteHistory: boolean
 }>;
 
-const someObject: PathHistoryConfig2 = {
-  '/sign-in-or-create': {
-    shouldBeInHistory: false,
-    shouldDeleteHistory: true
-  },
-}
-
-console.log(someObject)
+// const someObject: PathHistoryConfig2 = {
+//   '/sign-in-or-create': {
+//     shouldBeInHistory: false,
+//     shouldDeleteHistory: true
+//   },
+// }
+//
+// console.log(someObject)
 
 export const HREF_BACK = {
   CHECK_YOUR_PHONE: "check-your-phone",
