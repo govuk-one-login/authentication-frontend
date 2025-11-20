@@ -152,7 +152,7 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
           [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: {
             target: PATH_NAMES.CHECK_YOUR_EMAIL,
-            meta: {reversible: true}
+            meta: {reversible: false}
           },
         },
         // meta: {
