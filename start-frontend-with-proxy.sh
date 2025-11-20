@@ -56,7 +56,7 @@ fi
 
 # Start dependencies with Docker
 echo "Starting dependencies (Redis, stubs)..."
-docker compose -f docker-compose-proxy.yml up --build -d --wait redis di-auth-stub-default di-auth-stub-no-mfa di-auth-stub-orchstub service-down-page
+docker compose -f docker-compose-proxy.yml up --build -d --wait redis di-auth-stub-orchstub service-down-page
 
 # Install dependencies and start frontend
 echo " Installing dependencies..."
@@ -66,8 +66,6 @@ echo "Starting frontend on http://localhost:${DOCKER_FRONTEND_PORT:-3000}"
 echo ""
 echo "Dependencies running:"
 echo "  - Redis: localhost:${REDIS_PORT:-6379}"
-echo "  - Default stub: http://localhost:${DOCKER_STUB_DEFAULT_PORT:-2000}"
-echo "  - No-MFA stub: http://localhost:${DOCKER_STUB_NO_MFA_PORT:-5000}"
 echo "  - Orch stub: http://localhost:${DOCKER_STUB_ORCHSTUB_PORT:-3002}"
 echo ""
 
