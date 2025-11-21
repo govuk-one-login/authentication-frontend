@@ -94,6 +94,7 @@ export interface UserSession {
 }
 
 export interface UserSessionClient {
+  journeyId?: string;
   name?: string;
   serviceType?: string;
   cookieConsentEnabled?: boolean;

@@ -24,6 +24,7 @@ export function createMockRequest(
       debug: sinon.fake(),
       warn: sinon.fake(),
       error: sinon.fake(),
+      setBindings: sinon.fake(),
     },
     t: sinon.fake(),
     i18n: { language: "en" },
