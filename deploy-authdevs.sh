@@ -23,7 +23,7 @@ done
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-export AWS_PROFILE="di-authentication-development-admin"
+export AWS_PROFILE="di-authentication-development-AdministratorAccessPermission"
 
 # shellcheck source=scripts/dev_sam_deploy.sh
   source "${DIR}/scripts/dev_sam_deploy.sh"
