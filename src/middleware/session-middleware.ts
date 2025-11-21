@@ -28,6 +28,14 @@ export function initialiseSessionMiddleware(
     };
 
     req.session.sessionRestored = true;
+  } else if (req.session.client?.journeyId !== res.locals.clientSessionId) {
+    req.log.warn(
+      {
+        journeyId: req.session.client.journeyId,
+        clientSessionId: res.locals.clientSessionId,
+      },
+      "Journey ID mismatch"
+    );
   }
 
   next();
