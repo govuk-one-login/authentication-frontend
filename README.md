@@ -336,7 +336,7 @@ Frontend App → localhost:8888 → Session Manager → nginx → VPC Endpoint �
 - AWS CLI configured
 - Session Manager plugin: `brew install session-manager-plugin`
 - Node.js and yarn installed
-- Access to `di-authentication-development-admin` AWS profile
+- Access to `di-authentication-development-AdministratorAccessPermission` and `di-auth-development-AdministratorAccessPermission` AWS profiles
 - Connected to the VPN
 
 ## Quick Start

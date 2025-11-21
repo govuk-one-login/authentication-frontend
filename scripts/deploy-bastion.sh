@@ -7,7 +7,7 @@ VPC_STACK_NAME="${VPC_STACK_NAME:-vpc}"
 INSTANCE_TYPE="${INSTANCE_TYPE:-t4g.micro}"
 
 # Set AWS profile and load credentials
-export AWS_PROFILE="di-authentication-development-admin"
+export AWS_PROFILE="di-authentication-development-AdministratorAccessPermission"
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
 source "${DIR}/export_aws_creds.sh"
