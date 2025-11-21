@@ -1,4 +1,4 @@
-x-stub-image-name: &stub-image-name di-authentication-frontend/di-auth-stub:latest
+x-stub-image-name: &stub-image-name di-authentication-frontend/di-auth-stub-orchstub:latest
 
 services:
   redis:
@@ -8,56 +8,12 @@ services:
     networks:
       - di-net
 
-  di-auth-stub-default:
+  di-auth-stub-orchstub:
     image: *stub-image-name
     pull_policy: never
     build:
       context: .
       dockerfile: Dockerfile-stub
-    ports:
-      - "${DOCKER_STUB_DEFAULT_PORT:-2000}:${DOCKER_STUB_DEFAULT_PORT:-2000}"
-    environment:
-      ENVIRONMENT: ${ENVIRONMENT:?this should be set in your .env file.}
-
-      API_BASE_URL: ${API_BASE_URL:?this should be set in your .env file.}
-      FRONTEND_API_BASE_URL: ${FRONTEND_API_BASE_URL:?this should be set in your .env file.}
-
-      TEST_CLIENT_ID: ${TEST_CLIENT_ID:?this should be set in your .env file.}
-      STUB_HOSTNAME: ${STUB_HOSTNAME:?this should be set in your .env file.}
-      UI_LOCALES: ${UI_LOCALES:-}
-
-      PORT: ${DOCKER_STUB_DEFAULT_PORT:-2000}
-      FRONTEND_PORT: ${DOCKER_FRONTEND_PORT:-3000}
-    restart: on-failure
-    networks:
-      - di-net
-
-  di-auth-stub-no-mfa:
-    image: *stub-image-name
-    pull_policy: never
-    ports:
-      - "${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}:${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}"
-    environment:
-      ENVIRONMENT: ${ENVIRONMENT:?this should be set in your .env file.}
-
-      API_BASE_URL: ${API_BASE_URL:?this should be set in your .env file.}
-      FRONTEND_API_BASE_URL: ${FRONTEND_API_BASE_URL:?this should be set in your .env file.}
-
-      TEST_CLIENT_ID: ${TEST_CLIENT_ID:?this should be set in your .env file.}
-      STUB_HOSTNAME: ${STUB_HOSTNAME:?this should be set in your .env file.}
-
-      UI_LOCALES: ${UI_LOCALES:-}
-      VTR: ${VTR:-["Cl"]}
-
-      PORT: ${DOCKER_DOCKER_STUB_NO_MFA_PORT:-5000}
-      FRONTEND_PORT: ${DOCKER_FRONTEND_PORT:-3000}
-    restart: on-failure
-    networks:
-      - di-net
-
-  di-auth-stub-orchstub:
-    image: *stub-image-name
-    pull_policy: never
     ports:
       - "${DOCKER_DOCKER_STUB_ORCHSTUB_PORT:-3002}:${DOCKER_DOCKER_STUB_ORCHSTUB_PORT:-3002}"
     environment:

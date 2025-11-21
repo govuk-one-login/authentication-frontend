@@ -72,8 +72,6 @@ unset AWS_PROFILE
 if [ "${ACTION_LOCAL:-0}" == "1" ]; then
   echo "Starting frontend local service..."
   docker compose -f docker-compose.yml up --build -d --wait
-  echo "No-MFA stub listening on http://localhost:${DOCKER_STUB_NO_MFA_PORT:-5000}"
-  echo "Default stub listening on http://localhost:${DOCKER_STUB_DEFAULT_PORT:-2000}"
   export REDIS_PORT=${REDIS_PORT:-6379}
   export REDIS_HOST=localhost
   echo "Redis listening on redis://localhost:${REDIS_PORT:-6379}"
@@ -86,8 +84,6 @@ if [ "${ACTION_LOCAL:-0}" == "1" ]; then
 else
   echo "Starting frontend service..."
   docker compose -f docker-compose.yml -f docker-compose.frontend.yml up -d --wait --build
-  echo "No-MFA stub listening on http://localhost:${DOCKER_STUB_NO_MFA_PORT:-5000}"
-  echo "Default stub listening on http://localhost:${DOCKER_STUB_DEFAULT_PORT:-2000}"
   echo "Redis listening on redis://localhost:${REDIS_PORT:-6379}"
   echo "Frontend listening on http://localhost:${DOCKER_FRONTEND_PORT:-3000}"
   echo "Frontend nodemon listening on localhost:${DOCKER_FRONTEND_NODEMON_PORT:-9230}"

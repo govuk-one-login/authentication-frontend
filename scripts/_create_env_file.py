@@ -70,7 +70,7 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
         "header": "Local stub client options",
         "variables": {
             "VTR": {
-                "value": '["Cl","Cl.m"]',
+                "value": '"Cl.Cm"',
                 "comment": "VTR for the stub client authorization request",
             },
         },
@@ -103,14 +103,6 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
     {
         "header": "Docker ports",
         "variables": {
-            "DOCKER_STUB_NO_MFA_PORT": {
-                "value": 5000,
-                "comment": "Listen port for no-mfa stub",
-            },
-            "DOCKER_STUB_DEFAULT_PORT": {
-                "value": 2000,
-                "comment": "Listen port for default stub",
-            },
             "DOCKER_FRONTEND_PORT": {
                 "value": 3000,
                 "comment": "Listen port for frontend",

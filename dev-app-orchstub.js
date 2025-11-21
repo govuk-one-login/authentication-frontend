@@ -20,6 +20,7 @@ const port = process.env.PORT || 3002;
 const frontendPort = process.env.FRONTEND_PORT || 3000;
 const stubUrl = stubUrls[process.env.DEPLOYMENT_NAME];
 const sessionExpiry = Number(process.env.SESSION_EXPIRY || 3600000);
+const level = process.env.VTR || "Cl.Cm";
 
 if (stubUrl === undefined) {
   logger.warn(
@@ -81,7 +82,7 @@ app.get("/", async (req, res) => {
   // call orch stub
   const orchStubResponse = await axios.post(
     stubUrl,
-    `reauthenticate=&level=Cl.Cm&authenticated=no&authenticatedLevel=Cl.Cm&channel=${channel}`,
+    `reauthenticate=&level=${level}&authenticated=no&authenticatedLevel=${level}&channel=${channel}`,
     {
       validateStatus: (status) => {
         return status === 302;
