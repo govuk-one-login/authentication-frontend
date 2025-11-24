@@ -5,6 +5,14 @@
 {% from "frontend-ui/build/components/progress-button/macro.njk" import frontendUiProgressButton %}
 {% set pageTitleName = 'pages.enterAuthenticatorAppCode.title' | translate %}
 
+{# TODO: We will want to commonise this if we follow this approach. #}
+{% set progressButtonTranslations = {
+  text: "general.progressButton.text" | translate,
+  waitingText: "general.progressButton.waitingText" | translate,
+  longWaitingText: "general.progressButton.longWaitingText" | translate,
+  noJavascriptMessage: "general.progressButton.noJavascriptMessage" | translate
+} %}
+
 {% block content %}
 
   {% include "common/errors/errorSummary.njk" %}
@@ -33,7 +41,7 @@
   }}
 
     {{ frontendUiProgressButton({
-    text: "general.continue.label" | translate,
+    translations: progressButtonTranslations,
     type: "submit",
     preventDoubleClick: true
   }) }}
