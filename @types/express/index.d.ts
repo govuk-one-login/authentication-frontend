@@ -4,13 +4,8 @@ import type { Taxonomy } from "../utils/taxonomy.ts";
 declare global {
   namespace Express {
     export interface Request {
-      i18n: {
-        language: string;
-        // frontendUiMiddleware from the @govuk-one-login/frontend-ui package accesses properties directly (req.i18n.store.data).
-        // Therefore, store and data must be defined as required here to match the middleware signature.
-        store: {
-          data: Record<string, any>;
-        };
+      i18n?: {
+        language?: string;
       };
       t: TFunction;
       csrfToken?: () => string;
