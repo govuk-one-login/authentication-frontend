@@ -60,6 +60,7 @@ describe("authorize service", () => {
       subject_type: "pairwise",
       is_identity_verification_required: false,
       rp_sector_host: "example.com",
+      request: "example-jar",
     });
 
     expect(postStub).to.be.calledOnceWithExactly(
@@ -80,6 +81,7 @@ describe("authorize service", () => {
         subject_type: "pairwise",
         is_identity_verification_required: false,
         rp_sector_identifier_host: "example.com",
+        request: "example-jar",
       },
       {
         headers: {
@@ -109,6 +111,7 @@ describe("authorize service", () => {
       subject_type: "pairwise",
       is_identity_verification_required: false,
       rp_sector_host: "example.com",
+      request: "example-jar",
     });
 
     expect(postStub).to.be.calledOnceWithExactly(
@@ -128,6 +131,7 @@ describe("authorize service", () => {
         subject_type: "pairwise",
         is_identity_verification_required: false,
         rp_sector_identifier_host: "example.com",
+        request: "example-jar",
       },
       {
         headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -153,6 +157,7 @@ describe("authorize service", () => {
       subject_type: "pairwise",
       is_identity_verification_required: false,
       rp_sector_host: "example.com",
+      request: "example-jar",
     });
 
     expect(postStub).to.be.calledOnceWithExactly(
@@ -172,6 +177,7 @@ describe("authorize service", () => {
         subject_type: "pairwise",
         is_identity_verification_required: false,
         rp_sector_identifier_host: "example.com",
+        request: "example-jar",
       },
       {
         headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -199,6 +205,7 @@ describe("authorize service", () => {
       subject_type: "pairwise",
       is_identity_verification_required: false,
       rp_sector_host: "example.com",
+      request: "example-jar",
     });
 
     expect(postStub).to.be.calledOnceWithExactly(
@@ -219,6 +226,7 @@ describe("authorize service", () => {
         subject_type: "pairwise",
         is_identity_verification_required: false,
         rp_sector_identifier_host: "example.com",
+        request: "example-jar",
       },
       {
         headers: {
@@ -249,6 +257,7 @@ describe("authorize service", () => {
       subject_type: "pairwise",
       is_identity_verification_required: false,
       rp_sector_host: "example.com",
+      request: "example-jar",
     });
 
     expect(postStub).to.be.calledOnceWithExactly(
@@ -270,6 +279,7 @@ describe("authorize service", () => {
         subject_type: "pairwise",
         is_identity_verification_required: false,
         rp_sector_identifier_host: "example.com",
+        request: "example-jar",
       },
       {
         headers: {
@@ -302,6 +312,7 @@ describe("authorize service", () => {
       subject_type: "pairwise",
       is_identity_verification_required: false,
       rp_sector_host: "example.com",
+      request: "example-jar",
     });
 
     expect(postStub).to.be.calledOnceWithExactly(
@@ -324,6 +335,7 @@ describe("authorize service", () => {
         subject_type: "pairwise",
         is_identity_verification_required: false,
         rp_sector_identifier_host: "example.com",
+        request: "example-jar",
       },
       {
         headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },

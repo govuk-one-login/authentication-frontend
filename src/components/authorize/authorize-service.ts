@@ -85,5 +85,6 @@ function createStartBody(startRequestParameters: StartRequestParameters) {
   body["is_identity_verification_required"] =
     startRequestParameters.is_identity_verification_required;
   body["rp_sector_identifier_host"] = startRequestParameters.rp_sector_host;
+  body["request"] = startRequestParameters.request;
   return body;
 }
