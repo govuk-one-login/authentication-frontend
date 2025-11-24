@@ -100,6 +100,10 @@ export function authorizeGet(
       );
     }
 
+    // Set client session properties
+    req.session.client.prompt = loginPrompt;
+    setSessionDataFromClaims(req, claims);
+
     const startAuthResponse = await authService.start(
       sessionId,
       clientSessionId,
@@ -125,8 +129,6 @@ export function authorizeGet(
       throw startError;
     }
 
-    req.session.client.prompt = loginPrompt;
-    setSessionDataFromClaims(req, claims);
     setSessionDataFromAuthResponse(req, startAuthResponse);
 
     persistSessionDataInCookies(req, res);
@@ -218,6 +220,7 @@ function setSessionDataFromClaims(req: Request, claims: Claims) {
     }
   }
 
+  req.session.client.journeyId = claims.govuk_signin_journey_id;
   req.session.client.serviceType = claims.service_type;
   req.session.client.name = claims.client_name;
   req.session.client.cookieConsentEnabled = claims.cookie_consent_shared;
@@ -235,6 +238,12 @@ function setSessionDataFromClaims(req: Request, claims: Claims) {
   req.session.user.channel = isValidChannel(claims.channel)
     ? claims.channel
     : getDefaultChannel();
+
+  req.log.setBindings({
+    clientId: claims.rp_client_id,
+    govuk_signin_journey_id: claims.govuk_signin_journey_id,
+  });
+
   req.log.info(`Channel is set to: ${req.session.user.channel}`);
 }
 
