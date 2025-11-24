@@ -28,14 +28,6 @@ export function initialiseSessionMiddleware(
     };
 
     req.session.sessionRestored = true;
-  } else if (req.session.client?.journeyId !== res.locals.clientSessionId) {
-    req.log.warn(
-      {
-        journeyId: req.session.client.journeyId,
-        clientSessionId: res.locals.clientSessionId,
-      },
-      "Journey ID mismatch"
-    );
   }
 
   next();
@@ -56,6 +48,9 @@ export function getSessionIdMiddleware(
     res.locals.persistentSessionId = xss(
       req.cookies["di-persistent-session-id"]
     );
+  }
+  if (req.session?.client?.rpClientId) {
+    res.locals.clientId = req.session.client.rpClientId;
   }
   next();
 }

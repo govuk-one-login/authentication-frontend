@@ -18,7 +18,7 @@ import { mockResponse } from "mock-req-res";
 import type {
   AuthorizeServiceInterface,
   JwtServiceInterface,
-  DecryptionServiceInterface,
+  KmsDecryptionServiceInterface,
 } from "../types.js";
 import { BadRequestError } from "../../../utils/error.js";
 import { createMockClaims } from "./test-data.js";
@@ -35,7 +35,7 @@ describe("authorize controller", () => {
   let authServiceResponseData: any;
   let fakeAuthorizeService: AuthorizeServiceInterface;
   let fakeCookieConsentService: CookieConsentServiceInterface;
-  let fakeKmsDecryptionService: DecryptionServiceInterface;
+  let fakeKmsDecryptionService: KmsDecryptionServiceInterface;
   let fakeJwtService: JwtServiceInterface;
   let mockClaims: Claims;
 
@@ -60,14 +60,6 @@ describe("authorize controller", () => {
       },
       success: true,
     });
-
-    fakeCookieConsentService = {
-      getCookieConsent: sinon.fake.returns(COOKIE_CONSENT.ACCEPT),
-      createConsentCookieValue: sinon.fake.returns({
-        value: COOKIE_CONSENT.ACCEPT,
-        expires: new Date(),
-      }),
-    };
 
     fakeKmsDecryptionService = {
       decrypt: sinon.fake.returns(Promise.resolve("jwt")),
