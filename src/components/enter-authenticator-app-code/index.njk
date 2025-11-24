@@ -68,3 +68,11 @@
   {% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
   {%- include "ga4-opl/template.njk" -%}
 {% endblock %}
+
+{% block scripts %}
+  <script type="module" src="/public/scripts/govuk-one-login-frontend-ui.js" {% if scriptNonce %}nonce="{{ scriptNonce }}"{% endif %}></script>
+  <script type="module" {% if scriptNonce %}nonce="{{ scriptNonce }}"{% endif %}>
+      import { initialiseProgressButtons } from "/public/scripts/govuk-one-login-frontend-ui.js";
+      initialiseProgressButtons();
+  </script>
+{% endblock %}
