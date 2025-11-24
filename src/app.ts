@@ -1,4 +1,4 @@
-import type { Application } from "express";
+import type { Application, RequestHandler } from "express";
 import express from "express";
 import "express-async-errors";
 import cookieParser from "cookie-parser";
@@ -11,6 +11,8 @@ import { configureNunjucks } from "./config/nunchucks.js";
 import { i18nextConfigurationOptions } from "./config/i18next.js";
 import { helmetConfiguration } from "./config/helmet.js";
 import helmet from "helmet";
+
+import { setBaseTranslations, setFrontendUiTranslations, frontendUiMiddleware } from "@govuk-one-login/frontend-ui";
 
 import { setHtmlLangMiddleware } from "./middleware/html-lang-middleware.js";
 import i18next from "i18next";
@@ -227,8 +229,24 @@ async function createApp(): Promise<express.Application> {
       )
     );
 
+  setBaseTranslations(i18next);
+  setFrontendUiTranslations(i18next); 
+
   app.use(i18nextMiddleware.handle(i18next));
   app.use(helmet(helmetConfiguration));
+
+  app.use((req, res, next) => {
+    // 1. Runtime Safety: 
+    // We verify that i18n, language, and store exist.
+    if (!req.i18n || !req.i18n.language || !req.i18n.store || !req.i18n.store.data) {
+        return next();
+    }
+
+    // 2. Safe Invocation:
+    // TypeScript now sees req.i18n as defined, and because we removed the '?' 
+    // from language in the global type, it matches the strict middleware signature.
+    return frontendUiMiddleware(req, res, next);
+  });
 
   app.use(cookieParser());
 
