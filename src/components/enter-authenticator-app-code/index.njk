@@ -2,17 +2,8 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "frontend-ui/build/components/progress-button/macro.njk" import frontendUiProgressButton %}
+{% from "common/progress-button/macro.njk" import progressButton, progressButtonScripts %}
 {% set pageTitleName = 'pages.enterAuthenticatorAppCode.title' | translate %}
-
-{# TODO: We will want to commonise these if we follow this approach - custom wrapper for progress button? #}
-{% set progressButtonTranslations = {
-  text: "general.progressButton.text" | translate,
-  waitingText: "general.progressButton.waitingText" | translate,
-  longWaitingText: "general.progressButton.longWaitingText" | translate,
-  noJavascriptMessage: "general.progressButton.noJavascriptMessage" | translate
-} %}
-{% set progressButtonErrorPageHref = '/error' %}
 
 {% block content %}
 
@@ -41,12 +32,7 @@
     } if (errors['code'])})
   }}
 
-    {{ frontendUiProgressButton({
-    translations: progressButtonTranslations,
-    type: "submit",
-    preventDoubleClick: true,
-    errorPage: progressButtonErrorPageHref
-  }) }}
+    {{ progressButton({}) }}
 
   </form>
 
@@ -80,9 +66,5 @@
 {% endblock %}
 
 {% block scripts %}
-  <script type="module" src="/public/scripts/govuk-one-login-frontend-ui.js" {% if scriptNonce %}nonce="{{ scriptNonce }}"{% endif %}></script>
-  <script type="module" {% if scriptNonce %}nonce="{{ scriptNonce }}"{% endif %}>
-      import { initialiseProgressButtons } from "/public/scripts/govuk-one-login-frontend-ui.js";
-      initialiseProgressButtons();
-  </script>
+  {{ progressButtonScripts(scriptNonce) }}
 {% endblock %}

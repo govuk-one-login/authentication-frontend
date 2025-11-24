@@ -1,0 +1,26 @@
+{% from "frontend-ui/build/components/progress-button/macro.njk" import frontendUiProgressButton %}
+
+{% macro progressButton(params) %}
+  {% set translations = {
+    text: "general.progressButton.text" | translate,
+    waitingText: "general.progressButton.waitingText" | translate,
+    longWaitingText: "general.progressButton.longWaitingText" | translate,
+    noJavascriptMessage: "general.progressButton.noJavascriptMessage" | translate
+  } %}
+  {% set errorPageHref = '/error' %}
+
+  {{ frontendUiProgressButton({
+    translations: translations,
+    errorPage: errorPageHref,
+    type: "submit",
+    preventDoubleClick: true
+  }) }}
+{% endmacro %}
+
+{% macro progressButtonScripts(scriptNonce) %}
+  <script type="module" src="/public/scripts/govuk-one-login-frontend-ui.js" {% if scriptNonce %}nonce="{{ scriptNonce }}"{% endif %}></script>
+  <script type="module" {% if scriptNonce %}nonce="{{ scriptNonce }}"{% endif %}>
+      import { initialiseProgressButtons } from "/public/scripts/govuk-one-login-frontend-ui.js";
+      initialiseProgressButtons();
+  </script>
+{% endmacro %}
