@@ -24,7 +24,7 @@ fi
 
 # setup AWS credentials
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export AWS_PROFILE="di-authentication-development-admin"
+export AWS_PROFILE="di-authentication-development-AdministratorAccessPermission"
 # shellcheck disable=SC1091
 source "${DIR}/export_aws_creds.sh"
 

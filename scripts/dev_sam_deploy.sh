@@ -85,7 +85,7 @@ RESOURCES_TO_RETAIN=${RESOURCES_TO_RETAIN:-AccessLogsBucket}
 # -----------------------
 # login to target account
 # -----------------------
-export AWS_PROFILE="di-authentication-development-admin"
+export AWS_PROFILE="di-authentication-development-AdministratorAccessPermission"
 
 # shellcheck source=./scripts/export_aws_creds.sh
 source "${DIR}/scripts/export_aws_creds.sh"

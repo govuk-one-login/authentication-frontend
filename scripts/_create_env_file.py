@@ -280,7 +280,7 @@ def get_static_variables(deployment_name: str) -> list[EnvFileSection]:
 
     # Determine AWS profile based on environment
     if re.match(r"^authdev[0-9]+$", deployment_name) or deployment_name == "dev":
-        aws_profile = "di-auth-development-admin"
+        aws_profile = "di-auth-development-AdministratorAccessPermission"
     else:
         aws_profile = "unknown"
 
