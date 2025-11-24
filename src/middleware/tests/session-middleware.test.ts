@@ -1,5 +1,6 @@
 import chai, { expect } from "chai";
 import type { Request, Response } from "express";
+import type { Session } from "express-session";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 import {
@@ -17,6 +18,7 @@ import {
 import { describe } from "mocha";
 import { mockRequest, mockResponse } from "mock-req-res";
 import { buildMfaMethods } from "../../../test/helpers/mfa-helper";
+import { createMockRequest } from "../../../test/helpers/mock-request-helper.js";
 
 chai.use(sinonChai);
 
@@ -27,7 +29,7 @@ describe("session-middleware", () => {
 
   describe("initialiseSessionMiddleware", () => {
     beforeEach(() => {
-      req = mockRequest({ session: { client: {}, user: {} } });
+      req = createMockRequest(PATH_NAMES.SIGN_IN_OR_CREATE);
       res = mockResponse();
       next = sinon.fake();
     });
@@ -63,6 +65,15 @@ describe("session-middleware", () => {
         mfaMethods,
         activeMfaMethodId,
       });
+    });
+
+    it("should handle a missing session", () => {
+      req.session = {} as Session;
+      res.locals.clientSessionId = "test-journey-id";
+
+      initialiseSessionMiddleware(req, res, next);
+
+      expect(next).to.be.calledOnce;
     });
   });
 
