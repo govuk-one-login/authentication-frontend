@@ -5,13 +5,14 @@
 {% from "frontend-ui/build/components/progress-button/macro.njk" import frontendUiProgressButton %}
 {% set pageTitleName = 'pages.enterAuthenticatorAppCode.title' | translate %}
 
-{# TODO: We will want to commonise this if we follow this approach. #}
+{# TODO: We will want to commonise these if we follow this approach - custom wrapper for progress button? #}
 {% set progressButtonTranslations = {
   text: "general.progressButton.text" | translate,
   waitingText: "general.progressButton.waitingText" | translate,
   longWaitingText: "general.progressButton.longWaitingText" | translate,
   noJavascriptMessage: "general.progressButton.noJavascriptMessage" | translate
 } %}
+{% set progressButtonErrorPageHref = '/error' %}
 
 {% block content %}
 
@@ -43,7 +44,8 @@
     {{ frontendUiProgressButton({
     translations: progressButtonTranslations,
     type: "submit",
-    preventDoubleClick: true
+    preventDoubleClick: true,
+    errorPage: progressButtonErrorPageHref
   }) }}
 
   </form>
