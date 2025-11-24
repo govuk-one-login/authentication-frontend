@@ -25,6 +25,8 @@ export interface StartRequestParameters {
   subject_type: string;
   is_identity_verification_required: boolean;
   rp_sector_host: string;
+  // For backend JAR validation
+  clientId: string;
   request: string;
 }
 
