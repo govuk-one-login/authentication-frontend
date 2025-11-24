@@ -28,6 +28,8 @@
 @import "../../../node_modules/@govuk-one-login/frontend-language-toggle/build/stylesheet/styles";
 @import "prove-identity-callback/spinner";
 
+@import "../../../node_modules/@govuk-one-login/frontend-ui/build/all";
+
 .interrupt-screen {
   background-color: #1d70b8;
   padding: 30px;
