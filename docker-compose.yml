@@ -11,6 +11,9 @@ services:
   di-auth-stub-orchstub:
     image: *stub-image-name
     pull_policy: never
+    build:
+      context: .
+      dockerfile: Dockerfile-stub
     ports:
       - "${DOCKER_DOCKER_STUB_ORCHSTUB_PORT:-3002}:${DOCKER_DOCKER_STUB_ORCHSTUB_PORT:-3002}"
     environment:
