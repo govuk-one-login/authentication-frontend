@@ -38,6 +38,9 @@ declare global {
       languageToggleEnabled?: boolean;
       language?: string;
       htmlLang?: string;
+      i18n?: {
+        language?: string;
+      };
 
       // App
       strategicAppChannel?: boolean;
