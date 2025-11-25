@@ -27,6 +27,11 @@ export async function getNextPathAndUpdateJourney(
     isPasswordChangeRequired: !!req.session.user?.isPasswordChangeRequired,
     isPasswordResetJourney: !!req.session.user?.isPasswordResetJourney,
     mfaMethodType: req.session.user?.mfaMethodType,
+    shouldPromptToRegisterPasskey:
+      req.session.user?.hasActivePasskey === false &&
+      res.locals.supportPasskeyRegistration,
+    shouldPromptToSignInWithPasskey:
+      req.session.user?.hasActivePasskey && res.locals.supportPasskeyUsage,
   };
 
   const nextState = getNextState(currentState, event, context);

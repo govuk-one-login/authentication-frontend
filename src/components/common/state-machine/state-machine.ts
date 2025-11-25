@@ -78,6 +78,8 @@ export interface AuthStateContext {
   isPasswordChangeRequired: boolean;
   isPasswordResetJourney: boolean;
   mfaMethodType: MFA_METHOD_TYPE | undefined;
+  shouldPromptToRegisterPasskey: boolean;
+  shouldPromptToSignInWithPasskey: boolean;
 }
 
 const authStateMachine = createMachine<AuthStateContext>(
@@ -657,6 +659,10 @@ const authStateMachine = createMachine<AuthStateContext>(
         context.isMfaRequired,
       isAccountRecoveryJourney: (context) => context.isAccountRecoveryJourney,
       isPasswordResetJourney: (context) => context.isPasswordResetJourney,
+      shouldPromptToRegisterPasskey: (context) =>
+        context.shouldPromptToRegisterPasskey,
+      shouldPromptToSignInWithPasskey: (context) =>
+        context.shouldPromptToSignInWithPasskey,
     },
   }
 );
