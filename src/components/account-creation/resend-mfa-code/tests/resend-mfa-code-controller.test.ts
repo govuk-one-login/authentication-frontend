@@ -17,15 +17,13 @@ import { commonVariables } from "../../../../../test/helpers/common-test-variabl
 describe("resend mfa controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
-  const { sessionId, clientSessionId, diPersistentSessionId, ip, email } =
-    commonVariables;
+  const { sessionId, diPersistentSessionId, ip, email } = commonVariables;
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.CHECK_YOUR_PHONE);
     req.ip = ip;
     res = mockResponse();
     res.locals.sessionId = sessionId;
-    res.locals.clientSessionId = clientSessionId;
     res.locals.persistentSessionId = diPersistentSessionId;
   });
 

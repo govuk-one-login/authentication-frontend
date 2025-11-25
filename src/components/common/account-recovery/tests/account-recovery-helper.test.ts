@@ -16,7 +16,6 @@ describe("account recovery helper", () => {
 
   const testRes = mockResponse();
   testRes.locals.sessionId = "testSessionId";
-  testRes.locals.clientSessionId = "testClientSessionId";
   testRes.locals.persistentSessionId = "testPersistentSessionId";
 
   it("should return true when account recovery request is successful", async () => {
