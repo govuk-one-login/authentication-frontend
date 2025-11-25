@@ -142,6 +142,8 @@ Run full suite with HTML report:
 
 ```
 npm run test
+OR
+npm test
 ```
 
 This triggers:
@@ -321,13 +323,8 @@ Browser fails to launch	Run npx playwright install
 ### Roadmap
 
 - Add additional authentication flows
-
 - Add OTP stub flows when available
-
 - Add full accessibility suite (WCAG 2.1 AA)
-
 - Add GitHub Actions workflow
-
 - Add AWS CodeBuild support
-
 - Migrate/ create new remaining Selenium acceptance tests journeys
