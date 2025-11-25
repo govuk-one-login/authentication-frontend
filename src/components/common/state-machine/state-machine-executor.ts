@@ -5,6 +5,10 @@ import {
   type AuthStateContext,
 } from "./state-machine.js";
 import { saveSessionState } from "../constants.js";
+import {
+  shouldPromptToRegisterPasskey,
+  shouldPromptToSignInWithPasskey,
+} from "../../../utils/passkeys-helper.js";
 
 export async function getNextPathAndUpdateJourney(
   req: Request,
@@ -27,11 +31,8 @@ export async function getNextPathAndUpdateJourney(
     isPasswordChangeRequired: !!req.session.user?.isPasswordChangeRequired,
     isPasswordResetJourney: !!req.session.user?.isPasswordResetJourney,
     mfaMethodType: req.session.user?.mfaMethodType,
-    shouldPromptToRegisterPasskey:
-      req.session.user?.hasActivePasskey === false &&
-      res.locals.supportPasskeyRegistration,
-    shouldPromptToSignInWithPasskey:
-      req.session.user?.hasActivePasskey && res.locals.supportPasskeyUsage,
+    shouldPromptToRegisterPasskey: shouldPromptToRegisterPasskey(req, res),
+    shouldPromptToSignInWithPasskey: shouldPromptToSignInWithPasskey(req, res),
   };
 
   const nextState = getNextState(currentState, event, context);
