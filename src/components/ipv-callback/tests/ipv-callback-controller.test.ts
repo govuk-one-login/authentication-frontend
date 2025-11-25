@@ -1,5 +1,4 @@
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
-import { mockResponse } from "mock-req-res";
 import sinon from "sinon";
 import {
   createMockRequest,
@@ -62,8 +61,7 @@ describe("ipv callback controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
-  const { sessionId, journeyId, diPersistentSessionId, email } =
-    commonVariables;
+  const { sessionId, journeyId, email } = commonVariables;
 
   const AUTH_CODE = "5678";
   const STATE = "efghijk";

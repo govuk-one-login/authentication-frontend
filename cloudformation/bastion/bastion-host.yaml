@@ -188,6 +188,7 @@ Resources:
                   proxy_set_header X-API-Key $http_x_api_key;
                   proxy_set_header Session-Id $http_session_id;
                   proxy_set_header Client-Session-Id $http_client_session_id;
+                  proxy_set_header govuk-signin-journey-id $govuk_signin_journey_id;
                   proxy_set_header di-persistent-session-id $http_di_persistent_session_id;
                   proxy_set_header Reauthenticate $http_reauthenticate;
                   proxy_set_header User-Language $http_user_language;
@@ -285,6 +286,7 @@ Resources:
                   proxy_set_header X-API-Key $http_x_api_key;
                   proxy_set_header Session-Id $http_session_id;
                   proxy_set_header Client-Session-Id $http_client_session_id;
+                  proxy_set_header govuk-signin-journey-id $govuk_signin_journey_id;
                   proxy_set_header di-persistent-session-id $http_di_persistent_session_id;
                   proxy_set_header Reauthenticate $http_reauthenticate;
                   proxy_set_header User-Language $http_user_language;
@@ -382,6 +384,7 @@ Resources:
                   proxy_set_header X-API-Key $http_x_api_key;
                   proxy_set_header Session-Id $http_session_id;
                   proxy_set_header Client-Session-Id $http_client_session_id;
+                  proxy_set_header govuk-signin-journey-id $govuk_signin_journey_id;
                   proxy_set_header di-persistent-session-id $http_di_persistent_session_id;
                   proxy_set_header Reauthenticate $http_reauthenticate;
                   proxy_set_header User-Language $http_user_language;
