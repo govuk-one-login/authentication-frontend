@@ -8,8 +8,9 @@ import addLanguageParam from "@govuk-one-login/frontend-language-toggle";
 
 interface FilterContext {
   ctx: {
-    i18n: {
-      language: string;
+    htmlLang?: string;
+    i18n?: {
+      language?: string;
     };
   };
 }
@@ -27,7 +28,8 @@ export function configureNunjucks(
   nunjucksEnv.addFilter(
     "translate",
     function (this: FilterContext, key: string, options?: any) {
-      const translate = i18next.getFixedT(this.ctx.i18n.language);
+      const language = this.ctx.i18n?.language || this.ctx.htmlLang || 'en';
+      const translate = i18next.getFixedT(language);
       return translate(key, options);
     }
   );
