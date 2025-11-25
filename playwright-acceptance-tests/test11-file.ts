@@ -1,1 +1,0 @@
-const lintCheck = "ok";
