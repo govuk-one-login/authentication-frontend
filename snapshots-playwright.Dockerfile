@@ -2,7 +2,7 @@ FROM node:20.17.0-alpine@sha256:2d07db07a2df6830718ae2a47db6fedce6745f5bcd174c39
 
 WORKDIR /app
 
-COPY ./package.json ./yarn.lock  ./
+COPY ./package.json ./yarn.lock .yarnrc ./
 RUN yarn install
 
 

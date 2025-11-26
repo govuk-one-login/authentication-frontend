@@ -31,7 +31,7 @@ jobs:
           cache: "yarn"
           cache-dependency-path: "yarn.lock"
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --ignore-scripts
       - name: Check formatting
         run: yarn check-pretty
       - name: Run lint
