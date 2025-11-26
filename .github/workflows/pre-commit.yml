@@ -31,7 +31,7 @@ jobs:
           cache-dependency-path: "yarn.lock"
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --ignore-scripts
 
       - name: Run pre-commit
         uses: whi-tw/pre-commit-action@9a134f4f53ddd4071215facfc20ea754f9cb337b # v3.1.1
