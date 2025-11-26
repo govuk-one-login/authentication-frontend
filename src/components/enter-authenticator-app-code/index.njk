@@ -32,11 +32,8 @@
     } if (errors['code'])})
   }}
 
-    {{ govukButton({
-    "text": "general.continue.label" | translate,
-    "type": "Submit",
-    "preventDoubleClick": true
-  }) }}
+    {% set progressButtonParams = { nonce: scriptNonce } %}
+    {%- include "common/progress-button/template.njk" -%}
 
   </form>
 
