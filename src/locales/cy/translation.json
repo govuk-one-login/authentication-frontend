@@ -56,6 +56,12 @@
     "continue": {
       "label": "Parhau"
     },
+    "progressButton": {
+      "text": "Parhau",
+      "waitingText": "Aros",
+      "longWaitingText": "Parhau i aros",
+      "noJavascriptMessage": "Gall gymryd hyd at 10 eiliad i barhau i’r dudalen nesaf."
+    },
     "contactAccounts": {
       "contactLinkHref": "https://signin.account.gov.uk/support",
       "contactLinkText": "Cysylltu â thîm GOV.UK One Login (agor mewn tab newydd)"

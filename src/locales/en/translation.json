@@ -56,6 +56,12 @@
     "continue": {
       "label": "Continue"
     },
+    "progressButton": {
+      "text": "Continue",
+      "waitingText": "Wait",
+      "longWaitingText": "Keep waiting",
+      "noJavascriptMessage": "It can take up to 10 seconds to continue to the next page."
+    },
     "contactAccounts": {
       "contactLinkHref": "https://signin.account.gov.uk/support",
       "contactLinkText": "Contact the GOV.UK One Login team (opens in a new tab)"
