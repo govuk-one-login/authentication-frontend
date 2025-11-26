@@ -2,7 +2,6 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "common/progress-button/macro.njk" import progressButton, progressButtonScripts %}
 {% set pageTitleName = 'pages.enterAuthenticatorAppCode.title' | translate %}
 
 {% block content %}
@@ -32,7 +31,8 @@
     } if (errors['code'])})
   }}
 
-    {{ progressButton() }}
+    {% set progressButtonParams = { nonce: scriptNonce } %}
+    {%- include "common/progress-button/template.njk" -%}
 
   </form>
 
@@ -63,8 +63,4 @@
 
   {% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
   {%- include "ga4-opl/template.njk" -%}
-{% endblock %}
-
-{% block scripts %}
-  {{ progressButtonScripts(scriptNonce) }}
 {% endblock %}
