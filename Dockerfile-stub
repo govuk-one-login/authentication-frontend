@@ -7,6 +7,7 @@ USER node
 WORKDIR /home/node/app
 COPY --chown=node:node package.json ./
 COPY --chown=node:node yarn.lock ./
+COPY --chown=node:node .yarnrc ./
 
 RUN yarn install
 
