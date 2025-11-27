@@ -2,3 +2,5 @@
 */**/service-down.html
 */**/style.css
 template.yaml
+Dockerfile
+*.Dockerfile

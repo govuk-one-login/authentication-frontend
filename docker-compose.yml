@@ -17,7 +17,8 @@ services:
       PORT: ${DOCKER_DOCKER_STUB_ORCHSTUB_PORT:-3002}
       DEPLOYMENT_NAME: ${DEPLOYMENT_NAME}
     command:
-      - yarn
+      - npm
+      - run
       - dummy-server-orchstub
     restart: on-failure
     networks:

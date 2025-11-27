@@ -5,17 +5,20 @@
   "author": "",
   "license": "ISC",
   "type": "module",
+  "packageManager": "npm@10.8.2",
   "engines": {
-    "node": "20.17.x"
+    "node": "20.17.x",
+    "npm": ">=10.0.0",
+    "yarn": "Please use npm"
   },
   "scripts": {
     "build-ts": "tsc",
-    "build": "yarn build-sass && yarn build-ts && yarn minfiy-build-js && yarn copy-assets",
+    "build": "npm run build-sass && npm run build-ts && npm run minfiy-build-js && npm run copy-assets",
     "build-sass": "rm -rf dist/public/style.css && sass --load-path=node_modules/govuk-frontend/dist/govuk --no-source-map --quiet-deps src/assets/scss/application.scss dist/public/style.css --style compressed",
     "clean": "rm -rf dist node_modules logs.json",
     "clean-modules": "rm -rf node_modules",
     "copy-assets": "mkdir -p dist/public/scripts dist/config && find src -name '*.njk' -exec sh -c 'mkdir -p dist/$(dirname ${1#src/}) && cp $1 dist/${1#src/}' _ {} \\; && cp -r src/locales dist/ && (cp src/config/*.txt dist/config/ 2>/dev/null || true) && cp src/assets/javascript/*.js dist/public/scripts && cp node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js dist/public/scripts && cp node_modules/@govuk-one-login/frontend-analytics/lib/analytics.js dist/public/scripts && cp node_modules/@govuk-one-login/spinner/spinner-app.js dist/public/scripts && cp node_modules/@govuk-one-login/frontend-device-intelligence/build/esm/index.js dist/public/scripts/device-intelligence.js && cp node_modules/@simplewebauthn/browser/dist/bundle/index.umd.min.js dist/public/scripts/simplewebauthn-browser.min.js",
-    "dev": "yarn build-ts && concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node,Journey Map\" -c \"yellow.bold,cyan.bold,green.bold,magenta.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\" \"npm run build-watch --prefix journey-map/\"",
+    "dev": "npm run build-ts && concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node,Journey Map\" -c \"yellow.bold,cyan.bold,green.bold,magenta.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\" \"npm run build-watch --prefix journey-map/\"",
     "dummy-server-orchstub": "node dev-app-orchstub.js | pino-pretty",
     "depcheck": "depcheck",
     "lint": "eslint . ",
@@ -23,7 +26,7 @@
     "pretty": "prettier --write \"*/**/*.{ts,json}\"",
     "check-pretty": "prettier --check \"*/**/*.{ts,json}\"",
     "start": "node dist/server.js",
-    "test:audit": "yarn audit",
+    "test:audit": "npm audit",
     "test:integration": "rm -rf test/coverage && NODE_ENV=development c8 mocha -r dotenv/config  \"src/**/*-integration.test.ts\"",
     "test:integration-no-clear-cov": "NODE_ENV=development c8 --no-clean mocha -r dotenv/config  \"src/**/*-integration.test.ts\"",
     "test:integration-nocov": "NODE_ENV=development mocha -r dotenv/config  \"src/**/*-integration.test.ts\"",
@@ -156,9 +159,16 @@
     "typescript": "5.8.3",
     "uglify-js": "3.19.3"
   },
+  "overrides": {
+    "js-yaml": "4.1.1",
+    "validator": "13.15.23"
+  },
   "resolutions": {
     "minimist": "1.2.6",
     "formidable": ">=3.5.3",
     "brace-expansion": "1.1.12"
+  },
+  "optionalDependencies": {
+    "@esbuild/linux-x64": "0.27.0"
   }
 }

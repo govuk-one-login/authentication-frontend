@@ -1892,7 +1892,7 @@
         "govUKLoginAndIdApps": "A problem proving your identity using the GOV.UK One Login app or the GOV.UK ID Check app",
         "provingIdentityFaceToFace": "A problem proving your identity with the Post Office",
         "errorMessage": "Select a reason for contacting us",
-        "suspectUnauthorisedAccess":  "You think somebody else is using your information to access your GOV.UK One Login",
+        "suspectUnauthorisedAccess": "You think somebody else is using your information to access your GOV.UK One Login",
         "wallet": "A problem with your digital HM Armed Forces Veteran Card"
       },
       "continueLabel": "Continue"
@@ -1989,7 +1989,7 @@
           "errorMessage": "Select the problem you had proving your identity"
         }
       },
-      "wallet":  {
+      "wallet": {
         "title": "A problem with your digital HM Armed Forces Veteran Card",
         "header": "A problem with your digital HM Armed Forces Veteran Card",
         "section1": {
@@ -2059,7 +2059,7 @@
           "hint": "Select all that apply",
           "options": {
             "receivedUnwarrantedSecurityCode": "I received a security code I did not ask for",
-            "unknownActivityHistory":  "There’s something in my activity history that I do not recognise"
+            "unknownActivityHistory": "There’s something in my activity history that I do not recognise"
           },
           "validationError": {
             "selectAtLeastOne": "Select at least one option"
@@ -2070,7 +2070,7 @@
           "hint": "Enter your email, we may contact you on this address",
           "validationError": {
             "noEmailAddress": "Enter the email address of your GOV.UK One Login",
-            "invalidFormat":  "Enter an email address in the correct format, like name@example.com"
+            "invalidFormat": "Enter an email address in the correct format, like name@example.com"
           }
         },
         "section4": {
@@ -2519,13 +2519,13 @@
       "walletProblemAddingCredentialsDocument": {
         "title": "You had a problem adding your Veteran Card to the GOV.UK One Login app"
       },
-      "walletProblemViewingCredentialsDocument":  {
+      "walletProblemViewingCredentialsDocument": {
         "title": "You had a problem viewing your Veteran Card in the GOV.UK One Login app"
       },
       "walletTechnicalProblem": {
         "title": "You had a technical problem"
       },
-      "walletSomethingElse":  {
+      "walletSomethingElse": {
         "title": "Another problem with your digital HM Armed Forces Veteran Card"
       }
     },
@@ -2657,7 +2657,7 @@
           "text1": "If you no longer have access to your authenticator app, ",
           "text2": "check if you can change how you get security codes"
         },
-        "chooseMfaMethod":  {
+        "chooseMfaMethod": {
           "text1": "You can ",
           "text2": "try another way to get a security code"
         }

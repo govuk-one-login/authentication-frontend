@@ -2,7 +2,6 @@
 set -eu
 
 CLEAN=0
-LOCAL=0
 while getopts "c" opt; do
   case ${opt} in
     c)
@@ -26,8 +25,8 @@ pre-commit run --all-files
 
 ./startup.sh
 
-yarn test:unit
+npm run test:unit
 
-REDIS_PORT=6379 REDIS_HOST=localhost yarn test:integration
+REDIS_PORT=6379 REDIS_HOST=localhost npm run test:integration
 
 ./shutdown.sh

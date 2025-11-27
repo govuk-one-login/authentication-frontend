@@ -32,16 +32,20 @@ repos:
         types_or:
           - javascript
           - ts
-        entry: yarn run eslint --fix
+        entry: npm run eslint --fix
         pass_filenames: true
       - id: prettier
         name: Run prettier
         language: node
-        types:
-          - text
+        types_or:
+          - ts
+          - javascript
+          - json
+          - yaml
+          - markdown
         stages:
           - pre-commit
-        entry: yarn run prettier --write --ignore-unknown
+        entry: npm run pretty --write --ignore-unknown
         pass_filenames: true
 
   - repo: https://github.com/lalten/check-gha-pinning
