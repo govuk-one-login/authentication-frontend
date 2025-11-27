@@ -162,5 +162,8 @@
     "minimist": "1.2.6",
     "formidable": ">=3.5.3",
     "brace-expansion": "1.1.12"
+  },
+  "optionalDependencies": {
+    "@esbuild/linux-x64": "0.27.0"
   }
 }
