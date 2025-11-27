@@ -79,12 +79,11 @@ if [ "${ACTION_FULL_LOCAL:-0}" == "1" ]; then
 else
   echo "exporting env vars from .env"
   set -o allexport && source .env && set +o allexport
+  source "${DIR}/scripts/export_aws_creds.sh"
+  unset AWS_PROFILE
 fi
 
 # shellcheck source=./scripts/export_aws_creds.sh
-#source "${DIR}/scripts/export_aws_creds.sh"
-
-#unset AWS_PROFILE
 
 if [ "${ACTION_LOCAL:-0}" == "1" ]; then
   echo "Starting frontend local service..."
@@ -106,13 +105,7 @@ elif [ "${ACTION_FULL_LOCAL:-0}" == "1" ]; then
     cd authentication-api/local-running
     docker compose up --build -d authentication-api orchestration-stub
   )
-  echo "Will listen on redis port ${REDIS_PORT:-6380}"
-  docker compose -f docker-compose.yml up --build -d --wait
-  export REDIS_PORT=${REDIS_PORT:-6380}
-  export REDIS_HOST=localhost
-  echo "Redis listening on redis://localhost:${REDIS_PORT:-6379}"
-  export PORT="${DOCKER_FRONTEND_PORT:-3000}"
-  yarn install && yarn copy-assets && yarn dev
+  yarn dev
 else
   echo "Starting frontend service..."
   docker compose -f docker-compose.yml -f docker-compose.frontend.yml up -d --wait --build
