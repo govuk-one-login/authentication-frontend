@@ -4,7 +4,7 @@ services:
   redis:
     image: redis:6.0.5-alpine
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - "${REDIS_PORT:-6380}:6380"
     networks:
       - di-net
 
