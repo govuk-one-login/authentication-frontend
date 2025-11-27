@@ -2,7 +2,6 @@
 set -eu
 
 CLEAN=0
-LOCAL=0
 while getopts "c" opt; do
   case ${opt} in
     c)
