@@ -69,6 +69,9 @@ set -o allexport && source .env && set +o allexport
 source "${DIR}/scripts/export_aws_creds.sh"
 unset AWS_PROFILE
 
+# use .git-blame-ignore-revs to ignore blame on specified commits
+git config blame.ignoreRevsFile .git-blame-ignore-revs
+
 if [ "${ACTION_LOCAL:-0}" == "1" ]; then
   echo "Starting frontend local service..."
   docker compose -f docker-compose.yml up --build -d --wait
