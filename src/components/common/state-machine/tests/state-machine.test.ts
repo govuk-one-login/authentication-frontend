@@ -13,6 +13,8 @@ const DEFAULT_CONTEXT = {
   isPasswordChangeRequired: false,
   isPasswordResetJourney: false,
   mfaMethodType: MFA_METHOD_TYPE.SMS,
+  shouldPromptToRegisterPasskey: false,
+  shouldPromptToSignInWithPasskey: false,
 };
 
 describe("state-machine", () => {

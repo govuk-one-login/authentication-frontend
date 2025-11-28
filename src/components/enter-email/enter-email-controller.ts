@@ -104,6 +104,7 @@ async function getExistingUserAndPopulateSessionData(
     req.session.user.mfaMethods,
     { redactedPhoneNumber: result.data.phoneNumberLastThree }
   );
+  req.session.user.hasActivePasskey = result.data.hasActivePasskey;
   req.session.user.isAccountCreationJourney = !result.data.doesUserExist;
 
   return result.data.doesUserExist;
