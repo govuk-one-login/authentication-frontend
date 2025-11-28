@@ -5,7 +5,7 @@ const reportsHtmlDir = path.join(__dirname, "reports", "html");
 
 if (!fs.existsSync(reportsHtmlDir)) {
   console.log("No reports/html directory yet – nothing to clean.");
-  return;
+  process.exit(0);
 }
 
 fs.readdirSync(reportsHtmlDir, { withFileTypes: true }).forEach((entry) => {
@@ -15,7 +15,6 @@ fs.readdirSync(reportsHtmlDir, { withFileTypes: true }).forEach((entry) => {
     /^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}-\d{3}Z?$/.test(entry.name);
 
   if (!isTimestamp) {
-    // delete stray index.html, assets/, features/, etc at root level
     fs.rmSync(fullPath, { recursive: true, force: true });
   }
 });
@@ -26,9 +25,8 @@ const entries = fs
     (e) =>
       e.isDirectory() &&
       /^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}-\d{3}Z?$/.test(e.name)
-  );
-
-entries.sort((a, b) => b.name.localeCompare(a.name));
+  )
+  .sort((a, b) => b.name.localeCompare(a.name));
 
 const toDelete = entries.slice(2);
 

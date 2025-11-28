@@ -4,7 +4,6 @@ const path = require("path");
 const jsonDir = path.join(__dirname, "reports", "json");
 
 if (!fs.existsSync(jsonDir)) {
-  // nothing to clean
   process.exit(0);
 }
 

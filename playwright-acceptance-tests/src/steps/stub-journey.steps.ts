@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@cucumber/cucumber";
-import { PlaywrightWorld } from "../support/world";
+import type { PlaywrightWorld } from "../support/world";
 
 import { StubStartPage } from "../pages/StubStartPage";
 import { CreateOrSignInPage } from "../pages/CreateOrSignInPage";
@@ -73,4 +73,3 @@ Then(
     await getEnterEmailPage(this).assertLoaded();
   }
 );
-

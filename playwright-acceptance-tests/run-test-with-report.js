@@ -7,10 +7,15 @@ const rootDir = __dirname;
 const jsonDir = path.join(rootDir, "reports", "json");
 const historyFile = path.join(rootDir, "reports", "flaky-history.json");
 
+// rest of your file remains unchanged
+
 function formatDuration(ms) {
   const totalSeconds = Math.round(ms / 1000);
   const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
-  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
+    2,
+    "0"
+  );
   const seconds = String(totalSeconds % 60).padStart(2, "0");
   return `${hours}:${minutes}:${seconds}`;
 }
@@ -48,7 +53,6 @@ function calculateFlakyMetrics(cucumberJsonPath) {
   const raw = fs.readFileSync(cucumberJsonPath, "utf-8");
   let features = JSON.parse(raw);
 
-  // Normalise: some formats are a single object, others an array
   if (!Array.isArray(features)) {
     features = [features];
   }
@@ -58,9 +62,11 @@ function calculateFlakyMetrics(cucumberJsonPath) {
   for (const feature of features) {
     const featureName = feature.name || "Unknown feature";
     const elements = feature.elements || [];
+
     for (const scenario of elements) {
-      // Skip Backgrounds
-      if ((scenario.keyword || "").toLowerCase() === "background") continue;
+      if ((scenario.keyword || "").toLowerCase() === "background") {
+        continue;
+      }
 
       const scenarioName = scenario.name || "Unknown scenario";
       const key = `${featureName} :: ${scenarioName}`;
@@ -85,7 +91,7 @@ function calculateFlakyMetrics(cucumberJsonPath) {
 
   let flakyCountEver = 0;
   const flakyScenariosEver = [];
-  const historyEntries = Object.entries(history); // [key, {passes, fails}]
+  const historyEntries = Object.entries(history);
 
   for (const [key, entry] of historyEntries) {
     if (entry.passes > 0 && entry.fails > 0) {
@@ -98,7 +104,7 @@ function calculateFlakyMetrics(cucumberJsonPath) {
 
   let flakyCountThisRun = 0;
   const flakyScenariosThisRun = [];
-  const thisRunEntries = Object.entries(currentRunStats); // [key, {passes, fails}]
+  const thisRunEntries = Object.entries(currentRunStats);
 
   for (const [key, entry] of thisRunEntries) {
     if (entry.passes > 0 && entry.fails > 0) {
@@ -147,14 +153,13 @@ const exitCode = typeof cucumber.status === "number" ? cucumber.status : 1;
 const elapsedMs = Date.now() - startTime;
 const totalDurationStr = formatDuration(elapsedMs);
 
-// 3. Generate HTML report into a timestamped folder
 const jsonFile = path.join(jsonDir, "cucumber-report.json");
 
 if (fs.existsSync(jsonFile)) {
   const timestamp = new Date()
-    .toISOString() // e.g. 2025-11-18T17:44:34.738Z
+    .toISOString()
     .replace(/:/g, "-")
-    .replace(/\./g, "-"); // 2025-11-18T17-44-34-738Z
+    .replace(/\./g, "-");
 
   const reportPath = path.join("reports", "html", timestamp);
 
@@ -181,18 +186,13 @@ if (fs.existsSync(jsonFile)) {
     reportPath,
     pageTitle: "Playwright Acceptance Tests",
     reportName: "Playwright Acceptance Tests",
-
-    // 👇 This replaces the Wasiq footer + icons
     pageFooter:
       '<div style="text-align:center; font-size:12px; padding:10px 0;">' +
       "Playwright Acceptance Tests" +
       "</div>",
-
     displayReportTime: true,
     displayDuration: true,
-    // durationInMS: true,
     openReportInBrowser: false,
-
     customData: {
       title: "Run info",
       data: [

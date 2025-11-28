@@ -10,9 +10,8 @@
     "bdd": "cucumber-js",
     "bdd:report": "node run-test-with-report.js",
     "test": "npm run bdd:report",
-    "lint": "eslint . --ext .ts",
-    "format": "prettier --write .",
-    "prepare": "husky"
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.0",
@@ -25,20 +24,8 @@
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.0",
     "multiple-cucumber-html-reporter": "^3.9.3",
-    "playwright": "1.56.1",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3",
-    "husky": "^9.0.0",
-    "lint-staged": "^16.2.7"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "eslint --config .eslintrc.cjs --fix",
-      "prettier --write"
-    ],
-    "*.{json,md,yml}": [
-      "prettier --write"
-    ]
+    "typescript": "^5.9.3"
   }
 }
