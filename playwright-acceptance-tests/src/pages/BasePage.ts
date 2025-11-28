@@ -1,5 +1,18 @@
-import { Page } from "playwright";
+import type { Page } from "playwright";
 import AxeBuilder from "@axe-core/playwright";
+
+type AxeNodeLite = {
+  target?: string[];
+  html?: string;
+};
+
+type AxeViolationLite = {
+  id?: string;
+  help?: string;
+  helpUrl?: string;
+  impact?: string | null;
+  nodes?: AxeNodeLite[];
+};
 
 export class BasePage {
   protected readonly page: Page;
@@ -8,12 +21,14 @@ export class BasePage {
     this.page = page;
   }
 
-  async goto(url: string) {
+  async goto(url: string): Promise<void> {
     await this.page.goto(url, { waitUntil: "networkidle" });
   }
 
-  async assertBasicSecurity() {
-    if ((process.env.SECURITY_CHECK || "true").toLowerCase() !== "true") return;
+  async assertBasicSecurity(): Promise<void> {
+    if ((process.env.SECURITY_CHECK || "true").toLowerCase() !== "true") {
+      return;
+    }
 
     const url = this.page.url();
 
@@ -21,38 +36,52 @@ export class BasePage {
       throw new Error(`Expected HTTPS URL, got: ${url}`);
     }
 
-    const isSecureContext = await this.page.evaluate(() => window.isSecureContext);
+    const isSecureContext = await this.page.evaluate(
+      () => window.isSecureContext
+    );
+
     if (!isSecureContext) {
-      throw new Error("Expected secure context (window.isSecureContext === true)");
+      throw new Error("Expected secure browser context.");
     }
   }
 
-  async runAccessibilityCheck() {
-    if ((process.env.A11Y_CHECK || "true").toLowerCase() !== "true") return;
+  async runAccessibilityCheck(): Promise<void> {
+    if ((process.env.A11Y_CHECK || "true").toLowerCase() !== "true") {
+      return;
+    }
 
-    const results = await new AxeBuilder({ page: this.page }).analyze();
-    const violations = results.violations || [];
+    // Axe + Playwright type mismatch workaround: only cast the page field.
+    const builder = new AxeBuilder({
+      page: this.page as any,
+    });
 
+    const rawResults = await builder.analyze();
+    const violations = (rawResults.violations ?? []) as AxeViolationLite[];
+
+    // ✅ No console.log – silent when clean
     if (violations.length === 0) {
-      console.log("A11y: no accessibility violations found.");
       return;
     }
 
     const message = violations
       .map((v) => {
-        const impact = v.impact ? v.impact.toUpperCase() : "UNKNOWN";
-        const header = `[${impact}] ${v.id} – ${v.help}`;
+        const impact = v.impact?.toUpperCase() ?? "UNKNOWN";
+        const header = `[${impact}] ${v.id ?? "unknown-id"} – ${
+          v.help ?? "No description"
+        }`;
         const helpUrl = v.helpUrl ? `  Help: ${v.helpUrl}` : "";
 
-        const nodes = v.nodes.slice(0, 3).map((n, index) => {
-          const target = n.target ? n.target.join(" ") : "";
-          const html = (n.html || "").replace(/\s+/g, " ").trim();
-          return `  Node ${index + 1}:\n    Target: ${target}\n    HTML: ${html}`;
-        });
+        const nodes = (v.nodes ?? [])
+          .slice(0, 3)
+          .map((n: AxeNodeLite, index: number) => {
+            const target = n.target?.join(" ") ?? "";
+            const html = (n.html ?? "").replace(/\s+/g, " ").trim();
+            return `  Node ${index + 1}:\n    Target: ${target}\n    HTML: ${html}`;
+          });
 
         const extra =
-          v.nodes.length > 3
-            ? `  ...and ${v.nodes.length - 3} more node(s)`
+          (v.nodes?.length ?? 0) > 3
+            ? `  ...and ${(v.nodes?.length ?? 0) - 3} more node(s)`
             : "";
 
         return [header, helpUrl, ...nodes, extra].filter(Boolean).join("\n");

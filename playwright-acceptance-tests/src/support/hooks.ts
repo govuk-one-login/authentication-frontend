@@ -1,5 +1,6 @@
-import { Before, After, Status, ITestCaseHookParameter } from "@cucumber/cucumber";
-import { PlaywrightWorld } from "./world";
+import type { ITestCaseHookParameter } from "@cucumber/cucumber";
+import { Before, After, Status } from "@cucumber/cucumber";
+import type { PlaywrightWorld } from "./world";
 import fs from "fs";
 import path from "path";
 

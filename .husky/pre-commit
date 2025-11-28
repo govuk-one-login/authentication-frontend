@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-
-cd playwright-acceptance-tests
-npx lint-staged

@@ -1,10 +1,11 @@
+import type { IWorldOptions } from "@cucumber/cucumber";
 import {
   World,
-  IWorldOptions,
   setWorldConstructor,
-  setDefaultTimeout
+  setDefaultTimeout,
 } from "@cucumber/cucumber";
-import { Browser, BrowserContext, Page, chromium, firefox, webkit } from "playwright";
+import type { Browser, BrowserContext, Page } from "playwright";
+import { chromium, firefox, webkit } from "playwright";
 import "./env"; // ensure .env is loaded before we read process.env
 
 export class PlaywrightWorld extends World {
