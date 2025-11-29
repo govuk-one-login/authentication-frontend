@@ -1,6 +1,12 @@
+import type { Locals } from "express";
 import { sinon } from "../utils/test-utils.js";
-import type { RequestOutput } from "mock-req-res";
-import { mockRequest } from "mock-req-res";
+import type {
+  RequestOutput,
+  ResponseOutput,
+  ResponsePayload,
+} from "mock-req-res";
+import { mockRequest, mockResponse } from "mock-req-res";
+import { commonVariables } from "./common-test-variables.js";
 
 export interface MockRequestOptions {
   headers?: any;
@@ -15,9 +21,11 @@ export function createMockRequest(
   const request = mockRequest({
     path: pathName,
     session: {
-      client: {},
+      client: {
+        journeyId: commonVariables.journeyId,
+      },
       user: {},
-      save: (callback: () => void) => callback(),
+      save: (callback: () => Promise<void>) => callback(),
     },
     log: {
       info: sinon.fake(),
@@ -43,4 +51,14 @@ export function createMockRequest(
     request.cookies = options.cookies;
   }
   return request;
+}
+
+export function createMockResponse(options?: ResponsePayload): ResponseOutput {
+  return mockResponse({
+    locals: {
+      sessionId: commonVariables.sessionId,
+      persistentSessionId: commonVariables.diPersistentSessionId,
+    } satisfies Locals,
+    ...options,
+  });
 }

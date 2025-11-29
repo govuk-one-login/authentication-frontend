@@ -156,8 +156,6 @@ describe("enter password controller", () => {
           sinon.match.any,
           sinon.match.any,
           sinon.match.any,
-          sinon.match.any,
-          sinon.match.any,
           DEFAULT_MFA_METHOD_ID,
           JOURNEY_TYPE.REAUTHENTICATION
         );
@@ -301,8 +299,6 @@ describe("enter password controller", () => {
         JOURNEY_TYPE.REAUTHENTICATION
       );
       expect(fakeService.loginUser).to.have.calledWith(
-        sinon.match.any,
-        sinon.match.any,
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,

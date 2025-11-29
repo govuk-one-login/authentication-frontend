@@ -58,7 +58,6 @@ const stubMiddlewareAndCreateApp = async (
           next: NextFunction
         ): void {
           res.locals.sessionId = "testSessionId";
-          res.locals.clientSessionId = "testClientSessionId";
           res.locals.persistentSessionId = "testPersistentSessionId";
 
           req.session.client = {

@@ -3,7 +3,7 @@ import type {
   CrossBrowserRequest,
   IDReverificationStateResponse,
 } from "./types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 import { API_ENDPOINTS } from "../../app.constants.js";
 import type { Http } from "../../utils/http.js";
 import {
@@ -22,9 +22,13 @@ export class CrossBrowserService implements CrossBrowserInterface {
     );
   }
 
-  async getOrchestrationRedirectUrl(req: CrossBrowserRequest): Promise<string> {
+  async getOrchestrationRedirectUrl(
+    req: CrossBrowserRequest,
+    res: Response
+  ): Promise<string> {
     const orchestrationRedirectUrl = await this.getBaseOrchestrationRedirectUrl(
       req,
+      res,
       req.query.state
     );
     orchestrationRedirectUrl.searchParams.set("error", "access_denied");
@@ -37,11 +41,12 @@ export class CrossBrowserService implements CrossBrowserInterface {
 
   private async getBaseOrchestrationRedirectUrl(
     req: Request,
+    res: Response,
     authenticationState: string
   ): Promise<URL> {
     const config = getInternalRequestConfigWithSecurityHeaders(
-      {},
       req,
+      res,
       API_ENDPOINTS.ID_REVERIFICATION_STATE
     );
     const response =

@@ -16,7 +16,10 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants.js";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("enter email service", () => {
   const httpInstance = new Http();
@@ -40,11 +43,11 @@ describe("enter email service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { email, sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
+    const { email } = commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
+    const res = createMockResponse();
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.USER_EXISTS,
@@ -52,13 +55,7 @@ describe("enter email service", () => {
       expectedBody: { email },
     };
 
-    const result = await service.userExists(
-      sessionId,
-      email,
-      clientSessionId,
-      diPersistentSessionId,
-      req
-    );
+    const result = await service.userExists(email, req, res);
 
     checkApiCallMadeWithExpectedBodyAndHeaders(
       result,
