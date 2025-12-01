@@ -80,7 +80,13 @@ if [ "${ACTION_LOCAL:-0}" == "1" ]; then
   echo "Redis listening on redis://localhost:${REDIS_PORT:-6379}"
   if [ "${ACTION_DEPS_ONLY:-0}" == "0" ]; then
     export PORT="${DOCKER_FRONTEND_PORT:-3000}"
-    npm ci
+    if [ "$(npm config get ignore-scripts)" = "false" ]; then
+      echo "Error: ignore-scripts is set to false"
+      exit 1
+    else
+      echo "ignore-scripts is set to true"
+    fi
+    npm ci --ignore-scripts
     node node_modules/esbuild/install.js
     npm run test:dev-evironment-variables && npm run copy-assets && npm run dev
   else

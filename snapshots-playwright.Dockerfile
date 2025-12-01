@@ -4,7 +4,8 @@ WORKDIR /app
 COPY .npmrc ./
 COPY ./package.json ./package-lock.json  ./
 COPY ./src ./src
-RUN npm ci
+RUN npm config get ignore-scripts | grep -q "true" || exit 1
+RUN npm ci --ignore-scripts
 
 
 FROM mcr.microsoft.com/playwright:v1.56.1-noble AS playwright

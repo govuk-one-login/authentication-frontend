@@ -8,4 +8,5 @@ WORKDIR /app
 
 EXPOSE $PORT
 
-CMD npm ci && npm run test:dev-evironment-variables && npm run copy-assets && npm run dev
+RUN npm config get ignore-scripts | grep -q "true" || exit 1
+CMD npm ci --ignore-scripts && npm run test:dev-evironment-variables && npm run copy-assets && npm run dev

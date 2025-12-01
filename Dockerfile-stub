@@ -9,7 +9,8 @@ COPY .npmrc ./
 COPY --chown=node:node package.json ./
 COPY --chown=node:node package-lock.json ./
 
-RUN npm ci
+RUN npm config get ignore-scripts | grep -q "true" || exit 1
+RUN npm ci --ignore-scripts
 
 COPY --chown=node:node dev-app-orchstub.js ./
 COPY --chown=node:node .env ./

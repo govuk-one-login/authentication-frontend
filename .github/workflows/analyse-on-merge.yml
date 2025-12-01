@@ -27,8 +27,16 @@ jobs:
           node-version: 20.17.0
           cache: "npm"
           cache-dependency-path: "package-lock.json"
+      - name: Check npm ignore-scripts config
+        run: |
+          if [ "$(npm config get ignore-scripts)" = "false" ]; then
+            echo "Error: ignore-scripts is set to false"
+            exit 1
+          else
+            echo "ignore-scripts is set to true"
+          fi
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Build app
         run: npm run build
       - name: Run unit tests
