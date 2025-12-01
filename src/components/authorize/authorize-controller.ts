@@ -99,6 +99,8 @@ export function authorizeGet(
 
     const startAuthResponse = await authService.start(req, res, {
       ...claims,
+      clientId,
+      request: req.query.request as string,
     });
 
     if (!startAuthResponse.success) {

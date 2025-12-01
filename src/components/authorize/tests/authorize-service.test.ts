@@ -48,7 +48,7 @@ describe("authorize service", () => {
       authenticated: isAuthenticated,
       reauthenticate: "123456",
       requested_credential_strength: "Cl.Cm",
-      rp_client_id: "test-client-id",
+      rp_client_id: "test-rp-client-id",
       scope: "openid",
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
@@ -60,6 +60,8 @@ describe("authorize service", () => {
       subject_type: "pairwise",
       is_identity_verification_required: false,
       rp_sector_host: "example.com",
+      clientId: "test-client-id",
+      request: "example-jar",
     });
 
     expect(postStub).to.be.calledOnceWithExactly(
@@ -68,7 +70,7 @@ describe("authorize service", () => {
         "rp-pairwise-id-for-reauth": "123456",
         authenticated: isAuthenticated,
         requested_credential_strength: "Cl.Cm",
-        client_id: "test-client-id",
+        client_id: "test-rp-client-id",
         scope: "openid",
         redirect_uri: "http://example.com/redirect",
         state: "1234567890",
@@ -80,6 +82,8 @@ describe("authorize service", () => {
         subject_type: "pairwise",
         is_identity_verification_required: false,
         rp_sector_identifier_host: "example.com",
+        clientId: "test-client-id",
+        request: "example-jar",
       },
       {
         headers: {
@@ -97,7 +101,7 @@ describe("authorize service", () => {
       authenticated: isAuthenticated,
       reauthenticate: "123456",
       requested_credential_strength: "Cl.Cm",
-      rp_client_id: "test-client-id",
+      rp_client_id: "test-rp-client-id",
       scope: "openid",
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
@@ -109,6 +113,8 @@ describe("authorize service", () => {
       subject_type: "pairwise",
       is_identity_verification_required: false,
       rp_sector_host: "example.com",
+      clientId: "test-client-id",
+      request: "example-jar",
     });
 
     expect(postStub).to.be.calledOnceWithExactly(
@@ -116,7 +122,7 @@ describe("authorize service", () => {
       {
         authenticated: isAuthenticated,
         requested_credential_strength: "Cl.Cm",
-        client_id: "test-client-id",
+        client_id: "test-rp-client-id",
         scope: "openid",
         redirect_uri: "http://example.com/redirect",
         state: "1234567890",
@@ -128,6 +134,8 @@ describe("authorize service", () => {
         subject_type: "pairwise",
         is_identity_verification_required: false,
         rp_sector_identifier_host: "example.com",
+        clientId: "test-client-id",
+        request: "example-jar",
       },
       {
         headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -141,7 +149,7 @@ describe("authorize service", () => {
     service.start(req, res, {
       authenticated: isAuthenticated,
       requested_credential_strength: "Cl.Cm",
-      rp_client_id: "test-client-id",
+      rp_client_id: "test-rp-client-id",
       scope: "openid",
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
@@ -153,6 +161,8 @@ describe("authorize service", () => {
       subject_type: "pairwise",
       is_identity_verification_required: false,
       rp_sector_host: "example.com",
+      clientId: "test-client-id",
+      request: "example-jar",
     });
 
     expect(postStub).to.be.calledOnceWithExactly(
@@ -160,7 +170,7 @@ describe("authorize service", () => {
       {
         authenticated: isAuthenticated,
         requested_credential_strength: "Cl.Cm",
-        client_id: "test-client-id",
+        client_id: "test-rp-client-id",
         scope: "openid",
         redirect_uri: "http://example.com/redirect",
         state: "1234567890",
@@ -172,6 +182,8 @@ describe("authorize service", () => {
         subject_type: "pairwise",
         is_identity_verification_required: false,
         rp_sector_identifier_host: "example.com",
+        clientId: "test-client-id",
+        request: "example-jar",
       },
       {
         headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
@@ -187,7 +199,7 @@ describe("authorize service", () => {
       reauthenticate: undefined,
       previous_session_id: previousSessionId,
       requested_credential_strength: "Cl.Cm",
-      rp_client_id: "test-client-id",
+      rp_client_id: "test-rp-client-id",
       scope: "openid",
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
@@ -199,6 +211,8 @@ describe("authorize service", () => {
       subject_type: "pairwise",
       is_identity_verification_required: false,
       rp_sector_host: "example.com",
+      clientId: "test-client-id",
+      request: "example-jar",
     });
 
     expect(postStub).to.be.calledOnceWithExactly(
@@ -207,7 +221,7 @@ describe("authorize service", () => {
         "previous-session-id": previousSessionId,
         authenticated: isAuthenticated,
         requested_credential_strength: "Cl.Cm",
-        client_id: "test-client-id",
+        client_id: "test-rp-client-id",
         scope: "openid",
         redirect_uri: "http://example.com/redirect",
         state: "1234567890",
@@ -219,6 +233,8 @@ describe("authorize service", () => {
         subject_type: "pairwise",
         is_identity_verification_required: false,
         rp_sector_identifier_host: "example.com",
+        clientId: "test-client-id",
+        request: "example-jar",
       },
       {
         headers: {
@@ -237,7 +253,7 @@ describe("authorize service", () => {
       previous_session_id: undefined,
       previous_govuk_signin_journey_id: "previous-journey-id",
       requested_credential_strength: "Cl.Cm",
-      rp_client_id: "test-client-id",
+      rp_client_id: "test-rp-client-id",
       scope: "openid",
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
@@ -249,6 +265,8 @@ describe("authorize service", () => {
       subject_type: "pairwise",
       is_identity_verification_required: false,
       rp_sector_host: "example.com",
+      clientId: "test-client-id",
+      request: "example-jar",
     });
 
     expect(postStub).to.be.calledOnceWithExactly(
@@ -258,7 +276,7 @@ describe("authorize service", () => {
         "previous-govuk-signin-journey-id": "previous-journey-id",
         authenticated: isAuthenticated,
         requested_credential_strength: "Cl.Cm",
-        client_id: "test-client-id",
+        client_id: "test-rp-client-id",
         scope: "openid",
         redirect_uri: "http://example.com/redirect",
         state: "1234567890",
@@ -270,6 +288,8 @@ describe("authorize service", () => {
         subject_type: "pairwise",
         is_identity_verification_required: false,
         rp_sector_identifier_host: "example.com",
+        clientId: "test-client-id",
+        request: "example-jar",
       },
       {
         headers: {
@@ -288,7 +308,7 @@ describe("authorize service", () => {
       reauthenticate: "123456",
       requested_level_of_confidence: "P2",
       requested_credential_strength: "Cl.Cm",
-      rp_client_id: "test-client-id",
+      rp_client_id: "test-rp-client-id",
       scope: "openid",
       rp_redirect_uri: "http://example.com/redirect",
       rp_state: "1234567890",
@@ -302,6 +322,8 @@ describe("authorize service", () => {
       subject_type: "pairwise",
       is_identity_verification_required: false,
       rp_sector_host: "example.com",
+      clientId: "test-client-id",
+      request: "example-jar",
     });
 
     expect(postStub).to.be.calledOnceWithExactly(
@@ -310,7 +332,7 @@ describe("authorize service", () => {
         authenticated: isAuthenticated,
         requested_level_of_confidence: "P2",
         requested_credential_strength: "Cl.Cm",
-        client_id: "test-client-id",
+        client_id: "test-rp-client-id",
         scope: "openid",
         redirect_uri: "http://example.com/redirect",
         state: "1234567890",
@@ -324,6 +346,8 @@ describe("authorize service", () => {
         subject_type: "pairwise",
         is_identity_verification_required: false,
         rp_sector_identifier_host: "example.com",
+        clientId: "test-client-id",
+        request: "example-jar",
       },
       {
         headers: { ...expectedHeadersFromCommonVarsWithSecurityHeaders },
