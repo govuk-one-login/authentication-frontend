@@ -37,7 +37,7 @@ export async function getNextPathAndUpdateJourney(
 
   const nextState = getNextState(currentState, event, context);
 
-  const isNextStateReversible = authStateMachine.states[currentState].on[event][0].meta?.reversible ?? true
+  const isTransitionReversible = authStateMachine.states[currentState].on[event][0].meta?.reversible ?? true
 
   req.session.user.journey = {
     previousPath: req.path,
@@ -47,7 +47,7 @@ export async function getNextPathAndUpdateJourney(
         ? nextState.meta[`${authStateMachine.id}.${nextState.value}`]
             .optionalPaths
         : [],
-    history: isNextStateReversible ? [...req.session.user.journey?.history ?? [], req.path] : []
+    history: isTransitionReversible ? [...req.session.user.journey?.history ?? [], req.path] : []
   };
 
   // Have an array which contains all paths that would delete the history
@@ -58,7 +58,7 @@ export async function getNextPathAndUpdateJourney(
 
   req.log.info(
     {
-      personalLog: isNextStateReversible,
+      personalLog: isTransitionReversible,
       someEventThing: authStateMachine.states[currentState].on[event],
       transition: {
         from: currentState,
