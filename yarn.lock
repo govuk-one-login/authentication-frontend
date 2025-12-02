@@ -760,10 +760,10 @@
   dependencies:
     pino "^8.20.0"
 
-"@govuk-one-login/spinner@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@govuk-one-login/spinner/-/spinner-1.1.1.tgz#0943a9b966d2253c4f8942cf41ddbf633121238d"
-  integrity sha512-qxL4RQXkkSR2D6U3bJbDPDfWgzA9l3pbBfU7hiRDsvMMEd7cCSYvVCUVgzNLVpbnMYbFYGHgvRXi9Cjnd6GEqA==
+"@govuk-one-login/spinner@2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@govuk-one-login/spinner/-/spinner-2.1.1.tgz#873e2a3863bf3c8ac4607f3e44039fe2fdb1eb26"
+  integrity sha512-hfS4u4cT93VUc8STXk4gBTKFlaZfgaWGzjMR/UBVkJS+QqH9r9DyDhZujaNKGc3PKk626yA46xD9OiUYbDm0Tw==
 
 "@humanfs/core@^0.19.1":
   version "0.19.1"
