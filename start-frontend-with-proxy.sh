@@ -60,7 +60,16 @@ docker compose -f docker-compose-proxy.yml up --build -d --wait redis di-auth-st
 
 # Install dependencies and start frontend
 echo " Installing dependencies..."
-yarn install && yarn test:dev-evironment-variables && yarn copy-assets
+if [ "$(npm config get ignore-scripts)" = "false" ]; then
+  echo "Error: ignore-scripts is set to false"
+  exit 1
+
+else
+  echo "ignore-scripts is set to true"
+fi
+npm ci --ignore-scripts
+node node_modules/esbuild/install.js
+npm run test:dev-evironment-variables && npm run copy-assets
 
 echo "Starting frontend on http://localhost:${DOCKER_FRONTEND_PORT:-3000}"
 echo ""
@@ -72,4 +81,4 @@ echo ""
 # Start the frontend
 export PORT="${DOCKER_FRONTEND_PORT:-3000}"
 echo "To stop everything: Ctrl+C"
-yarn dev
+npm run dev

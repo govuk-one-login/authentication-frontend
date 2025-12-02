@@ -1269,7 +1269,6 @@
           "paragraph_four": "Os mai dim ond GOV.UK One Login y mae’r gwasanaeth ar-lein y llywodreath yn ei ddefnyddio i fewngofnodi i’w gwasanaeth, ni fyddwn yn casglu unrhyw wybodaeth bellach gennych chi.",
           "paragraph_five": "Pan fydd gwasanaethau ar-lein y llywodraeth yn defnyddio GOV.UK One Login i brofi pwy ydych chi, mae angen i ni gynnal gwiriadau adnabod ac felly prosesu data personol ychwanegol. Mae’r broses yn cynnwys gwiriad twyll gydag Experian i sicrhau bod y data fyddwch yn ei roi i ni yn gywir ac i wirio nad oes unrhyw arwyddion bod eich hunaniaeth wedi cael ei dwyn neu ei gamddefnyddio.",
           "paragraph_six": "Mae 3 prif ffordd o brofi pwy ydych chi. Mae’r pethau rydyn ni’n eu gwirio yn dibynnu ar ba ffordd rydych chi’n profi pwy ydych chi."
-
         },
         "using_id_check_app": {
           "header": "Defnyddio’r ap Gwirio ID GOV.UK i brofi eich hunaniaeth",
@@ -1990,7 +1989,7 @@
           "errorMessage": "Dewiswch y broblem oedd gennych wrth brofi eich hunaniaeth"
         }
       },
-      "wallet":  {
+      "wallet": {
         "title": "Problem gyda’ch Cerdyn Cyn-filwr y Lluoedd Arfog EF digidol",
         "header": "Problem gyda’ch Cerdyn Cyn-filwr y Lluoedd Arfog EF digidol",
         "section1": {
@@ -2060,7 +2059,7 @@
           "hint": "Dewis bob un sy’n berthnasol",
           "options": {
             "receivedUnwarrantedSecurityCode": "Rwyf wedi derbyn cod diogelwch nad oeddwn wedi gofyn amdano",
-            "unknownActivityHistory":  "Mae rhywbeth yn fy hanes gweithgaredd nad wyf yn ei adnabod"
+            "unknownActivityHistory": "Mae rhywbeth yn fy hanes gweithgaredd nad wyf yn ei adnabod"
           },
           "validationError": {
             "selectAtLeastOne": "Dewiswch o leiaf un opsiwn"
@@ -2071,7 +2070,7 @@
           "hint": "Rhowch eich e-bost, efallai y byddwn yn cysylltu â chi drwy’r cyfeiriad hwn",
           "validationError": {
             "noEmailAddress": "Rhowch gyfeiriad e-bost eich GOV.UK One Login",
-            "invalidFormat":  "Rhowch gyfeiriad e-bost yn y ffurf cywir, fel name@example.com"
+            "invalidFormat": "Rhowch gyfeiriad e-bost yn y ffurf cywir, fel name@example.com"
           }
         },
         "section4": {
@@ -2520,13 +2519,13 @@
       "walletProblemAddingCredentialsDocument": {
         "title": "Rydych wedi cael problem ychwanegu eich Cerdyn Cyn-filwr i’r ap GOV.UK One Login"
       },
-      "walletProblemViewingCredentialsDocument":  {
+      "walletProblemViewingCredentialsDocument": {
         "title": "Rydych wedi cael problem gweld eich Cerdyn Cyn-filwr yn yr ap GOV.UK One Login"
       },
       "walletTechnicalProblem": {
         "title": "Roeddech wedi cael problem dechnegol"
       },
-      "walletSomethingElse":  {
+      "walletSomethingElse": {
         "title": "Problem arall gyda’ch Cerdyn Cyn-filwr Lluoedd Arfog EF digidol"
       }
     },
@@ -2658,7 +2657,7 @@
           "text1": "Os nad oes gennych fynediad i’ch ap dilysu mwyach, ",
           "text2": "gwiriwch a allwch newid sut rydych yn cael codau diogelwch"
         },
-        "chooseMfaMethod":  {
+        "chooseMfaMethod": {
           "text1": "Gallwch ",
           "text2": "geisio ffordd arall o gael codau diogelwch"
         }

@@ -2,23 +2,26 @@
 FROM node:20.17.0-alpine@sha256:2d07db07a2df6830718ae2a47db6fedce6745f5bcd174c398f2acdda90a11c03 AS builder
 
 WORKDIR /app
+COPY .npmrc ./
 COPY package.json ./
-COPY yarn.lock ./
-RUN yarn install
+COPY package-lock.json ./
+RUN npm config get ignore-scripts | grep -q "true" || exit 1
+RUN npm ci --ignore-scripts
 
 COPY tsconfig.json ./
 COPY ./@types ./@types
 COPY ./src ./src
-RUN yarn build && yarn install --production
+RUN npm run build && npm ci --ignore-scripts --omit=dev
 
 FROM node:20.17.0-alpine@sha256:2d07db07a2df6830718ae2a47db6fedce6745f5bcd174c398f2acdda90a11c03 AS journey_map_builder
 
 WORKDIR /app/journey-map
+COPY .npmrc ./
 COPY journey-map/package.json ./
 COPY journey-map/package-lock.json ./
 COPY --from=builder app/src ../src
 COPY --from=builder app/node_modules ../node_modules
-RUN npm ci
+RUN npm ci --ignore-scripts
 
 COPY journey-map/src ./src
 COPY journey-map/public ./public
@@ -32,11 +35,11 @@ COPY --from=oneagent_codemodules / /
 ENV LD_PRELOAD=/opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so
 
 WORKDIR /app
-COPY --chown=node:node --from=builder /app/package*.json ./
-COPY --chown=node:node --from=builder /app/node_modules/ node_modules
-COPY --chown=node:node --from=builder /app/dist/ dist
-COPY --chown=node:node --from=journey_map_builder /app/journey-map/public journey-map/public
-COPY --chown=node:node docker-entrypoint.sh /docker-entrypoint.sh
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules/ node_modules
+COPY --from=builder /app/dist/ dist
+COPY --from=journey_map_builder /app/journey-map/public journey-map/public
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 ENV NODE_ENV="production"
 ENV PORT=3000

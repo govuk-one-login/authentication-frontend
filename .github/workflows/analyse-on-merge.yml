@@ -25,20 +25,28 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 20.17.0
-          cache: "yarn"
-          cache-dependency-path: "yarn.lock"
+          cache: "npm"
+          cache-dependency-path: "package-lock.json"
+      - name: Check npm ignore-scripts config
+        run: |
+          if [ "$(npm config get ignore-scripts)" = "false" ]; then
+            echo "Error: ignore-scripts is set to false"
+            exit 1
+          else
+            echo "ignore-scripts is set to true"
+          fi
       - name: Install dependencies
-        run: yarn install
+        run: npm ci --ignore-scripts
       - name: Build app
-        run: yarn build
+        run: npm run build
       - name: Run unit tests
-        run: yarn test:unit
+        run: npm run test:unit
       - name: Run integration tests
-        run: yarn test:integration-no-clear-cov
+        run: npm run test:integration-no-clear-cov
       - name: Run test coverage
-        run: yarn test:coverage
+        run: npm run test:coverage
       - name: Run lint
-        run: yarn lint
+        run: npm run lint
       - name: SonarCloud Scan
         uses: sonarsource/sonarqube-scan-action@1a6d90ebcb0e6a6b1d87e37ba693fe453195ae25 # v5.3.1
         env:

@@ -1,14 +1,16 @@
 FROM node:20.17.0-alpine@sha256:2d07db07a2df6830718ae2a47db6fedce6745f5bcd174c398f2acdda90a11c03 AS builder
 
 WORKDIR /app
+COPY .npmrc ./
 COPY package.json ./
-COPY yarn.lock ./
-RUN yarn install
+COPY package-lock.json ./
+RUN npm config get ignore-scripts | grep -q "true" || exit 1
+RUN npm ci --ignore-scripts
 
 COPY tsconfig.json ./
 COPY ./@types ./@types
 COPY ./src ./src
-RUN yarn build && yarn install --production
+RUN npm run build && npm ci --ignore-scripts --omit=dev
 
 FROM node:20.17.0-alpine@sha256:2d07db07a2df6830718ae2a47db6fedce6745f5bcd174c398f2acdda90a11c03 AS final
 
