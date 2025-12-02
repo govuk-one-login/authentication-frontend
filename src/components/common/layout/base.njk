@@ -112,6 +112,13 @@
                 href: "back-event"
             }) }}
         {% endif %}
+
+        {% if showBack %}
+            {{ govukBackLink({
+                text: "new back" | translate,
+                href: history | last
+            }) }}
+        {% endif %}
         {% if history %}
             <p>Journey history: {{ history | join(', ') }}</p>
         {% endif %}

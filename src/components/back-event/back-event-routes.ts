@@ -15,7 +15,7 @@ function backEventGet(req: Request, res: Response) {
   const previousPath = req.session.user.journey?.history?.slice(-1)[0] || "/";
   // req.session.user.journey.previousPath = previousPath;
   req.session.user.journey.history.pop();
-  logger.info(`history cuz ${req.session.user.journey.history}`)
+  logger.info(`history ${req.session.user.journey.history}`)
   return res.redirect(previousPath);
 }
 
