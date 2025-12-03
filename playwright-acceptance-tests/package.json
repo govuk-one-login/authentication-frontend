@@ -11,6 +11,7 @@
     "bdd:report": "node run-test-with-report.js",
     "test": "npm run bdd:report",
     "lint": "eslint .",
+    "eslint": "eslint",
     "format": "prettier --write ."
   },
   "devDependencies": {
