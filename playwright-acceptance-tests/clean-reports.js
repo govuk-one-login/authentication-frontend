@@ -1,14 +1,14 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 const reportsHtmlDir = path.join(__dirname, "reports", "html");
 
 if (!fs.existsSync(reportsHtmlDir)) {
-  console.log("No reports/html directory yet – nothing to clean.");
+  process.stdout.write("No reports/html directory yet – nothing to clean.\n");
   process.exit(0);
 }
 
-fs.readdirSync(reportsHtmlDir, { withFileTypes: true }).forEach((entry) => {
+for (const entry of fs.readdirSync(reportsHtmlDir, { withFileTypes: true })) {
   const fullPath = path.join(reportsHtmlDir, entry.name);
   const isTimestamp =
     entry.isDirectory() &&
@@ -17,9 +17,9 @@ fs.readdirSync(reportsHtmlDir, { withFileTypes: true }).forEach((entry) => {
   if (!isTimestamp) {
     fs.rmSync(fullPath, { recursive: true, force: true });
   }
-});
+}
 
-const entries = fs
+const timestampDirs = fs
   .readdirSync(reportsHtmlDir, { withFileTypes: true })
   .filter(
     (e) =>
@@ -28,10 +28,10 @@ const entries = fs
   )
   .sort((a, b) => b.name.localeCompare(a.name));
 
-const toDelete = entries.slice(2);
+const toDelete = timestampDirs.slice(2);
 
-toDelete.forEach((dirent) => {
+for (const dirent of toDelete) {
   const folderPath = path.join(reportsHtmlDir, dirent.name);
   fs.rmSync(folderPath, { recursive: true, force: true });
-  console.log("Deleted old report folder:", folderPath);
-});
+  process.stdout.write(`Deleted old report folder: ${folderPath}\n`);
+}

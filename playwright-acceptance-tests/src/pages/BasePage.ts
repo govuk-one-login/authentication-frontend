@@ -50,15 +50,11 @@ export class BasePage {
       return;
     }
 
-    // Axe + Playwright type mismatch workaround: only cast the page field.
-    const builder = new AxeBuilder({
-      page: this.page as any,
-    });
+    const builder = new AxeBuilder({ page: this.page as any });
 
     const rawResults = await builder.analyze();
     const violations = (rawResults.violations ?? []) as AxeViolationLite[];
 
-    // ✅ No console.log – silent when clean
     if (violations.length === 0) {
       return;
     }

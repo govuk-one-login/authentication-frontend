@@ -1,13 +1,11 @@
-const { spawnSync } = require("child_process");
-const fs = require("fs");
-const path = require("path");
+const { spawnSync } = require("node:child_process");
+const fs = require("node:fs");
+const path = require("node:path");
 const report = require("multiple-cucumber-html-reporter");
 
 const rootDir = __dirname;
 const jsonDir = path.join(rootDir, "reports", "json");
 const historyFile = path.join(rootDir, "reports", "flaky-history.json");
-
-// rest of your file remains unchanged
 
 function formatDuration(ms) {
   const totalSeconds = Math.round(ms / 1000);
@@ -179,7 +177,7 @@ if (fs.existsSync(jsonFile)) {
       ? flakyScenariosThisRun.join("<br>")
       : "None";
 
-  console.log("Generating HTML report in:", reportPath);
+  process.stdout.write(`Generating HTML report in: ${reportPath}\n`);
 
   report.generate({
     jsonDir: "reports/json",
@@ -223,11 +221,12 @@ if (fs.existsSync(jsonFile)) {
   try {
     require("./clean-reports");
   } catch (err) {
-    console.error("Warning: clean-reports.js failed:", err.message);
+    const message = err instanceof Error ? err.message : String(err);
+    process.stderr.write(`Warning: clean-reports.js failed: ${message}\n`);
   }
 } else {
-  console.error(
-    "No cucumber JSON found at reports/json/cucumber-report.json – HTML report not generated."
+  process.stderr.write(
+    "No cucumber JSON found at reports/json/cucumber-report.json – HTML report not generated.\n"
   );
 }
 
