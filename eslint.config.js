@@ -71,6 +71,7 @@ const config = [
       "coverage",
       "src/assets/javascript",
       "journey-map",
+      ".venv/**",
     ],
   },
 ];
