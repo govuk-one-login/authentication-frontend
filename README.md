@@ -17,6 +17,7 @@ There are three different ways to run the app on a local machine:
 - Full stack running locally in Docker
 - The frontend and stubs running in Docker, with AWS connections
 - The frontend app running in a local node instance, with supporting services running in Docker and AWS connections
+- The frontend app running in a local node instance against a local running api in Docker
 
 To run the full stack locally in Docker, see `local-running` in the `authentication-api` repo.
 
@@ -57,7 +58,30 @@ The startup script will do this for you so just run this command:
 ./startup.sh -l
 ```
 
-### Using the locally runnning service to test the application
+### Starting the frontend in node locally against backend running locally in Docker
+
+In this case the backend (and it's supporting services) are run in [Docker locally](https://github.com/govuk-one-login/authentication-api/tree/main/local-running) but the frontend itself runs outside.
+Development can be quicker and more responsive if done in this way and we don't need to rely on having correct AWS roles
+
+#### Prerequisites
+
+- You can follow the instructions [here](https://github.com/govuk-one-login/authentication-api/tree/main/local-running) to run the api locally
+- The `authentication-api` and the `authentication-frontend` have to live in the same directory as siblings
+
+#### Things to note
+
+- As this is locally running, it is not hooked up to Notify so you will not receive email or SMS OTPs. Check the [environment
+  configuration](https://github.com/govuk-one-login/authentication-api/blob/main/local-running/.env.local) for the local backend to see the
+  email and phone number OTPs.
+- The orchstub will be on `localhost:4400` so visit here to start your journeys
+
+The startup script will do this for you so just run this command:
+
+```shell script
+./startup.sh -L
+```
+
+### Using the locally running service to test the application
 
 This application will normally be started on port 3000 locally.
 
