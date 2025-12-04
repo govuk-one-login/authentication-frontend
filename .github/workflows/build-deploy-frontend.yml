@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "playwright-acceptance-tests/**"
+      - "docs/**"
+      - "**/README.md"
+      - "quality-gate.manifest.json"
 
 jobs:
   deploy-service-down-page:
