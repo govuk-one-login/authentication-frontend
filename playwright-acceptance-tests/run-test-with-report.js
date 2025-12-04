@@ -49,15 +49,12 @@ function calculateFlakyMetrics(cucumberJsonPath) {
   }
 
   const raw = fs.readFileSync(cucumberJsonPath, "utf-8");
-  let features = JSON.parse(raw);
-
-  if (!Array.isArray(features)) {
-    features = [features];
-  }
+  const parsed = JSON.parse(raw);
+  const featuresArray = Array.isArray(parsed) ? parsed : [parsed];
 
   const currentRunStats = {};
 
-  for (const feature of features) {
+  for (const feature of featuresArray) {
     const featureName = feature.name || "Unknown feature";
     const elements = feature.elements || [];
 
