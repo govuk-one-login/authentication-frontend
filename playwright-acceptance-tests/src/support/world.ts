@@ -4,9 +4,8 @@ import {
   setWorldConstructor,
   setDefaultTimeout,
 } from "@cucumber/cucumber";
-import type { Browser, BrowserContext, Page } from "playwright";
+import type { Browser, BrowserContext, Page, BrowserType } from "playwright";
 import { chromium, firefox, webkit } from "playwright";
-import type { BrowserType } from "playwright-core";
 
 export class PlaywrightWorld extends World {
   browser?: Browser;

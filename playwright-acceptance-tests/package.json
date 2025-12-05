@@ -17,7 +17,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.11.0",
     "@cucumber/cucumber": "^9.6.0",
-    "@playwright/test": "1.56.1",
+    "playwright": "1.56.1",
     "@types/node": "^20.10.1",
     "@typescript-eslint/eslint-plugin": "^8.47.0",
     "@typescript-eslint/parser": "^8.47.0",
