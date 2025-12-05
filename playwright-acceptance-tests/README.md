@@ -77,7 +77,6 @@ playwright-acceptance-tests/
 │   │   └── stub-journey.steps.ts
 │   │
 │   ├── support/
-│   │   ├── env.ts
 │   │   ├── hooks.ts
 │   │   └── world.ts
 │   │
@@ -119,7 +118,7 @@ A11Y_CHECK	Enables axe-core accessibility scanning
 SECURITY_CHECK	Enables lightweight security header checks
 CUCUMBER_FILTER_TAGS = Tag expression (e.g. @UI and not @wip)
 
-.env is auto-loaded via src/support/env.ts.
+.env is auto-loaded via cucumber.js.
 ```
 
 ### Installation
@@ -317,7 +316,7 @@ Issue	Fix
 Tags not filtering	Ensure no spaces around equals in .env (CUCUMBER_FILTER_TAGS="@UI")
 Screenshots not saved	Ensure reports/screenshots/ exists or can be created
 Browser fails to launch	Run npx playwright install
-.env not loading	Ensure import "./env" is first line in world.ts
+.env not loading	Ensure .env file exists and cucumber.js can load it
 ```
 
 ### Roadmap

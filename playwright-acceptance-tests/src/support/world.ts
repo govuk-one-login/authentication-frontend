@@ -6,8 +6,7 @@ import {
 } from "@cucumber/cucumber";
 import type { Browser, BrowserContext, Page } from "playwright";
 import { chromium, firefox, webkit } from "playwright";
-import "./env";
-import type { BrowserType } from "playwright-core"; // ensure .env is loaded before we read process.env
+import type { BrowserType } from "playwright-core";
 
 export class PlaywrightWorld extends World {
   browser?: Browser;
