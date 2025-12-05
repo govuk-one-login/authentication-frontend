@@ -2347,7 +2347,7 @@ Resources:
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
-              SSEAlgorithm: AES256
+              SSEAlgorithm: aws:kms
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-AccessLogsBucket"
