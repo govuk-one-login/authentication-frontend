@@ -1,8 +1,8 @@
 import type { ITestCaseHookParameter } from "@cucumber/cucumber";
 import { Before, After, Status } from "@cucumber/cucumber";
 import type { PlaywrightWorld } from "./world";
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 
 Before(async function (this: PlaywrightWorld) {
   await this.openBrowser();
