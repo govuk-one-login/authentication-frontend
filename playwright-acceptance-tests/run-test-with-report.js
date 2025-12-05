@@ -38,30 +38,29 @@ function getScenarioStatus(scenario) {
   return "unknown";
 }
 
-function calculateFlakyMetrics(cucumberJsonPath) {
-  let history = {};
-  if (fs.existsSync(historyFile)) {
-    try {
-      history = JSON.parse(fs.readFileSync(historyFile, "utf-8"));
-    } catch {
-      history = {};
-    }
+function loadHistory() {
+  if (!fs.existsSync(historyFile)) return {};
+  try {
+    return JSON.parse(fs.readFileSync(historyFile, "utf-8"));
+  } catch {
+    return {};
   }
+}
 
-  const raw = fs.readFileSync(cucumberJsonPath, "utf-8");
-  const parsed = JSON.parse(raw);
-  const featuresArray = Array.isArray(parsed) ? parsed : [parsed];
+function updateStats(stats, key, status) {
+  const entry = stats[key] || { passes: 0, fails: 0 };
+  if (status === "passed") entry.passes += 1;
+  if (status === "failed") entry.fails += 1;
+  stats[key] = entry;
+}
 
-  const currentRunStats = {};
-
+function processScenarios(featuresArray, history, currentRunStats) {
   for (const feature of featuresArray) {
     const featureName = feature.name || "Unknown feature";
     const elements = feature.elements || [];
 
     for (const scenario of elements) {
-      if ((scenario.keyword || "").toLowerCase() === "background") {
-        continue;
-      }
+      if ((scenario.keyword || "").toLowerCase() === "background") continue;
 
       const scenarioName = scenario.name || "Unknown scenario";
       const key = `${featureName} :: ${scenarioName}`;
@@ -69,60 +68,52 @@ function calculateFlakyMetrics(cucumberJsonPath) {
 
       if (status === "unknown") continue;
 
-      const prev = history[key] || { passes: 0, fails: 0 };
-      if (status === "passed") prev.passes += 1;
-      if (status === "failed") prev.fails += 1;
-      history[key] = prev;
-
-      const cur = currentRunStats[key] || { passes: 0, fails: 0 };
-      if (status === "passed") cur.passes += 1;
-      if (status === "failed") cur.fails += 1;
-      currentRunStats[key] = cur;
+      updateStats(history, key, status);
+      updateStats(currentRunStats, key, status);
     }
   }
+}
+
+function findFlakyScenarios(stats) {
+  const flaky = [];
+  for (const [key, entry] of Object.entries(stats)) {
+    if (entry.passes > 0 && entry.fails > 0) {
+      flaky.push(key);
+    }
+  }
+  return flaky;
+}
+
+function calculateFlakyMetrics(cucumberJsonPath) {
+  const history = loadHistory();
+  const raw = fs.readFileSync(cucumberJsonPath, "utf-8");
+  const parsed = JSON.parse(raw);
+  const featuresArray = Array.isArray(parsed) ? parsed : [parsed];
+  const currentRunStats = {};
+
+  processScenarios(featuresArray, history, currentRunStats);
 
   fs.mkdirSync(path.dirname(historyFile), { recursive: true });
   fs.writeFileSync(historyFile, JSON.stringify(history, null, 2));
 
-  let flakyCountEver = 0;
-  const flakyScenariosEver = [];
-  const historyEntries = Object.entries(history);
-
-  for (const [key, entry] of historyEntries) {
-    if (entry.passes > 0 && entry.fails > 0) {
-      flakyCountEver += 1;
-      flakyScenariosEver.push(key);
-    }
-  }
-
-  const totalKnownEver = historyEntries.length;
-
-  let flakyCountThisRun = 0;
-  const flakyScenariosThisRun = [];
-  const thisRunEntries = Object.entries(currentRunStats);
-
-  for (const [key, entry] of thisRunEntries) {
-    if (entry.passes > 0 && entry.fails > 0) {
-      flakyCountThisRun += 1;
-      flakyScenariosThisRun.push(key);
-    }
-  }
+  const flakyScenariosEver = findFlakyScenarios(history);
+  const flakyScenariosThisRun = findFlakyScenarios(currentRunStats);
 
   return {
-    flakyCountEver,
-    totalKnownEver,
+    flakyCountEver: flakyScenariosEver.length,
+    totalKnownEver: Object.keys(history).length,
     flakyScenariosEver,
-    flakyCountThisRun,
+    flakyCountThisRun: flakyScenariosThisRun.length,
     flakyScenariosThisRun,
   };
 }
 
-if (!fs.existsSync(jsonDir)) {
-  fs.mkdirSync(jsonDir, { recursive: true });
-} else {
+if (fs.existsSync(jsonDir)) {
   for (const entry of fs.readdirSync(jsonDir)) {
     fs.rmSync(path.join(jsonDir, entry), { recursive: true, force: true });
   }
+} else {
+  fs.mkdirSync(jsonDir, { recursive: true });
 }
 
 const startTime = Date.now();
@@ -153,8 +144,8 @@ const jsonFile = path.join(jsonDir, "cucumber-report.json");
 if (fs.existsSync(jsonFile)) {
   const timestamp = new Date()
     .toISOString()
-    .replace(/:/g, "-")
-    .replace(/\./g, "-");
+    .replaceAll(":", "-")
+    .replaceAll(".", "-");
 
   const reportPath = path.join("reports", "html", timestamp);
 
