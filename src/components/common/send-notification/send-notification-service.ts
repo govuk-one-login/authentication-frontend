@@ -7,19 +7,17 @@ import {
   http,
 } from "../../../utils/http.js";
 import type { SendNotificationServiceInterface } from "./types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export function sendNotificationService(
   axios: Http = http
 ): SendNotificationServiceInterface {
   const sendNotification = async function (
-    sessionId: string,
-    clientSessionId: string,
     email: string,
     notificationType: string,
-    persistentSessionId: string,
     userLanguage: string,
     req: Request,
+    res: Response,
     journeyType?: string,
     phoneNumber?: string,
     requestNewCode?: boolean
@@ -45,18 +43,16 @@ export function sendNotificationService(
       API_ENDPOINTS.SEND_NOTIFICATION,
       payload,
       getInternalRequestConfigWithSecurityHeaders(
+        req,
+        res,
+        API_ENDPOINTS.SEND_NOTIFICATION,
         {
-          sessionId: sessionId,
-          clientSessionId: clientSessionId,
-          persistentSessionId: persistentSessionId,
           validationStatuses: [
             HTTP_STATUS_CODES.NO_CONTENT,
             HTTP_STATUS_CODES.BAD_REQUEST,
           ],
           userLanguage: userLanguage,
-        },
-        req,
-        API_ENDPOINTS.SEND_NOTIFICATION
+        }
       )
     );
 

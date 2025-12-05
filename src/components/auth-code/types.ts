@@ -4,7 +4,7 @@ import type {
   UserSession,
   UserSessionClient,
 } from "../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface AuthCodeResponse extends DefaultApiResponse {
   location: string;
@@ -12,11 +12,9 @@ export interface AuthCodeResponse extends DefaultApiResponse {
 
 export interface AuthCodeServiceInterface {
   getAuthCode: (
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     clientSession: UserSessionClient,
     userSession: UserSession,
-    req: Request
+    req: Request,
+    res: Response
   ) => Promise<ApiResponseResult<AuthCodeResponse>>;
 }

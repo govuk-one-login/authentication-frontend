@@ -10,27 +10,21 @@ import {
 } from "../../utils/http.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
 import { API_ENDPOINTS } from "../../app.constants.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export function reverificationResultService(
   axios: Http = http
 ): ReverificationResultInterface {
   const getReverificationResult = async function (
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     req: Request,
+    res: Response,
     email: string,
     code: string,
     state: string
   ): Promise<ApiResponseResult<ReverificationResultResponse>> {
     const config = getInternalRequestConfigWithSecurityHeaders(
-      {
-        sessionId: sessionId,
-        clientSessionId: clientSessionId,
-        persistentSessionId: persistentSessionId,
-      },
       req,
+      res,
       API_ENDPOINTS.REVERIFICATION_RESULT
     );
 
