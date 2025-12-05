@@ -6,39 +6,46 @@ import {
 } from "@cucumber/cucumber";
 import type { Browser, BrowserContext, Page } from "playwright";
 import { chromium, firefox, webkit } from "playwright";
-import "./env"; // ensure .env is loaded before we read process.env
+import "./env";
+import type { BrowserType } from "playwright-core"; // ensure .env is loaded before we read process.env
 
 export class PlaywrightWorld extends World {
-  browser!: Browser;
-  context!: BrowserContext;
-  page!: Page;
+  browser?: Browser;
+  context?: BrowserContext;
+  page?: Page;
 
   constructor(options: IWorldOptions) {
     super(options);
   }
 
-  async openBrowser() {
+  async openBrowser(): Promise<void> {
     const browserName = (process.env.BROWSER || "chromium").toLowerCase();
     const headless = (process.env.HEADLESS || "true").toLowerCase() === "true";
 
-    const browserType =
-      browserName === "firefox"
-        ? firefox
-        : browserName === "webkit"
-          ? webkit
-          : chromium;
+    const browserType = setBrowserType(browserName);
 
     this.browser = await browserType.launch({ headless });
     this.context = await this.browser.newContext();
     this.page = await this.context.newPage();
   }
 
-  async closeBrowser() {
-    await this.page?.close();
-    await this.context?.close();
-    await this.browser?.close();
+  async closeBrowser(): Promise<void> {
+    if (this.page) await this.page.close();
+    if (this.context) await this.context.close();
+    if (this.browser) await this.browser.close();
   }
 }
 
 setWorldConstructor(PlaywrightWorld);
 setDefaultTimeout(30 * 1000);
+
+function setBrowserType(browserName: string): BrowserType {
+  switch (browserName) {
+    case "firefox":
+      return firefox;
+    case "webkit":
+      return webkit;
+    default:
+      return chromium;
+  }
+}
