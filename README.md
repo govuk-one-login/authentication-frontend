@@ -74,6 +74,19 @@ Development can be quicker and more responsive if done in this way and we don't 
   configuration](https://github.com/govuk-one-login/authentication-api/blob/main/local-running/.env.local) for the local backend to see the
   email and phone number OTPs.
 - The orchstub will be on `localhost:4400` so visit here to start your journeys
+- You can see the db in IntelliJ by:
+  - Run `aws configure`
+    - Access key ID = `test`
+    - Access key = `test`
+    - Set default region to `eu-west-2`
+    - Default output format can remain as `None`
+  - In IntelliJ
+    - Select Database -> New -> Data Source -> DynamoDb
+    - Host = `localhost`
+    - Port = `8000`
+    - Region = `eu-west-2`
+    - Authentication = `No auth`
+  - You should then be able to see the database inside IntelliJ
 
 The startup script will do this for you so just run this command:
 
