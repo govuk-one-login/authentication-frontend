@@ -8,10 +8,10 @@
 For example:
 
 1. Code Review
-1. Deploy to authdevs with `./deploy-authdevs.sh -a`
+1. Deploy to a dev environment using the [GitHub dev deployment workflow](https://github.com/govuk-one-login/authentication-frontend/actions/workflows/build-deploy-frontend-dev.yml)
 1. Ensure that resources `x`, `y` and `z` were not changed
-1. Visit [some url](https://some.authdevs.url/to/visit)
-1. Log in
+1. Visit [some url](https://some.dev.url/to/visit)
+1. Sign in
 1. Ensure `x` message appears in a modal
 -->
 
