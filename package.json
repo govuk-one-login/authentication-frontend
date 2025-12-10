@@ -96,7 +96,7 @@
     "i18next-http-middleware": "3.8.2",
     "jose": "5.10.0",
     "jsdom": "26.1.0",
-    "libphonenumber-js": "1.12.30",
+    "libphonenumber-js": "1.12.31",
     "nunjucks": "3.2.4",
     "overload-protection": "1.2.3",
     "pino": "10.1.0",
