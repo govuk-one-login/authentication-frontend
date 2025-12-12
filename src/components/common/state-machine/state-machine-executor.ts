@@ -10,6 +10,10 @@ import {
   shouldPromptToSignInWithPasskey,
 } from "../../../utils/passkeys-helper.js";
 
+const pathsToIgnore = [
+  '/reset-password-request'
+]
+
 export async function getNextPathAndUpdateJourney(
   req: Request,
   res: Response,
@@ -39,6 +43,16 @@ export async function getNextPathAndUpdateJourney(
 
   const isTransitionReversible = authStateMachine.states[currentState].on[event][0].meta?.reversible ?? true
 
+  const getHistory = () => {
+    const ignorePath = pathsToIgnore.includes(req.path)
+
+    if (ignorePath) {
+      return [...req.session.user.journey?.history ?? []]
+    }
+
+    return isTransitionReversible ? [...req.session.user.journey?.history ?? [], req.path] : []
+  }
+
   req.session.user.journey = {
     previousPath: req.path,
     nextPath: nextState.value,
@@ -47,7 +61,7 @@ export async function getNextPathAndUpdateJourney(
         ? nextState.meta[`${authStateMachine.id}.${nextState.value}`]
             .optionalPaths
         : [],
-    history: isTransitionReversible ? [...req.session.user.journey?.history ?? [], req.path] : []
+    history: getHistory()
   };
 
   // Have an array which contains all paths that would delete the history
