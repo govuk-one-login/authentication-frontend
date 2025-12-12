@@ -12,28 +12,18 @@ import {
 } from "../../utils/http.js";
 import type { AuthCodeResponse, AuthCodeServiceInterface } from "./types.js";
 import { supportReauthentication } from "../../config.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export function authCodeService(axios: Http = http): AuthCodeServiceInterface {
   const getAuthCode = async function (
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     clientSession: UserSessionClient,
     userSession: UserSession,
-    req: Request
+    req: Request,
+    res: Response
   ): Promise<ApiResponseResult<AuthCodeResponse>> {
     const path = API_ENDPOINTS.ORCH_AUTH_CODE;
 
-    const config = getInternalRequestConfigWithSecurityHeaders(
-      {
-        sessionId: sessionId,
-        clientSessionId: clientSessionId,
-        persistentSessionId: persistentSessionId,
-      },
-      req,
-      path
-    );
+    const config = getInternalRequestConfigWithSecurityHeaders(req, res, path);
 
     let body: any = {
       claims: clientSession.claim,

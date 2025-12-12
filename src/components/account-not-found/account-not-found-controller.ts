@@ -31,16 +31,12 @@ export function accountNotFoundPost(
       return res.redirect(getServiceSignInLink());
     }
 
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
     const result = await service.sendNotification(
-      sessionId,
-      clientSessionId,
       req.session.user.email,
       NOTIFICATION_TYPE.VERIFY_EMAIL,
-      persistentSessionId,
       xss(req.cookies.lng as string),
       req,
+      res,
       JOURNEY_TYPE.REGISTRATION
     );
 

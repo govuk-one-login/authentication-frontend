@@ -137,8 +137,6 @@ describe("reset password check email controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
         activeMfaMethodId,
         sinon.match.any
       );
@@ -175,17 +173,7 @@ describe("reset password check email controller", () => {
         fakeMfaService
       )(req as Request, res as Response);
 
-      expect(fakeMfaService.sendMfaCode).to.not.have.been.calledWithExactly(
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
-        sinon.match.any
-      );
+      expect(fakeMfaService.sendMfaCode).to.have.not.been.called;
     });
 
     it("should send SMS OTP code where DEFAULT MFA is SMS", async () => {
@@ -220,8 +208,6 @@ describe("reset password check email controller", () => {
       )(req as Request, res as Response);
 
       expect(fakeMfaService.sendMfaCode).to.have.been.calledOnceWithExactly(
-        sinon.match.any,
-        sinon.match.any,
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,

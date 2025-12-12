@@ -11,7 +11,6 @@ export function mfaResetWithIpvGet(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email, isAccountRecoveryPermitted } = req.session.user;
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     if (isAccountRecoveryPermitted === false) {
       throw new Error(
@@ -35,10 +34,8 @@ export function mfaResetWithIpvGet(
       req.session.client.state
     );
     const result = await service.ipvRedirectUrl(
-      sessionId,
-      clientSessionId,
-      persistentSessionId,
       req,
+      res,
       email,
       orchestrationRedirectUrl
     );
