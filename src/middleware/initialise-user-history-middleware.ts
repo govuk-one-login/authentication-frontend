@@ -5,7 +5,7 @@ export function initialiseUserHistoryMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  res.locals.history = !req.session.user?.journey?.history ? [] : req.session.user.journey.history
+  res.locals.history = !req.session.user?.journey?.goBackHistory ? [] : req.session.user.journey.goBackHistory
 
   next();
 }

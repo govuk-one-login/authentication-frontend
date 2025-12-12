@@ -3,10 +3,10 @@ import { authStateMachine } from "../components/common/state-machine/state-machi
 import { saveSessionState } from "../components/common/constants.js";
 export function transitionForbidden(req: Request): boolean {
   const nextPath = req.session.user.journey.nextPath;
-  const previousPath = req.session.user.journey?.history?.slice(-1)[0] || "/";
+  const previousPath = req.session.user.journey?.goBackHistory?.slice(-1)[0] || "/";
 
   if (previousPath === req.path) {
-    req.session.user.journey.history.pop();
+    req.session.user.journey.goBackHistory.pop();
   }
   return (
     nextPath !== req.path &&

@@ -54,7 +54,7 @@ export interface UserJourney {
   nextPath: string;
   previousPath: string;
   optionalPaths: string[];
-  history: string[]
+  goBackHistory: string[]
 }
 
 export interface UserSession {
