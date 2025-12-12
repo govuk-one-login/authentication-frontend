@@ -1,6 +1,5 @@
 {% extends "common/layout/base.njk" %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% set pageTitleName = 'pages.enterAuthenticatorAppCode.title' | translate %}
@@ -32,11 +31,8 @@
     } if (errors['code'])})
   }}
 
-    {{ govukButton({
-    "text": "general.continue.label" | translate,
-    "type": "Submit",
-    "preventDoubleClick": true
-  }) }}
+    {% set progressButtonParams = { nonce: scriptNonce } %}
+    {%- include "common/progress-button/template.njk" -%}
 
   </form>
 
