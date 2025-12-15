@@ -85,6 +85,7 @@ const loggerMiddleware = pinoHttp<Request, Response>({
         "/public/scripts",
         "/public/scripts/application.js",
         "/public/scripts/showPassword.js",
+        "/public/scripts/prevent-double-form-submit.js",
         "/assets/images/govuk-crest.png",
         "/assets/images/govuk-crest-2x.png",
         "/assets/fonts/bold-b542beb274-v2.woff2",
