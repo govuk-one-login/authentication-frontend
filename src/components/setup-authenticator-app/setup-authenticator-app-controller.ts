@@ -16,7 +16,9 @@ import {
 } from "../../utils/validation.js";
 import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
+import { getAppEnv } from "../../config.js";
 import {
+  APP_ENV_NAME,
   JOURNEY_TYPE,
   MFA_METHOD_TYPE,
   NOTIFICATION_TYPE,
@@ -36,21 +38,30 @@ export async function setupAuthenticatorAppGet(
   req: Request,
   res: Response
 ): Promise<void> {
-  const qrCodeText = generateQRCodeValue(
+  req.session.user.qrCodeText = generateQRCodeValue(
     req.session.user.authAppSecret,
     req.session.user.email,
     req.t("general.authenticatorAppIssuer")
   );
 
-  req.session.user.authAppQrCodeUrl = await QRCode.toDataURL(qrCodeText);
+  req.session.user.authAppQrCodeUrl = await QRCode.toDataURL(
+    req.session.user.qrCodeText
+  );
   req.session.user.isAccountCreationJourney = !isAccountRecoveryJourney(req);
 
-  res.render(TEMPLATE, {
+  const templateData = {
+    otpUrl: "",
     qrCode: req.session.user.authAppQrCodeUrl,
     secretKeyFragmentArray: splitSecretKeyIntoFragments(
       req.session.user.authAppSecret
     ),
-  });
+  };
+
+  if (getAppEnv() === APP_ENV_NAME.STAGING) {
+    templateData["otpUrl"] = req.session.user.qrCodeText;
+  }
+
+  res.render(TEMPLATE, templateData);
 }
 
 export function setupAuthenticatorAppPost(
