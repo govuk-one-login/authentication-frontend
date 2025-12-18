@@ -142,7 +142,7 @@
     "concurrently": "9.2.1",
     "debug": "4.4.3",
     "dotenv": "17.2.3",
-    "eslint": "9.34.0",
+    "eslint": "9.39.1",
     "eslint-plugin-no-only-tests": "3.3.0",
     "esmock": "2.7.3",
     "husky": "9.1.7",
