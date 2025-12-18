@@ -939,6 +939,7 @@ Resources:
               HostPort: 3000
               Protocol: tcp
           Essential: true
+          ReadonlyRootFilesystem: true
           LogConfiguration:
             LogDriver: awslogs
             Options:
@@ -2189,6 +2190,7 @@ Resources:
               HostPort: 8080
               Protocol: tcp
           Essential: true
+          ReadonlyRootFilesystem: true
           LogConfiguration:
             LogDriver: awslogs
             Options:
