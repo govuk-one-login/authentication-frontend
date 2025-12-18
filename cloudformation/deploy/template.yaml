@@ -2190,6 +2190,7 @@ Resources:
               HostPort: 8080
               Protocol: tcp
           Essential: true
+          ReadonlyRootFilesystem: true
           LogConfiguration:
             LogDriver: awslogs
             Options:
