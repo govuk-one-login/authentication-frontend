@@ -7,16 +7,14 @@ import {
 } from "../../../utils/http.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
 import type { VerifyCodeInterface } from "./types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export function codeService(axios: Http = http): VerifyCodeInterface {
   const verifyCode = async function (
-    sessionId: string,
     code: string,
     notificationType: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     req: Request,
+    res: Response,
     mfaMethodId: string,
     journeyType?: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
@@ -29,12 +27,8 @@ export function codeService(axios: Http = http): VerifyCodeInterface {
         mfaMethodId,
       },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId,
-          clientSessionId,
-          persistentSessionId: persistentSessionId,
-        },
         req,
+        res,
         API_ENDPOINTS.VERIFY_CODE
       )
     );

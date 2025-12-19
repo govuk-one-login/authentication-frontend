@@ -30,7 +30,6 @@ describe("auth code controller", () => {
     res = mockResponse({
       locals: {
         sessionId: "sessiondid",
-        clientSessionId: "sdmm",
         persistentSessionId: "snncjh",
       },
     });

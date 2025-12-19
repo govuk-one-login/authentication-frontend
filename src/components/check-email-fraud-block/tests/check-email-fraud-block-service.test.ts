@@ -16,7 +16,10 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants.js";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("check email fraud block service", () => {
   const httpInstance = new Http();
@@ -35,11 +38,11 @@ describe("check email fraud block service", () => {
   });
 
   it("successfully calls the API to check for an email fraud block", async () => {
-    const { email, sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
+    const { email } = commonVariables;
     const req = createMockRequest(PATH_NAMES.ROOT, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
+    const res = createMockResponse();
     const axiosResponse = Promise.resolve({
       data: {},
       status: HTTP_STATUS_CODES.OK,
@@ -53,13 +56,7 @@ describe("check email fraud block service", () => {
       expectedBody: { email },
     };
 
-    const result = await service.checkEmailFraudBlock(
-      email,
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
-      req
-    );
+    const result = await service.checkEmailFraudBlock(email, req, res);
 
     checkApiCallMadeWithExpectedBodyAndHeaders(
       result,

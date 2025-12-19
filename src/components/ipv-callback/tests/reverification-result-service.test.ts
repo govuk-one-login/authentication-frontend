@@ -10,7 +10,10 @@ import {
 } from "../../../../test/helpers/service-test-helper.js";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
 import { Http } from "../../../utils/http.js";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { reverificationResultService } from "../reverification-result-service.js";
 import type { ReverificationResultInterface } from "../types.js";
@@ -19,11 +22,11 @@ describe("reverification result service", () => {
   const service: ReverificationResultInterface =
     reverificationResultService(http);
   let postStub: SinonStub;
-  const { sessionId, clientSessionId, email, diPersistentSessionId } =
-    commonVariables;
+  const { email } = commonVariables;
   const req = createMockRequest(PATH_NAMES.IPV_CALLBACK, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
+  const res = createMockResponse();
   const axiosResponse = Promise.resolve({
     data: {},
     status: 200,
@@ -43,10 +46,8 @@ describe("reverification result service", () => {
 
   it("successfully calls reverification result API", async () => {
     const result = await service.getReverificationResult(
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
       req,
+      res,
       email,
       "12345",
       "abcdef"

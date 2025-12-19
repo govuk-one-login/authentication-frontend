@@ -1,19 +1,15 @@
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface ProveIdentityCallbackServiceInterface {
   processIdentity: (
     email: string,
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
-    req: Request
+    req: Request,
+    res: Response
   ) => Promise<ApiResponseResult<ProcessIdentityResponse>>;
   generateSuccessfulRpReturnUrl: (
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
-    req: Request
+    req: Request,
+    res: Response
   ) => Promise<string>;
 }
 

@@ -59,7 +59,6 @@ export function setupAuthenticatorAppPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { authAppSecret } = req.session.user;
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const code = req.body.code;
 
     const journeyType = getJourneyTypeFromUserSession(req.session.user, {
@@ -70,10 +69,8 @@ export function setupAuthenticatorAppPost(
     const verifyAccessCodeRes = await service.verifyMfaCode(
       MFA_METHOD_TYPE.AUTH_APP,
       code,
-      sessionId,
-      clientSessionId,
-      persistentSessionId,
       req,
+      res,
       journeyType,
       authAppSecret
     );
@@ -113,13 +110,11 @@ export function setupAuthenticatorAppPost(
     }
 
     await notificationService.sendNotification(
-      res.locals.sessionId,
-      res.locals.clientSessionId,
       req.session.user.email,
       notificationType,
-      res.locals.persistentSessionId,
       xss(req.cookies.lng as string),
       req,
+      res,
       journeyType
     );
 

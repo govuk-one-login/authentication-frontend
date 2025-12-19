@@ -31,7 +31,6 @@ describe("Integration:: updated-terms-code", () => {
             next: NextFunction
           ): void {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-            res.locals.clientSessionId = "tDy103saszhcxbQq0-mjdzU33d";
             res.locals.persistentSessionId = "dips-123456-abc";
 
             req.session.user = {

@@ -7,18 +7,16 @@ import {
   http,
 } from "../../../utils/http.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export function updateProfileService(
   axios: Http = http
 ): UpdateProfileServiceInterface {
   const updateProfile = async function (
-    sessionId: string,
-    clientSessionId: string,
     email: string,
     requestType: RequestType,
-    persistentSessionId: string,
-    req: Request
+    req: Request,
+    res: Response
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.UPDATE_PROFILE,
@@ -28,12 +26,8 @@ export function updateProfileService(
         updateProfileType: requestType.updateProfileType,
       },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId,
-          clientSessionId,
-          persistentSessionId,
-        },
         req,
+        res,
         API_ENDPOINTS.UPDATE_PROFILE
       )
     );
