@@ -43,6 +43,10 @@
     <a href="/reset-password-request" class="govuk-link" rel="noreferrer noopener">{{'pages.enterPassword.forgottenPassword.text' | translate }}</a>
 </p>
 
+<p class="govuk-body">
+    <a href="/optional-path?event=RESET_PASSWORD" class="govuk-link" rel="noreferrer noopener">forgot password (test)</a>
+</p>
+
 </form>
 
 {% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: true } %}

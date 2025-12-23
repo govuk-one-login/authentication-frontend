@@ -17,10 +17,11 @@ const pathsToIgnore = [
 export async function getNextPathAndUpdateJourney(
   req: Request,
   res: Response,
-  event: string
+  event: string,
+  currentStateOverride?: string
 ): Promise<string> {
   const sessionId = res.locals.sessionId;
-  const currentState = req.path;
+  const currentState = currentStateOverride ? currentStateOverride : req.path;
   const sessionState = req.session.user?.journey?.nextPath;
 
   const context: AuthStateContext = {
@@ -41,20 +42,20 @@ export async function getNextPathAndUpdateJourney(
 
   const nextState = getNextState(currentState, event, context);
 
-  const isTransitionReversible = authStateMachine.states[currentState].on[event][0].meta?.reversible ?? true
+  const isTransitionReversible = authStateMachine.states[currentState].on[event][0]?.meta?.reversible ?? true
 
   const getGoBackHistory = () => {
-    const ignorePath = pathsToIgnore.includes(req.path)
+    const ignorePath = pathsToIgnore.includes(currentState)
 
     if (ignorePath) {
       return [...req.session.user.journey?.goBackHistory ?? []]
     }
 
-    return isTransitionReversible ? [...req.session.user.journey?.goBackHistory ?? [], req.path] : []
+    return isTransitionReversible ? [...req.session.user.journey?.goBackHistory ?? [], currentState] : []
   }
 
   req.session.user.journey = {
-    previousPath: req.path,
+    previousPath: currentState,
     nextPath: nextState.value,
     optionalPaths:
       Object.keys(nextState.meta).length > 0
@@ -63,10 +64,6 @@ export async function getNextPathAndUpdateJourney(
         : [],
     goBackHistory: getGoBackHistory()
   };
-
-  // Have an array which contains all paths that would delete the history
-  // if the req.path is included, make the history an empty array
-  // need to make sure that the controller behaves accordingly if a back event is received from one of these pages
 
   await saveSessionState(req);
 

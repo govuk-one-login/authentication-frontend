@@ -152,7 +152,7 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
           [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: {
             target: PATH_NAMES.CHECK_YOUR_EMAIL,
-            meta: {reversible: true}
+            meta: { reversible: true },
           },
         },
         // meta: {
@@ -202,17 +202,19 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.CANNOT_USE_EMAIL_ADDRESS]: [
             PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS,
           ],
+          ["USE_DIFFERENT_EMAIL"]: [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT],
+          ["RESEND_EMAIL_CODE"]: [PATH_NAMES.RESEND_EMAIL_CODE],
         },
-        // meta: {
-        //   optionalPaths: [
-        //     PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
-        //     PATH_NAMES.RESEND_EMAIL_CODE,
-        //     PATH_NAMES.SECURITY_CODE_WAIT,
-        //     PATH_NAMES.SECURITY_CODE_INVALID,
-        //     PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
-        //     PATH_NAMES.SIGN_IN_OR_CREATE,
-        //   ],
-        // },
+        meta: {
+          optionalPaths: [
+            // PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
+            // PATH_NAMES.RESEND_EMAIL_CODE,
+            PATH_NAMES.SECURITY_CODE_WAIT,
+            PATH_NAMES.SECURITY_CODE_INVALID,
+            PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+            PATH_NAMES.SIGN_IN_OR_CREATE,
+          ],
+        },
       },
       [PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS]: {
         meta: {
@@ -319,6 +321,7 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
             INTERMEDIATE_STATES.PASSWORD_VERIFIED,
           ],
+          ["RESET_PASSWORD"]: [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL],
         },
         meta: {
           optionalPaths: [

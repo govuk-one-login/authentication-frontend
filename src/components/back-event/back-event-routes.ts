@@ -19,4 +19,4 @@ function backEventGet(req: Request, res: Response) {
   return res.redirect(previousPath);
 }
 
-export { router };
+export { router as backEventRouter };

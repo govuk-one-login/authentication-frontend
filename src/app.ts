@@ -105,7 +105,8 @@ import { govukComponentRouter } from "./components/common/govuk-component/demo/g
 import { cannotUseEmailAddressRouter } from "./components/cannot-use-email-address/cannot-use-email-address-routes.js";
 import { wellKnownRouter } from "./components/well-known/well-known-routes.js";
 import { initialiseUserHistoryMiddleware } from "./middleware/initialise-user-history-middleware.js";
-import { router as backEventRouter } from "./components/back-event/back-event-routes.js";
+import { backEventRouter } from "./components/back-event/back-event-routes.js";
+import {optionalPathRouter}  from "./components/optional-path/optional-path-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -162,6 +163,7 @@ function registerRoutes(app: express.Application) {
   app.use(cannotUseEmailAddressRouter);
   app.use(wellKnownRouter);
   app.use(backEventRouter);
+  app.use(optionalPathRouter)
 
   // Development tools
   if (getAppEnv() !== APP_ENV_NAME.PROD && getAppEnv() !== APP_ENV_NAME.INT) {
