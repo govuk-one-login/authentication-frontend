@@ -42,13 +42,11 @@ export async function getNextPathAndUpdateJourney(
 
   const nextState = getNextState(currentState, event, context);
 
-  const isTransitionReversible = authStateMachine.states[currentState].on[event][0]?.meta?.reversible ?? true
+  const isTransitionReversible = authStateMachine.states[currentState].on[event][0]?.meta?.reversible
 
   const getGoBackHistory = () => {
-    const ignorePath = pathsToIgnore.includes(currentState)
-
-    if (ignorePath) {
-      return [...req.session.user.journey?.goBackHistory ?? []]
+    if (isTransitionReversible === undefined) {
+      return req.session.user.journey?.goBackHistory
     }
 
     return isTransitionReversible ? [...req.session.user.journey?.goBackHistory ?? [], currentState] : []

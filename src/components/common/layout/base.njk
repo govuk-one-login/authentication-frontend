@@ -106,14 +106,14 @@
         {% endif %}
 
 
-        {% if showBack %}
+        {% if (showBack) and (not showGoBackHistory) %}
             {{ govukBackLink({
                 text: "general.back" | translate,
                 href: hrefBack
             }) }}
         {% endif %}
 
-        {% if showBack %}
+        {% if (showBack) and (showGoBackHistory) %}
             {{ govukBackLink({
                 text: "new back" | translate,
                 href: history | last

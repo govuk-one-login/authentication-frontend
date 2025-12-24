@@ -7,7 +7,8 @@
 {% if isReauthJourney === false or isReauthJourney === "false" %}
     {% set showBack = true %}
 {% endif %}
-{% set hrefBack = 'enter-email' %}
+{% set showGoBackHistory = true %}
+{#{% set hrefBack = 'enter-email' %}#}
 {% set pageTitleName = 'pages.enterPassword.title' | translate %}
 
 {% block content %}
