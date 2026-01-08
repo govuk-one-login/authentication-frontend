@@ -35,24 +35,47 @@ describe("enter phone number controller", () => {
   });
 
   describe("enterPhoneNumberGet", () => {
-    it("should render enter phone number view", () => {
-      enterPhoneNumberGet(req as Request, res as Response);
+    const internationalSmsFeatureFlagTestCases = [
+      {
+        description: "international SMS enabled",
+        featureFlagValue: "1",
+        expectedTemplate: "enter-phone-number/index.njk",
+      },
+      {
+        description: "international SMS disabled",
+        featureFlagValue: "0",
+        expectedTemplate: "enter-phone-number/index-uk-number-only.njk",
+      },
+    ];
 
-      expect(res.render).to.have.calledWith("enter-phone-number/index.njk", {
-        isAccountPartCreated: undefined,
-      });
-    });
+    internationalSmsFeatureFlagTestCases.forEach(
+      ({ featureFlagValue, expectedTemplate, description }) => {
+        describe(`when ${description}`, () => {
+          beforeEach(() => {
+            process.env.SUPPORT_NEW_INTERNATIONAL_SMS = featureFlagValue;
+          });
 
-    it("should render enter phone number returning user view when user has a partly created account", () => {
-      req.session.user = {
-        isAccountPartCreated: true,
-      };
-      enterPhoneNumberGet(req as Request, res as Response);
+          it("should render correct template", () => {
+            enterPhoneNumberGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("enter-phone-number/index.njk", {
-        isAccountPartCreated: true,
-      });
-    });
+            expect(res.render).to.have.calledWith(expectedTemplate, {
+              isAccountPartCreated: undefined,
+            });
+          });
+
+          it("should render correct template when user has a partly created account", () => {
+            req.session.user = {
+              isAccountPartCreated: true,
+            };
+            enterPhoneNumberGet(req as Request, res as Response);
+
+            expect(res.render).to.have.calledWith(expectedTemplate, {
+              isAccountPartCreated: true,
+            });
+          });
+        });
+      }
+    );
   });
 
   describe("enterPhoneNumberPost", () => {
