@@ -1,0 +1,63 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+ {% set pageTitleName = 'pages.enterPhoneNumber.title' | translate %}
+
+{% set showBack = true %}
+{% set hrefBack = 'get-security-codes' %}
+
+{% block content %}
+  {% include "common/errors/errorSummary.njk" %}
+
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.header' |
+         translate}}</h1>
+    <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph1' | translate}}</p>
+    <p class="govuk-body">{{'pages.enterPhoneNumber.info.ukNumberRequired' | translate}}</p>
+
+  <form action="/enter-phone-number" method="post" novalidate="novalidate">
+
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <input type="hidden" name="isAccountPartCreated" value="{{isAccountPartCreated}}"/>
+
+    {{ govukInput({
+  label: {
+  text: 'sharedFields.phoneNumber.ukPhoneNumber.label' | translate
+  },
+  classes: "govuk-!-width-two-thirds",
+  id: "phoneNumber",
+  name: "phoneNumber",
+  type: "tel",
+  autocomplete: "tel",
+  value: phoneNumber,
+  errorMessage: {
+  text: errors['phoneNumber'].text
+  } if (errors['phoneNumber'])})
+  }}
+
+  {% set detailsHTML %}
+      <p class="govuk-body">
+          {{ 'pages.enterPhoneNumber.ukNumberDetails.text1' | translate }}
+          <a href="{{'pages.enterPhoneNumber.ukNumberDetails.changeMfaChoiceLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterPhoneNumber.ukNumberDetails.changeMfaChoiceLinkText'| translate}}</a>{{ 'pages.enterPhoneNumber.ukNumberDetails.text2' | translate }}
+      </p>
+  {% endset %}
+
+  {{ govukDetails({
+    summaryText: 'pages.enterPhoneNumber.ukNumberDetails.summaryText' | translate,
+    html: detailsHTML
+  }) }}
+
+    {{ govukButton({
+  "text": "general.continue.label" | translate,
+  "type": "Submit",
+  "preventDoubleClick": true
+  }) }}
+
+  </form>
+
+{% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: true } %}
+{%- include "ga4-opl/template.njk" -%}
+{% endblock %}
