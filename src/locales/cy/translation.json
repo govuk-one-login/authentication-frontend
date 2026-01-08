@@ -2602,6 +2602,7 @@
       "summaryAccountPartCreated": "Dewiswch ffordd o gael codau diogelwch pan fyddwch yn mewngofnodi. Mae hyn yn helpu i gadw eich GOV.UK One Login yn ddiogel.",
       "secondFactorRadios": {
         "textMessageText": "Neges destun",
+        "textMessageUkNumberText": "Neges destun i rif ffôn symudol y DU",
         "authAppText": "Ap dilysydd",
         "authAppHintText": "Gallwch ddefnyddio unrhyw ap dilysydd i greu codau diogelwch pan fyddwch yn mewngofnodi",
         "errorMessage": "Dewiswch y ffordd rydych am gael codau diogelwch"
