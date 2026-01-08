@@ -10,10 +10,6 @@ import {
   shouldPromptToSignInWithPasskey,
 } from "../../../utils/passkeys-helper.js";
 
-const pathsToIgnore = [
-  '/reset-password-request'
-]
-
 export async function getNextPathAndUpdateJourney(
   req: Request,
   res: Response,
