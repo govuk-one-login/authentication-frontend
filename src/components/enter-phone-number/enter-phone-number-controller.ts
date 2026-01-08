@@ -14,6 +14,7 @@ import xss from "xss";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import { isAccountRecoveryJourneyAndPermitted } from "../../utils/request.js";
 import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
+import { supportNewInternationalSms } from "../../config.js";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
   res.render("enter-phone-number/index.njk", {
@@ -29,6 +30,15 @@ export function enterPhoneNumberPost(
     const hasInternationalPhoneNumber = req.body.hasInternationalPhoneNumber;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     let phoneNumber;
+
+    if (
+      hasInternationalPhoneNumber === "true" &&
+      !supportNewInternationalSms()
+    ) {
+      throw new BadRequestError(
+        "International phone numbers are not supported for this journey."
+      );
+    }
 
     if (hasInternationalPhoneNumber === "true") {
       phoneNumber = convertInternationalPhoneNumberToE164Format(
