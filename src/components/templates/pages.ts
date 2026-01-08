@@ -19,8 +19,18 @@ export const pages: Record<string, Page | PageVariant[]> = {
   // Sign in
   [PATH_NAMES.SIGN_IN_OR_CREATE]: [
     {
-      name: "default",
+      name: "default with international sms supported",
       template: "sign-in-or-create/index.njk",
+      options: {
+        isInternationalSmsEnabled: true,
+      },
+    },
+    {
+      name: "default with uk sms only",
+      template: "sign-in-or-create/index.njk",
+      options: {
+        isInternationalSmsEnabled: false,
+      },
     },
     {
       name: "generic app",
