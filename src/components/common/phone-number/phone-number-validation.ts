@@ -5,6 +5,7 @@ import {
   lengthInRangeWithoutSpaces,
 } from "../../../utils/phone-number.js";
 import type { Meta } from "express-validator";
+import { supportNewInternationalSms } from "../../../config.js";
 
 //region Non-country specific validators
 const phoneNumberMustContainLeadingPlusNumbersOrSpacesOnly = (
@@ -103,6 +104,20 @@ export const internationalPhoneNumberMustBeValid = (
     throw new Error(
       req.t(
         "sharedFields.phoneNumber.internationalPhoneNumber.validationError.internationalFormat"
+      )
+    );
+  }
+  return true;
+};
+
+export const newInternationalPhoneNumbersMustBeSupported = (
+  value: string,
+  { req }: Meta
+): boolean => {
+  if (!supportNewInternationalSms()) {
+    throw new Error(
+      req.t(
+        "sharedFields.phoneNumber.ukPhoneNumber.validationError.international"
       )
     );
   }
