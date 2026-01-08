@@ -16,7 +16,7 @@ describe("Integration::enter phone number", () => {
   let app: any;
   let baseApi: string;
 
-  before(async () => {
+  const createTestApp = async () => {
     const { createApp } = await esmock(
       "../../../app.js",
       {},
@@ -42,8 +42,12 @@ describe("Integration::enter phone number", () => {
         },
       }
     );
+    return createApp();
+  };
 
-    app = await createApp();
+  before(async () => {
+    process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "0";
+    app = await createTestApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     await request(app)
@@ -188,27 +192,25 @@ describe("Integration::enter phone number", () => {
       .expect(302);
   });
 
-  it("should return validation error when international phone number not entered", async () => {
+  it("should return validation error when international phone number submitted in UK input", async () => {
     await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
-        hasInternationalPhoneNumber: true,
-        internationalPhoneNumber: "",
+        phoneNumber: "+33777777777",
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
-        expect($("#internationalPhoneNumber-error").text()).to.contains(
-          "Enter a mobile phone number"
+        expect($("#phoneNumber-error").text()).to.contains(
+          "Enter a UK mobile phone number"
         );
-        expect($("#phoneNumber-error").text()).to.contains("");
       })
       .expect(400);
   });
 
-  it("should return validation error when international phone number entered is not valid", async () => {
+  it("should return validation error when international phone number submitted in international input and international number support disabled", async () => {
     await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
@@ -216,95 +218,158 @@ describe("Integration::enter phone number", () => {
       .send({
         _csrf: token,
         hasInternationalPhoneNumber: true,
-        internationalPhoneNumber: "123456789",
+        internationalPhoneNumber: "+33777777777",
       })
       .expect(function (res) {
         const $ = cheerio.load(res.text);
-        expect($("#internationalPhoneNumber-error").text()).to.contains(
-          "Enter a mobile phone number in the correct format, including the country code"
+        expect($(".govuk-error-summary").text()).to.contains(
+          "Enter a UK mobile phone number"
         );
-        expect($("#phoneNumber-error").text()).to.contains("");
       })
       .expect(400);
   });
 
-  it("should return validation error when international phone number entered contains text", async () => {
-    await request(app)
-      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        hasInternationalPhoneNumber: true,
-        internationalPhoneNumber: "123456789dd",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#internationalPhoneNumber-error").text()).to.contains(
-          "Enter a mobile phone number using only numbers or the + symbol"
-        );
-        expect($("#phoneNumber-error").text()).to.contains("");
-      })
-      .expect(400);
-  });
+  describe("with international SMS enabled", () => {
+    let internationalNumbersEnabledToken: string | string[];
+    let internationalNumbersEnabledCookies: string;
+    let internationalNumbersEnabledApp: any;
 
-  it("should return validation error when international phone number entered less than 8 characters", async () => {
-    await request(app)
-      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        hasInternationalPhoneNumber: true,
-        internationalPhoneNumber: "1234567",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#internationalPhoneNumber-error").text()).to.contains(
-          "Enter a mobile phone number in the correct format, including the country code"
-        );
-        expect($("#phoneNumber-error").text()).to.contains("");
-      })
-      .expect(400);
-  });
+    before(async () => {
+      process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "1";
+      internationalNumbersEnabledApp = await createTestApp();
 
-  it("should return validation error when international phone number entered greater than 16 characters", async () => {
-    await request(app)
-      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        hasInternationalPhoneNumber: true,
-        internationalPhoneNumber: "12345678901234567",
-      })
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($("#internationalPhoneNumber-error").text()).to.contains(
-          "Enter a mobile phone number in the correct format, including the country code"
-        );
-        expect($("#phoneNumber-error").text()).to.contains("");
-      })
-      .expect(400);
-  });
+      await request(internationalNumbersEnabledApp)
+        .get(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
+        .then((res) => {
+          const $ = cheerio.load(res.text);
+          internationalNumbersEnabledToken = $("[name=_csrf]").val();
+          internationalNumbersEnabledCookies = res.headers["set-cookie"];
+        });
+    });
 
-  it("should redirect to /check-your-phone page when valid international phone number entered", async () => {
-    nock(baseApi)
-      .post("/send-notification")
-      .once()
-      .reply(HTTP_STATUS_CODES.NO_CONTENT);
+    after(() => {
+      delete process.env.SUPPORT_NEW_INTERNATIONAL_SMS;
+      internationalNumbersEnabledApp = undefined;
+    });
 
-    await request(app)
-      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        hasInternationalPhoneNumber: true,
-        internationalPhoneNumber: "+33645453322",
-      })
-      .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
-      .expect(302);
+    it("should return validation error when international phone number not entered", async () => {
+      await request(internationalNumbersEnabledApp)
+        .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
+        .type("form")
+        .set("Cookie", internationalNumbersEnabledCookies)
+        .send({
+          _csrf: internationalNumbersEnabledToken,
+          hasInternationalPhoneNumber: true,
+          internationalPhoneNumber: "",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#internationalPhoneNumber-error").text()).to.contains(
+            "Enter a mobile phone number"
+          );
+          expect($("#phoneNumber-error").text()).to.contains("");
+        })
+        .expect(400);
+    });
+
+    it("should return validation error when international phone number entered is not valid", async () => {
+      await request(internationalNumbersEnabledApp)
+        .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
+        .type("form")
+        .set("Cookie", internationalNumbersEnabledCookies)
+        .send({
+          _csrf: internationalNumbersEnabledToken,
+          hasInternationalPhoneNumber: true,
+          internationalPhoneNumber: "123456789",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#internationalPhoneNumber-error").text()).to.contains(
+            "Enter a mobile phone number in the correct format, including the country code"
+          );
+          expect($("#phoneNumber-error").text()).to.contains("");
+        })
+        .expect(400);
+    });
+
+    it("should return validation error when international phone number entered contains text", async () => {
+      await request(internationalNumbersEnabledApp)
+        .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
+        .type("form")
+        .set("Cookie", internationalNumbersEnabledCookies)
+        .send({
+          _csrf: internationalNumbersEnabledToken,
+          hasInternationalPhoneNumber: true,
+          internationalPhoneNumber: "123456789dd",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#internationalPhoneNumber-error").text()).to.contains(
+            "Enter a mobile phone number using only numbers or the + symbol"
+          );
+          expect($("#phoneNumber-error").text()).to.contains("");
+        })
+        .expect(400);
+    });
+
+    it("should return validation error when international phone number entered less than 8 characters", async () => {
+      await request(internationalNumbersEnabledApp)
+        .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
+        .type("form")
+        .set("Cookie", internationalNumbersEnabledCookies)
+        .send({
+          _csrf: internationalNumbersEnabledToken,
+          hasInternationalPhoneNumber: true,
+          internationalPhoneNumber: "1234567",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#internationalPhoneNumber-error").text()).to.contains(
+            "Enter a mobile phone number in the correct format, including the country code"
+          );
+          expect($("#phoneNumber-error").text()).to.contains("");
+        })
+        .expect(400);
+    });
+
+    it("should return validation error when international phone number entered greater than 16 characters", async () => {
+      await request(internationalNumbersEnabledApp)
+        .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
+        .type("form")
+        .set("Cookie", internationalNumbersEnabledCookies)
+        .send({
+          _csrf: internationalNumbersEnabledToken,
+          hasInternationalPhoneNumber: true,
+          internationalPhoneNumber: "12345678901234567",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("#internationalPhoneNumber-error").text()).to.contains(
+            "Enter a mobile phone number in the correct format, including the country code"
+          );
+          expect($("#phoneNumber-error").text()).to.contains("");
+        })
+        .expect(400);
+    });
+
+    it("should redirect to /check-your-phone page when valid international phone number entered", async () => {
+      nock(baseApi)
+        .post("/send-notification")
+        .once()
+        .reply(HTTP_STATUS_CODES.NO_CONTENT);
+
+      await request(internationalNumbersEnabledApp)
+        .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
+        .type("form")
+        .set("Cookie", internationalNumbersEnabledCookies)
+        .send({
+          _csrf: internationalNumbersEnabledToken,
+          hasInternationalPhoneNumber: true,
+          internationalPhoneNumber: "+33645453322",
+        })
+        .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
+        .expect(302);
+    });
   });
 
   it('should render 2hr lockout "You asked for too many codes" error page when request OTP more than 5 times', async () => {
