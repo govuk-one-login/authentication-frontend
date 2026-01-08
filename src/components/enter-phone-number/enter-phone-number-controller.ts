@@ -15,15 +15,12 @@ import { getNewCodePath } from "../security-code-error/security-code-error-contr
 import { isAccountRecoveryJourneyAndPermitted } from "../../utils/request.js";
 import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 import { supportNewInternationalSms } from "../../config.js";
+import { getPhoneNumberTemplateName } from "./enter-phone-number-helper.js";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
-  if (supportNewInternationalSms()) {
-    return res.render("enter-phone-number/index.njk", {
-      isAccountPartCreated: req.session.user.isAccountPartCreated,
-    });
-  }
+  const templateName = getPhoneNumberTemplateName();
 
-  res.render("enter-phone-number/index-uk-number-only.njk", {
+  res.render(templateName, {
     isAccountPartCreated: req.session.user.isAccountPartCreated,
   });
 }
@@ -36,6 +33,15 @@ export function enterPhoneNumberPost(
     const hasInternationalPhoneNumber = req.body.hasInternationalPhoneNumber;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     let phoneNumber;
+
+    if (
+      hasInternationalPhoneNumber === "true" &&
+      !supportNewInternationalSms()
+    ) {
+      throw new BadRequestError(
+        "International phone numbers are not supported for this journey."
+      );
+    }
 
     if (hasInternationalPhoneNumber === "true") {
       phoneNumber = convertInternationalPhoneNumberToE164Format(
