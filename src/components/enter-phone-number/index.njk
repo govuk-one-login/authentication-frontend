@@ -20,7 +20,6 @@
   <form action="/enter-phone-number" method="post" novalidate="novalidate">
 
     <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-    <input type="hidden" name="supportInternationalNumbers" value="{{supportInternationalNumbers}}"/>
     <input type="hidden" name="isAccountPartCreated" value="{{isAccountPartCreated}}"/>
 
     {{ govukInput({
