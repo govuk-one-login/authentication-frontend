@@ -17,7 +17,13 @@ import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 import { supportNewInternationalSms } from "../../config.js";
 
 export function enterPhoneNumberGet(req: Request, res: Response): void {
-  res.render("enter-phone-number/index.njk", {
+  if (supportNewInternationalSms()) {
+    return res.render("enter-phone-number/index.njk", {
+      isAccountPartCreated: req.session.user.isAccountPartCreated,
+    });
+  }
+
+  res.render("enter-phone-number/index-uk-number-only.njk", {
     isAccountPartCreated: req.session.user.isAccountPartCreated,
   });
 }

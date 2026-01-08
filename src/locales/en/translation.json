@@ -468,7 +468,15 @@
       "title": "Enter your mobile phone number",
       "header": "Enter your mobile phone number",
       "info": {
-        "paragraph1": "We will send a 6 digit security code to the number you give us."
+        "paragraph1": "We will send a 6 digit security code to the number you give us.",
+        "ukNumberRequired": "You must use a UK mobile phone number."
+      },
+      "ukNumberDetails": {
+        "summaryText": "I do not have a UK mobile phone number",
+        "text1": "You need to ",
+        "changeMfaChoiceLinkText": "choose another way to get security codes",
+        "changeMfaChoiceLinkHref": "/get-security-codes",
+        "text2": "."
       }
     },
     "accountCreated": {
