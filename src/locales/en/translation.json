@@ -272,6 +272,7 @@
       "paragraph3": "You’ll need:",
       "bullet1": "an email address",
       "bullet2": "a way to get security codes - this can be a mobile phone number or an authenticator app",
+      "bullet2UkNumber": "a way to get security codes - this can be a UK mobile phone number or an authenticator app",
       "insetAlternativeLanguage": {
         "paragraph1": "You can also ",
         "linkText": {
