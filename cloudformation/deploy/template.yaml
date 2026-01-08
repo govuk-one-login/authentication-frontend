@@ -360,6 +360,29 @@ Conditions:
                 ]
               - "Yes"
 
+  SupportNewInternationalSms:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  SupportNewInternationalSms,
+                  DefaultValue: "Yes",
+                ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  SupportNewInternationalSms,
+                  DefaultValue: "Yes",
+                ]
+              - "Yes"
+
   EnableDwpKbvContactFormChanges:
     Fn::Or:
       - Fn::And:
@@ -411,6 +434,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
+      SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
@@ -434,6 +458,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
+      SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
@@ -452,6 +477,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
+      SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
     dev:
       DeployServiceDownPage: "No"
@@ -485,6 +511,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
+      SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -518,6 +545,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
+      SupportNewInternationalSms: "Yes"
       EnableDwpKbvContactFormChanges: "Yes"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -558,6 +586,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
+      SupportNewInternationalSms: "Yes"
       EnableDwpKbvContactFormChanges: "Yes"
     integration:
       DeployServiceDownPage: "Yes"
@@ -593,6 +622,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
+      SupportNewInternationalSms: "Yes"
       EnableDwpKbvContactFormChanges: "No"
     production:
       DeployServiceDownPage: "Yes"
@@ -630,6 +660,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
+      SupportNewInternationalSms: "Yes"
       EnableDwpKbvContactFormChanges: "No"
 
 Globals:
@@ -1164,6 +1195,8 @@ Resources:
               Value: !If [SupportPasskeyRegistration, "1", "0"]
             - Name: ENABLE_DWP_KBV_CONTACT_FORM_CHANGES
               Value: !If [EnableDwpKbvContactFormChanges, "1", "0"]
+            - Name: SUPPORT_NEW_INTERNATIONAL_SMS
+              Value: !If [SupportNewInternationalSms, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If

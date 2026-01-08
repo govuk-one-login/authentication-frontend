@@ -206,3 +206,7 @@ export function supportPasskeyRegistration(): boolean {
 export function enableDwpKbvContactFormChanges(): boolean {
   return process.env.ENABLE_DWP_KBV_CONTACT_FORM_CHANGES === "1";
 }
+
+export function supportNewInternationalSms(): boolean {
+  return process.env.SUPPORT_NEW_INTERNATIONAL_SMS === "1";
+}
