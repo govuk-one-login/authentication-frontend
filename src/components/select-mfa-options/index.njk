@@ -33,6 +33,8 @@
   {% set radioHintText = 'pages.getSecurityCodes.summary' | translate %}
 {% endif %}
 
+{% set textMessageText = 'pages.getSecurityCodes.secondFactorRadios.textMessageText' if supportNewInternationalSms else 'pages.getSecurityCodes.secondFactorRadios.textMessageUkNumberText' %}
+
 <form action="/get-security-codes" method="post" novalidate>
   <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 
@@ -51,7 +53,7 @@
   },
   items: [
     {
-      text: 'pages.getSecurityCodes.secondFactorRadios.textMessageText' | translate,
+      text: textMessageText | translate,
       value: "SMS"
     },
     {

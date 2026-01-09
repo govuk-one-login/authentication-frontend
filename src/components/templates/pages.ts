@@ -198,7 +198,50 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]: {
     template: "create-password/index.njk",
   },
-  [PATH_NAMES.GET_SECURITY_CODES]: { template: "select-mfa-options/index.njk" },
+  [PATH_NAMES.GET_SECURITY_CODES]: [
+    {
+      name: "default with international sms supported",
+      template: "select-mfa-options/index.njk",
+      options: { supportNewInternationalSms: true },
+    },
+    {
+      name: "default with uk sms only",
+      template: "select-mfa-options/index.njk",
+      options: { supportNewInternationalSms: false },
+    },
+    {
+      name: "account part created with international sms supported",
+      template: "select-mfa-options/index.njk",
+      options: {
+        isAccountPartCreated: true,
+        supportNewInternationalSms: true,
+      },
+    },
+    {
+      name: "account part created with uk sms only",
+      template: "select-mfa-options/index.njk",
+      options: {
+        isAccountPartCreated: true,
+        supportNewInternationalSms: false,
+      },
+    },
+    {
+      name: "account recovery with international sms supported",
+      template: "select-mfa-options/index.njk",
+      options: {
+        isAccountRecoveryJourney: true,
+        supportNewInternationalSms: true,
+      },
+    },
+    {
+      name: "account recovery with uk sms only",
+      template: "select-mfa-options/index.njk",
+      options: {
+        isAccountRecoveryJourney: true,
+        supportNewInternationalSms: false,
+      },
+    },
+  ],
   [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
     template: "enter-phone-number/index.njk",
   },
