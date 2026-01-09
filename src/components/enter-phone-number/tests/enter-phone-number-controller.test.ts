@@ -78,7 +78,33 @@ describe("enter phone number controller", () => {
       ).to.be.eq("3990");
     });
 
+    it("should throw BadRequestError when international number submitted and feature flag disabled", async () => {
+      process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "0";
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as SendNotificationServiceInterface;
+
+      req.body.hasInternationalPhoneNumber = "true";
+      req.body.internationalPhoneNumber = "+33645453322";
+      req.session.user.email = "test@test.com";
+
+      await assert.rejects(
+        async () =>
+          enterPhoneNumberPost(fakeNotificationService)(
+            req as Request,
+            res as Response
+          ),
+        Error,
+        "International phone numbers are not supported"
+      );
+
+      expect(fakeNotificationService.sendNotification).to.not.have.been.called;
+    });
+
     it("should redirect to /check-your-phone when success with valid international number", async () => {
+      process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "1";
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake.returns({
           success: true,

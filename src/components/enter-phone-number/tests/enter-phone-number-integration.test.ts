@@ -189,6 +189,7 @@ describe("Integration::enter phone number", () => {
   });
 
   it("should return validation error when international phone number not entered", async () => {
+    process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "1";
     await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
@@ -209,6 +210,7 @@ describe("Integration::enter phone number", () => {
   });
 
   it("should return validation error when international phone number entered is not valid", async () => {
+    process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "1";
     await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
@@ -229,6 +231,7 @@ describe("Integration::enter phone number", () => {
   });
 
   it("should return validation error when international phone number entered contains text", async () => {
+    process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "1";
     await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
@@ -249,6 +252,7 @@ describe("Integration::enter phone number", () => {
   });
 
   it("should return validation error when international phone number entered less than 8 characters", async () => {
+    process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "1";
     await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
@@ -269,6 +273,7 @@ describe("Integration::enter phone number", () => {
   });
 
   it("should return validation error when international phone number entered greater than 16 characters", async () => {
+    process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "1";
     await request(app)
       .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
       .type("form")
@@ -289,6 +294,7 @@ describe("Integration::enter phone number", () => {
   });
 
   it("should redirect to /check-your-phone page when valid international phone number entered", async () => {
+    process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "1";
     nock(baseApi)
       .post("/send-notification")
       .once()
@@ -305,6 +311,27 @@ describe("Integration::enter phone number", () => {
       })
       .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
       .expect(302);
+  });
+
+  it("should return validation error when international phone number submitted and feature flag disabled", async () => {
+    process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "0";
+
+    await request(app)
+      .post(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        hasInternationalPhoneNumber: true,
+        internationalPhoneNumber: "+33777777777",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#internationalPhoneNumber-error").text()).to.contains(
+          "Enter a UK mobile phone number"
+        );
+      })
+      .expect(400);
   });
 
   it('should render 2hr lockout "You asked for too many codes" error page when request OTP more than 5 times', async () => {

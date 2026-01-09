@@ -1,10 +1,12 @@
 import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
 import type { ValidationChainFunc } from "../../types.js";
+import { supportNewInternationalSms } from "../../config.js";
 import {
   internationalPhoneNumberMustBeValid,
   internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
   internationalPhoneNumberMustHaveLengthWithoutSpacesInRange,
+  newInternationalPhoneNumbersMustBeSupported,
   ukPhoneNumberMustBeValid,
   ukPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
   ukPhoneNumberMustHaveLengthWithoutSpacesInRange,
@@ -34,6 +36,8 @@ export function validateEnterPhoneNumberRequest(): ValidationChainFunc {
           { value }
         );
       })
+      .custom(newInternationalPhoneNumbersMustBeSupported)
+      .if(() => supportNewInternationalSms())
       .custom(internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly)
       .custom(internationalPhoneNumberMustHaveLengthWithoutSpacesInRange)
       .custom(internationalPhoneNumberMustBeValid),
