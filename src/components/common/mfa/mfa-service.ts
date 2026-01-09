@@ -8,17 +8,15 @@ import {
   http,
 } from "../../../utils/http.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export function mfaService(axios: Http = http): MfaServiceInterface {
   const sendMfaCode = async function (
-    sessionId: string,
-    clientSessionId: string,
     emailAddress: string,
-    persistentSessionId: string,
     isResendCodeRequest: boolean,
     userLanguage: string,
     req: Request,
+    res: Response,
     mfaMethodId: string,
     journeyType?: JOURNEY_TYPE
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
@@ -30,16 +28,9 @@ export function mfaService(axios: Http = http): MfaServiceInterface {
         journeyType,
         mfaMethodId,
       },
-      getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId: sessionId,
-          clientSessionId: clientSessionId,
-          persistentSessionId: persistentSessionId,
-          userLanguage: userLanguage,
-        },
-        req,
-        API_ENDPOINTS.MFA
-      )
+      getInternalRequestConfigWithSecurityHeaders(req, res, API_ENDPOINTS.MFA, {
+        userLanguage,
+      })
     );
 
     return createApiResponse<DefaultApiResponse>(response, [

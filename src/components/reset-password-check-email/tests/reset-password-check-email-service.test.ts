@@ -16,7 +16,10 @@ import {
 } from "../../../app.constants.js";
 import type { ResetPasswordCheckEmailServiceInterface } from "../types.js";
 import { resetPasswordCheckEmailService } from "../reset-password-check-email-service.js";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("reset password check email service", () => {
   const httpInstance = new Http();
@@ -41,20 +44,18 @@ describe("reset password check email service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { email, sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
+    const { email } = commonVariables;
     const req = createMockRequest(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
+    const res = createMockResponse();
     const withinForcedPasswordResetJourney = false;
 
     const result = await service.resetPasswordRequest(
       email,
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
       withinForcedPasswordResetJourney,
-      req
+      req,
+      res
     );
 
     const expectedApiCallDetails = {

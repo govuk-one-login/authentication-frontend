@@ -3,10 +3,12 @@ import type { SinonStub } from "sinon";
 import { expect } from "chai";
 import { sinon } from "../utils/test-utils.js";
 import { commonVariables } from "./common-test-variables.js";
+
 export const expectedHeadersFromCommonVarsWithSecurityHeaders = {
   "X-API-Key": commonVariables.apiKey,
   "Session-Id": commonVariables.sessionId,
-  "Client-Session-Id": commonVariables.clientSessionId,
+  "govuk-signin-journey-id": commonVariables.journeyId,
+  "Client-Session-Id": commonVariables.journeyId,
   "x-forwarded-for": commonVariables.ip,
   "di-persistent-session-id": commonVariables.diPersistentSessionId,
   "txma-audit-encoded": commonVariables.auditEncodedString,
@@ -36,17 +38,15 @@ export function checkApiCallMadeWithExpectedBodyAndHeaders<T>(
     ? { validateStatus: sinon.match.func }
     : {};
 
-  expect(
-    stub.calledOnceWithExactly(
-      expectations.expectedPath,
-      expectations.expectedBody,
-      {
-        headers: expectations.expectedHeaders,
-        proxy: sinon.match.bool,
-        ...expectedValidateStatus,
-      }
-    )
-  ).to.be.true;
+  expect(stub).to.be.calledOnceWithExactly(
+    expectations.expectedPath,
+    expectations.expectedBody,
+    {
+      headers: expectations.expectedHeaders,
+      proxy: false,
+      ...expectedValidateStatus,
+    }
+  );
 }
 
 export function setupApiKeyAndBaseUrlEnvVars(): void {

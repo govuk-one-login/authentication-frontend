@@ -10,11 +10,16 @@ import type { Request } from "express";
 import { Http } from "../../../utils/http.js";
 import { sinon } from "../../../../test/utils/test-utils.js";
 import { API_ENDPOINTS } from "../../../app.constants.js";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../test/helpers/mock-request-helper.js";
 import type { SinonStub } from "sinon";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 
 describe("enter-password-service", () => {
   let req: Partial<Request>;
+  const res = createMockResponse();
   const httpInstance = new Http();
   const service: EnterPasswordServiceInterface =
     enterPasswordService(httpInstance);
@@ -57,27 +62,31 @@ describe("enter-password-service", () => {
 
     const result: ApiResponseResult<UserLoginResponse> =
       await service.loginUser(
-        "",
         "email",
         "password",
-        "",
-        "",
         req as Request,
+        res,
         undefined
       );
 
     expect(result.success).to.be.true;
     expect(result.data).to.deep.eq({});
-    expect(
-      postStub.calledOnceWithExactly(API_ENDPOINTS.LOG_IN_USER, expectedBody, {
+    expect(postStub).calledOnceWithExactly(
+      API_ENDPOINTS.LOG_IN_USER,
+      expectedBody,
+      {
         headers: {
           "txma-audit-encoded": auditEncodedString,
           "x-forwarded-for": IP_ADDRESS,
           "X-API-Key": API_KEY,
+          "Session-Id": commonVariables.sessionId,
+          "govuk-signin-journey-id": commonVariables.journeyId,
+          "Client-Session-Id": commonVariables.journeyId,
+          "di-persistent-session-id": commonVariables.diPersistentSessionId,
         },
         proxy: sinon.match.bool,
         validateStatus: sinon.match.func,
-      })
-    ).to.be.true;
+      }
+    );
   });
 });

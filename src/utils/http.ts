@@ -15,7 +15,7 @@ import {
 import type { ApiResponseResult } from "../types.js";
 import { HTTP_STATUS_CODES } from "../app.constants.js";
 import { ApiError } from "./error.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 import { createPersonalDataHeaders } from "@govuk-one-login/frontend-passthrough-headers";
 import { Agent } from "https";
 
@@ -29,10 +29,7 @@ const headers: CustomAxiosRequestHeaders = {
 };
 
 export interface ConfigOptions {
-  sessionId?: string;
-  clientSessionId?: string;
   validationStatuses?: number[];
-  persistentSessionId?: string;
   baseURL?: string;
   userLanguage?: string;
   reauthenticate?: boolean;
@@ -64,9 +61,10 @@ function getSecurityHeaders(path: string, req: Request, baseUrl?: string) {
 }
 
 export function getInternalRequestConfigWithSecurityHeaders(
-  options: ConfigOptions,
   req: Request,
-  path: string
+  res: Response,
+  path: string,
+  options: ConfigOptions = {}
 ): AxiosRequestConfig {
   const config: AxiosRequestConfig = {
     headers: {
@@ -76,12 +74,14 @@ export function getInternalRequestConfigWithSecurityHeaders(
     proxy: false,
   };
 
-  if (options.sessionId) {
-    config.headers["Session-Id"] = options.sessionId;
+  if (res.locals.sessionId) {
+    config.headers["Session-Id"] = res.locals.sessionId;
   }
 
-  if (options.clientSessionId) {
-    config.headers["Client-Session-Id"] = options.clientSessionId;
+  if (req.session?.client?.journeyId) {
+    config.headers["govuk-signin-journey-id"] = req.session?.client?.journeyId;
+    // TODO: AUT-4911 Remove later
+    config.headers["Client-Session-Id"] = req.session?.client?.journeyId;
   }
 
   if (options.validationStatuses) {
@@ -90,8 +90,8 @@ export function getInternalRequestConfigWithSecurityHeaders(
     };
   }
 
-  if (options.persistentSessionId) {
-    config.headers["di-persistent-session-id"] = options.persistentSessionId;
+  if (res.locals.persistentSessionId) {
+    config.headers["di-persistent-session-id"] = res.locals.persistentSessionId;
   }
 
   if (options.baseURL) {
