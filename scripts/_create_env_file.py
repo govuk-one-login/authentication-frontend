@@ -91,6 +91,7 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             "SUPPORT_PASSKEY_USAGE": 1,
             "SUPPORT_PASSKEY_REGISTRATION": 1,
             "ENABLE_DWP_KBV_CONTACT_FORM_CHANGES": 1,
+            "SUPPORT_NEW_INTERNATIONAL_SMS": 1,
         },
     },
     {
