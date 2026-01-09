@@ -26,7 +26,13 @@
     <p class="govuk-body">{{ 'pages.signInOrCreate.paragraph3' | translate }}</p>
     <ul class="govuk-list govuk-list--bullet">
         <li>{{ 'pages.signInOrCreate.bullet1' | translate }}</li>
-          <li>{{ 'pages.signInOrCreate.bullet2' | translate }}</li>
+        <li>
+          {% if isInternationalSmsEnabled %}
+            {{ 'pages.signInOrCreate.bullet2' | translate }}
+          {% else %}
+            {{ 'pages.signInOrCreate.bullet2UkNumber' | translate }}
+          {% endif %}
+        </li>
     </ul>
     {% set altLangInsetHtml %}
         {{ 'pages.signInOrCreate.insetAlternativeLanguage.paragraph1' | translate }}
