@@ -468,7 +468,15 @@
       "title": "Rhowch eich rhif ffôn symudol",
       "header": "Rhowch eich rhif ffôn symudol",
       "info": {
-        "paragraph1": "Byddwn yn anfon cod diogelwch 6 digid i’r rhif rydych yn ei roi i ni."
+        "paragraph1": "Byddwn yn anfon cod diogelwch 6 digid i’r rhif rydych yn ei roi i ni.",
+        "ukNumberRequired": "Rhaid i chi ddefnyddio rhif ffôn symudol y DU."
+      },
+      "ukNumberDetails": {
+        "summaryText": "Nid oes gennyf rif ffôn symudol y DU",
+        "text1": "Mae angen i chi ",
+        "changeMfaChoiceLinkText": "dewiswch ffordd arall o gael codau diogelwch",
+        "changeMfaChoiceLinkHref": "/get-security-codes",
+        "text2": "."
       }
     },
     "accountCreated": {
