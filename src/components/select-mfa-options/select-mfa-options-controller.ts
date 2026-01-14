@@ -4,6 +4,8 @@ import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { generateMfaSecret } from "../../utils/mfa.js";
 import { MFA_METHOD_TYPE } from "../../app.constants.js";
 import { isAccountRecoveryJourney } from "../../utils/request.js";
+import { supportNewInternationalSms } from "../../config.js";
+
 export function getSecurityCodesGet(req: Request, res: Response): void {
   const accountRecoveryJourney = isAccountRecoveryJourney(req);
   req.session.user.isAccountCreationJourney =
@@ -13,6 +15,7 @@ export function getSecurityCodesGet(req: Request, res: Response): void {
     isAccountPartCreated: req.session.user.isAccountPartCreated,
     isAccountRecoveryJourney: accountRecoveryJourney,
     selectedMfaOption: req.session.user.selectedMfaOption,
+    supportNewInternationalSms: supportNewInternationalSms(),
   });
 }
 
