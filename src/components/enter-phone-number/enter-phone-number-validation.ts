@@ -5,10 +5,12 @@ import {
   internationalPhoneNumberMustBeValid,
   internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
   internationalPhoneNumberMustHaveLengthWithoutSpacesInRange,
+  newInternationalPhoneNumbersMustBeSupported,
   ukPhoneNumberMustBeValid,
   ukPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly,
   ukPhoneNumberMustHaveLengthWithoutSpacesInRange,
 } from "../common/phone-number/phone-number-validation.js";
+import { getPhoneNumberTemplateName } from "./enter-phone-number-helper.js";
 export function validateEnterPhoneNumberRequest(): ValidationChainFunc {
   return [
     body("phoneNumber")
@@ -27,6 +29,7 @@ export function validateEnterPhoneNumberRequest(): ValidationChainFunc {
       .custom(ukPhoneNumberMustBeValid),
     body("internationalPhoneNumber")
       .if(body("hasInternationalPhoneNumber").notEmpty().equals("true"))
+      .custom(newInternationalPhoneNumbersMustBeSupported)
       .notEmpty()
       .withMessage((value, { req }) => {
         return req.t(
@@ -37,6 +40,6 @@ export function validateEnterPhoneNumberRequest(): ValidationChainFunc {
       .custom(internationalPhoneNumberMustContainLeadingPlusNumbersOrSpacesOnly)
       .custom(internationalPhoneNumberMustHaveLengthWithoutSpacesInRange)
       .custom(internationalPhoneNumberMustBeValid),
-    validateBodyMiddleware("enter-phone-number/index.njk"),
+    validateBodyMiddleware(getPhoneNumberTemplateName()),
   ];
 }

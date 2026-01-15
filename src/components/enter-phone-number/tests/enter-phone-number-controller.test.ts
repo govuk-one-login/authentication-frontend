@@ -35,24 +35,47 @@ describe("enter phone number controller", () => {
   });
 
   describe("enterPhoneNumberGet", () => {
-    it("should render enter phone number view", () => {
-      enterPhoneNumberGet(req as Request, res as Response);
+    const internationalSmsFeatureFlagTestCases = [
+      {
+        description: "international SMS enabled",
+        featureFlagValue: "1",
+        expectedTemplate: "enter-phone-number/index.njk",
+      },
+      {
+        description: "international SMS disabled",
+        featureFlagValue: "0",
+        expectedTemplate: "enter-phone-number/index-uk-number-only.njk",
+      },
+    ];
 
-      expect(res.render).to.have.calledWith("enter-phone-number/index.njk", {
-        isAccountPartCreated: undefined,
-      });
-    });
+    internationalSmsFeatureFlagTestCases.forEach(
+      ({ featureFlagValue, expectedTemplate, description }) => {
+        describe(`when ${description}`, () => {
+          beforeEach(() => {
+            process.env.SUPPORT_NEW_INTERNATIONAL_SMS = featureFlagValue;
+          });
 
-    it("should render enter phone number returning user view when user has a partly created account", () => {
-      req.session.user = {
-        isAccountPartCreated: true,
-      };
-      enterPhoneNumberGet(req as Request, res as Response);
+          it("should render correct template", () => {
+            enterPhoneNumberGet(req as Request, res as Response);
 
-      expect(res.render).to.have.calledWith("enter-phone-number/index.njk", {
-        isAccountPartCreated: true,
-      });
-    });
+            expect(res.render).to.have.calledWith(expectedTemplate, {
+              isAccountPartCreated: undefined,
+            });
+          });
+
+          it("should render correct template when user has a partly created account", () => {
+            req.session.user = {
+              isAccountPartCreated: true,
+            };
+            enterPhoneNumberGet(req as Request, res as Response);
+
+            expect(res.render).to.have.calledWith(expectedTemplate, {
+              isAccountPartCreated: true,
+            });
+          });
+        });
+      }
+    );
   });
 
   describe("enterPhoneNumberPost", () => {
@@ -78,7 +101,33 @@ describe("enter phone number controller", () => {
       ).to.be.eq("3990");
     });
 
+    it("should throw BadRequestError when international number submitted and feature flag disabled", async () => {
+      process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "0";
+      const fakeNotificationService: SendNotificationServiceInterface = {
+        sendNotification: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as SendNotificationServiceInterface;
+
+      req.body.hasInternationalPhoneNumber = "true";
+      req.body.internationalPhoneNumber = "+33645453322";
+      req.session.user.email = "test@test.com";
+
+      await assert.rejects(
+        async () =>
+          enterPhoneNumberPost(fakeNotificationService)(
+            req as Request,
+            res as Response
+          ),
+        Error,
+        "International phone numbers are not supported"
+      );
+
+      expect(fakeNotificationService.sendNotification).to.not.have.been.called;
+    });
+
     it("should redirect to /check-your-phone when success with valid international number", async () => {
+      process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "1";
       const fakeNotificationService: SendNotificationServiceInterface = {
         sendNotification: sinon.fake.returns({
           success: true,

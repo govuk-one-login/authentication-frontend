@@ -252,9 +252,16 @@ export const pages: Record<string, Page | PageVariant[]> = {
       },
     },
   ],
-  [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: {
-    template: "enter-phone-number/index.njk",
-  },
+  [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: [
+    {
+      name: "international sms supported",
+      template: "enter-phone-number/index.njk",
+    },
+    {
+      name: "uk sms only",
+      template: "enter-phone-number/index-uk-number-only.njk",
+    },
+  ],
   [PATH_NAMES.CHECK_YOUR_PHONE]: {
     template: "check-your-phone/index.njk",
     options: {
