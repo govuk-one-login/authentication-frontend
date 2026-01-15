@@ -12,16 +12,13 @@ export function authCodeGet(
   cookieService: CookieConsentServiceInterface = cookieConsentService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const gaId = req.session.client.crossDomainGaTrackingId;
 
     const result = await service.getAuthCode(
-      sessionId,
-      clientSessionId,
-      persistentSessionId,
       req.session.client,
       req.session.user,
-      req
+      req,
+      res
     );
 
     delete req.session.user.reauthenticate;

@@ -27,7 +27,6 @@ export function enterPhoneNumberPost(
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
     const hasInternationalPhoneNumber = req.body.hasInternationalPhoneNumber;
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     let phoneNumber;
 
     if (hasInternationalPhoneNumber === "true") {
@@ -48,13 +47,11 @@ export function enterPhoneNumberPost(
       : JOURNEY_TYPE.REGISTRATION;
 
     const sendNotificationResponse = await service.sendNotification(
-      sessionId,
-      clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER,
-      persistentSessionId,
       xss(req.cookies.lng as string),
       req,
+      res,
       journeyType,
       phoneNumber
     );

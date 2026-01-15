@@ -50,7 +50,6 @@ export const resendMfaCodePost = (
   service: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const { email, mfaMethods } = req.session.user;
     const phoneNumber = getDefaultSmsMfaMethod(mfaMethods)?.phoneNumber;
 
@@ -59,13 +58,11 @@ export const resendMfaCodePost = (
       : JOURNEY_TYPE.REGISTRATION;
 
     const sendNotificationResponse = await service.sendNotification(
-      sessionId,
-      clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_PHONE_NUMBER,
-      persistentSessionId,
       xss(req.cookies.lng as string),
       req,
+      res,
       journeyType,
       phoneNumber
     );

@@ -26,7 +26,6 @@ describe("accountInterventionsMiddleware", () => {
     res = mockResponse({
       locals: {
         sessionId: "test-session",
-        clientSessionId: "test-client-session",
         persistentSessionId: "test-persistent-session",
       },
     });
