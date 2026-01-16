@@ -511,7 +511,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
-      SupportNewInternationalSms: "No"
+      SupportNewInternationalSms: "Yes"
       EnableDwpKbvContactFormChanges: "Yes"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
