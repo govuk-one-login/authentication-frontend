@@ -16,6 +16,7 @@
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.enterPhoneNumber.header' |
          translate}}</h1>
     <p class="govuk-body">{{'pages.enterPhoneNumber.info.paragraph1' | translate}}</p>
+    <p class="govuk-body">{{'pages.enterPhoneNumber.info.ukNumberRequired' | translate}}</p>
 
   <form action="/enter-phone-number" method="post" novalidate="novalidate">
 
@@ -37,42 +38,17 @@
   } if (errors['phoneNumber'])})
   }}
 
+  {% set detailsHTML %}
+      <p class="govuk-body">
+          {{ 'pages.enterPhoneNumber.ukNumberDetails.text1' | translate }}
+          <a href="{{'pages.enterPhoneNumber.ukNumberDetails.changeMfaChoiceLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.enterPhoneNumber.ukNumberDetails.changeMfaChoiceLinkText'| translate}}</a>{{ 'pages.enterPhoneNumber.ukNumberDetails.text2' | translate }}
+      </p>
+  {% endset %}
 
-  {% set internationalNumberHtml %}
-  {{ govukInput({
-    id: "internationalPhoneNumber",
-    name: "internationalPhoneNumber",
-    type: "tel",
-    autocomplete: "tel",
-    value: internationalPhoneNumber,
-    classes: "govuk-!-width-two-thirds",
-    label: {
-      text: 'sharedFields.phoneNumber.internationalPhoneNumber.label' | translate
-    },
-    hint: {
-      text: 'sharedFields.phoneNumber.internationalPhoneNumber.hint' | translate
-    },
-    errorMessage: {
-    text: errors['internationalPhoneNumber'].text
-    } if (errors['internationalPhoneNumber'])
+  {{ govukDetails({
+    summaryText: 'pages.enterPhoneNumber.ukNumberDetails.summaryText' | translate,
+    html: detailsHTML
   }) }}
-  {% endset -%}
-
-  {{ govukCheckboxes({
-    items: [
-      {
-        value: "true",
-        id: "hasInternationalPhoneNumber",
-        name: "hasInternationalPhoneNumber",
-        text: 'sharedFields.phoneNumber.internationalPhoneNumber.checkBoxLabel' | translate,
-        conditional: {
-          html: internationalNumberHtml
-        },
-        checked: hasInternationalPhoneNumber === 'true'
-      }
-    ]
-  }) }}
-
 
     {{ govukButton({
   "text": "general.continue.label" | translate,
