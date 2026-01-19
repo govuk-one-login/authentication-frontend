@@ -586,7 +586,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
-      SupportNewInternationalSms: "Yes"
+      SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
     integration:
       DeployServiceDownPage: "Yes"
