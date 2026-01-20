@@ -66,6 +66,7 @@ const USER_JOURNEY_EVENTS = {
   CANNOT_USE_EMAIL_ADDRESS: "CANNOT_USE_EMAIL_ADDRESS",
   ENTER_EMAIL_ADDRESS_AFTER_EXPERIAN_CHECK:
     "ENTER_EMAIL_ADDRESS_AFTER_EXPERIAN_CHECK",
+  INITIATE_SFAD: "INITIATE_SFAD",
 };
 
 export interface AuthStateContext {
@@ -600,6 +601,7 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE]: [
             PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           ],
+          [USER_JOURNEY_EVENTS.INITIATE_SFAD]: [PATH_NAMES.SFAD_AUTHORIZE],
         },
       },
       [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: {
@@ -609,6 +611,9 @@ const authStateMachine = createMachine<AuthStateContext>(
             PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           ],
         },
+      },
+      [PATH_NAMES.SFAD_AUTHORIZE]: {
+        type: "final",
       },
       [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES]: {
         on: {
