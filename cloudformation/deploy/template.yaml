@@ -383,6 +383,29 @@ Conditions:
                 ]
               - "Yes"
 
+  SupportSFAD:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  SupportSFAD,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  SupportSFAD,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+
   EnableDwpKbvContactFormChanges:
     Fn::Or:
       - Fn::And:
@@ -436,6 +459,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      SupportSFAD: "Yes"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       frontendApiBaseUrl: https://nw0dah7bxk-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev2/
@@ -460,6 +484,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      SupportSFAD: "Yes"
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: https://y3s69ubaz5-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev3/
@@ -479,6 +504,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      SupportSFAD: "Yes"
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -513,6 +539,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      SupportSFAD: "Yes"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -547,6 +574,7 @@ Mappings:
       SupportPasskeyRegistration: "No"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      SupportSFAD: "No"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -588,6 +616,7 @@ Mappings:
       SupportPasskeyRegistration: "No"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      SupportSFAD: "No"
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -662,6 +691,7 @@ Mappings:
       SupportPasskeyRegistration: "No"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      SupportSFAD: "No"
 
 Globals:
   Function:
@@ -1197,6 +1227,8 @@ Resources:
               Value: !If [EnableDwpKbvContactFormChanges, "1", "0"]
             - Name: SUPPORT_NEW_INTERNATIONAL_SMS
               Value: !If [SupportNewInternationalSms, "1", "0"]
+            - Name: SUPPORT_SFAD
+              Value: !If [SupportSFAD, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If
