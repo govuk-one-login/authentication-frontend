@@ -25,6 +25,7 @@ import {
   getVitalSignsIntervalSeconds,
   supportAccountInterventions,
   supportAuthorizeController,
+  supportSFAD,
 } from "./config.js";
 import { logErrorMiddleware } from "./middleware/log-error-middleware.js";
 import { getCookieLanguageMiddleware } from "./middleware/cookie-lang-middleware.js";
@@ -104,6 +105,7 @@ import { csrfSynchronisedProtection } from "./utils/csrf.js";
 import { govukComponentRouter } from "./components/common/govuk-component/demo/govuk-component-routes.js";
 import { cannotUseEmailAddressRouter } from "./components/cannot-use-email-address/cannot-use-email-address-routes.js";
 import { wellKnownRouter } from "./components/well-known/well-known-routes.js";
+import { sfadAuthorizeRouter } from "./components/sfad-authorize/sfad-authorize-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -159,6 +161,9 @@ function registerRoutes(app: express.Application) {
   app.use(ipvCallbackRouter);
   app.use(cannotUseEmailAddressRouter);
   app.use(wellKnownRouter);
+  if (supportSFAD()) {
+    app.use(sfadAuthorizeRouter);
+  }
 
   // Development tools
   if (getAppEnv() !== APP_ENV_NAME.PROD && getAppEnv() !== APP_ENV_NAME.INT) {

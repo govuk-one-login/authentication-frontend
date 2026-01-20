@@ -73,6 +73,7 @@ export const PATH_NAMES = {
   CANNOT_USE_EMAIL_ADDRESS: "/cannot-use-email-address",
   CANNOT_USE_EMAIL_ADDRESS_CONTINUE: "/cannot-use-email-address-continue",
   WELL_KNOWN_APPLE_ASSOCIATION: "/.well-known/apple-app-site-association",
+  SFAD_AUTHORIZE: "/sfad-authorize",
 };
 
 export const HREF_BACK = {
@@ -120,6 +121,7 @@ export const API_ENDPOINTS = {
   MFA_RESET_AUTHORIZE: "/mfa-reset-authorize",
   REVERIFICATION_RESULT: "/reverification-result",
   ID_REVERIFICATION_STATE: "/id-reverification-state",
+  AMC_AUTHORIZE: "/amc-authorize",
 };
 
 export const ERROR_MESSAGES = {
@@ -330,4 +332,9 @@ export const WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS: Record<string, string> = {
 export const CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION = {
   HELP_DELETE_ACCOUNT: "help-to-delete-account",
   RETRY_SECURITY_CODE: "retry-security-code",
+  INITIATE_SFAD: "initiate-sfad",
+};
+
+export const AMC_JOURNEY_TYPES = {
+  SFAD: "SFAD",
 };

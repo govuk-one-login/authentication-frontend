@@ -218,6 +218,28 @@ describe("ipv callback controller", () => {
           "ipv-callback/index-cannot-change-how-get-security-codes.njk"
         );
       });
+
+      it("should render with supportSFAD true when supportSFAD() returns true", () => {
+        process.env.SUPPORT_SFAD = "1";
+
+        cannotChangeSecurityCodesGet(req as Request, res as Response);
+
+        const renderCall = res.render.getCall(0);
+        expect(renderCall.args[1].supportSFAD).to.equal(true);
+
+        delete process.env.SUPPORT_SFAD;
+      });
+
+      it("should render with supportSFAD false when supportSFAD() returns false", () => {
+        process.env.SUPPORT_SFAD = "0";
+
+        cannotChangeSecurityCodesGet(req as Request, res as Response);
+
+        const renderCall = res.render.getCall(0);
+        expect(renderCall.args[1].supportSFAD).to.equal(false);
+
+        delete process.env.SUPPORT_SFAD;
+      });
     });
 
     describe("cannotChangeSecurityCodePost", () => {
@@ -254,6 +276,16 @@ describe("ipv callback controller", () => {
         expect(res.redirect).to.have.calledWith(
           PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE
         );
+      });
+
+      it("should redirect to sfad authorize controller when user selects initiate sfad radio button", async () => {
+        req = createMockRequest(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
+        req.body.cannotChangeHowGetSecurityCodeAction =
+          CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.INITIATE_SFAD;
+
+        await cannotChangeSecurityCodesPost(req as Request, res as Response);
+
+        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.SFAD_AUTHORIZE);
       });
     });
   });
