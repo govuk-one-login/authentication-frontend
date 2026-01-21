@@ -622,7 +622,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
-      SupportNewInternationalSms: "Yes"
+      SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "No"
     production:
       DeployServiceDownPage: "Yes"
