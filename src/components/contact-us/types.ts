@@ -119,4 +119,5 @@ export interface FurtherInformationTemplateOptions {
   title: string;
   appSessionId?: string;
   appErrorCode?: string;
+  contentId?: string;
 }
