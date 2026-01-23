@@ -545,7 +545,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
-      SupportNewInternationalSms: "Yes"
+      SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -622,7 +622,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
-      SupportNewInternationalSms: "Yes"
+      SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "No"
     production:
       DeployServiceDownPage: "Yes"
@@ -660,7 +660,7 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
-      SupportNewInternationalSms: "Yes"
+      SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "No"
 
 Globals:
