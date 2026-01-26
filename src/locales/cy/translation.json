@@ -10,8 +10,8 @@
     "sendMessage": "Anfon neges",
     "phaseBanner": {
       "tag": {
-        "beta": "beta",
-        "test": "test"
+        "beta": "Beta",
+        "test": "Test"
       },
       "message": {
         "start": "Mae hwn yn wasanaeth newydd – bydd eich ",

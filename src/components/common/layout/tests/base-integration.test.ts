@@ -102,7 +102,7 @@ describe("Integration:: base page ", () => {
         expect($(".govuk-phase-banner").length).to.equal(1);
         expect($(".govuk-phase-banner").hasClass("test-banner")).to.be.true;
         expect($(".govuk-phase-banner__content__tag").text().trim()).to.equal(
-          "test"
+          "Test"
         );
       });
       it("should render the test phase header css", async () => {
@@ -124,7 +124,7 @@ describe("Integration:: base page ", () => {
         expect($(".govuk-phase-banner").length).to.equal(1);
         expect($(".govuk-phase-banner").hasClass("test-banner")).to.be.false;
         expect($(".govuk-phase-banner__content__tag").text().trim()).to.equal(
-          "beta"
+          "Beta"
         );
       });
       it("should not render the test phase header css", async () => {
