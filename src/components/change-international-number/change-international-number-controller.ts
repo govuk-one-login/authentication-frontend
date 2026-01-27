@@ -13,6 +13,8 @@ export async function changeInternationalNumberPost(
   req: Request,
   res: Response
 ): Promise<void> {
+  req.session.user.isAccountRecoveryJourney = true;
+
   res.redirect(
     await getNextPathAndUpdateJourney(
       req,
