@@ -37,6 +37,7 @@
     "typescript-eslint": "8.34.0"
   },
   "overrides": {
-    "dompurify": "3.2.6"
+    "dompurify": "3.2.6",
+    "lodash-es": "4.17.23"
   }
 }
