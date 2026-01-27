@@ -22,28 +22,39 @@
 
     <h2 class="govuk-heading-m">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.header' | translate}}</h2>
 
+    {% set radioItems = [
+        {
+            value: "help-to-delete-account",
+            text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option1Text' | translate,
+            id: "help-to-delete-account",
+            checked: false,
+            hint: {
+              text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option1Hint' | translate
+            }
+        },
+        {
+            value: "retry-security-code",
+            text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option2Text' | translate,
+            id: "retry-security-code",
+            checked: false
+        }
+    ] %}
+
+    {% if supportSFAD %}
+      {% set radioItems = (radioItems.push({
+          value: "initiate-sfad",
+          text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option3Text' | translate,
+          id: "initiate-sfad",
+          checked: false
+      }), radioItems) %}
+    {% endif %}
+
     {{ govukRadios({
         name: "cannotChangeHowGetSecurityCodeAction",
         attributes: {
             "id": "radio-cannot-change-how-get-security-code-action"
         },
-        items: [
-            {
-                value: "help-to-delete-account",
-                text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option1Text' | translate,
-                id: "help-to-delete-account",
-                checked: false,
-                hint: {
-                  text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option1Hint' | translate
-                }
-            },
-            {
-                value: "retry-security-code",
-                text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option2Text' | translate,
-                id: "retry-security-code",
-                checked: false
-            }
-        ],
+        items: radioItems,
         errorMessage: {
             text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.radioValidationError' | translate
         } if errors["cannotChangeHowGetSecurityCodeAction"]

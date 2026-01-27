@@ -714,6 +714,7 @@
         "option1Text": "Get help to delete your GOV.UK One Login from the support team",
         "option1Hint": "Call or use webchat to contact the GOV.UK One Login team",
         "option2Text": "Try entering a security code again with the method you already have set up",
+        "option3Text": "Initiate SFAD (this is placeholder content to initiate the journey, not in upper envs)",
         "radioValidationError": "Select what you would like to do"
       }
     },
