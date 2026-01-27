@@ -1004,6 +1004,7 @@
           "bulletPoint11": "mae rhai meysydd ffurflen yn cyfyngu ar faint o nodau y gellir eu rhoi ynddynt, a all ei gwneud hi’n anodd rhoi gwybodaeth wrth ddefnyddio technolegau cynorthwyol",
           "bulletPoint12": "nid yw botymau sy’n dangos animeiddiadau ‘spinner’ yn cadw at eich gosodiadau cynnig llai",
           "bulletPoint13": "nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni",
+          "bulletPoint14": "os ydych yn defnyddio darllenydd sgrin ac yn profi eich hunaniaeth trwy ateb cwestiynau am fudd-daliadau rydych yn eu derbyn, bydd y tirnodau ar y tudalennau hyn yn wahanol i dirnodau yng ngweddill y daith",
           "paragraph2": {
             "text1": "Ewch i’r ",
             "link": {
@@ -1079,7 +1080,8 @@
           "listItem9": "Mae dolenni yn y pennawd a’r troedyn y gallech ddisgwyl eu hagor mewn tab newydd weithiau’n agor yn yr un tab. Mae hyn yn methu WCAG 2.2 Guideline 3.2 (Predictable).",
           "listItem10": "Mae rhai meysydd ffurflen yn cyfyngu ar faint o nodau y gellir eu rhoi, a all ei gwneud hi’n anodd rhoi gwybodaeth os ydych chi’n defnyddio technolegau cynorthwyol. Mae hyn yn methu maen prawf llwyddiant 3.3.1 (Adnabod Gwallau) WCAG 2.2.",
           "listItem11": "Nid yw botymau sy’n dangos animeiddiadau ‘spinner’ yn cadw at eich gosodiadau cynnig llai. Mae hyn yn methu maen prawf llwyddiant 2.2.2 (Saib, Stop, Cuddio) WCAG 2.2.",
-          "listItem12": "Nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni. Mae hyn yn methu maen prawf llwyddiant 3.2.6 (Cymorth Cyson) WCAG 2.2."
+          "listItem12": "Nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni. Mae hyn yn methu maen prawf llwyddiant 3.2.6 (Cymorth Cyson) WCAG 2.2.",
+          "listItem13": "Nid yw tirnodau yr un fath ar bob tudalen. Os ydych yn defnyddio darllenydd sgrin ac yn profi eich hunaniaeth trwy ateb cwestiynau am fudd-daliadau rydych yn eu derbyn, bydd y tirnodau ar y tudalennau hyn yn wahanol i dirnodau yng ngweddill y daith."
         },
         "webchat": {
           "header": "Diffyg cydymffurfiaeth â’r rheoliadau hygyrchedd ar gyfer gwesgwrs GOV.UK One Login",
