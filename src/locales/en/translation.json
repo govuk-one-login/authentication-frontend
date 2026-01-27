@@ -10,8 +10,8 @@
     "sendMessage": "Send message",
     "phaseBanner": {
       "tag": {
-        "beta": "beta",
-        "test": "test"
+        "beta": "Beta",
+        "test": "Test"
       },
       "message": {
         "start": "This is a new service – your ",
