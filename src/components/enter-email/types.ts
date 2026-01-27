@@ -9,6 +9,7 @@ export interface UserExists extends DefaultApiResponse {
   phoneNumberLastThree?: string;
   lockoutInformation?: LockoutInformation[];
   hasActivePasskey: boolean;
+  needsToChangeInternationalNumber?: boolean;
 }
 export interface LockoutInformation {
   lockType: string;

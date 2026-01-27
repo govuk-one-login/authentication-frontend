@@ -106,6 +106,7 @@ async function getExistingUserAndPopulateSessionData(
   );
   req.session.user.hasActivePasskey = result.data.hasActivePasskey;
   req.session.user.isAccountCreationJourney = !result.data.doesUserExist;
+  req.session.user.needsToChangeInternationalNumber = true; // TODO this would be filled in by the user exists API
 
   return result.data.doesUserExist;
 }

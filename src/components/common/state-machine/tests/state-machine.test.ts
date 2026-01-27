@@ -15,6 +15,7 @@ const DEFAULT_CONTEXT = {
   mfaMethodType: MFA_METHOD_TYPE.SMS,
   shouldPromptToRegisterPasskey: false,
   shouldPromptToSignInWithPasskey: false,
+  needsToChangeInternationalNumber: false,
 };
 
 describe("state-machine", () => {
@@ -226,6 +227,57 @@ describe("state-machine", () => {
         );
         expect(nextState.value).to.equal(test.destination);
       });
+    });
+  });
+
+  describe(`getNextState - ${PATH_NAMES.CHANGE_INTERNATIONAL_NUMBER}`, () => {
+    it(`should move from ${PATH_NAMES.CHANGE_INTERNATIONAL_NUMBER} to ${PATH_NAMES.GET_SECURITY_CODES}`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.CHANGE_INTERNATIONAL_NUMBER,
+        USER_JOURNEY_EVENTS.START_MFA_RESET,
+        DEFAULT_CONTEXT
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.GET_SECURITY_CODES);
+    });
+  });
+
+  describe(`getNextState - ${PATH_NAMES.IPV_CALLBACK}`, () => {
+    it(`should move from ${PATH_NAMES.IPV_CALLBACK} to ${PATH_NAMES.GET_SECURITY_CODES} on successful reverification`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.IPV_CALLBACK,
+        USER_JOURNEY_EVENTS.IPV_REVERIFICATION_COMPLETED,
+        DEFAULT_CONTEXT
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.GET_SECURITY_CODES);
+    });
+  });
+
+  describe("getNextState - SIGN_IN_END with international number change", () => {
+    it(`should move to ${PATH_NAMES.CHANGE_INTERNATIONAL_NUMBER} when flag is true`, () => {
+      const nextState = getNextState(
+        "password-verified",
+        USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
+        {
+          ...DEFAULT_CONTEXT,
+          isMfaRequired: false,
+          needsToChangeInternationalNumber: true,
+        }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.CHANGE_INTERNATIONAL_NUMBER);
+    });
+
+    it(`should move to ${PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS} when international number not needed but T&Cs not accepted`, () => {
+      const nextState = getNextState(
+        "password-verified",
+        USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
+        {
+          ...DEFAULT_CONTEXT,
+          isMfaRequired: false,
+          needsToChangeInternationalNumber: false,
+          isLatestTermsAndConditionsAccepted: false,
+        }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS);
     });
   });
 });

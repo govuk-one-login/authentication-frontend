@@ -62,6 +62,7 @@ export interface UserSession {
   mfaMethods?: MfaMethod[];
   journey?: UserJourney;
   isLatestTermsAndConditionsAccepted?: boolean;
+  needsToChangeInternationalNumber?: boolean;
   isIdentityRequired?: boolean;
   isUpliftRequired?: boolean;
   isAccountCreationJourney?: boolean;

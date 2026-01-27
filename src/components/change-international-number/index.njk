@@ -1,0 +1,22 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitleName = 'Change your international number' %}
+
+{% block content %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">Change your international number</h1>
+
+<p class="govuk-body">
+  You can update your international phone number to continue receiving security codes.
+</p>
+
+<form method="post" novalidate>
+  <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+
+  {{ govukButton({
+    text: "Continue"
+  }) }}
+</form>
+
+{% endblock %}

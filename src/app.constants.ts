@@ -73,6 +73,7 @@ export const PATH_NAMES = {
   CANNOT_USE_EMAIL_ADDRESS: "/cannot-use-email-address",
   CANNOT_USE_EMAIL_ADDRESS_CONTINUE: "/cannot-use-email-address-continue",
   WELL_KNOWN_APPLE_ASSOCIATION: "/.well-known/apple-app-site-association",
+  CHANGE_INTERNATIONAL_NUMBER: "/wip-change-your-international-number",
 };
 
 export const HREF_BACK = {

@@ -33,6 +33,8 @@ export async function getNextPathAndUpdateJourney(
     mfaMethodType: req.session.user?.mfaMethodType,
     shouldPromptToRegisterPasskey: shouldPromptToRegisterPasskey(req, res),
     shouldPromptToSignInWithPasskey: shouldPromptToSignInWithPasskey(req, res),
+    needsToChangeInternationalNumber:
+      req.session.user?.needsToChangeInternationalNumber ?? false,
   };
 
   const nextState = getNextState(currentState, event, context);

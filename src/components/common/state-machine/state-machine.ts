@@ -15,6 +15,8 @@ const USER_JOURNEY_EVENTS = {
   EMAIL_CODE_VERIFIED: "EMAIL_CODE_VERIFIED",
   CONSENT_ACCEPTED: "CONSENT_ACCEPTED",
   TERMS_AND_CONDITIONS_ACCEPTED: "TERMS_AND_CONDITIONS_ACCEPTED",
+  INTERNATIONAL_NUMBER_CHANGED: "INTERNATIONAL_NUMBER_CHANGED",
+  START_MFA_RESET: "START_MFA_RESET",
   VERIFY_PHONE_NUMBER: "VERIFY_PHONE_NUMBER",
   VERIFY_EMAIL_CODE: "VERIFY_EMAIL_CODE",
   ACCOUNT_CREATED: "ACCOUNT_CREATED",
@@ -80,6 +82,7 @@ export interface AuthStateContext {
   mfaMethodType: MFA_METHOD_TYPE | undefined;
   shouldPromptToRegisterPasskey: boolean;
   shouldPromptToSignInWithPasskey: boolean;
+  needsToChangeInternationalNumber: boolean;
 }
 
 const authStateMachine = createMachine<AuthStateContext>(
@@ -406,6 +409,15 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
+      [PATH_NAMES.CHANGE_INTERNATIONAL_NUMBER]: {
+        on: {
+          [USER_JOURNEY_EVENTS.START_MFA_RESET]: [
+            {
+              target: [PATH_NAMES.GET_SECURITY_CODES],
+            },
+          ],
+        },
+      },
       [PATH_NAMES.RESET_PASSWORD_REQUEST]: {
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED]: [
@@ -503,6 +515,10 @@ const authStateMachine = createMachine<AuthStateContext>(
       },
       [INTERMEDIATE_STATES.SIGN_IN_END]: {
         always: [
+          {
+            target: [PATH_NAMES.CHANGE_INTERNATIONAL_NUMBER],
+            cond: "needsToChangeInternationalNumber",
+          },
           {
             target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
             cond: "needsLatestTermsAndConditions",
@@ -632,6 +648,8 @@ const authStateMachine = createMachine<AuthStateContext>(
   },
   {
     guards: {
+      needsToChangeInternationalNumber: (context) =>
+        context.needsToChangeInternationalNumber,
       needsLatestTermsAndConditions: (context) =>
         !context.isLatestTermsAndConditionsAccepted,
       isMfaRequired: (context) => context.isMfaRequired,

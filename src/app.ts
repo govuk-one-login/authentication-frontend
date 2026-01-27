@@ -104,6 +104,7 @@ import { csrfSynchronisedProtection } from "./utils/csrf.js";
 import { govukComponentRouter } from "./components/common/govuk-component/demo/govuk-component-routes.js";
 import { cannotUseEmailAddressRouter } from "./components/cannot-use-email-address/cannot-use-email-address-routes.js";
 import { wellKnownRouter } from "./components/well-known/well-known-routes.js";
+import { changeInternationalNumberRouter } from "./components/change-international-number/change-international-number-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -159,6 +160,7 @@ function registerRoutes(app: express.Application) {
   app.use(ipvCallbackRouter);
   app.use(cannotUseEmailAddressRouter);
   app.use(wellKnownRouter);
+  app.use(changeInternationalNumberRouter);
 
   // Development tools
   if (getAppEnv() !== APP_ENV_NAME.PROD && getAppEnv() !== APP_ENV_NAME.INT) {
