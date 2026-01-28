@@ -67,6 +67,7 @@ export interface UserSession {
   isAccountCreationJourney?: boolean;
   isAccountPartCreated?: boolean;
   identityProcessCheckStart?: number;
+  qrCodeText?: string;
   authAppSecret?: string;
   authAppQrCodeUrl?: string;
   isPasswordChangeRequired?: boolean;
