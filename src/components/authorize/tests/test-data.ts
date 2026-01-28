@@ -60,10 +60,11 @@ export async function getWrongPrivateKey(): Promise<jose.KeyLike> {
 
 export async function createJwt(
   jwtObject: any,
-  privateKey: jose.KeyLike
+  privateKey: jose.KeyLike,
+  kid?: string
 ): Promise<string> {
   const jwt = await new jose.SignJWT(jwtObject)
-    .setProtectedHeader({ alg: "ES256" })
+    .setProtectedHeader({ alg: "ES256", kid })
     .sign(privateKey);
   return jwt;
 }
