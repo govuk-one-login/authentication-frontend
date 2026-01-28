@@ -17,7 +17,10 @@ import {
   JOURNEY_TYPE,
   PATH_NAMES,
 } from "../../../../app.constants.js";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
 describe("mfa service", () => {
   const httpInstance = new Http();
@@ -35,11 +38,11 @@ describe("mfa service", () => {
   });
 
   it("successfully calls the API to make a request to send an mfa code", async () => {
-    const { email, sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
+    const { email } = commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_MFA, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
+    const res = createMockResponse();
     const axiosResponse = Promise.resolve({
       data: {},
       status: HTTP_STATUS_CODES.NO_CONTENT,
@@ -61,13 +64,11 @@ describe("mfa service", () => {
     };
 
     const result = await service.sendMfaCode(
-      sessionId,
-      clientSessionId,
       email,
-      diPersistentSessionId,
       isResendCodeRequest,
       userLanguage,
       req,
+      res,
       mfaMethodId,
       journeyType
     );

@@ -5,10 +5,8 @@ export interface VerifyMfaCodeInterface {
   verifyMfaCode: (
     methodType: MFA_METHOD_TYPE,
     code: string,
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     req: Request,
+    res: Response,
     journeyType: JOURNEY_TYPE,
     profileInformation?: string
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;

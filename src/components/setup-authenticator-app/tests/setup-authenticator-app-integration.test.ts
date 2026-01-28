@@ -31,7 +31,6 @@ describe("Integration::setup-authenticator-app", () => {
             next: NextFunction
           ): void {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-            res.locals.clientSessionId = "csy103saszhcxbQq0-mjdzU854";
             res.locals.persistentSessionId = "dips-123456-abc";
 
             req.session.user = {
