@@ -49,7 +49,3 @@
     {% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
     {%- include "ga4-opl/template.njk" -%}
 {% endblock %}
-
-{% block scripts %}
-    <script type="text/javascript" src="/public/scripts/showPassword.js"></script>
-{% endblock %}
