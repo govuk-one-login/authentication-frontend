@@ -89,21 +89,3 @@ function initDynaTraceRUM(hasConsentedForAnalytics) {
     );
   }
 })();
-
-window.addEventListener("load", (event) => {
-  initEnterPhoneNumber();
-
-  if (
-    window.GOVUK &&
-    window.GOVUK.Modules &&
-    window.GOVUK.Modules.ShowPassword
-  ) {
-    var modules = document.querySelectorAll('[data-module="show-password"]');
-
-    for (var i = 0, l = modules.length; i < l; i++) {
-      if (GOVUK.Modules.ShowPassword.prototype.init) {
-        new GOVUK.Modules.ShowPassword(modules[i]).init();
-      }
-    }
-  }
-});
