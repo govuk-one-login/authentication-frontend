@@ -3,7 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "common/show-password/macro.njk" import govukInputWithShowPasswordWithLabelAsPageHeading %}
+{% from "common/show-password/macro.njk" import customGovukPasswordInput with context %}
 {% if isReauthJourney === false or isReauthJourney === "false" %}
     {% set showBack = true %}
 {% endif %}
@@ -18,20 +18,16 @@
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
 <input type="hidden" name="isReauthJourney" value="{{isReauthJourney}}"/>
 
-{{ govukInputWithShowPasswordWithLabelAsPageHeading(
-    'pages.enterPassword.header' | translate,
-    "password",
-    errors,
-    {
-        show: 'general.showPassword.show' | translate,
-        hide: 'general.showPassword.hide' | translate,
-        showFullText: 'general.showPassword.showFullText' | translate,
-        hideFullText: 'general.showPassword.hideFullText' | translate,
-        announceShown: 'general.showPassword.announceShown' | translate,
-        announceHidden: 'general.showPassword.announceHidden' | translate
+{{ customGovukPasswordInput({
+    label: {
+        text: 'pages.enterPassword.header' | translate,
+        classes: "govuk-label--l",
+        isPageHeading: true
     },
-    "off"
-) }}
+    id: 'password',
+    autocomplete: 'off',
+    errors: errors
+}) }}
 
 {{ govukButton({
     "text": "general.continue.label" | translate,
