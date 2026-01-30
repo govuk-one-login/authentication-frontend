@@ -2,8 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
-{% from "common/show-password/macro.njk" import govukInputWithShowPassword, govukInputWithHintAndShowPassword %}
-
+{% from "common/show-password/macro.njk" import customGovukPasswordInput, customGovukRetypePasswordInput with context %}
 {% set pageTitleName = 'pages.createPassword.title' | translate %}
 
 {% block content %}
@@ -16,36 +15,26 @@
 
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
-        {{ govukInputWithHintAndShowPassword(
-            'pages.createPassword.password.label'  | translate,
-            "password",
-            errors,
-            {
-                show: 'general.showPassword.show' | translate,
-                hide: 'general.showPassword.hide' | translate,
-                showFullText: 'general.showPassword.showFullText' | translate,
-                hideFullText: 'general.showPassword.hideFullText' | translate,
-                announceShown: 'general.showPassword.announceShown' | translate,
-                announceHidden: 'general.showPassword.announceHidden' | translate
+        {{ customGovukPasswordInput({
+            label: {
+                text: 'pages.createPassword.password.label'  | translate
             },
-            'new-password',
-            'pages.createPassword.password.hintText' | translate
-        ) }}
+            hint: {
+                text: 'pages.createPassword.password.hintText' | translate
+            },
+            id: 'password',
+            autocomplete: 'new-password',
+            errors: errors
+        }) }}
 
-        {{ govukInputWithShowPassword(
-            'pages.createPassword.confirmPassword.label' | translate,
-            "confirm-password",
-            errors,
-            {
-                show: 'general.showRetypedPassword.show' | translate,
-                hide: 'general.showRetypedPassword.hide' | translate,
-                showFullText: 'general.showRetypedPassword.showFullText' | translate,
-                hideFullText: 'general.showRetypedPassword.hideFullText' | translate,
-                announceShown: 'general.showRetypedPassword.announceShown' | translate,
-                announceHidden: 'general.showRetypedPassword.announceHidden' | translate
+        {{ customGovukRetypePasswordInput({
+            label: {
+                text: 'pages.createPassword.confirmPassword.label' | translate
             },
-            'new-password'
-        ) }}
+            id: 'confirm-password',
+            autocomplete: 'new-password',
+            errors: errors
+        }) }}
 
         {% include "common/password-guidance/_password-guidance-details.njk" %}
 
