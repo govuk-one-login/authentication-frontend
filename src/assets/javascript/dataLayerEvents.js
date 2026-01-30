@@ -1,21 +1,11 @@
-"use strict";
-
-function gtag(obj) {
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push(obj);
+function gtag(e) {
+  ((window.dataLayer = window.dataLayer || []), window.dataLayer.push(e));
 }
-
-function generateSessionJourney(journey, status) {
+function generateSessionJourney(e, n) {
+  return { sessionjourney: { journey: e, status: n } };
+}
+function getJourneyMapping(e) {
   return {
-    sessionjourney: {
-      journey: journey,
-      status: status,
-    },
-  };
-}
-
-function getJourneyMapping(url) {
-  const JOURNEY_DATA_LAYER_PATHS = {
     "/enter-email-create": generateSessionJourney("sign up", "start"),
     "/account-not-found": generateSessionJourney("sign up", "start"),
     "/check-your-email": generateSessionJourney("sign up", "middle"),
@@ -54,48 +44,21 @@ function getJourneyMapping(url) {
       "change security codes",
       "end"
     ),
-  };
-
-  return JOURNEY_DATA_LAYER_PATHS[url];
+  }[e];
 }
-
 function pushLanguageToDataLayer() {
-  var languageCode =
-    document.querySelector("html") &&
-    document.querySelector("html").getAttribute("lang");
-
-  var languageNames = {
-    en: "english",
-    cy: "welsh",
-  };
-
-  if (languageCode && languageNames[languageCode]) {
-    gtag({
-      event: "langEvent",
-      language: languageNames[languageCode],
-      languagecode: languageCode,
-    });
-  }
+  var e =
+      document.querySelector("html") &&
+      document.querySelector("html").getAttribute("lang"),
+    n = { en: "english", cy: "welsh" };
+  e && n[e] && gtag({ event: "langEvent", language: n[e], languagecode: e });
 }
-
-function pushCustomEventsToDataLayer(hasConsentedForAnalytics) {
-  if (!hasConsentedForAnalytics) return;
-
-  gtag({
-    department: {
-      programmeteam: "di",
-      productteam: "sso",
-    },
-  });
-
-  var sessionJourney = getJourneyMapping(window.location.pathname);
-  if (sessionJourney) {
-    gtag(sessionJourney);
-  }
-
-  pushLanguageToDataLayer();
-  gtag({ event: "gtm.js", "gtm.start": new Date().getTime() });
+function pushCustomEventsToDataLayer(e) {
+  e &&
+    (gtag({ department: { programmeteam: "di", productteam: "sso" } }),
+    (e = getJourneyMapping(window.location.pathname)) && gtag(e),
+    pushLanguageToDataLayer(),
+    gtag({ event: "gtm.js", "gtm.start": new Date().getTime() }));
 }
-
-window.GOVSignIn = window.GOVSignIn || {};
-window.GOVSignIn.pushCustomEventsToDataLayer = pushCustomEventsToDataLayer;
+((window.GOVSignIn = window.GOVSignIn || {}),
+  (window.GOVSignIn.pushCustomEventsToDataLayer = pushCustomEventsToDataLayer));
