@@ -210,3 +210,7 @@ export function enableDwpKbvContactFormChanges(): boolean {
 export function supportNewInternationalSms(): boolean {
   return process.env.SUPPORT_NEW_INTERNATIONAL_SMS === "1";
 }
+
+export function getUseAuthJwks(): boolean {
+  return process.env.USE_AUTH_JWKS === "1";
+}
