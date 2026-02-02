@@ -214,3 +214,7 @@ export function supportNewInternationalSms(): boolean {
 export function supportSingleFactorAccountDeletion(): boolean {
   return process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION === "1";
 }
+
+export function getUseAuthJwks(): boolean {
+  return process.env.USE_AUTH_JWKS === "1";
+}
