@@ -123,6 +123,7 @@ export const API_ENDPOINTS = {
   REVERIFICATION_RESULT: "/reverification-result",
   ID_REVERIFICATION_STATE: "/id-reverification-state",
   AMC_AUTHORIZE: "/amc-authorize",
+  AMC_CALLBACK: "/amc-callback",
 };
 
 export const ERROR_MESSAGES = {

@@ -10,5 +10,5 @@ router.get(
   PATH_NAMES.AMC_CALLBACK,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  amcCallbackGet
+  amcCallbackGet()
 );
