@@ -12,3 +12,5 @@ router.get(
   allowUserJourneyMiddleware,
   amcCallbackGet()
 );
+
+export { router as amcCallbackRouter };
