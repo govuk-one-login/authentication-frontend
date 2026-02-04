@@ -27,7 +27,7 @@ describe("Integration:: amc callback", () => {
     nock(baseApi)
       .post(API_ENDPOINTS.AMC_CALLBACK)
       .once()
-      .reply(200, { success: true, data: "Success message" });
+      .reply(200, "Success message");
 
     const requestPath =
       PATH_NAMES.AMC_CALLBACK + "?code=test-code&state=test-state";
@@ -44,12 +44,12 @@ describe("Integration:: amc callback", () => {
     nock(baseApi)
       .post(API_ENDPOINTS.AMC_CALLBACK)
       .once()
-      .reply(200, { success: false, data: "Error message" });
+      .reply(500, "Error message");
 
     const requestPath =
       PATH_NAMES.AMC_CALLBACK + "?code=test-code&state=test-state";
 
-    await request(app).get(requestPath).expect(400);
+    await request(app).get(requestPath).expect(500);
   });
 
   it("should return 400 when code parameter is missing", async () => {

@@ -5,10 +5,8 @@ import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { amcCallbackGet } from "../amc-callback-controller.js";
-import { BadRequestError } from "../../../utils/error.js";
 import sinon from "sinon";
 import type { Request, Response } from "express";
-import { strict as assert } from "assert";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 
 const createMockService = (success: boolean, data: string) => {
@@ -62,55 +60,48 @@ describe("amc-callback-controller", () => {
     expect(res.json).to.have.been.calledWith({ message: expectedResult });
   });
 
-  it("should raise error when service call fails", async () => {
+  it("should return error when service call fails", async () => {
     const expectedErrorMessage = "error message";
     const fakeService = createMockService(false, expectedErrorMessage);
 
-    await assert.rejects(
-      async () => amcCallbackGet(fakeService)(req as Request, res as Response),
-      (error: Error) => {
-        expect(error).to.be.instanceOf(BadRequestError);
-        expect(error.message).to.equal(
-          "400:AMC callback failed: " + expectedErrorMessage
-        );
-        return true;
-      }
-    );
+    await amcCallbackGet(fakeService)(req as Request, res as Response);
 
     expect(fakeService.getAMCResult).to.have.been.called;
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith({
+      error: "AMC callback failed: " + expectedErrorMessage,
+    });
   });
 
-  it("should raise error when query params are missing or invalid", async () => {
+  it("should return error when query params are missing or invalid", async () => {
     const missingOrInvalidQueries = [
       {
         query: { state: STATE },
-        expectedMessage: "400:Request query missing auth code param",
+        expectedError: "Request query missing auth code param",
       },
       {
         query: { code: ["array"], state: STATE },
-        expectedMessage: "400:Invalid auth code param type",
+        expectedError: "Invalid auth code param type",
       },
       {
         query: { code: AUTH_CODE },
-        expectedMessage: "400:Request query missing state param",
+        expectedError: "Request query missing state param",
       },
       {
         query: { code: AUTH_CODE, state: ["array"] },
-        expectedMessage: "400:Invalid state param type",
+        expectedError: "Invalid state param type",
       },
     ];
 
     for (const testCase of missingOrInvalidQueries) {
       req.query = testCase.query;
 
-      await assert.rejects(
-        async () => amcCallbackGet()(req as Request, res as Response),
-        (error: Error) => {
-          expect(error).to.be.instanceOf(BadRequestError);
-          expect(error.message).to.equal(testCase.expectedMessage);
-          return true;
-        }
-      );
+      await amcCallbackGet()(req as Request, res as Response);
+
+      expect(res.status).to.have.been.calledWith(400);
+      expect(res.json).to.have.been.calledWith({
+        error: testCase.expectedError,
+      });
     }
   });
 });

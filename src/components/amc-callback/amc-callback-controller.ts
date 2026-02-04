@@ -1,5 +1,4 @@
 import type { Request, Response } from "express";
-import { BadRequestError } from "../../utils/error.js";
 import { amcResultService } from "./amc-result-service.js";
 import type { AMCResultInterface } from "./types.js";
 import type { ExpressRouteFunc } from "../../types.js";
@@ -11,15 +10,19 @@ export function amcCallbackGet(
     const { code, state } = req.query;
 
     if (code === undefined) {
-      throw new BadRequestError("Request query missing auth code param", 400);
+      res.status(400).json({ error: "Request query missing auth code param" });
+      return;
     } else if (typeof code !== "string") {
-      throw new BadRequestError("Invalid auth code param type", 400);
+      res.status(400).json({ error: "Invalid auth code param type" });
+      return;
     }
 
     if (state === undefined) {
-      throw new BadRequestError("Request query missing state param", 400);
+      res.status(400).json({ error: "Request query missing state param" });
+      return;
     } else if (typeof state !== "string") {
-      throw new BadRequestError("Invalid state param type", 400);
+      res.status(400).json({ error: "Invalid state param type" });
+      return;
     }
 
     const result = await service.getAMCResult(
@@ -32,7 +35,8 @@ export function amcCallbackGet(
     );
 
     if (!result.success) {
-      throw new BadRequestError(`AMC callback failed: ${result.data}`, 400);
+      res.status(400).json({ error: `AMC callback failed: ${result.data}` });
+      return;
     }
 
     res.status(200).json({ message: result.data });
