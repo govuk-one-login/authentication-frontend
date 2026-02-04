@@ -102,6 +102,20 @@ describe("serverErrorHandler", () => {
     expect(renderSpy).to.have.been.calledOnceWith("common/errors/500.njk");
   });
 
+  it("should render 500 template with OK status for BadRequestError with INDEFINITELY_BLOCKED_INTERNATIONAL_SMS code", () => {
+    const err = new BadRequestError(
+      "User is indefinitely blocked from sending SMS to international numbers",
+      ERROR_CODES.INDEFINITELY_BLOCKED_INTERNATIONAL_SMS
+    );
+    const renderSpy = sinon.spy(res, "render");
+    const statusSpy = sinon.spy(res, "status");
+
+    serverErrorHandler(err, req, res, next);
+
+    expect(statusSpy).to.have.been.calledOnceWith(HTTP_STATUS_CODES.OK);
+    expect(renderSpy).to.have.been.calledOnceWith("common/errors/500.njk");
+  });
+
   it("should render 500 template if error is not unauthorized and headers have not been sent", () => {
     const err = new Error("Test error");
     const renderSpy = sinon.spy(res, "render");

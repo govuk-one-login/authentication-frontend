@@ -31,6 +31,14 @@ export function serverErrorHandler(
 
   if (
     err instanceof BadRequestError &&
+    err.code === ERROR_CODES.INDEFINITELY_BLOCKED_INTERNATIONAL_SMS.toString()
+  ) {
+    res.status(HTTP_STATUS_CODES.OK);
+    return res.render("common/errors/500.njk");
+  }
+
+  if (
+    err instanceof BadRequestError &&
     err.code === ERROR_CODES.SESSION_ID_MISSING_OR_INVALID.toString()
   ) {
     res.status(HTTP_STATUS_CODES.BAD_REQUEST);

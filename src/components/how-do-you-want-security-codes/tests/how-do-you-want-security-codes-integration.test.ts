@@ -247,8 +247,37 @@ describe("Integration::how do you want security codes", () => {
       }
     );
 
+    it("should render lockout page when MFA returns indefinite international SMS block error", async () => {
+      app = await createDefaultSmsBackupAppExpressApp(
+        false,
+        BACKUP_AUTH_APP_ID
+      );
+      const { token, cookies } = await getTokenAndCookies(app);
+
+      nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
+        code: 1092,
+        message:
+          "User is indefinitely blocked from sending SMS to international numbers",
+      });
+
+      const result = await request(app)
+        .post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          "mfa-method-id": DEFAULT_PHONE_NUMBER_ID,
+        })
+        .expect(200);
+
+      const $ = cheerio.load(result.text);
+      expect($("h1").text()).to.contains("Sorry, there is a problem");
+      expect($("body").text()).to.contains("Try again later");
+    });
+
     async function createDefaultSmsBackupAppExpressApp(
-      isPasswordResetJourney: boolean = false
+      isPasswordResetJourney: boolean = false,
+      activeMfaMethodId: string = DEFAULT_PHONE_NUMBER_ID
     ): Promise<express.Application> {
       const { createApp } = await esmock(
         "../../../app.js",
@@ -266,7 +295,7 @@ describe("Integration::how do you want security codes", () => {
                   authApp: true,
                 },
               ]),
-              DEFAULT_PHONE_NUMBER_ID,
+              activeMfaMethodId,
               isPasswordResetJourney
             ),
           },
