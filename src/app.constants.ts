@@ -74,6 +74,7 @@ export const PATH_NAMES = {
   CANNOT_USE_EMAIL_ADDRESS_CONTINUE: "/cannot-use-email-address-continue",
   WELL_KNOWN_APPLE_ASSOCIATION: "/.well-known/apple-app-site-association",
   SFAD_AUTHORIZE: "/sfad-authorize",
+  AMC_CALLBACK: "/amc-callback",
 };
 
 export const HREF_BACK = {
