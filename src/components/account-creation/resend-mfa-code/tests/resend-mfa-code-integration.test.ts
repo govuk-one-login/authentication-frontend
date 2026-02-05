@@ -1,5 +1,5 @@
 import { describe } from "mocha";
-import { sinon } from "../../../../../test/utils/test-utils.js";
+import { expect, sinon } from "../../../../../test/utils/test-utils.js";
 import nock from "nock";
 import request from "supertest";
 import * as cheerio from "cheerio";
@@ -114,5 +114,26 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
         _csrf: token,
       })
       .expect(500);
+  });
+
+  it("should render lockout page when send notification returns indefinite international SMS block error", async () => {
+    nock(baseApi).post(API_ENDPOINTS.SEND_NOTIFICATION).once().reply(400, {
+      code: 1092,
+      message:
+        "User is indefinitely blocked from sending SMS to international numbers",
+    });
+
+    const result = await request(app)
+      .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+      })
+      .expect(200);
+
+    const $ = cheerio.load(result.text);
+    expect($("h1").text()).to.contains("Sorry, there is a problem");
+    expect($("body").text()).to.contains("Try again later");
   });
 });

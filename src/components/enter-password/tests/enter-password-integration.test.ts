@@ -254,4 +254,39 @@ describe("Integration::enter password", () => {
       .expect("Location", PATH_NAMES.ACCOUNT_LOCKED)
       .expect(302);
   });
+
+  it("should render lockout page when login returns indefinite international SMS block error", async () => {
+    nock(baseApi)
+      .post(API_ENDPOINTS.LOG_IN_USER)
+      .once()
+      .reply(200, {
+        success: true,
+        mfaRequired: true,
+        mfaMethodVerified: true,
+        mfaMethodType: "SMS",
+        mfaMethods: buildMfaMethods({ redactedPhoneNumber: "1234" }),
+      });
+
+    setupAccountInterventionsResponse(baseApi, noInterventions);
+
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
+      code: 1092,
+      message:
+        "User is indefinitely blocked from sending SMS to international numbers",
+    });
+
+    const result = await request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        password: "password",
+      })
+      .expect(200);
+
+    const $ = cheerio.load(result.text);
+    expect($("h1").text()).to.contains("Sorry, there is a problem");
+    expect($("body").text()).to.contains("Try again later");
+  });
 });
