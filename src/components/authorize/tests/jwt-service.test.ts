@@ -11,27 +11,35 @@ import {
   createJwt,
   createMockClaims,
   getPrivateKey,
-  getWrongPrivateKey,
   getPublicKey,
 } from "./test-data.js";
-import type { KeyLike, GenerateKeyPairResult } from "jose";
-import { generateKeyPair, exportSPKI } from "jose";
+import type { KeyLike, GenerateKeyPairResult, JSONWebKeySet, JWK } from "jose";
+import { generateKeyPair, exportSPKI, exportJWK, importSPKI } from "jose";
 
 describe("JWT service", () => {
   let claims: Claims;
   let publicKey: string;
   let privateKey: KeyLike;
+  let publicJwk: JWK;
   let wrongPrivateKey: KeyLike;
+  let wrongPublicKey: string;
   let validJwt: string;
   let jwtService: JwtService;
+  let localJwks: JSONWebKeySet;
 
   beforeEach(async () => {
     claims = createMockClaims();
     publicKey = getPublicKey();
     privateKey = await getPrivateKey();
-    wrongPrivateKey = await getWrongPrivateKey();
-    validJwt = await createJwt(createMockClaims(), privateKey);
-    jwtService = new JwtService(publicKey);
+    const publicKeyLike = await importSPKI(publicKey, "ES256");
+    publicJwk = await exportJWK(publicKeyLike);
+    const wrongKeyPair = await generateKeyPair("ES256");
+    wrongPrivateKey = wrongKeyPair.privateKey;
+    wrongPublicKey = await exportSPKI(wrongKeyPair.publicKey);
+    validJwt = await createJwt(createMockClaims(), privateKey, publicJwk.kid);
+    localJwks = { keys: [] };
+    jwtService = new JwtService(publicKey, "");
+    process.env.USE_AUTH_JWKS = "0";
   });
 
   describe("getPayloadWithValidation", () => {
@@ -51,12 +59,21 @@ describe("JWT service", () => {
 
     describe("stub key validation", () => {
       let stubKeyPair: GenerateKeyPairResult;
+      let stubPublicKey: string;
       let jwtService: JwtService;
+      let validStubJwt: string;
 
       beforeEach(async () => {
         stubKeyPair = await generateKeyPair("ES256");
-        const stubPublicKey = await exportSPKI(stubKeyPair.publicKey);
-        jwtService = new JwtService(publicKey, stubPublicKey);
+        stubPublicKey = await exportSPKI(stubKeyPair.publicKey);
+        const stubPublicKeyLike = await importSPKI(publicKey, "ES256");
+        const stubPublicJwk = await exportJWK(stubPublicKeyLike);
+        jwtService = new JwtService(wrongPublicKey, stubPublicKey);
+        validStubJwt = await createJwt(
+          createMockClaims(),
+          stubKeyPair.privateKey,
+          stubPublicJwk.kid
+        );
       });
 
       it("should accept payloads signed by the stub", async () => {
@@ -68,12 +85,14 @@ describe("JWT service", () => {
       });
 
       it("should accept standard payloads when a stub key is present", async () => {
-        const result = await jwtService.getPayloadWithValidation(validJwt);
+        jwtService = new JwtService(wrongPublicKey, stubPublicKey);
+        const result = await jwtService.getPayloadWithValidation(validStubJwt);
 
         expect(result).to.deep.equal(createMockClaims());
       });
 
       it("should reject invalid payloads when a stub key is present", async () => {
+        jwtService = new JwtService(publicKey, stubPublicKey);
         const jwt = await createJwt(createMockClaims(), wrongPrivateKey);
 
         try {
@@ -97,7 +116,7 @@ describe("JWT service", () => {
       });
 
       it("should throw error when header incorrect", async () => {
-        jwtService = new JwtService(publicKey);
+        jwtService = new JwtService(publicKey, "");
         const [, payload, sig] = validJwt.split(".");
         const modified = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.${payload}.${sig}`;
         try {
@@ -109,7 +128,7 @@ describe("JWT service", () => {
       });
 
       it("should throw error when jwt payload changed", async () => {
-        jwtService = new JwtService(publicKey);
+        jwtService = new JwtService(publicKey, "");
         const [header, , sig] = validJwt.split(".");
 
         const modified = `${header}.eyJjbGllbnQtbmFtZSI6ImRpLWF1dGgtc3R1Yi1yZWx5aW5nLXBhcnR5LXNhbmRwaXQifQ.${sig}`;
@@ -125,16 +144,47 @@ describe("JWT service", () => {
       it("should throw error when jwt isn't signed with the correct public key", async () => {
         const JwtWrongSig = await createJwt(
           createMockClaims(),
-          wrongPrivateKey
+          wrongPrivateKey,
+          "a-different-kid"
         );
-        jwtService = new JwtService(publicKey);
+        jwtService = new JwtService(publicKey, "", localJwks);
 
         try {
           await jwtService.getPayloadWithValidation(JwtWrongSig);
           assert.fail("Expected error to be thrown");
         } catch (error) {
           expect(error).to.be.an.instanceOf(JwtValidationError);
-          expect(error.message).to.equal("signature verification failed");
+        }
+      });
+
+      it("should not throw error and fetch public key from jwks if JWKS feature flag enabled", async () => {
+        process.env.USE_AUTH_JWKS = "1";
+        localJwks = { keys: [publicJwk] };
+        jwtService = new JwtService("", "", localJwks);
+
+        const result = await jwtService.getPayloadWithValidation(validJwt);
+
+        expect(result).to.deep.equal(createMockClaims());
+      });
+
+      it("should throw error when jwt isn't signed with the correct public key if JWKS feature flag enabled", async () => {
+        process.env.USE_AUTH_JWKS = "1";
+        const jwtWrongSig = await createJwt(
+          createMockClaims(),
+          wrongPrivateKey,
+          "a-different-kid"
+        );
+        localJwks = { keys: [publicJwk] };
+        jwtService = new JwtService("", "", localJwks);
+
+        try {
+          await jwtService.getPayloadWithValidation(jwtWrongSig);
+          assert.fail("Expected error to be thrown");
+        } catch (error) {
+          expect(error).to.be.an.instanceOf(JwtValidationError);
+          expect(error.message).to.equal(
+            "no applicable key found in the JSON Web Key Set"
+          );
         }
       });
 
@@ -142,8 +192,12 @@ describe("JWT service", () => {
         const claims = createMockClaims();
         claims["claim"] = "not a json";
 
-        const jwtWithInvalidClaimObject = await createJwt(claims, privateKey);
-        jwtService = new JwtService(publicKey);
+        const jwtWithInvalidClaimObject = await createJwt(
+          claims,
+          privateKey,
+          publicJwk.kid
+        );
+        jwtService = new JwtService(publicKey, "");
 
         try {
           await jwtService.getPayloadWithValidation(jwtWithInvalidClaimObject);
@@ -160,8 +214,12 @@ describe("JWT service", () => {
         const claims = createMockClaims();
         delete claims["claim"];
 
-        const jwtWithoutClaimObject = await createJwt(claims, privateKey);
-        jwtService = new JwtService(publicKey);
+        const jwtWithoutClaimObject = await createJwt(
+          claims,
+          privateKey,
+          publicJwk.kid
+        );
+        jwtService = new JwtService(publicKey, "");
         const result = await jwtService.getPayloadWithValidation(
           jwtWithoutClaimObject
         );
