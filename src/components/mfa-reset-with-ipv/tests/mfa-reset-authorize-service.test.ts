@@ -11,19 +11,22 @@ import {
 } from "../../../../test/helpers/service-test-helper.js";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
 import { Http } from "../../../utils/http.js";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { mfaResetAuthorizeService } from "../mfa-reset-authorize-service.js";
 describe("mfa reset authorize service", () => {
   const http = new Http();
   const service: MfaResetAuthorizeInterface = mfaResetAuthorizeService(http);
   let postStub: SinonStub;
-  const { sessionId, clientSessionId, email, diPersistentSessionId } =
-    commonVariables;
+  const { email } = commonVariables;
   const orchestrationRedirectUrl = "http://localhost?state=state";
   const req = createMockRequest(PATH_NAMES.ENTER_MFA, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
+  const res = createMockResponse();
   const axiosResponse = Promise.resolve({
     data: {},
     status: 200,
@@ -43,10 +46,8 @@ describe("mfa reset authorize service", () => {
 
   it("successfully calls the mfa reset authorize API", async () => {
     const result = await service.ipvRedirectUrl(
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
       req,
+      res,
       email,
       orchestrationRedirectUrl
     );

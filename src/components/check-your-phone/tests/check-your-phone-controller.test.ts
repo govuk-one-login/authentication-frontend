@@ -103,8 +103,6 @@ describe("check your phone controller", () => {
       expect(fakeService.verifyMfaCode).to.have.been.calledOnceWithExactly(
         sinon.match.any,
         sinon.match.any,
-        commonVariables.sessionId,
-        sinon.match.any,
         sinon.match.any,
         sinon.match.any,
         JOURNEY_TYPE.ACCOUNT_RECOVERY,
@@ -112,7 +110,7 @@ describe("check your phone controller", () => {
       );
     });
 
-    it("should redirect to //account-confirmation when valid code entered", async () => {
+    it("should redirect to /account-confirmation when valid code entered", async () => {
       const fakeService: VerifyMfaCodeInterface = {
         verifyMfaCode: sinon.fake.returns({
           sessionState: "PHONE_NUMBER_CODE_VERIFIED",
@@ -127,13 +125,11 @@ describe("check your phone controller", () => {
 
       expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.calledWith(
-        commonVariables.sessionId,
-        undefined,
         undefined,
         NOTIFICATION_TYPE.ACCOUNT_CREATED_CONFIRMATION,
-        undefined,
         "",
-        req
+        req,
+        res
       );
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CREATE_ACCOUNT_SUCCESSFUL
@@ -160,13 +156,12 @@ describe("check your phone controller", () => {
 
       expect(fakeService.verifyMfaCode).to.have.been.calledOnce;
       expect(fakeNotificationService.sendNotification).to.have.calledWith(
-        commonVariables.sessionId,
-        undefined,
         undefined,
         NOTIFICATION_TYPE.CHANGE_HOW_GET_SECURITY_CODES_CONFIRMATION,
-        undefined,
         "",
-        req
+        req,
+        res,
+        JOURNEY_TYPE.ACCOUNT_RECOVERY
       );
       expect(res.redirect).to.have.calledWith(
         PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION

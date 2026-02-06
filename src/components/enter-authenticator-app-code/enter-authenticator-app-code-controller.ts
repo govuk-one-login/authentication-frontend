@@ -79,8 +79,6 @@ export const enterAuthenticatorAppCodePost = (
   service: VerifyMfaCodeInterface = verifyMfaCodeService()
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
     const template = isUpliftRequired(req)
       ? UPLIFT_REQUIRED_AUTH_APP_TEMPLATE_NAME
       : ENTER_AUTH_APP_CODE_DEFAULT_TEMPLATE_NAME;
@@ -94,10 +92,8 @@ export const enterAuthenticatorAppCodePost = (
     const result = await service.verifyMfaCode(
       MFA_METHOD_TYPE.AUTH_APP,
       req.body["code"],
-      sessionId,
-      clientSessionId,
-      persistentSessionId,
       req,
+      res,
       journeyType
     );
 
