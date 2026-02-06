@@ -90,7 +90,7 @@
     "express-session": "1.18.2",
     "express-validator": "6.13.0",
     "globals": "16.3.0",
-    "govuk-frontend": "5.11.2",
+    "govuk-frontend": "5.13.0",
     "helmet": "8.1.0",
     "i18next": "25.4.2",
     "i18next-fs-backend": "2.6.1",
