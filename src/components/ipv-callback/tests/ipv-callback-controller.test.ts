@@ -219,26 +219,30 @@ describe("ipv callback controller", () => {
         );
       });
 
-      it("should render with supportSFAD true when supportSFAD() returns true", () => {
-        process.env.SUPPORT_SFAD = "1";
+      it("should render with supportSingleFactorAccountDeletion true when supportSingleFactorAccountDeletion() returns true", () => {
+        process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION = "1";
 
         cannotChangeSecurityCodesGet(req as Request, res as Response);
 
         const renderCall = res.render.getCall(0);
-        expect(renderCall.args[1].supportSFAD).to.equal(true);
+        expect(renderCall.args[1].supportSingleFactorAccountDeletion).to.equal(
+          true
+        );
 
-        delete process.env.SUPPORT_SFAD;
+        delete process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION;
       });
 
-      it("should render with supportSFAD false when supportSFAD() returns false", () => {
-        process.env.SUPPORT_SFAD = "0";
+      it("should render with supportSingleFactorAccountDeletion false when supportSingleFactorAccountDeletion() returns false", () => {
+        process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION = "0";
 
         cannotChangeSecurityCodesGet(req as Request, res as Response);
 
         const renderCall = res.render.getCall(0);
-        expect(renderCall.args[1].supportSFAD).to.equal(false);
+        expect(renderCall.args[1].supportSingleFactorAccountDeletion).to.equal(
+          false
+        );
 
-        delete process.env.SUPPORT_SFAD;
+        delete process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION;
       });
     });
 
@@ -281,7 +285,7 @@ describe("ipv callback controller", () => {
       it("should redirect to sfad authorize controller when user selects initiate sfad radio button", async () => {
         req = createMockRequest(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
         req.body.cannotChangeHowGetSecurityCodeAction =
-          CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.INITIATE_SFAD;
+          CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION;
 
         await cannotChangeSecurityCodesPost(req as Request, res as Response);
 

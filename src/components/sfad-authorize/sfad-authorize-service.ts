@@ -31,7 +31,7 @@ export function sfadAuthorizeService(
     const response = await axios.client.post<SfadAuthorizeResponse>(
       API_ENDPOINTS.AMC_AUTHORIZE,
       {
-        journeyType: AMC_JOURNEY_TYPES.SFAD,
+        journeyType: AMC_JOURNEY_TYPES.SINGLE_FACTOR_ACCOUNT_DELETION,
       },
       config
     );

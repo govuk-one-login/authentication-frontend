@@ -68,7 +68,7 @@ describe("SFAD authorize", () => {
             }),
           },
           "../../../config.js": {
-            supportSFAD: () => true,
+            supportSingleFactorAccountDeletion: () => true,
           },
         }
       );

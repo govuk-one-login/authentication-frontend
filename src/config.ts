@@ -211,6 +211,6 @@ export function supportNewInternationalSms(): boolean {
   return process.env.SUPPORT_NEW_INTERNATIONAL_SMS === "1";
 }
 
-export function supportSFAD(): boolean {
-  return process.env.SUPPORT_SFAD === "1";
+export function supportSingleFactorAccountDeletion(): boolean {
+  return process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION === "1";
 }

@@ -40,7 +40,7 @@
         }
     ] %}
 
-    {% if supportSFAD %}
+    {% if supportSingleFactorAccountDeletion %}
       {% set radioItems = (radioItems.push({
           value: "initiate-sfad",
           text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option3Text' | translate,

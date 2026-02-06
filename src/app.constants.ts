@@ -332,9 +332,9 @@ export const WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS: Record<string, string> = {
 export const CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION = {
   HELP_DELETE_ACCOUNT: "help-to-delete-account",
   RETRY_SECURITY_CODE: "retry-security-code",
-  INITIATE_SFAD: "initiate-sfad",
+  INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION: "initiate-sfad",
 };
 
 export const AMC_JOURNEY_TYPES = {
-  SFAD: "SFAD",
+  SINGLE_FACTOR_ACCOUNT_DELETION: "SINGLE_FACTOR_ACCOUNT_DELETION",
 };

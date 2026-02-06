@@ -383,7 +383,7 @@ Conditions:
                 ]
               - "Yes"
 
-  SupportSFAD:
+  SupportSingleFactorAccountDeletion:
     Fn::Or:
       - Fn::And:
           - !Condition UseSubEnvironment
@@ -391,7 +391,7 @@ Conditions:
               - !FindInMap [
                   EnvironmentConfiguration,
                   !Ref SubEnvironment,
-                  SupportSFAD,
+                  SupportSingleFactorAccountDeletion,
                   DefaultValue: "No",
                 ]
               - "Yes"
@@ -401,7 +401,7 @@ Conditions:
               - !FindInMap [
                   EnvironmentConfiguration,
                   !Ref Environment,
-                  SupportSFAD,
+                  SupportSingleFactorAccountDeletion,
                   DefaultValue: "No",
                 ]
               - "Yes"
@@ -459,7 +459,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
-      SupportSFAD: "Yes"
+      SupportSingleFactorAccountDeletion: "Yes"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       frontendApiBaseUrl: https://nw0dah7bxk-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev2/
@@ -484,7 +484,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
-      SupportSFAD: "Yes"
+      SupportSingleFactorAccountDeletion: "Yes"
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: https://y3s69ubaz5-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev3/
@@ -504,7 +504,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
-      SupportSFAD: "Yes"
+      SupportSingleFactorAccountDeletion: "Yes"
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -539,7 +539,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
-      SupportSFAD: "Yes"
+      SupportSingleFactorAccountDeletion: "Yes"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -574,7 +574,7 @@ Mappings:
       SupportPasskeyRegistration: "No"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
-      SupportSFAD: "No"
+      SupportSingleFactorAccountDeletion: "No"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -616,7 +616,7 @@ Mappings:
       SupportPasskeyRegistration: "No"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
-      SupportSFAD: "No"
+      SupportSingleFactorAccountDeletion: "No"
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -691,7 +691,7 @@ Mappings:
       SupportPasskeyRegistration: "No"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
-      SupportSFAD: "No"
+      SupportSingleFactorAccountDeletion: "No"
 
 Globals:
   Function:
@@ -1227,8 +1227,8 @@ Resources:
               Value: !If [EnableDwpKbvContactFormChanges, "1", "0"]
             - Name: SUPPORT_NEW_INTERNATIONAL_SMS
               Value: !If [SupportNewInternationalSms, "1", "0"]
-            - Name: SUPPORT_SFAD
-              Value: !If [SupportSFAD, "1", "0"]
+            - Name: SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION
+              Value: !If [SupportSingleFactorAccountDeletion, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If

@@ -25,7 +25,7 @@ import {
   getVitalSignsIntervalSeconds,
   supportAccountInterventions,
   supportAuthorizeController,
-  supportSFAD,
+  supportSingleFactorAccountDeletion,
 } from "./config.js";
 import { logErrorMiddleware } from "./middleware/log-error-middleware.js";
 import { getCookieLanguageMiddleware } from "./middleware/cookie-lang-middleware.js";
@@ -161,7 +161,7 @@ function registerRoutes(app: express.Application) {
   app.use(ipvCallbackRouter);
   app.use(cannotUseEmailAddressRouter);
   app.use(wellKnownRouter);
-  if (supportSFAD()) {
+  if (supportSingleFactorAccountDeletion()) {
     app.use(sfadAuthorizeRouter);
   }
 

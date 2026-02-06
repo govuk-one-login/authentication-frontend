@@ -56,7 +56,9 @@ describe("sfad authorize service", () => {
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.AMC_AUTHORIZE,
       expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
-      expectedBody: { journeyType: AMC_JOURNEY_TYPES.SFAD },
+      expectedBody: {
+        journeyType: AMC_JOURNEY_TYPES.SINGLE_FACTOR_ACCOUNT_DELETION,
+      },
     };
 
     checkApiCallMadeWithExpectedBodyAndHeaders(
