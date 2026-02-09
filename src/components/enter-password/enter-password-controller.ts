@@ -11,7 +11,7 @@ import type { MfaServiceInterface } from "../common/mfa/types.js";
 import { mfaService } from "../common/mfa/mfa-service.js";
 import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
-import { ReauthJourneyError } from "../../utils/error.js";
+import { BadRequestError, ReauthJourneyError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import {
   JOURNEY_TYPE,
@@ -141,6 +141,12 @@ export function enterPasswordPost(
               show2HrScreen: true,
               contentId: "727a0395-cc00-48eb-a411-bfe9d8ac5fc8",
             }
+          );
+
+        case ERROR_CODES.INDEFINITELY_BLOCKED_INTERNATIONAL_SMS:
+          throw new BadRequestError(
+            userLogin.data.message,
+            userLogin.data.code
           );
 
         default: {
