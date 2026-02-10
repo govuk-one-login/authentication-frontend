@@ -11,7 +11,7 @@ import type { MfaServiceInterface } from "../common/mfa/types.js";
 import { mfaService } from "../common/mfa/mfa-service.js";
 import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
-import { BadRequestError, ReauthJourneyError } from "../../utils/error.js";
+import { ReauthJourneyError } from "../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import {
   JOURNEY_TYPE,
@@ -144,9 +144,12 @@ export function enterPasswordPost(
           );
 
         case ERROR_CODES.INDEFINITELY_BLOCKED_INTERNATIONAL_SMS:
-          throw new BadRequestError(
-            userLogin.data.message,
-            userLogin.data.code
+          return res.redirect(
+            await getNextPathAndUpdateJourney(
+              req,
+              res,
+              USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED
+            )
           );
 
         default: {
@@ -216,7 +219,7 @@ export function enterPasswordPost(
       );
 
       if (!result.success) {
-        return handleSendMfaCodeError(result, res);
+        return handleSendMfaCodeError(result, req, res);
       } else {
         req.session.user.sentOtpMfaMethodIds = [
           req.session.user.activeMfaMethodId,

@@ -66,6 +66,7 @@ const USER_JOURNEY_EVENTS = {
   CANNOT_USE_EMAIL_ADDRESS: "CANNOT_USE_EMAIL_ADDRESS",
   ENTER_EMAIL_ADDRESS_AFTER_EXPERIAN_CHECK:
     "ENTER_EMAIL_ADDRESS_AFTER_EXPERIAN_CHECK",
+  MFA_INDEFINITELY_BLOCKED: "MFA_INDEFINITELY_BLOCKED",
 };
 
 export interface AuthStateContext {
@@ -223,6 +224,7 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
+      [PATH_NAMES.CANNOT_USE_SECURITY_CODE]: {},
       [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]: {
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
@@ -315,6 +317,9 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
             INTERMEDIATE_STATES.PASSWORD_VERIFIED,
+          ],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
           ],
         },
         meta: {
@@ -625,6 +630,9 @@ const authStateMachine = createMachine<AuthStateContext>(
               cond: "isPasswordResetJourney",
             },
             PATH_NAMES.ENTER_MFA,
+          ],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
           ],
         },
       },

@@ -290,7 +290,7 @@ describe("Integration::enter password", () => {
     expect($("body").text()).to.contains("Try again later");
   });
 
-  it("should render lockout page when login returns indefinite international SMS block error", async () => {
+  it("should redirect to cannot-use-security-code page when login returns indefinite international SMS block error", async () => {
     nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(400, {
       code: 1092,
       message:
@@ -299,7 +299,7 @@ describe("Integration::enter password", () => {
 
     setupAccountInterventionsResponse(baseApi, noInterventions);
 
-    const result = await request(app)
+    await request(app)
       .post(ENDPOINT)
       .type("form")
       .set("Cookie", cookies)
@@ -307,10 +307,7 @@ describe("Integration::enter password", () => {
         _csrf: token,
         password: "password",
       })
-      .expect(200);
-
-    const $ = cheerio.load(result.text);
-    expect($("h1").text()).to.contains("Sorry, there is a problem");
-    expect($("body").text()).to.contains("Try again later");
+      .expect("Location", PATH_NAMES.CANNOT_USE_SECURITY_CODE)
+      .expect(302);
   });
 });
