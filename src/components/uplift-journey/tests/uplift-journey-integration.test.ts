@@ -1,8 +1,7 @@
 import { describe } from "mocha";
-import { expect, sinon } from "../../../../test/utils/test-utils.js";
+import { sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import request from "supertest";
-import * as cheerio from "cheerio";
 import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import type { NextFunction, Request, Response } from "express";
@@ -64,20 +63,17 @@ describe("Integration::uplift journey", () => {
     app = undefined;
   });
 
-  it("should render lockout page when MFA returns indefinite international SMS block error", async () => {
+  it("should redirect to cannot-use-security-code page when MFA returns indefinite international SMS block error", async () => {
     nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
       code: 1092,
       message:
         "User is indefinitely blocked from sending SMS to international numbers",
     });
 
-    const result = await request(app)
+    await request(app)
       .get(PATH_NAMES.UPLIFT_JOURNEY)
       .set("Cookie", cookies)
-      .expect(200);
-
-    const $ = cheerio.load(result.text);
-    expect($("h1").text()).to.contains("Sorry, there is a problem");
-    expect($("body").text()).to.contains("Try again later");
+      .expect("Location", PATH_NAMES.CANNOT_USE_SECURITY_CODE)
+      .expect(302);
   });
 });

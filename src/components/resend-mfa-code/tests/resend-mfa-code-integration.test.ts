@@ -254,7 +254,7 @@ describe("Integration:: resend mfa code", () => {
       .expect(302);
   });
 
-  it("should render lockout page when MFA returns indefinite international SMS block error", async () => {
+  it("should redirect to cannot-use-security-code page when MFA returns indefinite international SMS block error", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "0";
 
     nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
@@ -263,17 +263,14 @@ describe("Integration:: resend mfa code", () => {
         "User is indefinitely blocked from sending SMS to international numbers",
     });
 
-    const result = await request(app)
+    await request(app)
       .post(PATH_NAMES.RESEND_MFA_CODE)
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
       })
-      .expect(200);
-
-    const $ = cheerio.load(result.text);
-    expect($("h1").text()).to.contains("Sorry, there is a problem");
-    expect($("body").text()).to.contains("Try again later");
+      .expect("Location", PATH_NAMES.CANNOT_USE_SECURITY_CODE)
+      .expect(302);
   });
 });

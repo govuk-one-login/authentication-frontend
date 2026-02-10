@@ -380,6 +380,9 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.RESEND_MFA_CODE]: {
         on: {
           [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
+          ],
         },
       },
       [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE]: {
@@ -402,6 +405,9 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.UPLIFT_JOURNEY]: {
         on: {
           [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
+          ],
         },
       },
       [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS]: {
