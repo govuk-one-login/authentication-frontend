@@ -577,4 +577,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS]: {
     template: "cannot-use-email-address/index.njk",
   },
+  [PATH_NAMES.CANNOT_USE_SECURITY_CODE]: {
+    template: "cannot-use-security-code/index.njk",
+  },
 };
