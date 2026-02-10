@@ -24,6 +24,8 @@ import xss from "xss";
 import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import type { MfaServiceInterface } from "../common/mfa/types.js";
 import { mfaService } from "../common/mfa/mfa-service.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 
 const TEMPLATE_NAME = "reset-password-check-email/index.njk";
 
@@ -148,6 +150,19 @@ export function resetPasswordCheckEmailPost(
 
       if (mfaResponse.success) return false;
 
+      if (
+        mfaResponse.data.code ===
+        ERROR_CODES.INDEFINITELY_BLOCKED_INTERNATIONAL_SMS
+      ) {
+        res.redirect(
+          await getNextPathAndUpdateJourney(
+            req,
+            res,
+            USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED
+          )
+        );
+        return true;
+      }
       if (mfaResponse.data.code == ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
         res.render("security-code-error/index-wait.njk", {
           newCodeLink: getNewCodePath(

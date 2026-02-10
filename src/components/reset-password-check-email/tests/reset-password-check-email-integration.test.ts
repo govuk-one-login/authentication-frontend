@@ -267,7 +267,7 @@ describe("Integration::reset password check email ", () => {
         .expect(200);
     });
 
-    it("should render lockout page when MFA returns indefinite international SMS block error", async () => {
+    it("should redirect to cannot-use-security-code page when MFA returns indefinite international SMS block error", async () => {
       nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).once().reply(204, {});
 
       nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
@@ -276,7 +276,7 @@ describe("Integration::reset password check email ", () => {
           "User is indefinitely blocked from sending SMS to international numbers",
       });
 
-      const result = await request(app)
+      await request(app)
         .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
         .type("form")
         .set("Cookie", cookies)
@@ -284,11 +284,8 @@ describe("Integration::reset password check email ", () => {
           _csrf: token,
           code: "123456",
         })
-        .expect(200);
-
-      const $ = cheerio.load(result.text);
-      expect($("h1").text()).to.contains("Sorry, there is a problem");
-      expect($("body").text()).to.contains("Try again later");
+        .expect("Location", PATH_NAMES.CANNOT_USE_SECURITY_CODE)
+        .expect(302);
     });
   });
 });
