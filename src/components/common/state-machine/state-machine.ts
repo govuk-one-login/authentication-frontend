@@ -441,6 +441,9 @@ const authStateMachine = createMachine<AuthStateContext>(
               target: [PATH_NAMES.RESET_PASSWORD],
             },
           ],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
+          ],
         },
         meta: {
           optionalPaths: [
