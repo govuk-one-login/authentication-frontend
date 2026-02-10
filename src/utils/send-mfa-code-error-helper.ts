@@ -1,15 +1,28 @@
 import type { ApiResponseResult, DefaultApiResponse } from "../types.js";
-import type { Response } from "express";
+import type { Request, Response } from "express";
 import {
   ERROR_CODES,
   getErrorPathByCode,
 } from "../components/common/constants.js";
 import { BadRequestError } from "./error.js";
+import { getNextPathAndUpdateJourney } from "../components/common/state-machine/state-machine-executor.js";
+import { USER_JOURNEY_EVENTS } from "../components/common/state-machine/state-machine.js";
 
-export const handleSendMfaCodeError = (
+export async function handleSendMfaCodeError(
   result: ApiResponseResult<DefaultApiResponse>,
+  req: Request,
   res: Response
-): void => {
+): Promise<void> {
+  if (result.data.code === ERROR_CODES.INDEFINITELY_BLOCKED_INTERNATIONAL_SMS) {
+    return res.redirect(
+      await getNextPathAndUpdateJourney(
+        req,
+        res,
+        USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED
+      )
+    );
+  }
+
   if (result.data.code === ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
     return res.render("security-code-error/index-wait.njk");
   }
@@ -31,4 +44,4 @@ export const handleSendMfaCodeError = (
   }
 
   throw new BadRequestError(result.data.message, result.data.code);
-};
+}
