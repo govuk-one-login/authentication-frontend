@@ -41,7 +41,7 @@ describe("csrfMissingHandler", () => {
     err.code = CSRF_MISSING_CODE;
 
     const renderSpy = sinon.spy(res, "render");
-    const expectedTemplate = "common/errors/500.njk";
+    const expectedTemplate = "common/errors/generic-error.njk";
 
     csrfMissingHandler(err, req, res, next);
 

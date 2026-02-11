@@ -3,7 +3,7 @@ import { describe } from "mocha";
 import type { NextFunction, Request, Response } from "express";
 import { sinon } from "../../../test/utils/test-utils.js";
 import { ERROR_MESSAGES, HTTP_STATUS_CODES } from "../../app.constants.js";
-import { serverErrorHandler } from "../internal-server-error-handler.js";
+import { errorHandler } from "../error-handler.js";
 import { BadRequestError } from "../../utils/error.js";
 import { ERROR_CODES } from "../../components/common/constants.js";
 describe("serverErrorHandler", () => {
@@ -28,7 +28,7 @@ describe("serverErrorHandler", () => {
     res.headersSent = true;
     const err = new Error("Test error");
 
-    serverErrorHandler(err, req, res, next);
+    errorHandler(err, req, res, next);
 
     expect(next).to.have.been.calledOnceWith(err);
     expect(res.statusCode).to.equal(200);
@@ -45,7 +45,7 @@ describe("serverErrorHandler", () => {
       accountManagementUrl: "http://localhost:6001",
     };
 
-    serverErrorHandler(err, req, res, next);
+    errorHandler(err, req, res, next);
 
     expect(renderSpy).to.have.been.calledOnceWith(
       expectedTemplate,
@@ -63,7 +63,7 @@ describe("serverErrorHandler", () => {
       accountManagementUrl: "http://localhost:6001",
     };
 
-    serverErrorHandler(err, req, res, next);
+    errorHandler(err, req, res, next);
 
     expect(renderSpy).to.have.been.calledOnceWith(
       expectedTemplate,
@@ -80,7 +80,7 @@ describe("serverErrorHandler", () => {
     const renderSpy = sinon.spy(res, "render");
     const expectedTemplate = "common/errors/session-expired.njk";
 
-    serverErrorHandler(err, req, res, next);
+    errorHandler(err, req, res, next);
 
     expect(renderSpy).to.have.been.calledOnceWith(expectedTemplate);
     expect(res.statusCode).to.equal(HTTP_STATUS_CODES.UNAUTHORIZED);
@@ -94,12 +94,14 @@ describe("serverErrorHandler", () => {
     const renderSpy = sinon.spy(res, "render");
     const statusSpy = sinon.spy(res, "status");
 
-    serverErrorHandler(err, req, res, next);
+    errorHandler(err, req, res, next);
 
     expect(statusSpy).to.have.been.calledOnceWith(
       HTTP_STATUS_CODES.BAD_REQUEST
     );
-    expect(renderSpy).to.have.been.calledOnceWith("common/errors/500.njk");
+    expect(renderSpy).to.have.been.calledOnceWith(
+      "common/errors/generic-error.njk"
+    );
   });
 
   it("should render 500 template with OK status for BadRequestError with INDEFINITELY_BLOCKED_INTERNATIONAL_SMS code", () => {
@@ -110,18 +112,20 @@ describe("serverErrorHandler", () => {
     const renderSpy = sinon.spy(res, "render");
     const statusSpy = sinon.spy(res, "status");
 
-    serverErrorHandler(err, req, res, next);
+    errorHandler(err, req, res, next);
 
     expect(statusSpy).to.have.been.calledOnceWith(HTTP_STATUS_CODES.OK);
-    expect(renderSpy).to.have.been.calledOnceWith("common/errors/500.njk");
+    expect(renderSpy).to.have.been.calledOnceWith(
+      "common/errors/generic-error.njk"
+    );
   });
 
   it("should render 500 template if error is not unauthorized and headers have not been sent", () => {
     const err = new Error("Test error");
     const renderSpy = sinon.spy(res, "render");
-    const expectedTemplate = "common/errors/500.njk";
+    const expectedTemplate = "common/errors/generic-error.njk";
 
-    serverErrorHandler(err, req, res, next);
+    errorHandler(err, req, res, next);
 
     expect(renderSpy).to.have.been.calledOnceWith(expectedTemplate);
     expect(res.statusCode).to.equal(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR);

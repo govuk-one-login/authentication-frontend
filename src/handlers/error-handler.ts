@@ -4,7 +4,7 @@ import { ERROR_MESSAGES, HTTP_STATUS_CODES } from "../app.constants.js";
 import { BadRequestError } from "../utils/error.js";
 import { ERROR_CODES } from "../components/common/constants.js";
 
-export function serverErrorHandler(
+export function errorHandler(
   err: any,
   req: Request,
   res: Response,
@@ -34,7 +34,7 @@ export function serverErrorHandler(
     err.code === ERROR_CODES.INDEFINITELY_BLOCKED_INTERNATIONAL_SMS.toString()
   ) {
     res.status(HTTP_STATUS_CODES.OK);
-    return res.render("common/errors/500.njk");
+    return res.render("common/errors/generic-error.njk");
   }
 
   if (
@@ -42,9 +42,14 @@ export function serverErrorHandler(
     err.code === ERROR_CODES.SESSION_ID_MISSING_OR_INVALID.toString()
   ) {
     res.status(HTTP_STATUS_CODES.BAD_REQUEST);
-    return res.render("common/errors/500.njk");
+    return res.render("common/errors/generic-error.njk");
+  }
+
+  if (err instanceof BadRequestError) {
+    res.status(HTTP_STATUS_CODES.BAD_REQUEST);
+    return res.render("common/errors/generic-error.njk");
   }
 
   res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR);
-  res.render("common/errors/500.njk");
+  res.render("common/errors/generic-error.njk");
 }

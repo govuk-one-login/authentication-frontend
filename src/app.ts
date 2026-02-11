@@ -36,7 +36,7 @@ import { registerAccountCreatedRouter } from "./components/account-created/accou
 import { createPasswordRouter } from "./components/create-password/create-password-routes.js";
 import { enterPhoneNumberRouter } from "./components/enter-phone-number/enter-phone-number-routes.js";
 import { pageNotFoundHandler } from "./handlers/page-not-found-handler.js";
-import { serverErrorHandler } from "./handlers/internal-server-error-handler.js";
+import { errorHandler } from "./handlers/error-handler.js";
 import { csrfMiddleware } from "./middleware/csrf-middleware.js";
 import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-routes.js";
 import { landingRouter } from "./components/landing/landing-route.js";
@@ -311,7 +311,7 @@ async function createApp(): Promise<express.Application> {
   // Error Handlers
   app.use(csrfMissingHandler);
   app.use(logErrorMiddleware);
-  app.use(serverErrorHandler);
+  app.use(errorHandler);
 
   return app;
 }
