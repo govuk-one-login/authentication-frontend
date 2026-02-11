@@ -14,6 +14,7 @@ import {
   MFA_METHOD_TYPE,
   PATH_NAMES,
 } from "../../app.constants.js";
+import { supportSingleFactorAccountDeletion } from "../../config.js";
 const ERROR_TO_EVENT_MAP = new Map<string, string>();
 ERROR_TO_EVENT_MAP.set(
   REVERIFICATION_ERROR_CODE.NO_IDENTITY_AVAILABLE,
@@ -101,6 +102,7 @@ export function cannotChangeSecurityCodesGet(
         ? "identityFailed"
         : "incomplete",
     formPostPath: req.path,
+    supportSingleFactorAccountDeletion: supportSingleFactorAccountDeletion(),
   });
 }
 
@@ -122,6 +124,14 @@ export async function cannotChangeSecurityCodesPost(
           req.session.user.mfaMethodType === MFA_METHOD_TYPE.SMS
             ? USER_JOURNEY_EVENTS.VERIFY_MFA
             : USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE
+        )
+      );
+    case CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION:
+      return res.redirect(
+        await getNextPathAndUpdateJourney(
+          req,
+          res,
+          USER_JOURNEY_EVENTS.INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION
         )
       );
   }
