@@ -1,0 +1,65 @@
+scp: "0.1"
+system:
+  urn: "urn:scp:govuk-one-login:authentication-frontend"
+  name: "Authentication Frontend"
+  description: "Node.js/TypeScript Express web application serving the user-facing interface for GOV.UK One Login authentication flows"
+ownership:
+  team: "authentication"
+  contact:
+    slack: "#di-authentication"
+
+dependencies:
+  - urn: "urn:scp:govuk-one-login:authentication-internal-api"
+    type: rest
+    criticality: required
+    failure_mode: fail-fast
+
+  - urn: "urn:scp:govuk-one-login:smartagent-api"
+    type: rest
+    criticality: optional
+    failure_mode: fallback
+
+  - urn: "urn:scp:govuk-one-login:ipv-service"
+    type: rest
+    criticality: degraded
+    failure_mode: fallback
+
+  - urn: "urn:scp:aws:elasticache"
+    type: data
+    criticality: required
+    failure_mode: fail-fast
+
+  - urn: "urn:scp:aws:kms"
+    type: rest
+    criticality: required
+    failure_mode: fail-fast
+
+  - urn: "urn:scp:aws:ssm"
+    type: rest
+    criticality: required
+    failure_mode: fail-fast
+
+  - urn: "urn:scp:aws:cloudwatch-logs"
+    type: stream
+    criticality: optional
+    failure_mode: queue-buffer
+
+  - urn: "urn:scp:aws:ecs"
+    type: rest
+    criticality: required
+    failure_mode: fail-fast
+
+  - urn: "urn:scp:aws:alb"
+    type: rest
+    criticality: required
+    failure_mode: fail-fast
+
+  - urn: "urn:scp:aws:cloudfront"
+    type: rest
+    criticality: required
+    failure_mode: fail-fast
+
+  - urn: "urn:scp:aws:waf"
+    type: rest
+    criticality: required
+    failure_mode: fail-fast
