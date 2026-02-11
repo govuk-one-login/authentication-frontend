@@ -28,7 +28,9 @@ describe("Integration:: cannot-use-security-code", () => {
         expect(
           $("a")
             .toArray()
-            .some((link) => $(link).attr("href") === "")
+            .some(
+              (link) => $(link).attr("href") === PATH_NAMES.MFA_RESET_WITH_IPV
+            )
         ).to.be.true;
       });
   });

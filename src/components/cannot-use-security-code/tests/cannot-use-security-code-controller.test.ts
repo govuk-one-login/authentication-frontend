@@ -23,7 +23,8 @@ describe("cannot use security code controller", () => {
       cannotUseSecurityCodeGet(req, res);
 
       expect(res.render).to.have.been.calledWith(
-        "cannot-use-security-code/index.njk"
+        "cannot-use-security-code/index.njk",
+        { changeSecurityCodesLink: PATH_NAMES.MFA_RESET_WITH_IPV }
       );
     });
   });
