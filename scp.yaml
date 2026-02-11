@@ -8,58 +8,59 @@ ownership:
   contact:
     slack: "#di-authentication"
 
-dependencies:
-  - urn: "urn:scp:govuk-one-login:authentication-internal-api"
+depends:
+  - system: "urn:scp:govuk-one-login:authentication-internal-api"
+    capability: "authentication-internal-api"
     type: rest
     criticality: required
     failure_mode: fail-fast
 
-  - urn: "urn:scp:govuk-one-login:smartagent-api"
+  - system: "urn:scp:govuk-one-login:smartagent-api"
     type: rest
     criticality: optional
     failure_mode: fallback
 
-  - urn: "urn:scp:govuk-one-login:ipv-service"
+  - system: "urn:scp:govuk-one-login:ipv-service"
     type: rest
     criticality: degraded
     failure_mode: fallback
 
-  - urn: "urn:scp:aws:elasticache"
+  - system: "urn:scp:aws:elasticache"
     type: data
     criticality: required
     failure_mode: fail-fast
 
-  - urn: "urn:scp:aws:kms"
+  - system: "urn:scp:aws:kms"
     type: rest
     criticality: required
     failure_mode: fail-fast
 
-  - urn: "urn:scp:aws:ssm"
+  - system: "urn:scp:aws:ssm"
     type: rest
     criticality: required
     failure_mode: fail-fast
 
-  - urn: "urn:scp:aws:cloudwatch-logs"
+  - system: "urn:scp:aws:cloudwatch-logs"
     type: stream
     criticality: optional
     failure_mode: queue-buffer
 
-  - urn: "urn:scp:aws:ecs"
+  - system: "urn:scp:aws:ecs"
     type: rest
     criticality: required
     failure_mode: fail-fast
 
-  - urn: "urn:scp:aws:alb"
+  - system: "urn:scp:aws:alb"
     type: rest
     criticality: required
     failure_mode: fail-fast
 
-  - urn: "urn:scp:aws:cloudfront"
+  - system: "urn:scp:aws:cloudfront"
     type: rest
     criticality: required
     failure_mode: fail-fast
 
-  - urn: "urn:scp:aws:waf"
+  - system: "urn:scp:aws:waf"
     type: rest
     criticality: required
     failure_mode: fail-fast
