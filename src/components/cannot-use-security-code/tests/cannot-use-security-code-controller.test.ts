@@ -8,6 +8,8 @@ import {
   type ResponseOutput,
 } from "mock-req-res";
 import { cannotUseSecurityCodeGet } from "../cannot-use-security-code-controller.js";
+import type { Request, Response } from "express";
+import { fakeAccountRecoveryService } from "../../common/account-recovery/tests/account-recovery-helper.test.js";
 
 describe("cannot use security code controller", () => {
   let req: RequestOutput;
@@ -19,11 +21,26 @@ describe("cannot use security code controller", () => {
   });
 
   describe("cannotUseSecurityCodeGet", () => {
-    it("should render the cannot use security code view", () => {
-      cannotUseSecurityCodeGet(req, res);
+    it("should render the cannot use security code view when account recovery is permitted", async () => {
+      await cannotUseSecurityCodeGet(fakeAccountRecoveryService(true))(
+        req as Request,
+        res as Response
+      );
 
       expect(res.render).to.have.been.calledWith(
-        "cannot-use-security-code/index.njk"
+        "cannot-use-security-code/index.njk",
+        { changeSecurityCodesLink: PATH_NAMES.MFA_RESET_WITH_IPV }
+      );
+    });
+
+    it("should render 500 error page when account recovery is not permitted", async () => {
+      await cannotUseSecurityCodeGet(fakeAccountRecoveryService(false))(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.been.calledWith(
+        "common/errors/generic-error.njk"
       );
     });
   });

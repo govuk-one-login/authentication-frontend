@@ -9,7 +9,7 @@
     <h2 class="govuk-heading-m">{{ 'pages.cannotUseSecurityCode.subHeader' | translate }}</h2>
 
     <p class="govuk-body">
-        <a href="" class="govuk-link">{{ 'pages.cannotUseSecurityCode.link' | translate }}</a>
+        <a href="{{ changeSecurityCodesLink }}" class="govuk-link">{{ 'pages.cannotUseSecurityCode.link' | translate }}</a>
     </p>
 
 {% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, dynamic: false } %}

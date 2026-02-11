@@ -226,7 +226,11 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
-      [PATH_NAMES.CANNOT_USE_SECURITY_CODE]: {},
+      [PATH_NAMES.CANNOT_USE_SECURITY_CODE]: {
+        meta: {
+          optionalPaths: [PATH_NAMES.MFA_RESET_WITH_IPV],
+        },
+      },
       [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]: {
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
