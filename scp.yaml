@@ -14,6 +14,7 @@ depends:
     type: rest
     criticality: required
     failure_mode: fail-fast
+    timeout_ms: 1000
 
   - system: "urn:scp:govuk-one-login:smartagent-api"
     capability: "contact-centre-ingestion"
