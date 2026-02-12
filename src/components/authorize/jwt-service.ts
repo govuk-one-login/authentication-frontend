@@ -1,7 +1,9 @@
 import type { JwtServiceInterface } from "./types.js";
 import {
+  getAuthJwksUrl,
   getOrchStubToAuthSigningPublicKey,
   getOrchToAuthSigningPublicKey,
+  getUseAuthJwks,
 } from "../../config.js";
 import { JwtClaimsValueError, JwtValidationError } from "../../utils/error.js";
 import type { Claims } from "./claims-config.js";
@@ -11,6 +13,7 @@ import {
   getKnownStubClaims,
 } from "./claims-config.js";
 import * as jose from "jose";
+import { logger } from "../../utils/logger.js";
 
 export class JwtService implements JwtServiceInterface {
   private readonly publicKey;
@@ -44,13 +47,30 @@ export class JwtService implements JwtServiceInterface {
 
   async validate(jwt: string): Promise<jose.JWTPayload> {
     try {
-      return await this.validateUsingKey(jwt, this.publicKey);
+      if (getUseAuthJwks()) {
+        logger.info("Fetching public key from JWKS for signature verification");
+        return await this.validateUsingJwks(jwt);
+      } else {
+        logger.info("Using hardcoded public key for signature verification");
+        return await this.validateUsingKey(jwt, this.publicKey);
+      }
     } catch (error) {
       if (this.stubPublicKey === "" || this.stubPublicKey === "UNKNOWN") {
         throw error;
       }
       return await this.validateUsingKey(jwt, this.stubPublicKey);
     }
+  }
+
+  async validateUsingJwks(jwt: string): Promise<jose.JWTPayload> {
+    const jwksUrl = new URL(getAuthJwksUrl());
+    const jwks = jose.createRemoteJWKSet(jwksUrl);
+    const result = await jose.jwtVerify(jwt, jwks, {
+      requiredClaims: requiredClaimsKeys,
+      clockTolerance: 30,
+    });
+
+    return result.payload;
   }
 
   async validateUsingKey(jwt: string, key: string): Promise<jose.JWTPayload> {

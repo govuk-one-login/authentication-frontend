@@ -382,6 +382,15 @@ Conditions:
                   DefaultValue: "Yes",
                 ]
               - "Yes"
+  UseAuthJwks:
+    Fn::Not:
+      - Fn::Or:
+        - Fn::Equals:
+           - !Ref Environment
+           - integration
+        - Fn::Equals:
+           - !Ref Environment
+           - production
 
   SupportSingleFactorAccountDeletion:
     Fn::Or:
@@ -1229,6 +1238,8 @@ Resources:
               Value: !If [SupportNewInternationalSms, "1", "0"]
             - Name: SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION
               Value: !If [SupportSingleFactorAccountDeletion, "1", "0"]
+            - Name: USE_AUTH_JWKS
+              Value: !If [UseAuthJwks, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If
