@@ -54,8 +54,6 @@ export const checkYourPhonePost = (
   notificationService: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc => {
   return async function (req: Request, res: Response) {
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
     const journeyType = getJourneyTypeFromUserSession(req.session.user, {
       includeAccountRecovery: true,
       fallbackJourneyType: JOURNEY_TYPE.REGISTRATION,
@@ -64,10 +62,8 @@ export const checkYourPhonePost = (
     const result = await service.verifyMfaCode(
       MFA_METHOD_TYPE.SMS,
       req.body["code"],
-      sessionId,
-      clientSessionId,
-      persistentSessionId,
       req,
+      res,
       journeyType,
       getDefaultSmsMfaMethod(req.session.user.mfaMethods)?.phoneNumber
     );
@@ -101,13 +97,11 @@ export const checkYourPhonePost = (
     }
 
     await notificationService.sendNotification(
-      res.locals.sessionId,
-      res.locals.clientSessionId,
       req.session.user.email,
       notificationType,
-      res.locals.persistentSessionId,
       xss(req.cookies.lng as string),
       req,
+      res,
       journeyType
     );
 

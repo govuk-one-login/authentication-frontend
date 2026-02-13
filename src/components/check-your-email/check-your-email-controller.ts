@@ -49,15 +49,12 @@ export const checkYourEmailPost = (
       req: Request,
       res: Response
     ) => {
-      const { sessionId, clientSessionId, persistentSessionId } = res.locals;
       try {
         const checkEmailFraudResponse =
           await checkEmailFraudService.checkEmailFraudBlock(
             req.session.user.email,
-            sessionId,
-            clientSessionId,
-            persistentSessionId,
-            req
+            req,
+            res
           );
         req.log.info(
           `checkEmailFraudResponse: ${checkEmailFraudResponse.data.isBlockedStatus}`

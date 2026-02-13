@@ -7,18 +7,16 @@ import {
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants.js";
 import type { ResetPasswordServiceInterface } from "./types.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export function resetPasswordService(
   axios: Http = http
 ): ResetPasswordServiceInterface {
   const updatePassword = async function (
     newPassword: string,
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     isForcedPasswordReset: boolean,
-    req: Request
+    req: Request,
+    res: Response
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.RESET_PASSWORD,
@@ -28,12 +26,8 @@ export function resetPasswordService(
         allowMfaResetAfterPasswordReset: true,
       },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId: sessionId,
-          clientSessionId: clientSessionId,
-          persistentSessionId: persistentSessionId,
-        },
         req,
+        res,
         API_ENDPOINTS.RESET_PASSWORD
       )
     );

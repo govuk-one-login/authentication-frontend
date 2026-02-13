@@ -36,15 +36,12 @@ export function verifyCodePost(
   return async function (req: Request, res: Response) {
     const email = req.session.user.email.toLowerCase();
     const code = req.body["code"];
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const result = await service.verifyCode(
-      sessionId,
       code,
       options.notificationType,
-      clientSessionId,
-      persistentSessionId,
       req,
+      res,
       req.session.user.activeMfaMethodId,
       options.journeyType
     );
@@ -140,11 +137,9 @@ export function verifyCodePost(
       ) {
         const accountInterventionsResponse =
           await accountInterventionsService.accountInterventionStatus(
-            sessionId,
             email,
-            clientSessionId,
-            persistentSessionId,
-            req
+            req,
+            res
           );
         if (accountInterventionsResponse.data.blocked) {
           nextEvent = USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION;

@@ -51,14 +51,11 @@ export function enterSignInRetryBlockedGet(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const email = req.session.user.email.toLowerCase();
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
     const checkUserIsBlockedResponse = await service.userExists(
-      sessionId,
       email,
-      clientSessionId,
-      persistentSessionId,
-      req
+      req,
+      res
     );
 
     if (
@@ -101,19 +98,17 @@ export function enterPasswordPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const { sessionId } = res.locals;
 
     const journeyType = getJourneyTypeFromUserSession(req.session.user, {
       includeReauthentication: true,
     });
 
     const userLogin = await service.loginUser(
-      sessionId,
       email,
       req.body["password"],
-      clientSessionId,
-      persistentSessionId,
       req,
+      res,
       journeyType
     );
 
@@ -184,10 +179,7 @@ export function enterPasswordPost(
     const interventionRedirect = await handleAccountInterventions(
       isPasswordChangeRequired,
       accountInterventionsService,
-      sessionId,
       email,
-      clientSessionId,
-      persistentSessionId,
       req,
       res
     );
@@ -204,13 +196,11 @@ export function enterPasswordPost(
       !isPasswordChangeRequired
     ) {
       const result = await mfaCodeService.sendMfaCode(
-        sessionId,
-        clientSessionId,
         email,
-        persistentSessionId,
         false,
         xss(req.cookies.lng as string),
         req,
+        res,
         req.session.user.activeMfaMethodId,
         journeyType
       );
@@ -235,10 +225,7 @@ export function enterPasswordPost(
   async function handleAccountInterventions(
     isPasswordChangeRequired: boolean,
     accountInterventionsService: AccountInterventionsInterface,
-    sessionId: string,
     email: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     req: Request,
     res: Response
   ): Promise<string | null> {
@@ -248,11 +235,9 @@ export function enterPasswordPost(
 
     const accountInterventionsResponse =
       await accountInterventionsService.accountInterventionStatus(
-        sessionId,
         email,
-        clientSessionId,
-        persistentSessionId,
-        req
+        req,
+        res
       );
 
     if (
