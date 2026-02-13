@@ -515,7 +515,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.ERROR_PAGE]: [
     {
       name: "500",
-      template: "common/errors/500.njk",
+      template: "common/errors/generic-error.njk",
     },
     {
       name: "404",

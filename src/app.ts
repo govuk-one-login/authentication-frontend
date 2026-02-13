@@ -36,7 +36,7 @@ import { registerAccountCreatedRouter } from "./components/account-created/accou
 import { createPasswordRouter } from "./components/create-password/create-password-routes.js";
 import { enterPhoneNumberRouter } from "./components/enter-phone-number/enter-phone-number-routes.js";
 import { pageNotFoundHandler } from "./handlers/page-not-found-handler.js";
-import { serverErrorHandler } from "./handlers/internal-server-error-handler.js";
+import { errorHandler } from "./handlers/error-handler.js";
 import { csrfMiddleware } from "./middleware/csrf-middleware.js";
 import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-routes.js";
 import { landingRouter } from "./components/landing/landing-route.js";
@@ -106,6 +106,7 @@ import { govukComponentRouter } from "./components/common/govuk-component/demo/g
 import { cannotUseEmailAddressRouter } from "./components/cannot-use-email-address/cannot-use-email-address-routes.js";
 import { wellKnownRouter } from "./components/well-known/well-known-routes.js";
 import { sfadAuthorizeRouter } from "./components/sfad-authorize/sfad-authorize-routes.js";
+import { amcCallbackRouter } from "./components/amc-callback/amc-callback-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -163,6 +164,10 @@ function registerRoutes(app: express.Application) {
   app.use(wellKnownRouter);
   if (supportSingleFactorAccountDeletion()) {
     app.use(sfadAuthorizeRouter);
+    // Using amc callback route in this feature flag for now for simplicity
+    // in initial implementation. Must create a new broader AMC feature flag
+    // when more services are using AMC
+    app.use(amcCallbackRouter);
   }
 
   // Development tools
@@ -306,7 +311,7 @@ async function createApp(): Promise<express.Application> {
   // Error Handlers
   app.use(csrfMissingHandler);
   app.use(logErrorMiddleware);
-  app.use(serverErrorHandler);
+  app.use(errorHandler);
 
   return app;
 }

@@ -3,7 +3,7 @@ import { describe } from "mocha";
 import { sinon } from "../utils/test-utils.js";
 import type { NextFunction, Request, Response } from "express";
 import { pageNotFoundHandler } from "../../src/handlers/page-not-found-handler.js";
-import { serverErrorHandler } from "../../src/handlers/internal-server-error-handler.js";
+import { errorHandler } from "../../src/handlers/error-handler.js";
 import { mockRequest, mockResponse } from "mock-req-res";
 
 describe("Error handlers", () => {
@@ -34,17 +34,19 @@ describe("Error handlers", () => {
     it("should render 500 view when unexpected error", () => {
       const err = new Error("internal server error");
 
-      serverErrorHandler(err, req as Request, res as Response, next);
+      errorHandler(err, req as Request, res as Response, next);
 
       expect(res.status).to.have.been.calledOnceWith(500);
-      expect(res.render).to.have.been.calledOnceWith("common/errors/500.njk");
+      expect(res.render).to.have.been.calledOnceWith(
+        "common/errors/generic-error.njk"
+      );
     });
 
     it("should render timeout view when no session", () => {
       const err = new Error("timeout");
       res.statusCode = 401;
 
-      serverErrorHandler(err, req as Request, res as Response, next);
+      errorHandler(err, req as Request, res as Response, next);
 
       expect(res.render).to.have.been.calledOnceWith(
         "common/errors/session-expired.njk"
