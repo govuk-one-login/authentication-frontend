@@ -16,7 +16,7 @@ export function csrfMissingHandler(
         "Invalid or missing CSRF token, but session is valid. Redirecting to 'internal server error' page."
       );
 
-      return res.render("common/errors/500.njk");
+      return res.render("common/errors/generic-error.njk");
     } else {
       req.log.warn(
         "Session has expired - unable to validate CSRF token if present in request body. Redirecting to 'session expired' error page."

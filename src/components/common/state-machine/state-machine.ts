@@ -503,6 +503,9 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
+      [PATH_NAMES.AMC_CALLBACK]: {
+        type: "final",
+      },
       [INTERMEDIATE_STATES.SIGN_IN_END]: {
         always: [
           {
@@ -617,6 +620,9 @@ const authStateMachine = createMachine<AuthStateContext>(
       },
       [PATH_NAMES.SFAD_AUTHORIZE]: {
         type: "final",
+        meta: {
+          optionalPaths: [PATH_NAMES.AMC_CALLBACK],
+        },
       },
       [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES]: {
         on: {
