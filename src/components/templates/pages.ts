@@ -374,20 +374,42 @@ export const pages: Record<string, Page | PageVariant[]> = {
       backLink: "#",
     },
   },
-  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: {
-    template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
-    options: {
-      variant: "incomplete",
-      formPostPath: "#",
+  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: [
+    {
+      name: "default",
+      template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
+      options: {
+        identityFailed: false,
+        onlyDeleteAccount: false,
+      },
     },
-  },
-  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: {
-    template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
-    options: {
-      variant: "identityFailed",
-      formPostPath: "#",
+    {
+      name: "only-delete-account",
+      template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
+      options: {
+        identityFailed: false,
+        onlyDeleteAccount: true,
+      },
     },
-  },
+  ],
+  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: [
+    {
+      name: "default",
+      template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
+      options: {
+        identityFailed: true,
+        onlyDeleteAccount: false,
+      },
+    },
+    {
+      name: "only-delete-account",
+      template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
+      options: {
+        identityFailed: true,
+        onlyDeleteAccount: true,
+      },
+    },
+  ],
   [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]: [
     {
       name: "sms",
