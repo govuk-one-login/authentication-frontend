@@ -10,6 +10,7 @@ export function cannotUseSecurityCodeGet(
   acctRecoveryService: AccountRecoveryInterface = accountRecoveryService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
+    req.session.user.needsForcedMFAReset = true;
     req.session.user.isAccountRecoveryJourney = true;
     req.session.user.isAccountRecoveryPermitted =
       await isAccountRecoveryPermitted(req, res, acctRecoveryService);
