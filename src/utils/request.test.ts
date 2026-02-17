@@ -11,6 +11,7 @@ import {
   supportTypeIsGovService,
   urlContains,
   isPasswordChangeRequired,
+  needsForcedMFAReset,
 } from "./request.js";
 import {
   CONTACT_US_THEMES,
@@ -269,6 +270,28 @@ describe("request utilities", () => {
           } as any as Request,
           "needle"
         )
+      ).to.equal(true);
+    });
+  });
+
+  describe("needsForcedMFAReset", () => {
+    it(`returns false when required properties are not in the request`, async () => {
+      expect(needsForcedMFAReset(blankRequest)).to.equal(false);
+    });
+
+    it(`returns false when used property is false`, async () => {
+      expect(
+        needsForcedMFAReset({
+          session: { user: { needsForcedMFAReset: false } },
+        } as any as Request)
+      ).to.equal(false);
+    });
+
+    it(`returns true when used property is true`, async () => {
+      expect(
+        needsForcedMFAReset({
+          session: { user: { needsForcedMFAReset: true } },
+        } as any as Request)
       ).to.equal(true);
     });
   });

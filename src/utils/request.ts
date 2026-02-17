@@ -40,3 +40,6 @@ export const supportTypeIsGovService = (req: Request): boolean =>
 
 export const urlContains = (req: Request, str: string): boolean =>
   Boolean(req.originalUrl?.includes(str));
+
+export const needsForcedMFAReset = (req: Request): boolean =>
+  Boolean(req.session?.user?.needsForcedMFAReset);
