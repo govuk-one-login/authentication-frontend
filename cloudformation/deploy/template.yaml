@@ -384,13 +384,9 @@ Conditions:
               - "Yes"
   UseAuthJwks:
     Fn::Not:
-      - Fn::Or:
-        - Fn::Equals:
-           - !Ref Environment
-           - integration
-        - Fn::Equals:
-           - !Ref Environment
-           - production
+      - Fn::Equals:
+          - !Ref Environment
+          - production
 
   SupportSingleFactorAccountDeletion:
     Fn::Or:
