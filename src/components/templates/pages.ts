@@ -602,4 +602,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.CANNOT_USE_SECURITY_CODE]: {
     template: "cannot-use-security-code/index.njk",
   },
+  [PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN]: {
+    template: "change-security-codes-sign-in/index.njk",
+  },
 };

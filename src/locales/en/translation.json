@@ -764,6 +764,17 @@
       "subHeader": "What you can do",
       "link": "Check if you can change how you get security codes"
     },
+    "changeSecurityCodesSignIn": {
+      "title": "You need to change how you get security codes - GOV.UK One Login",
+      "header": "You need to change how you get security codes",
+      "paragraph1": "You’ll need to use an authenticator app or a UK mobile phone number.",
+      "paragraph2": "You must do this to avoid getting locked out of your GOV.UK One Login.",
+      "details": {
+        "summary": "Why do I need to change how I get codes?",
+        "paragraph1": "To keep your GOV.UK One Login safe, we’re changing how we send security codes.",
+        "paragraph2": "If you do not have a UK number, you’ll need to use an authenticator app."
+      }
+    },
     "updatedTermsAndConds": {
       "title": "We’ve updated our terms of use",
       "header": "We’ve updated our terms of use",
