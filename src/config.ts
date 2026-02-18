@@ -55,10 +55,6 @@ export function getVitalSignsIntervalSeconds(): number {
   return Number(process.env.VITAL_SIGNS_INTERVAL_SECONDS) || 10;
 }
 
-export function getOrchToAuthSigningPublicKey(): string {
-  return process.env.ORCH_TO_AUTH_SIGNING_KEY;
-}
-
 export function getOrchToAuthExpectedClientId(): string {
   return process.env.ORCH_TO_AUTH_CLIENT_ID || "UNKNOWN";
 }
@@ -213,10 +209,6 @@ export function supportNewInternationalSms(): boolean {
 
 export function supportSingleFactorAccountDeletion(): boolean {
   return process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION === "1";
-}
-
-export function getUseAuthJwks(): boolean {
-  return process.env.USE_AUTH_JWKS === "1";
 }
 
 export function getAuthJwksUrl(): string {
