@@ -27,6 +27,9 @@ describe("cannot use security code controller", () => {
         res as Response
       );
 
+      expect(req.session.user.needsForcedMFAReset).to.equal(true);
+      expect(req.session.user.isAccountRecoveryPermitted).to.equal(true);
+      expect(req.session.user.isAccountRecoveryJourney).to.equal(true);
       expect(res.render).to.have.been.calledWith(
         "cannot-use-security-code/index.njk",
         { changeSecurityCodesLink: PATH_NAMES.MFA_RESET_WITH_IPV }
@@ -39,6 +42,9 @@ describe("cannot use security code controller", () => {
         res as Response
       );
 
+      expect(req.session.user.needsForcedMFAReset).to.equal(true);
+      expect(req.session.user.isAccountRecoveryPermitted).to.equal(false);
+      expect(req.session.user.isAccountRecoveryJourney).to.equal(true);
       expect(res.render).to.have.been.calledWith(
         "common/errors/generic-error.njk"
       );

@@ -7,65 +7,87 @@
 
 {% block content %}
   {% include "common/errors/errorSummary.njk" %}
+
   <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.header' | translate}}</h1>
 
-  {% if variant === "identityFailed" %}
+  {% if identityFailed %}
     <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.identityFailedPreamble' | translate}}</p>
   {% endif %}
 
-  <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.paragraph1' | translate}}</p>
-  <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.paragraph2' | translate}}</p>
+  {% if onlyDeleteAccount %}
+    <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.onlyDeleteAccount.paragraph1' | translate}}</p>
+    <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.onlyDeleteAccount.paragraph2' | translate}}</p>
 
-  <form action="{{ formPostPath }}" method="post">
+    <h2 class="govuk-heading-m">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.onlyDeleteAccount.subHeader' | translate}}</h2>
 
-  <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+    <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.onlyDeleteAccount.paragraph3' | translate}}</p>
+    <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.onlyDeleteAccount.paragraph4' | translate}}</p>
 
-    <h2 class="govuk-heading-m">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.header' | translate}}</h2>
+    <form action="{{ formPostPath }}" method="post">
+      <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+      <input type="hidden" name="cannotChangeHowGetSecurityCodeAction" value="help-to-delete-account"/>
 
-    {% set radioItems = [
-        {
-            value: "help-to-delete-account",
-            text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option1Text' | translate,
-            id: "help-to-delete-account",
-            checked: false,
-            hint: {
-              text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option1Hint' | translate
-            }
-        },
-        {
-            value: "retry-security-code",
-            text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option2Text' | translate,
-            id: "retry-security-code",
+      {{ govukButton({
+        "text": "general.continue.label" | translate,
+        "type": "Submit",
+        "preventDoubleClick": true
+      }) }}
+    </form>
+  {% else %}
+    <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.allOptions.paragraph1' | translate}}</p>
+    <p class="govuk-body">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.allOptions.paragraph2' | translate}}</p>
+
+    <form action="{{ formPostPath }}" method="post">
+
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+      <h2 class="govuk-heading-m">{{'pages.cannotChangeHowGetSecurityCodeMfaReset.allOptions.radios.header' | translate}}</h2>
+
+      {% set radioItems = [
+          {
+              value: "help-to-delete-account",
+              text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.allOptions.radios.option1Text' | translate,
+              id: "help-to-delete-account",
+              checked: false,
+              hint: {
+                text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.allOptions.radios.option1Hint' | translate
+              }
+          },
+          {
+              value: "retry-security-code",
+              text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.allOptions.radios.option2Text' | translate,
+              id: "retry-security-code",
+              checked: false
+          }
+      ] %}
+
+      {% if supportSingleFactorAccountDeletion %}
+        {% set radioItems = (radioItems.push({
+            value: "initiate-sfad",
+            text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.allOptions.radios.option3Text' | translate,
+            id: "initiate-sfad",
             checked: false
-        }
-    ] %}
+        }), radioItems) %}
+      {% endif %}
 
-    {% if supportSingleFactorAccountDeletion %}
-      {% set radioItems = (radioItems.push({
-          value: "initiate-sfad",
-          text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.option3Text' | translate,
-          id: "initiate-sfad",
-          checked: false
-      }), radioItems) %}
-    {% endif %}
+      {{ govukRadios({
+          name: "cannotChangeHowGetSecurityCodeAction",
+          attributes: {
+              "id": "radio-cannot-change-how-get-security-code-action"
+          },
+          items: radioItems,
+          errorMessage: {
+              text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.allOptions.radios.radioValidationError' | translate
+          } if errors["cannotChangeHowGetSecurityCodeAction"]
+      }) }}
 
-    {{ govukRadios({
-        name: "cannotChangeHowGetSecurityCodeAction",
-        attributes: {
-            "id": "radio-cannot-change-how-get-security-code-action"
-        },
-        items: radioItems,
-        errorMessage: {
-            text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.radios.radioValidationError' | translate
-        } if errors["cannotChangeHowGetSecurityCodeAction"]
+    {{ govukButton({
+      "text": "general.continue.label" | translate,
+      "type": "Submit",
+      "preventDoubleClick": true
     }) }}
-
-  {{ govukButton({
-    "text": "general.continue.label" | translate,
-    "type": "Submit",
-    "preventDoubleClick": true
-  }) }}
-  </form>
+    </form>
+  {% endif %}
 
 {% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: true } %}
 {%- include "ga4-opl/template.njk" -%}

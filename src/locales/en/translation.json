@@ -707,15 +707,24 @@
       "title": "You cannot change how you get security codes",
       "header": "You cannot change how you get security codes",
       "identityFailedPreamble": "This is because there was a problem confirming your identity.",
-      "paragraph1": "You can only sign into your GOV.UK One Login using the method you already have set up to get security codes.",
-      "paragraph2": "If you’ve permanently lost access to this method, you should delete your GOV.UK One Login so you can create a new one.",
-      "radios": {
-        "header": "What would you like to do?",
-        "option1Text": "Get help to delete your GOV.UK One Login from the support team",
-        "option1Hint": "Call or use webchat to contact the GOV.UK One Login team",
-        "option2Text": "Try entering a security code again with the method you already have set up",
-        "option3Text": "Initiate SFAD (this is placeholder content to initiate the journey, not in upper envs)",
-        "radioValidationError": "Select what you would like to do"
+      "onlyDeleteAccount": {
+        "paragraph1": "You cannot sign into your GOV.UK One Login using the method you previously set up to get security codes.",
+        "paragraph2": "You’ll need to delete your GOV.UK One Login so you can create a new one.",
+        "subHeader": "What you can do",
+        "paragraph3": "Get help to delete your GOV.UK One Login from the support team.",
+        "paragraph4": "You can call or use webchat to contact them."
+      },
+      "allOptions": {
+        "paragraph1": "You can only sign into your GOV.UK One Login using the method you already have set up to get security codes.",
+        "paragraph2": "If you’ve permanently lost access to this method, you should delete your GOV.UK One Login so you can create a new one.",
+        "radios": {
+          "header": "What would you like to do?",
+          "option1Text": "Get help to delete your GOV.UK One Login from the support team",
+          "option1Hint": "Call or use webchat to contact the GOV.UK One Login team",
+          "option2Text": "Try entering a security code again with the method you already have set up",
+          "option3Text": "Initiate SFAD (this is placeholder content to initiate the journey, not in upper envs)",
+          "radioValidationError": "Select what you would like to do"
+        }
       }
     },
     "changeSecurityCodesConfirmation": {

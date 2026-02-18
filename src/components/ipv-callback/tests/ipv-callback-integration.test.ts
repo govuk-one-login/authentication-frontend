@@ -153,17 +153,62 @@ describe("Integration:: ipv callback", () => {
         .expect("Location", PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE)
         .expect(302);
     });
+
+    it("should render onlyDeleteAccount variant and redirect to support when needsForcedMFAReset is true", async () => {
+      const app = await stubMiddlewareAndCreateApp(
+        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
+        undefined,
+        true
+      );
+
+      await request(app)
+        .get(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES)
+        .expect(200)
+        .then((res) => {
+          const $ = cheerio.load(res.text);
+          expect($("h1").text()).to.contain(
+            "You cannot change how you get security codes"
+          );
+          expect(
+            $(
+              "form input[name='cannotChangeHowGetSecurityCodeAction'][type='hidden']"
+            ).val()
+          ).to.equal("help-to-delete-account");
+          expect(
+            $("#radio-cannot-change-how-get-security-code-action").length
+          ).to.equal(0);
+        });
+
+      const { token, cookies } =
+        await getCannotChangeSecurityCodesAndReturnTokenAndCookies(app);
+
+      await request(app)
+        .post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          cannotChangeHowGetSecurityCodeAction:
+            CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.HELP_DELETE_ACCOUNT,
+        })
+        .expect("Location", TEST_CONTACT_US_LINK_URL)
+        .expect(302);
+    });
   });
 });
 
 const stubMiddlewareAndCreateApp = async (
   nextPath: string,
-  mfaMethodType?: MFA_METHOD_TYPE
+  mfaMethodType?: MFA_METHOD_TYPE,
+  needsForcedMFAReset?: boolean
 ): Promise<express.Application> => {
   const { createApp } = await esmock(
     "../../../app.js",
     {},
     {
+      "../../../config.js": {
+        getSessionSecret: () => "test-session-secret",
+      },
       "../../../middleware/session-middleware.js": {
         validateSessionMiddleware: sinon.fake(function (
           req: Request,
@@ -177,6 +222,7 @@ const stubMiddlewareAndCreateApp = async (
             mfaMethods: buildMfaMethods({ phoneNumber: "7867" }),
             journey: getPermittedJourneyForPath(nextPath),
             mfaMethodType: mfaMethodType,
+            needsForcedMFAReset: needsForcedMFAReset,
           };
 
           next();

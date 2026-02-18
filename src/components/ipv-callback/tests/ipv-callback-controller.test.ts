@@ -219,6 +219,42 @@ describe("ipv callback controller", () => {
         );
       });
 
+      it("should render with identityFailed true when path is CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL", () => {
+        req.path = PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL;
+
+        cannotChangeSecurityCodesGet(req as Request, res as Response);
+
+        const renderCall = res.render.getCall(0);
+        expect(renderCall.args[1].identityFailed).to.equal(true);
+      });
+
+      it("should render with identityFailed false when path is CANNOT_CHANGE_SECURITY_CODES", () => {
+        req.path = PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES;
+
+        cannotChangeSecurityCodesGet(req as Request, res as Response);
+
+        const renderCall = res.render.getCall(0);
+        expect(renderCall.args[1].identityFailed).to.equal(false);
+      });
+
+      it("should render with onlyDeleteAccount true when needsForcedMFAReset is true", () => {
+        req.session.user = { needsForcedMFAReset: true };
+
+        cannotChangeSecurityCodesGet(req as Request, res as Response);
+
+        const renderCall = res.render.getCall(0);
+        expect(renderCall.args[1].onlyDeleteAccount).to.equal(true);
+      });
+
+      it("should render with onlyDeleteAccount false when needsForcedMFAReset is false", () => {
+        req.session.user = { needsForcedMFAReset: false };
+
+        cannotChangeSecurityCodesGet(req as Request, res as Response);
+
+        const renderCall = res.render.getCall(0);
+        expect(renderCall.args[1].onlyDeleteAccount).to.equal(false);
+      });
+
       it("should render with supportSingleFactorAccountDeletion true when supportSingleFactorAccountDeletion() returns true", () => {
         process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION = "1";
 

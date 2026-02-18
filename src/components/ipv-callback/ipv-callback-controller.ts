@@ -15,6 +15,7 @@ import {
   PATH_NAMES,
 } from "../../app.constants.js";
 import { supportSingleFactorAccountDeletion } from "../../config.js";
+import { needsForcedMFAReset } from "../../utils/request.js";
 const ERROR_TO_EVENT_MAP = new Map<string, string>();
 ERROR_TO_EVENT_MAP.set(
   REVERIFICATION_ERROR_CODE.NO_IDENTITY_AVAILABLE,
@@ -97,12 +98,11 @@ export function cannotChangeSecurityCodesGet(
   res: Response
 ): void {
   res.render("ipv-callback/index-cannot-change-how-get-security-codes.njk", {
-    variant:
-      req.path === PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL
-        ? "identityFailed"
-        : "incomplete",
     formPostPath: req.path,
+    identityFailed:
+      req.path === PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
     supportSingleFactorAccountDeletion: supportSingleFactorAccountDeletion(),
+    onlyDeleteAccount: needsForcedMFAReset(req),
   });
 }
 

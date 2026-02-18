@@ -704,18 +704,27 @@
       }
     },
     "cannotChangeHowGetSecurityCodeMfaReset": {
-      "title": "Ni allwch newid sut rydych yn cael codau diogelwch",
-      "header": "Ni allwch newid sut rydych yn cael codau diogelwch",
+      "title": "Ni allwch chi newid sut rydych yn cael codau diogelwch",
+      "header": "Ni allwch chi newid sut rydych yn cael codau diogelwch",
       "identityFailedPreamble": "Mae hyn oherwydd bod problem cadarnhau eich hunaniaeth.",
-      "paragraph1": "Gallwch ond mewngofnodi i’ch GOV.UK One Login drwy ddefnyddio’r dull rydych eisoes wedi’i sefydlu i gael codau diogelwch.",
-      "paragraph2": "Os ydych wedi colli mynediad i’r dull hwn yn barhaol, dylech ddileu eich GOV.UK One Login er mwyn i chi allu creu un newydd.",
-      "radios": {
-        "header": "Beth hoffech chi ei wneud?",
-        "option1Text": "Cael help i ddileu eich GOV.UK One Login gan y tîm cymorth",
-        "option1Hint": "Ffoniwch neu defnyddiwch gwe-sgwrs i gysylltu â’r tîm GOV.UK One Login",
-        "option2Text": "Ceisiwch roi cod diogelwch i mewn eto gyda’r dull rydych eisoes wedi’i sefydlu",
-        "option3Text": "Initiate SFAD (this is placeholder content to initiate the journey, not in upper envs)",
-        "radioValidationError": "Dewiswch beth hoffech chi ei wneud"
+      "onlyDeleteAccount": {
+        "paragraph1": "Ni allwch fewngofnodi i’ch GOV.UK One Login gan ddefnyddio’r dull a sefydlwyd gennych o’r blaen i gael codau diogelwch.",
+        "paragraph2": "Bydd angen i chi ddileu eich GOV.UK One Login er mwyn i chi allu creu un newydd.",
+        "subHeader": "Beth allwch chi ei wneud",
+        "paragraph3": "Cael help i ddileu eich GOV.UK One Login gan y tîm cymorth.",
+        "paragraph4": "Gallwch ffonio neu ddefnyddio gwe-sgwrs i gysylltu â nhw."
+      },
+      "allOptions": {
+        "paragraph1": "Gallwch ond mewngofnodi i’ch GOV.UK One Login drwy ddefnyddio’r dull rydych eisoes wedi’i sefydlu i gael codau diogelwch.",
+        "paragraph2": "Os ydych wedi colli mynediad i’r dull hwn yn barhaol, dylech ddileu eich GOV.UK One Login er mwyn i chi allu creu un newydd.",
+        "radios": {
+          "header": "Beth hoffech chi ei wneud?",
+          "option1Text": "Cael help i ddileu eich GOV.UK One Login gan y tîm cymorth",
+          "option1Hint": "Ffoniwch neu defnyddiwch gwe-sgwrs i gysylltu â’r tîm GOV.UK One Login",
+          "option2Text": "Ceisiwch roi cod diogelwch i mewn eto gyda’r dull rydych eisoes wedi’i sefydlu",
+          "option3Text": "Initiate SFAD (this is placeholder content to initiate the journey, not in upper envs)",
+          "radioValidationError": "Dewiswch beth hoffech chi ei wneud"
+        }
       }
     },
     "changeSecurityCodesConfirmation": {

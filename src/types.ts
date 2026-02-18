@@ -92,6 +92,7 @@ export interface UserSession {
   activeMfaMethodId?: string;
   sentOtpMfaMethodIds?: string[];
   hasActivePasskey?: boolean;
+  needsForcedMFAReset?: boolean;
 }
 
 export interface UserSessionClient {
