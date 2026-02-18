@@ -2,7 +2,6 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import request from "supertest";
-import * as cheerio from "cheerio";
 import type { AxiosResponse } from "axios";
 import {
   API_ENDPOINTS,
@@ -17,6 +16,7 @@ import type {
 import { createApiResponse } from "../../../utils/http.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import esmock from "esmock";
 
@@ -80,13 +80,9 @@ describe("Integration:: enter mfa", () => {
     baseApi = process.env.FRONTEND_API_BASE_URL || "";
     process.env.SUPPORT_REAUTHENTICATION = "1";
 
-    await request(app)
-      .get(PATH_NAMES.ENTER_MFA)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(PATH_NAMES.ENTER_MFA)
+    ));
   });
 
   beforeEach(() => {

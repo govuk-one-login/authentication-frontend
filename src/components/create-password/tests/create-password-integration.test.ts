@@ -10,6 +10,7 @@ import {
 } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 describe("Integration::register create password", () => {
   let token: string | string[];
@@ -46,13 +47,9 @@ describe("Integration::register create password", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(app)
-      .get(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD)
+    ));
   });
 
   beforeEach(() => {

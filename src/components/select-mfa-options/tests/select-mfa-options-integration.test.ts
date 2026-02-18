@@ -6,6 +6,7 @@ import * as cheerio from "cheerio";
 import { PATH_NAMES } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 
 describe("Integration::select-mfa-options", () => {
@@ -43,13 +44,9 @@ describe("Integration::select-mfa-options", () => {
 
     app = await createApp();
 
-    await request(app)
-      .get(PATH_NAMES.GET_SECURITY_CODES)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(PATH_NAMES.GET_SECURITY_CODES)
+    ));
   });
 
   beforeEach(() => {

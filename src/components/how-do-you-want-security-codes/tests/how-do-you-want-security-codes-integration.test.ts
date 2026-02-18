@@ -10,6 +10,7 @@ import type { NextFunction, Request, Response } from "express";
 import type express from "express";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import * as cheerio from "cheerio";
 import { MfaMethodPriority } from "../../../types.js";
 import type { MfaMethod } from "../../../types.js";
@@ -17,14 +18,9 @@ import nock from "nock";
 import request from "supertest";
 
 const getTokenAndCookies = async (app: express.Application) => {
-  let cookies, token;
-  await request(app)
-    .get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
-    .then((res) => {
-      const $ = cheerio.load(res.text);
-      token = $("[name=_csrf]").val();
-      cookies = res.headers["set-cookie"];
-    });
+  const { token, cookies } = extractCsrfTokenAndCookies(
+    await request(app).get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
+  );
   return { token, cookies };
 };
 

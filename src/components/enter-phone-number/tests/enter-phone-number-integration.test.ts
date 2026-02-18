@@ -7,6 +7,7 @@ import nock from "nock";
 import request from "supertest";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import esmock from "esmock";
 
@@ -50,13 +51,9 @@ describe("Integration::enter phone number", () => {
     app = await createTestApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(app)
-      .get(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
+    ));
   });
 
   beforeEach(() => {
@@ -238,13 +235,13 @@ describe("Integration::enter phone number", () => {
       process.env.SUPPORT_NEW_INTERNATIONAL_SMS = "1";
       internationalNumbersEnabledApp = await createTestApp();
 
-      await request(internationalNumbersEnabledApp)
-        .get(PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER)
-        .then((res) => {
-          const $ = cheerio.load(res.text);
-          internationalNumbersEnabledToken = $("[name=_csrf]").val();
-          internationalNumbersEnabledCookies = res.headers["set-cookie"];
-        });
+      const res = await request(internationalNumbersEnabledApp).get(
+        PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER
+      );
+      ({
+        token: internationalNumbersEnabledToken,
+        cookies: internationalNumbersEnabledCookies,
+      } = extractCsrfTokenAndCookies(res));
     });
 
     after(() => {

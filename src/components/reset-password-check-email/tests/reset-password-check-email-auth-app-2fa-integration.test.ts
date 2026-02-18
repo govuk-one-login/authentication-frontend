@@ -1,6 +1,5 @@
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
-import * as cheerio from "cheerio";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
@@ -14,6 +13,7 @@ import {
 } from "../../../../test/helpers/account-interventions-helpers.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
@@ -59,13 +59,9 @@ describe("Integration::reset password check email ", () => {
         mfaMethodType: "AUTH_APP",
       });
 
-    await request(app)
-      .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+    ));
   });
 
   beforeEach(() => {

@@ -11,6 +11,7 @@ import request from "supertest";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 
 describe("Integration::2fa auth app (in reset password flow)", () => {
@@ -50,13 +51,9 @@ describe("Integration::2fa auth app (in reset password flow)", () => {
 
     nock(baseApi).persist().post("/mfa").reply(204);
 
-    await request(app)
-      .get(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP)
+    ));
   });
 
   beforeEach(() => {
