@@ -104,6 +104,7 @@ import { dirname } from "node:path";
 import { csrfSynchronisedProtection } from "./utils/csrf.js";
 import { govukComponentRouter } from "./components/common/govuk-component/demo/govuk-component-routes.js";
 import { cannotUseEmailAddressRouter } from "./components/cannot-use-email-address/cannot-use-email-address-routes.js";
+import { cannotUseSecurityCodeRouter } from "./components/cannot-use-security-code/cannot-use-security-code-routes.js";
 import { wellKnownRouter } from "./components/well-known/well-known-routes.js";
 import { sfadAuthorizeRouter } from "./components/sfad-authorize/sfad-authorize-routes.js";
 import { amcCallbackRouter } from "./components/amc-callback/amc-callback-routes.js";
@@ -161,6 +162,7 @@ function registerRoutes(app: express.Application) {
   app.use(mfaResetWithIpvRouter);
   app.use(ipvCallbackRouter);
   app.use(cannotUseEmailAddressRouter);
+  app.use(cannotUseSecurityCodeRouter);
   app.use(wellKnownRouter);
   if (supportSingleFactorAccountDeletion()) {
     app.use(sfadAuthorizeRouter);

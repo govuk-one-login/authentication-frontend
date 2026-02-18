@@ -267,7 +267,7 @@ describe("Integration::reset password check email ", () => {
         .expect(200);
     });
 
-    it("should render lockout page when MFA returns indefinite international SMS block error", async () => {
+    it("should render 500 error page when MFA returns indefinite international SMS block error", async () => {
       nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).once().reply(204, {});
 
       nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {

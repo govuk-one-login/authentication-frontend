@@ -748,6 +748,13 @@
         "text2": "to create a GOV.UK One Login."
       }
     },
+    "cannotUseSecurityCode": {
+      "title": "Sorry, there’s a problem",
+      "header": "Sorry, there’s a problem",
+      "paragraph1": "We could not sign you in using your current method of getting security codes.",
+      "subHeader": "What you can do",
+      "link": "Check if you can change how you get security codes"
+    },
     "updatedTermsAndConds": {
       "title": "We’ve updated our terms of use",
       "header": "We’ve updated our terms of use",

@@ -1,0 +1,17 @@
+{% extends "common/layout/base.njk" %}
+{% set pageTitleName = 'pages.cannotUseSecurityCode.title' | translate %}
+
+{% block content %}
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.cannotUseSecurityCode.header' | translate }}</h1>
+
+    <p class="govuk-body">{{ 'pages.cannotUseSecurityCode.paragraph1' | translate }}</p>
+
+    <h2 class="govuk-heading-m">{{ 'pages.cannotUseSecurityCode.subHeader' | translate }}</h2>
+
+    <p class="govuk-body">
+        <a href="{{ changeSecurityCodesLink }}" class="govuk-link">{{ 'pages.cannotUseSecurityCode.link' | translate }}</a>
+    </p>
+
+{% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, dynamic: false } %}
+{%- include "ga4-opl/template.njk" -%}
+{% endblock %}

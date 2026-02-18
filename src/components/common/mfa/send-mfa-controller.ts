@@ -25,12 +25,25 @@ function addGA(req: Request, redirectPath: string) {
   return redirectPath;
 }
 
-function handleErrors(
+async function handleErrors(
   mfaFailResponse: ApiResponseResult<DefaultApiResponse>,
   isResendCodeRequest: boolean,
   res: Response<any, Record<string, any>>,
   req: Request
 ) {
+  if (
+    mfaFailResponse.data.code ===
+    ERROR_CODES.INDEFINITELY_BLOCKED_INTERNATIONAL_SMS
+  ) {
+    return res.redirect(
+      await getNextPathAndUpdateJourney(
+        req,
+        res,
+        USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED
+      )
+    );
+  }
+
   const pathWithQueryParams = getErrorPathByCode(mfaFailResponse.data.code);
 
   if (pathWithQueryParams && isResendCodeRequest) {

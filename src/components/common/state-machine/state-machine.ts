@@ -68,6 +68,7 @@ const USER_JOURNEY_EVENTS = {
     "ENTER_EMAIL_ADDRESS_AFTER_EXPERIAN_CHECK",
   INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION:
     "INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION",
+  MFA_INDEFINITELY_BLOCKED: "MFA_INDEFINITELY_BLOCKED",
 };
 
 export interface AuthStateContext {
@@ -225,6 +226,11 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
+      [PATH_NAMES.CANNOT_USE_SECURITY_CODE]: {
+        meta: {
+          optionalPaths: [PATH_NAMES.MFA_RESET_WITH_IPV],
+        },
+      },
       [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]: {
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
@@ -318,6 +324,9 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
             INTERMEDIATE_STATES.PASSWORD_VERIFIED,
           ],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
+          ],
         },
         meta: {
           optionalPaths: [
@@ -377,6 +386,9 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.RESEND_MFA_CODE]: {
         on: {
           [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
+          ],
         },
       },
       [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE]: {
@@ -399,6 +411,9 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.UPLIFT_JOURNEY]: {
         on: {
           [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
+          ],
         },
       },
       [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS]: {
@@ -429,6 +444,9 @@ const authStateMachine = createMachine<AuthStateContext>(
             {
               target: [PATH_NAMES.RESET_PASSWORD],
             },
+          ],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
           ],
         },
         meta: {
@@ -639,6 +657,9 @@ const authStateMachine = createMachine<AuthStateContext>(
               cond: "isPasswordResetJourney",
             },
             PATH_NAMES.ENTER_MFA,
+          ],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
           ],
         },
       },

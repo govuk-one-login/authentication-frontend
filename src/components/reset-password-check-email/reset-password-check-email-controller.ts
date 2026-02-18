@@ -148,6 +148,14 @@ export function resetPasswordCheckEmailPost(
 
       if (mfaResponse.success) return false;
 
+      if (
+        mfaResponse.data.code ===
+        ERROR_CODES.INDEFINITELY_BLOCKED_INTERNATIONAL_SMS
+      ) {
+        res.status(200);
+        res.render("common/errors/generic-error.njk");
+        return true;
+      }
       if (mfaResponse.data.code == ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
         res.render("security-code-error/index-wait.njk", {
           newCodeLink: getNewCodePath(
