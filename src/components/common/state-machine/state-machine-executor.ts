@@ -9,6 +9,7 @@ import {
   shouldPromptToRegisterPasskey,
   shouldPromptToSignInWithPasskey,
 } from "../../../utils/passkeys-helper.js";
+import { needsForcedMFAReset } from "../../../utils/request.js";
 
 export async function getNextPathAndUpdateJourney(
   req: Request,
@@ -33,6 +34,7 @@ export async function getNextPathAndUpdateJourney(
     mfaMethodType: req.session.user?.mfaMethodType,
     shouldPromptToRegisterPasskey: shouldPromptToRegisterPasskey(req, res),
     shouldPromptToSignInWithPasskey: shouldPromptToSignInWithPasskey(req, res),
+    needsForcedMFAReset: needsForcedMFAReset(req),
   };
 
   const nextState = getNextState(currentState, event, context);
