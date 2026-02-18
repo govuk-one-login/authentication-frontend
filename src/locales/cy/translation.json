@@ -704,14 +704,14 @@
       }
     },
     "cannotChangeHowGetSecurityCodeMfaReset": {
-      "title": "Ni allwch newid sut rydych yn cael codau diogelwch",
-      "header": "Ni allwch newid sut rydych yn cael codau diogelwch",
+      "title": "Ni allwch chi newid sut rydych yn cael codau diogelwch",
+      "header": "Ni allwch chi newid sut rydych yn cael codau diogelwch",
       "identityFailedPreamble": "Mae hyn oherwydd bod problem cadarnhau eich hunaniaeth.",
       "onlyDeleteAccount": {
         "paragraph1": "Ni allwch fewngofnodi i’ch GOV.UK One Login gan ddefnyddio’r dull a sefydlwyd gennych o’r blaen i gael codau diogelwch.",
         "paragraph2": "Bydd angen i chi ddileu eich GOV.UK One Login er mwyn i chi allu creu un newydd.",
         "subHeader": "Beth allwch chi ei wneud",
-        "paragraph3": "Cael help i ddileu eich GOV.UK One Login gan y tîm cymorth",
+        "paragraph3": "Cael help i ddileu eich GOV.UK One Login gan y tîm cymorth.",
         "paragraph4": "Gallwch ffonio neu ddefnyddio gwe-sgwrs i gysylltu â nhw."
       },
       "allOptions": {
