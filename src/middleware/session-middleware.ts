@@ -28,14 +28,6 @@ export function initialiseSessionMiddleware(
     };
 
     req.session.sessionRestored = true;
-  } else if (req.session?.client?.journeyId !== res.locals.clientSessionId) {
-    req.log?.warn(
-      {
-        journeyId: req.session?.client?.journeyId,
-        clientSessionId: res.locals.clientSessionId,
-      },
-      "Journey ID mismatch"
-    );
   }
 
   next();
@@ -50,7 +42,6 @@ export function getSessionIdMiddleware(
     const ids = xss(req.cookies["gs"]).split(".");
 
     res.locals.sessionId = ids[0];
-    res.locals.clientSessionId = ids[1];
   }
   if (req.cookies && req.cookies["di-persistent-session-id"]) {
     res.locals.persistentSessionId = xss(

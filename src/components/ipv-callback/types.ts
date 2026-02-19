@@ -1,5 +1,5 @@
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface ReverificationResultSuccessResponse
   extends DefaultApiResponse {
@@ -34,10 +34,8 @@ export function isReverificationResultFailedResponse(
 
 export interface ReverificationResultInterface {
   getReverificationResult: (
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     req: Request,
+    res: Response,
     email: string,
     code: string,
     state: string
@@ -46,7 +44,10 @@ export interface ReverificationResultInterface {
 
 export interface CrossBrowserInterface {
   isCrossBrowserIssue: (req: Request) => req is CrossBrowserRequest;
-  getOrchestrationRedirectUrl: (req: CrossBrowserRequest) => Promise<string>;
+  getOrchestrationRedirectUrl: (
+    req: CrossBrowserRequest,
+    res: Response
+  ) => Promise<string>;
 }
 
 export type CrossBrowserRequest = Omit<Request, "query"> & {

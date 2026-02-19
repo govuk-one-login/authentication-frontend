@@ -48,18 +48,14 @@ export function resendEmailCodePost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const email = req.session.user.email.toLowerCase();
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
     const journeyType = JOURNEY_TYPE.REGISTRATION;
 
     const sendNotificationResponse = await notificationService.sendNotification(
-      sessionId,
-      clientSessionId,
       email,
       NOTIFICATION_TYPE.VERIFY_EMAIL,
-      persistentSessionId,
       xss(req.cookies.lng as string),
       req,
+      res,
       journeyType,
       undefined,
       xss(req.body.requestNewCode as string) === "true"

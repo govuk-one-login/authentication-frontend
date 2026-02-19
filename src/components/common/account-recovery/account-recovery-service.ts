@@ -10,17 +10,15 @@ import type {
   AccountRecoveryInterface,
   AccountRecoveryResponse,
 } from "./types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export function accountRecoveryService(
   axios: Http = http
 ): AccountRecoveryInterface {
   const accountRecovery = async function (
-    sessionId: string,
-    clientSessionId: string,
     email: string,
-    persistentSessionId: string,
-    req: Request
+    req: Request,
+    res: Response
   ): Promise<ApiResponseResult<AccountRecoveryResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.ACCOUNT_RECOVERY,
@@ -28,12 +26,8 @@ export function accountRecoveryService(
         email,
       },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId,
-          clientSessionId,
-          persistentSessionId,
-        },
         req,
+        res,
         API_ENDPOINTS.ACCOUNT_RECOVERY
       )
     );

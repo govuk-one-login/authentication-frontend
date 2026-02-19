@@ -5,7 +5,7 @@ import {
   http,
 } from "../../utils/http.js";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../app.constants.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 import type {
   ResetPasswordCheckEmailServiceInterface,
@@ -17,11 +17,9 @@ export function resetPasswordCheckEmailService(
 ): ResetPasswordCheckEmailServiceInterface {
   const resetPasswordRequest = async function (
     email: string,
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     withinForcedPasswordResetJourney: boolean,
-    req: Request
+    req: Request,
+    res: Response
   ): Promise<ApiResponseResult<ResetPasswordRequestResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.RESET_PASSWORD_REQUEST,
@@ -30,12 +28,8 @@ export function resetPasswordCheckEmailService(
         email: email,
       },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId: sessionId,
-          clientSessionId: clientSessionId,
-          persistentSessionId: persistentSessionId,
-        },
         req,
+        res,
         API_ENDPOINTS.RESET_PASSWORD_REQUEST
       )
     );

@@ -8,14 +8,11 @@ export async function isAccountRecoveryPermitted(
   acctRecoveryService: AccountRecoveryInterface
 ): Promise<boolean> {
   const { email } = req.session.user;
-  const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
   const accountRecoveryResponse = await acctRecoveryService.accountRecovery(
-    sessionId,
-    clientSessionId,
     email,
-    persistentSessionId,
-    req
+    req,
+    res
   );
 
   if (!accountRecoveryResponse.success) {

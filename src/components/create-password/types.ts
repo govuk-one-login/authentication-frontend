@@ -1,13 +1,11 @@
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface CreatePasswordServiceInterface {
   signUpUser: (
-    sessionId: string,
-    clientSessionId: string,
     emailAddress: string,
     password: string,
-    persistentSessionId: string,
-    req: Request
+    req: Request,
+    res: Response
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }

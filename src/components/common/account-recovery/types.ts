@@ -1,5 +1,5 @@
 import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface AccountRecoveryResponse extends DefaultApiResponse {
   accountRecoveryPermitted: boolean;
@@ -7,10 +7,8 @@ export interface AccountRecoveryResponse extends DefaultApiResponse {
 
 export interface AccountRecoveryInterface {
   accountRecovery: (
-    sessionId: string,
-    clientSessionId: string,
     email: string,
-    persistentSessionId: string,
-    req: Request
+    req: Request,
+    res: Response
   ) => Promise<ApiResponseResult<AccountRecoveryResponse>>;
 }

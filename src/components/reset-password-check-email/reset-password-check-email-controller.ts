@@ -32,7 +32,6 @@ export function resetPasswordCheckEmailGet(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
-    const sessionId = res.locals.sessionId;
     const requestCode = !(
       req.query.requestCode && req.query.requestCode === "false"
     );
@@ -42,11 +41,9 @@ export function resetPasswordCheckEmailGet(
     if (requestCode) {
       result = await service.resetPasswordRequest(
         email,
-        sessionId,
-        res.locals.clientSessionId,
-        res.locals.persistentSessionId,
         req.session.user.withinForcedPasswordResetJourney,
-        req
+        req,
+        res
       );
     }
 
@@ -126,7 +123,6 @@ export function resetPasswordCheckEmailPost(
       resetPasswordCheckEmailTemplateParametersFromRequest,
     beforeSuccessRedirectCallback: async (req, res) => {
       const { email, mfaMethods, activeMfaMethodId } = req.session.user;
-      const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
       const activeMfaMethod = (mfaMethods ?? []).find(
         (method: MfaMethod) => method.id === activeMfaMethodId
@@ -135,13 +131,11 @@ export function resetPasswordCheckEmailPost(
         return false;
 
       const mfaResponse = await mfaCodeService.sendMfaCode(
-        sessionId,
-        clientSessionId,
         email,
-        persistentSessionId,
         false,
         xss(req.cookies.lng as string),
         req,
+        res,
         req.session.user.activeMfaMethodId,
         JOURNEY_TYPE.PASSWORD_RESET_MFA
       );

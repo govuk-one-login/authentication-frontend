@@ -12,7 +12,10 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper.js";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("re-authentication service", () => {
   const httpInstance = new Http();
@@ -38,20 +41,13 @@ describe("re-authentication service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, email, clientSessionId, diPersistentSessionId } =
-      commonVariables;
+    const { email } = commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
+    const res = createMockResponse();
 
-    const result = await service.checkReauthUsers(
-      sessionId,
-      email,
-      SUBJECT,
-      clientSessionId,
-      diPersistentSessionId,
-      req
-    );
+    const result = await service.checkReauthUsers(email, SUBJECT, req, res);
 
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.CHECK_REAUTH_USER,

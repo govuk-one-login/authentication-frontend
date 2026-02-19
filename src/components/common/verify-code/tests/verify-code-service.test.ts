@@ -18,8 +18,10 @@ import {
 } from "../../../../app.constants.js";
 import type { VerifyCodeInterface } from "../types.js";
 import { codeService } from "../verify-code-service.js";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
-import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../../test/helpers/mock-request-helper.js";
 describe("verify code service", () => {
   const httpInstance = new Http();
   const service: VerifyCodeInterface = codeService(httpInstance);
@@ -42,23 +44,20 @@ describe("verify code service", () => {
       statusText: "OK",
     });
     postStub.resolves(axiosResponse);
-    const { sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
     const req = createMockRequest(PATH_NAMES.ENTER_MFA, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
+    const res = createMockResponse();
     const code = "1234";
     const notificationType = NOTIFICATION_TYPE.VERIFY_EMAIL;
     const journeyType = JOURNEY_TYPE.SIGN_IN;
     const mfaMethodId = "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7";
 
     const result = await service.verifyCode(
-      sessionId,
       code,
       notificationType,
-      clientSessionId,
-      diPersistentSessionId,
       req,
+      res,
       mfaMethodId,
       journeyType
     );

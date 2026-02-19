@@ -11,18 +11,16 @@ import type {
   UserLoginResponse,
 } from "./types.js";
 import type { ApiResponseResult } from "../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export function enterPasswordService(
   axios: Http = http
 ): EnterPasswordServiceInterface {
   const loginUser = async function (
-    sessionId: string,
     emailAddress: string,
     password: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     req: Request,
+    res: Response,
     journeyType?: JOURNEY_TYPE
   ): Promise<ApiResponseResult<UserLoginResponse>> {
     const payload: {
@@ -42,18 +40,16 @@ export function enterPasswordService(
       API_ENDPOINTS.LOG_IN_USER,
       payload,
       getInternalRequestConfigWithSecurityHeaders(
+        req,
+        res,
+        API_ENDPOINTS.LOG_IN_USER,
         {
-          sessionId: sessionId,
-          clientSessionId: clientSessionId,
           validationStatuses: [
             HTTP_STATUS_CODES.OK,
             HTTP_STATUS_CODES.UNAUTHORIZED,
             HTTP_STATUS_CODES.BAD_REQUEST,
           ],
-          persistentSessionId: persistentSessionId,
-        },
-        req,
-        API_ENDPOINTS.LOG_IN_USER
+        }
       )
     );
 

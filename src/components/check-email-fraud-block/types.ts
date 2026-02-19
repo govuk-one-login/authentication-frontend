@@ -1,13 +1,11 @@
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface CheckEmailFraudBlockInterface {
   checkEmailFraudBlock: (
     email: string,
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
-    req: Request
+    req: Request,
+    res: Response
   ) => Promise<ApiResponseResult<CheckEmailFraudBlockResponse>>;
 }
 

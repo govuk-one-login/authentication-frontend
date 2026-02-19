@@ -17,17 +17,9 @@ export function accountInterventionsMiddleware(
   return async function (req: Request, res: Response, next: NextFunction) {
     if (supportAccountInterventions()) {
       const email = req.session.user.email.toLowerCase();
-      const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 
       const accountInterventionsResponse =
-        await service.accountInterventionStatus(
-          sessionId,
-          email,
-          clientSessionId,
-          persistentSessionId,
-          req,
-          authenticated
-        );
+        await service.accountInterventionStatus(email, req, res, authenticated);
 
       if (accountInterventionsResponse.data.blocked) {
         return res.redirect(

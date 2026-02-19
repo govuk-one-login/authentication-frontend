@@ -8,7 +8,7 @@ import {
 } from "../../../utils/http.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
 import type { VerifyMfaCodeInterface } from "../../enter-authenticator-app-code/types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export function verifyMfaCodeService(
   axios: Http = http
@@ -16,10 +16,8 @@ export function verifyMfaCodeService(
   const verifyMfaCode = async function (
     methodType: MFA_METHOD_TYPE,
     code: string,
-    sessionId: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     req: Request,
+    res: Response,
     journeyType?: JOURNEY_TYPE,
     profileInformation?: string
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
@@ -32,12 +30,8 @@ export function verifyMfaCodeService(
         ...(profileInformation && { profileInformation }),
       },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId,
-          clientSessionId,
-          persistentSessionId: persistentSessionId,
-        },
         req,
+        res,
         API_ENDPOINTS.VERIFY_MFA_CODE
       )
     );

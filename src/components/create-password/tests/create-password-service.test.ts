@@ -16,7 +16,10 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants.js";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 describe("create password service", () => {
   const httpInstance = new Http();
@@ -44,8 +47,8 @@ describe("create password service", () => {
     const req = createMockRequest(PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
-    const { email, sessionId, clientSessionId, diPersistentSessionId } =
-      commonVariables;
+    const res = createMockResponse();
+    const { email } = commonVariables;
     const password = "abcdef";
 
     const expectedApiCallDetails = {
@@ -54,14 +57,7 @@ describe("create password service", () => {
       expectedBody: { email, password },
     };
 
-    const result = await service.signUpUser(
-      sessionId,
-      clientSessionId,
-      email,
-      password,
-      diPersistentSessionId,
-      req
-    );
+    const result = await service.signUpUser(email, password, req, res);
 
     checkApiCallMadeWithExpectedBodyAndHeaders(
       result,
