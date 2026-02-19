@@ -15,6 +15,7 @@ const USER_JOURNEY_EVENTS = {
   EMAIL_CODE_VERIFIED: "EMAIL_CODE_VERIFIED",
   CONSENT_ACCEPTED: "CONSENT_ACCEPTED",
   TERMS_AND_CONDITIONS_ACCEPTED: "TERMS_AND_CONDITIONS_ACCEPTED",
+  START_MFA_RESET: "START_MFA_RESET",
   VERIFY_PHONE_NUMBER: "VERIFY_PHONE_NUMBER",
   VERIFY_EMAIL_CODE: "VERIFY_EMAIL_CODE",
   ACCOUNT_CREATED: "ACCOUNT_CREATED",
@@ -420,6 +421,15 @@ const authStateMachine = createMachine<AuthStateContext>(
         on: {
           [USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED]: [
             { target: [PATH_NAMES.AUTH_CODE] },
+          ],
+        },
+      },
+      [PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN]: {
+        on: {
+          [USER_JOURNEY_EVENTS.START_MFA_RESET]: [
+            {
+              target: [PATH_NAMES.GET_SECURITY_CODES],
+            },
           ],
         },
       },

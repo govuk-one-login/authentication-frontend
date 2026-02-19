@@ -4,6 +4,8 @@ import {
   changeSecurityCodesSignInGet,
   changeSecurityCodesSignInPost,
 } from "./change-security-codes-sign-in-controller.js";
+import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
+import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
 
 const router = express.Router();
 
@@ -14,7 +16,9 @@ router.get(
 
 router.post(
   PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN,
-  changeSecurityCodesSignInPost
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
+  changeSecurityCodesSignInPost()
 );
 
 export { router as changeSecurityCodesSignInRouter };
