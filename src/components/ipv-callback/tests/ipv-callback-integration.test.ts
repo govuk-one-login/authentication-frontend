@@ -12,6 +12,7 @@ import nock from "nock";
 import * as cheerio from "cheerio";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 import request from "supertest";
 
@@ -248,13 +249,7 @@ const stubMiddlewareAndCreateApp = async (
 const getCannotChangeSecurityCodesAndReturnTokenAndCookies = async (
   app: express.Application
 ) => {
-  let cookies, token;
-  await request(app)
-    .get(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES)
-    .then((res) => {
-      const $ = cheerio.load(res.text);
-      token = $("[name=_csrf]").val();
-      cookies = res.headers["set-cookie"];
-    });
-  return { token, cookies };
+  return extractCsrfTokenAndCookies(
+    await request(app).get(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES)
+  );
 };

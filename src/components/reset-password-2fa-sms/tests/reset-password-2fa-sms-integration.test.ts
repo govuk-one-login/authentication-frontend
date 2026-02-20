@@ -1,6 +1,5 @@
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
-import * as cheerio from "cheerio";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
@@ -11,6 +10,7 @@ import request from "supertest";
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
@@ -59,13 +59,9 @@ describe("Integration::2fa sms (in reset password flow)", () => {
 
     nock(baseApi).persist().post("/mfa").reply(204);
 
-    await request(app)
-      .get(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
+    ));
   });
 
   beforeEach(() => {

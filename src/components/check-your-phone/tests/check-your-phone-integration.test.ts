@@ -2,7 +2,6 @@ import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import request from "supertest";
-import * as cheerio from "cheerio";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
@@ -11,6 +10,7 @@ import {
 import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 describe("Integration:: check your phone", () => {
   let token: string | string[];
@@ -46,13 +46,9 @@ describe("Integration:: check your phone", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(app)
-      .get(PATH_NAMES.CHECK_YOUR_PHONE)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(PATH_NAMES.CHECK_YOUR_PHONE)
+    ));
   });
 
   beforeEach(() => {

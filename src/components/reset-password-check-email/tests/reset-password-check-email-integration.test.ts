@@ -11,6 +11,7 @@ import request from "supertest";
 import { ERROR_CODES } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
@@ -62,13 +63,9 @@ describe("Integration::reset password check email ", () => {
       .once()
       .reply(200, { mfaMethods: [] });
 
-    await request(app)
-      .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+    ));
   });
 
   beforeEach(() => {
