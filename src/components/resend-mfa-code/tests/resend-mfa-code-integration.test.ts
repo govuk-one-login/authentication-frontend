@@ -8,7 +8,7 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants.js";
-import { ERROR_CODES } from "../../common/constants.js";
+import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
@@ -272,5 +272,29 @@ describe("Integration:: resend mfa code", () => {
       })
       .expect("Location", PATH_NAMES.CANNOT_USE_SECURITY_CODE)
       .expect(302);
+  });
+
+  it('should render the "you requested too many codes" pages when incorrect code has requested more than 5 times', async () => {
+    process.env.SUPPORT_REAUTHENTICATION = "1";
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.MFA)
+      .once()
+      .reply(400, { code: ERROR_CODES.MFA_SMS_MAX_CODES_SENT });
+
+    request(app, (test) =>
+      test
+        .post(PATH_NAMES.RESEND_MFA_CODE)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+        })
+        .expect(
+          "Location",
+          `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.MfaMaxCodesSent}`
+        )
+        .expect(302)
+    );
   });
 });
