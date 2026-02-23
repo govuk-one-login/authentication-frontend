@@ -84,6 +84,7 @@ export interface AuthStateContext {
   mfaMethodType: MFA_METHOD_TYPE | undefined;
   shouldPromptToRegisterPasskey: boolean;
   shouldPromptToSignInWithPasskey: boolean;
+  needsForcedMFAReset: boolean;
 }
 
 const authStateMachine = createMachine<AuthStateContext>(
@@ -537,6 +538,10 @@ const authStateMachine = createMachine<AuthStateContext>(
       [INTERMEDIATE_STATES.SIGN_IN_END]: {
         always: [
           {
+            target: [PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN],
+            cond: "needsForcedMFAReset",
+          },
+          {
             target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
             cond: "needsLatestTermsAndConditions",
           },
@@ -677,6 +682,7 @@ const authStateMachine = createMachine<AuthStateContext>(
   },
   {
     guards: {
+      needsForcedMFAReset: (context) => context.needsForcedMFAReset,
       needsLatestTermsAndConditions: (context) =>
         !context.isLatestTermsAndConditionsAccepted,
       isMfaRequired: (context) => context.isMfaRequired,

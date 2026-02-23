@@ -11,6 +11,8 @@ const router = express.Router();
 
 router.get(
   PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
   changeSecurityCodesSignInGet
 );
 
