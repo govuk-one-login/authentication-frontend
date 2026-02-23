@@ -42,4 +42,9 @@ export const urlContains = (req: Request, str: string): boolean =>
   Boolean(req.originalUrl?.includes(str));
 
 export const needsForcedMFAReset = (req: Request): boolean =>
-  Boolean(req.session?.user?.needsForcedMFAReset);
+  Boolean(
+    req.session?.user?.needsForcedMFAReset &&
+      (req.session?.user?.isMfaRequired ||
+        req.session?.user?.isUpliftRequired ||
+        req.session?.user?.isPasswordResetJourney)
+  );

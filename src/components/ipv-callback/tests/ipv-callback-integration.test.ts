@@ -224,6 +224,7 @@ const stubMiddlewareAndCreateApp = async (
             journey: getPermittedJourneyForPath(nextPath),
             mfaMethodType: mfaMethodType,
             needsForcedMFAReset: needsForcedMFAReset,
+            isMfaRequired: true,
           };
 
           next();

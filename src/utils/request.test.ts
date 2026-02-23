@@ -18,6 +18,7 @@ import {
   SERVICE_TYPE,
   SUPPORT_TYPE,
 } from "../app.constants.js";
+import type { UserSession } from "../types.js";
 describe("request utilities", () => {
   const blankRequest = {} as Request;
 
@@ -275,24 +276,49 @@ describe("request utilities", () => {
   });
 
   describe("needsForcedMFAReset", () => {
-    it(`returns false when required properties are not in the request`, async () => {
-      expect(needsForcedMFAReset(blankRequest)).to.equal(false);
-    });
+    function generateTestScenarios() {
+      const values = [undefined, true, false];
+      const scenarios = [];
 
-    it(`returns false when used property is false`, async () => {
-      expect(
-        needsForcedMFAReset({
-          session: { user: { needsForcedMFAReset: false } },
-        } as any as Request)
-      ).to.equal(false);
-    });
+      for (const needsForcedMFAReset of values) {
+        for (const isMfaRequired of values) {
+          for (const isUpliftRequired of values) {
+            for (const isPasswordResetJourney of values) {
+              const user: UserSession = {};
+              if (needsForcedMFAReset !== undefined)
+                user.needsForcedMFAReset = needsForcedMFAReset;
+              if (isMfaRequired !== undefined)
+                user.isMfaRequired = isMfaRequired;
+              if (isUpliftRequired !== undefined)
+                user.isUpliftRequired = isUpliftRequired;
+              if (isPasswordResetJourney !== undefined)
+                user.isPasswordResetJourney = isPasswordResetJourney;
 
-    it(`returns true when used property is true`, async () => {
-      expect(
-        needsForcedMFAReset({
-          session: { user: { needsForcedMFAReset: true } },
-        } as any as Request)
-      ).to.equal(true);
+              const expected =
+                needsForcedMFAReset === true &&
+                (isMfaRequired === true ||
+                  isUpliftRequired === true ||
+                  isPasswordResetJourney === true);
+
+              scenarios.push({ user, expected });
+            }
+          }
+        }
+      }
+
+      return scenarios;
+    }
+
+    const testScenarios = generateTestScenarios();
+
+    testScenarios.forEach(({ user, expected }) => {
+      it(`returns ${expected} when user=${JSON.stringify(user)}`, () => {
+        expect(
+          needsForcedMFAReset({
+            session: { user },
+          } as any as Request)
+        ).to.equal(expected);
+      });
     });
   });
 });

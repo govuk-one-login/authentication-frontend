@@ -237,8 +237,8 @@ describe("ipv callback controller", () => {
         expect(renderCall.args[1].identityFailed).to.equal(false);
       });
 
-      it("should render with onlyDeleteAccount true when needsForcedMFAReset is true", () => {
-        req.session.user = { needsForcedMFAReset: true };
+      it("should render with onlyDeleteAccount true when needsForcedMFAReset and isMfaRequired are true", () => {
+        req.session.user = { needsForcedMFAReset: true, isMfaRequired: true };
 
         cannotChangeSecurityCodesGet(req as Request, res as Response);
 
