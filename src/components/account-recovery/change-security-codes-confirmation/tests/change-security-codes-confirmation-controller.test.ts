@@ -57,6 +57,18 @@ describe("change security codes confirmation controller", () => {
         );
       });
     });
+
+    it("should set needsForcedMFAReset to false", async () => {
+      req.session.user.accountRecoveryVerifiedMfaType = MFA_METHOD_TYPE.SMS;
+      req.session.user.needsForcedMFAReset = true;
+
+      await changeSecurityCodesConfirmationGet()(
+        req as Request,
+        res as Response
+      );
+
+      expect(req.session.user.needsForcedMFAReset).to.equal(false);
+    });
   });
 
   describe("changeSecurityCodesConfirmationPost", () => {
