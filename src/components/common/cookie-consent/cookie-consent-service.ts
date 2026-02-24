@@ -4,23 +4,27 @@ import type {
   CookieConsentModel,
   CookieConsentServiceInterface,
 } from "./types.js";
+
 export function cookieConsentService(): CookieConsentServiceInterface {
   const getCookieConsent = function (cookieConsentValue: string): any {
     const cookieConsent = xss(cookieConsentValue);
     let consentValue = COOKIE_CONSENT.NOT_ENGAGED;
 
     if (cookieConsent) {
-      const parsedCookie = JSON.parse(cookieConsent);
-      consentValue =
-        parsedCookie.analytics === true
-          ? COOKIE_CONSENT.ACCEPT
-          : COOKIE_CONSENT.REJECT;
+      try {
+        const parsedCookie = JSON.parse(cookieConsent);
+        consentValue =
+          parsedCookie.analytics === true
+            ? COOKIE_CONSENT.ACCEPT
+            : COOKIE_CONSENT.REJECT;
+      } catch {
+        consentValue = COOKIE_CONSENT.NOT_ENGAGED;
+      }
     }
-    const cookieValue: any = {
+
+    return {
       cookie_consent: consentValue,
     };
-
-    return cookieValue;
   };
 
   const createConsentCookieValue = function (

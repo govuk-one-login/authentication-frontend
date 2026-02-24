@@ -27,6 +27,14 @@ describe("cookie consent service", () => {
       );
       expect(result.cookie_consent).to.have.be.equal(COOKIE_CONSENT.ACCEPT);
     });
+    it("should return NOT_ENGAGED when cookie contains malformed JSON", () => {
+      const result = cookieConsentService().getCookieConsent(
+        '{"analytics":true}extratext'
+      );
+      expect(result.cookie_consent).to.have.be.equal(
+        COOKIE_CONSENT.NOT_ENGAGED
+      );
+    });
   });
 
   describe("createConsentCookieValue", () => {
