@@ -7,7 +7,11 @@ import { getDefaultSmsMfaMethod } from "../../../utils/mfa.js";
 
 export function changeSecurityCodesConfirmationGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    req.session.user.needsForcedMFAReset = false;
+    if (req.session.user.needsForcedMFAReset) {
+      req.log.info("User completed forced MFA reset");
+      req.session.user.needsForcedMFAReset = false;
+    }
+
     const type = req.session.user.accountRecoveryVerifiedMfaType;
     if (type === MFA_METHOD_TYPE.SMS || type === MFA_METHOD_TYPE.AUTH_APP) {
       res.render(

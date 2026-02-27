@@ -67,6 +67,7 @@ describe("change security codes confirmation controller", () => {
         res as Response
       );
 
+      expect(req.log.info).to.calledWith("User completed forced MFA reset");
       expect(req.session.user.needsForcedMFAReset).to.equal(false);
     });
   });
