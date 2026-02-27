@@ -6,6 +6,7 @@ import * as cheerio from "cheerio";
 import { PATH_NAMES, CONTACT_US_THEMES } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 import { AnsweringQuestionsAboutReason } from "../contact-us-controller.js";
 
@@ -43,14 +44,9 @@ describe("Integration:: contact us - public user", () => {
     app = await createApp();
     smartAgentApiUrl = "http://smartagentmockurl";
 
-    await request(app)
-      .get(PATH_NAMES.CONTACT_US)
-      .query("supportType=PUBLIC")
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(PATH_NAMES.CONTACT_US).query("supportType=PUBLIC")
+    ));
   });
 
   beforeEach(() => {

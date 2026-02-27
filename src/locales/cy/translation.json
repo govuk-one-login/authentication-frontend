@@ -764,6 +764,17 @@
       "subHeader": "Beth allwch chi ei wneud",
       "link": "Gwiriwch a allwch chi newid sut rydych yn cael codau diogelwch"
     },
+    "changeSecurityCodesSignIn": {
+      "title": "Mae angen i chi newid sut rydych yn cael codau diogelwch - GOV.UK One Login",
+      "header": "Mae angen i chi newid sut rydych yn cael codau diogelwch",
+      "paragraph1": "Bydd angen i chi ddefnyddio ap dilysydd neu rif ffôn symudol yn y DU.",
+      "paragraph2": "Rhaid i chi wneud hyn er mwyn osgoi cael eich cloi allan o’ch GOV.UK One Login.",
+      "details": {
+        "summary": "Pam mae angen i mi newid sut rwy’n cael codau?",
+        "paragraph1": "Er mwyn cadw eich GOV.UK One Login yn ddiogel, rydym yn newid sut rydym yn anfon codau diogelwch.",
+        "paragraph2": "Os nad oes gennych rif yn y DU, bydd angen i chi ddefnyddio ap dilysydd."
+      }
+    },
     "updatedTermsAndConds": {
       "title": "Rydym wedi diweddaru ein telerau defnyddio",
       "header": "Rydym wedi diweddaru ein telerau defnyddio",

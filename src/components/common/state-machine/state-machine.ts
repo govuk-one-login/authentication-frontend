@@ -15,6 +15,7 @@ const USER_JOURNEY_EVENTS = {
   EMAIL_CODE_VERIFIED: "EMAIL_CODE_VERIFIED",
   CONSENT_ACCEPTED: "CONSENT_ACCEPTED",
   TERMS_AND_CONDITIONS_ACCEPTED: "TERMS_AND_CONDITIONS_ACCEPTED",
+  START_MFA_RESET: "START_MFA_RESET",
   VERIFY_PHONE_NUMBER: "VERIFY_PHONE_NUMBER",
   VERIFY_EMAIL_CODE: "VERIFY_EMAIL_CODE",
   ACCOUNT_CREATED: "ACCOUNT_CREATED",
@@ -83,6 +84,7 @@ export interface AuthStateContext {
   mfaMethodType: MFA_METHOD_TYPE | undefined;
   shouldPromptToRegisterPasskey: boolean;
   shouldPromptToSignInWithPasskey: boolean;
+  needsForcedMFAReset: boolean;
 }
 
 const authStateMachine = createMachine<AuthStateContext>(
@@ -423,6 +425,15 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
+      [PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN]: {
+        on: {
+          [USER_JOURNEY_EVENTS.START_MFA_RESET]: [
+            {
+              target: [PATH_NAMES.GET_SECURITY_CODES],
+            },
+          ],
+        },
+      },
       [PATH_NAMES.RESET_PASSWORD_REQUEST]: {
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_RESET_REQUESTED]: [
@@ -526,6 +537,10 @@ const authStateMachine = createMachine<AuthStateContext>(
       },
       [INTERMEDIATE_STATES.SIGN_IN_END]: {
         always: [
+          {
+            target: [PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN],
+            cond: "needsForcedMFAReset",
+          },
           {
             target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
             cond: "needsLatestTermsAndConditions",
@@ -667,6 +682,7 @@ const authStateMachine = createMachine<AuthStateContext>(
   },
   {
     guards: {
+      needsForcedMFAReset: (context) => context.needsForcedMFAReset,
       needsLatestTermsAndConditions: (context) =>
         !context.isLatestTermsAndConditionsAccepted,
       isMfaRequired: (context) => context.isMfaRequired,

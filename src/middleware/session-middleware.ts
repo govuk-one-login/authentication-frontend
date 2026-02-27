@@ -25,6 +25,7 @@ export function initialiseSessionMiddleware(
       activeMfaMethodId: req.session?.user?.mfaMethods?.find(
         (method: MfaMethod) => method.priority === MfaMethodPriority.DEFAULT
       )?.id,
+      needsForcedMFAReset: req.session?.user?.needsForcedMFAReset,
     };
 
     req.session.sessionRestored = true;

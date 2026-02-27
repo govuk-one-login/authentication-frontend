@@ -73,6 +73,7 @@ export const PATH_NAMES = {
   CANNOT_USE_EMAIL_ADDRESS: "/cannot-use-email-address",
   CANNOT_USE_EMAIL_ADDRESS_CONTINUE: "/cannot-use-email-address-continue",
   CANNOT_USE_SECURITY_CODE: "/cannot-use-security-code",
+  CHANGE_SECURITY_CODES_SIGN_IN: "/change-security-codes-sign-in",
   WELL_KNOWN_APPLE_ASSOCIATION: "/.well-known/apple-app-site-association",
   SFAD_AUTHORIZE: "/sfad-authorize",
   AMC_CALLBACK: "/amc-callback",

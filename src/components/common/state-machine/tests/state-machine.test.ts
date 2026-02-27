@@ -15,6 +15,7 @@ const DEFAULT_CONTEXT = {
   mfaMethodType: MFA_METHOD_TYPE.SMS,
   shouldPromptToRegisterPasskey: false,
   shouldPromptToSignInWithPasskey: false,
+  needsForcedMFAReset: false,
 };
 
 describe("state-machine", () => {
@@ -226,6 +227,73 @@ describe("state-machine", () => {
         );
         expect(nextState.value).to.equal(test.destination);
       });
+    });
+  });
+
+  describe("SIGN_IN_END intermediate state", () => {
+    it("should redirect to CHANGE_SECURITY_CODES_SIGN_IN when needsForcedMFAReset is true", () => {
+      const nextState = getNextState(
+        PATH_NAMES.ENTER_PASSWORD,
+        USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
+        { ...DEFAULT_CONTEXT, isMfaRequired: false, needsForcedMFAReset: true }
+      );
+      expect(nextState.value).to.equal(
+        PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN
+      );
+    });
+
+    it("should redirect to UPDATED_TERMS_AND_CONDITIONS when needsLatestTermsAndConditions is true", () => {
+      const nextState = getNextState(
+        PATH_NAMES.ENTER_PASSWORD,
+        USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
+        {
+          ...DEFAULT_CONTEXT,
+          isMfaRequired: false,
+          needsForcedMFAReset: false,
+          isLatestTermsAndConditionsAccepted: false,
+        }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS);
+    });
+
+    it("should redirect to AUTH_CODE when no interruptions needed", () => {
+      const nextState = getNextState(
+        PATH_NAMES.ENTER_PASSWORD,
+        USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
+        {
+          ...DEFAULT_CONTEXT,
+          isMfaRequired: false,
+          needsForcedMFAReset: false,
+        }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
+    });
+
+    it("should prioritize needsForcedMFAReset over needsLatestTermsAndConditions", () => {
+      const nextState = getNextState(
+        PATH_NAMES.ENTER_PASSWORD,
+        USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED,
+        {
+          ...DEFAULT_CONTEXT,
+          isMfaRequired: false,
+          needsForcedMFAReset: true,
+          isLatestTermsAndConditionsAccepted: false,
+        }
+      );
+      expect(nextState.value).to.equal(
+        PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN
+      );
+    });
+  });
+
+  describe(`getNextState - ${PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN}`, () => {
+    it(`should move from ${PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN} to ${PATH_NAMES.GET_SECURITY_CODES}`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN,
+        USER_JOURNEY_EVENTS.START_MFA_RESET,
+        DEFAULT_CONTEXT
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.GET_SECURITY_CODES);
     });
   });
 });

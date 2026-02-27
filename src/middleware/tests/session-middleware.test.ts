@@ -55,6 +55,7 @@ describe("session-middleware", () => {
         email: "email@example.com",
         mfaMethods,
         activeMfaMethodId,
+        needsForcedMFAReset: true,
       };
       req.path = PATH_NAMES.AUTHORIZE;
       initialiseSessionMiddleware(req as Request, res as Response, next);
@@ -64,6 +65,7 @@ describe("session-middleware", () => {
         email: "email@example.com",
         mfaMethods,
         activeMfaMethodId,
+        needsForcedMFAReset: true,
       });
     });
 

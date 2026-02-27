@@ -106,6 +106,8 @@ async function getExistingUserAndPopulateSessionData(
   );
   req.session.user.hasActivePasskey = result.data.hasActivePasskey;
   req.session.user.isAccountCreationJourney = !result.data.doesUserExist;
+  req.session.user.needsForcedMFAReset =
+    result.data.needsForcedMFAResetAfterMFACheck;
 
   return result.data.doesUserExist;
 }
