@@ -535,11 +535,18 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.AMC_CALLBACK]: {
         type: "final",
       },
+      [PATH_NAMES.CREATE_PASSKEY]: {
+        type: "final",
+      },
       [INTERMEDIATE_STATES.SIGN_IN_END]: {
         always: [
           {
             target: [PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN],
             cond: "needsForcedMFAReset",
+          },
+          {
+            target: [PATH_NAMES.CREATE_PASSKEY],
+            cond: "shouldPromptToRegisterPasskey",
           },
           {
             target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
