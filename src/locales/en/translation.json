@@ -690,6 +690,15 @@
         "paragraph": "Your email might take a few minutes to arrive. If you do not get an email, check your spam folder."
       }
     },
+    "createPasskey": {
+      "title": "Sign in faster with your face, fingerprint or passcode - GOV.UK One Login",
+      "header": "Sign in faster with your face, fingerprint or passcode",
+      "paragraph1": "Set up a passkey for a secure and easy way to sign in, without needing your GOV.UK One Login password.",
+      "paragraph2": "With a passkey, you can scan your face or fingerprint, or enter your device PIN or pattern.",
+      "paragraph3": "This will be however you unlock your phone, computer or tablet.",
+      "insetText": "You should not set up a passkey on a device that you share with other people.",
+      "skipButtonText": "Skip for now"
+    },
     "cannotChangeSecurityCodes": {
       "title": "You cannot change how you get security codes at the moment",
       "header": "You cannot change how you get security codes at the moment",
