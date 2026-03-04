@@ -26,8 +26,8 @@ describe("environment", function () {
     });
   });
 
-  describe("$ORCH_TO_AUTH_SIGNING_KEY", async function () {
-    const key = process.env.ORCH_TO_AUTH_SIGNING_KEY;
+  describe("$ORCH_STUB_TO_AUTH_SIGNING_KEY", async function () {
+    const key = process.env.ORCH_STUB_TO_AUTH_SIGNING_KEY;
     it("should be defined", function () {
       expect(key).to.not.be.undefined;
     });

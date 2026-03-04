@@ -314,9 +314,6 @@ def get_static_variables(deployment_name: str) -> list[EnvFileSection]:
                 "ORCH_TO_AUTH_CLIENT_ID": "orchestrationAuth",
                 "ENCRYPTION_KEY_ID": f"alias/{deployment_name}-authentication-encryption-key-alias",
                 "ORCH_TO_AUTH_AUDIENCE": get_signin_url(deployment_name),
-                "ORCH_TO_AUTH_SIGNING_KEY": env_data.get(
-                    "orchToAuthSigningPublicKey", ""
-                ),
                 "ORCH_STUB_TO_AUTH_AUDIENCE": get_signin_url(deployment_name)
                 if "dev" in deployment_name
                 else "",
