@@ -26,6 +26,7 @@
     </a>
 </p>
 
+{% set isPageDataSensitive = false %}
 {% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic:false } %}
 {%- include "ga4-opl/template.njk" -%}
 {% endblock %}
