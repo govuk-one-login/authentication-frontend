@@ -1,63 +1,52 @@
-{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/password-input/macro.njk" import govukPasswordInput %}
 
-{% macro govukInputWithShowPassword(label, id, errors, showSettings, autocomplete) %}
-    <div class="govuk-show-password" data-module="show-password" data-disable-form-submit-check="false" data-show-text="{{ showSettings.show }}" data-hide-text="{{ showSettings.hide }}" data-show-full-text="{{ showSettings.showFullText }}" data-hide-full-text="{{ showSettings.hideFullText }}" data-announce-show="{{ showSettings.announceShown }}" data-announce-hide="{{ showSettings.announceHidden }}">
-        {{ govukInput({
-            label: {
-                text: label
-            },
-            classes: "govuk-!-width-two-thirds govuk-password-input",
-            id: id,
-            name: id,
-            type: "password",
-            autocomplete: autocomplete,
-            spellcheck: false,
-            errorMessage: {
-                text: errors[id].text
-            } if (errors[id])})
-        }}
-    </div>
+{% macro _customBaseGovukPasswordInput(
+    options,
+    showInputTextKey,
+    hideInputTextKey,
+    showInputAriaLabelTextKey,
+    hideInputAriaLabelTextKey,
+    passwordShownAnnouncementTextKey,
+    passwordHiddenAnnouncementTextKey
+    ) %}
+    {{ govukPasswordInput({
+        label: options.label,
+        hint: options.hint if (options.hint),
+        id: options.id,
+        name: options.id,
+        autocomplete: options.autocomplete,
+        showPasswordText: showInputTextKey | translate,
+        hidePasswordText: hideInputTextKey | translate,
+        showPasswordAriaLabelText: showInputAriaLabelTextKey | translate,
+        hidePasswordAriaLabelText: hideInputAriaLabelTextKey | translate,
+        passwordShownAnnouncementText: passwordShownAnnouncementTextKey | translate,
+        passwordHiddenAnnouncementText: passwordHiddenAnnouncementTextKey | translate,
+        errorMessage: {
+            text: options.errors[options.id].text
+        } if (options.errors[options.id])
+    }) }}
 {% endmacro %}
 
-{% macro govukInputWithHintAndShowPassword(label, id, errors, showSettings, autocomplete, hintText) %}
-    <div class="govuk-show-password" data-module="show-password" data-disable-form-submit-check="false" data-show-text="{{ showSettings.show }}" data-hide-text="{{ showSettings.hide }}" data-show-full-text="{{ showSettings.showFullText }}" data-hide-full-text="{{ showSettings.hideFullText }}" data-announce-show="{{ showSettings.announceShown }}" data-announce-hide="{{ showSettings.announceHidden }}">
-        {{ govukInput({
-            label: {
-                text: label
-            },
-            hint: {
-                text: hintText
-            },
-            classes: "govuk-!-width-two-thirds govuk-password-input",
-            id: id,
-            name: id,
-            type: "password",
-            autocomplete: autocomplete,
-            spellcheck: false,
-            errorMessage: {
-                text: errors[id].text
-            } if (errors[id])})
-        }}
-    </div>
+{% macro customGovukPasswordInput(options) %}
+    {{ _customBaseGovukPasswordInput(
+        options,
+        'general.showPassword.show',
+        'general.showPassword.hide',
+        'general.showPassword.showFullText',
+        'general.showPassword.hideFullText',
+        'general.showPassword.announceShown',
+        'general.showPassword.announceHidden'
+    ) }}
 {% endmacro %}
 
-{% macro govukInputWithShowPasswordWithLabelAsPageHeading(label, id, errors, showSettings, autocomplete) %}
-    <div class="govuk-show-password" data-module="show-password" data-disable-form-submit-check="false" data-show-text="{{ showSettings.show }}" data-hide-text="{{ showSettings.hide }}" data-show-full-text="{{ showSettings.showFullText }}" data-hide-full-text="{{ showSettings.hideFullText }}" data-announce-show="{{ showSettings.announceShown }}" data-announce-hide="{{ showSettings.announceHidden }}">
-        {{ govukInput({
-            label: {
-                text: label,
-                classes: "govuk-label--l",
-                isPageHeading: true
-            },
-            classes: "govuk-!-width-two-thirds govuk-password-input",
-            id: id,
-            name: id,
-            type: "password",
-            autocomplete: autocomplete,
-            spellcheck: false,
-            errorMessage: {
-                text: errors[id].text
-            } if (errors[id])})
-        }}
-    </div>
+{% macro customGovukRetypePasswordInput(options) %}
+    {{ _customBaseGovukPasswordInput(
+        options,
+        'general.showRetypedPassword.show',
+        'general.showRetypedPassword.hide',
+        'general.showRetypedPassword.showFullText',
+        'general.showRetypedPassword.hideFullText',
+        'general.showRetypedPassword.announceShown',
+        'general.showRetypedPassword.announceHidden'
+    ) }}
 {% endmacro %}
