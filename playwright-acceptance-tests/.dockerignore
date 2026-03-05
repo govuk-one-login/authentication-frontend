@@ -1,0 +1,7 @@
+node_modules
+reports
+test-results
+playwright-report
+.git
+.gitignore
+.DS_Store

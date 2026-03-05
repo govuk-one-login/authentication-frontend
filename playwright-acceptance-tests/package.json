@@ -12,7 +12,8 @@
     "test": "npm run bdd:report",
     "lint": "eslint .",
     "eslint": "eslint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:docker": "bash scripts/run-docker.sh"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.11.0",
