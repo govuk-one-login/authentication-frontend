@@ -162,7 +162,8 @@
   },
   "overrides": {
     "js-yaml": "4.1.1",
-    "validator": "13.15.23"
+    "validator": "13.15.23",
+    "serialize-javascript": ">=7.0.3"
   },
   "resolutions": {
     "minimist": "1.2.6",
