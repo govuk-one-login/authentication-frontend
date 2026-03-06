@@ -70,6 +70,8 @@ const USER_JOURNEY_EVENTS = {
   INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION:
     "INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION",
   MFA_INDEFINITELY_BLOCKED: "MFA_INDEFINITELY_BLOCKED",
+  CREATE_PASSKEY: "CREATE_PASSKEY",
+  SKIP_CREATE_PASSKEY: "SKIP_CREATE_PASSKEY",
 };
 
 export interface AuthStateContext {
@@ -536,7 +538,11 @@ const authStateMachine = createMachine<AuthStateContext>(
         type: "final",
       },
       [PATH_NAMES.CREATE_PASSKEY]: {
-        type: "final",
+        on: {
+          [USER_JOURNEY_EVENTS.SKIP_CREATE_PASSKEY]: [
+            INTERMEDIATE_STATES.SIGN_IN_END,
+          ],
+        },
       },
       [INTERMEDIATE_STATES.SIGN_IN_END]: {
         always: [

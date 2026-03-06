@@ -24,15 +24,22 @@
     text: 'pages.createPasskey.insetText' | translate
   }) }}
 
+<form action="/create-passkey" method="post" novalidate>
+  <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
   <div class="govuk-button-group">
     {{ govukButton({
       text: 'general.continue.label' | translate,
+      name: "createPasskeyOption",
+      value: "submit",
       type: "submit"
     }) }}
     {{ govukButton({
       text: 'pages.createPasskey.skipButtonText' | translate,
+      name: "createPasskeyOption",
+      value: "skip",
       classes: "govuk-button--secondary"
     }) }}
   </div>
+  </form>
 
 {% endblock %}
