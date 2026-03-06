@@ -31,15 +31,21 @@
       text: 'general.continue.label' | translate,
       name: "createPasskeyOption",
       value: "submit",
-      type: "submit"
+      type: "submit",
+      "preventDoubleClick": true
     }) }}
     {{ govukButton({
       text: 'pages.createPasskey.skipButtonText' | translate,
       name: "createPasskeyOption",
       value: "skip",
+      "preventDoubleClick": true,
       classes: "govuk-button--secondary"
     }) }}
   </div>
   </form>
 
+{% endblock %}
+
+{% block scripts %}
+    <script defer type="text/javascript" src="/public/scripts/prevent-double-form-submit.js"></script>
 {% endblock %}
