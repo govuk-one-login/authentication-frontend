@@ -37,9 +37,14 @@
       text: 'pages.createPasskey.skipButtonText' | translate,
       name: "createPasskeyOption",
       value: "skip",
+      "preventDoubleClick": true,
       classes: "govuk-button--secondary"
     }) }}
   </div>
   </form>
 
+{% endblock %}
+
+{% block scripts %}
+    <script defer type="text/javascript" src="/public/scripts/prevent-double-form-submit.js"></script>
 {% endblock %}
