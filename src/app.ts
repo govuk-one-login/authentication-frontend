@@ -25,6 +25,7 @@ import {
   getVitalSignsIntervalSeconds,
   supportAccountInterventions,
   supportAuthorizeController,
+  supportPasskeyRegistration,
   supportSingleFactorAccountDeletion,
 } from "./config.js";
 import { logErrorMiddleware } from "./middleware/log-error-middleware.js";
@@ -109,6 +110,7 @@ import { changeSecurityCodesSignInRouter } from "./components/change-security-co
 import { wellKnownRouter } from "./components/well-known/well-known-routes.js";
 import { sfadAuthorizeRouter } from "./components/sfad-authorize/sfad-authorize-routes.js";
 import { amcCallbackRouter } from "./components/amc-callback/amc-callback-routes.js";
+import { createPasskeyRouter } from "./components/create-passkey/create-passkey-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -172,6 +174,9 @@ function registerRoutes(app: express.Application) {
     // in initial implementation. Must create a new broader AMC feature flag
     // when more services are using AMC
     app.use(amcCallbackRouter);
+  }
+  if (supportPasskeyRegistration()) {
+    app.use(createPasskeyRouter);
   }
 
   // Development tools

@@ -77,6 +77,7 @@ export const PATH_NAMES = {
   WELL_KNOWN_APPLE_ASSOCIATION: "/.well-known/apple-app-site-association",
   SFAD_AUTHORIZE: "/sfad-authorize",
   AMC_CALLBACK: "/amc-callback",
+  CREATE_PASSKEY: "/create-passkey",
 };
 
 export const HREF_BACK = {

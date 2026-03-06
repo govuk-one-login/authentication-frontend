@@ -690,6 +690,15 @@
         "paragraph": "Efallai y bydd eich e-bost yn cymryd ychydig funudau i gyrraedd. Os na chewch e-bost, edrychwch ar eich ffolder spam."
       }
     },
+    "createPasskey": {
+      "title": "Mewngofnodi’n gyflymach gyda’ch wyneb, eich olion bysedd neu’ch cod mynediad - GOV.UK One Login",
+      "header": " Mewngofnodi’n gyflymach gyda’ch wyneb, eich olion bysedd neu’ch cod mynediad",
+      "paragraph1": "Sefydlwch allwedd mynediad ar gyfer ffordd ddiogel a hawdd o fewngofnodi, heb fod angen eich cyfrinair GOV.UK One Login.",
+      "paragraph2": "Gyda allwedd mynediad, gallwch sganio’ch wyneb neu’ch olion bysedd, neu nodi PIN neu batrwm eich dyfais.",
+      "paragraph3": "Bydd hyn sut bynnag y byddwch yn datgloi’ch ffôn, cyfrifiadur neu dabled.",
+      "insetText": "Ni ddylech sefydlu allwedd mynediad ar ddyfais rydych yn ei rhannu gyda phobl eraill.",
+      "skipButtonText": "Osgoi am y tro"
+    },
     "cannotChangeSecurityCodes": {
       "title": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd",
       "header": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd",

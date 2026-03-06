@@ -70,6 +70,8 @@ const USER_JOURNEY_EVENTS = {
   INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION:
     "INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION",
   MFA_INDEFINITELY_BLOCKED: "MFA_INDEFINITELY_BLOCKED",
+  CREATE_PASSKEY: "CREATE_PASSKEY",
+  SKIP_CREATE_PASSKEY: "SKIP_CREATE_PASSKEY",
 };
 
 export interface AuthStateContext {
@@ -535,11 +537,22 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.AMC_CALLBACK]: {
         type: "final",
       },
+      [PATH_NAMES.CREATE_PASSKEY]: {
+        on: {
+          [USER_JOURNEY_EVENTS.SKIP_CREATE_PASSKEY]: [
+            INTERMEDIATE_STATES.SIGN_IN_END,
+          ],
+        },
+      },
       [INTERMEDIATE_STATES.SIGN_IN_END]: {
         always: [
           {
             target: [PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN],
             cond: "needsForcedMFAReset",
+          },
+          {
+            target: [PATH_NAMES.CREATE_PASSKEY],
+            cond: "shouldPromptToRegisterPasskey",
           },
           {
             target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
