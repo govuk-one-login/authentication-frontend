@@ -5,7 +5,7 @@ import {
   formatValidationError,
   renderBadRequest,
 } from "../../../utils/validation.js";
-import { BadRequestError } from "../../../utils/error.js";
+import { BadRequestError, ReauthJourneyError } from "../../../utils/error.js";
 import type { VerifyCodeInterface } from "./types.js";
 import type { ExpressRouteFunc } from "../../../types.js";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine.js";
@@ -69,15 +69,21 @@ export function verifyCodePost(
       }
 
       if (isReauth(req)) {
-        if (
-          result.data.code ===
-            ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||
-          result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES ||
-          result.data.code ===
-            ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
-        ) {
-          return res.redirect(
-            req.session.client.redirectUri.concat("?error=login_required")
+        if (req.session.client?.redirectUri) {
+          if (
+            result.data.code ===
+              ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||
+            result.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES ||
+            result.data.code ===
+              ERROR_CODES.RE_AUTH_SIGN_IN_DETAILS_ENTERED_EXCEEDED
+          ) {
+            return res.redirect(
+              req.session.client.redirectUri.concat("?error=login_required")
+            );
+          }
+        } else {
+          throw new ReauthJourneyError(
+            "Re-auth journey failed due to missing redirect uri in client session."
           );
         }
       }
