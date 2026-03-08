@@ -10,8 +10,10 @@ import type { Request, Response } from "express";
 import { BadRequestError } from "../../../utils/error.js";
 import { strict as assert } from "assert";
 import { describe } from "mocha";
+import crypto from "node:crypto";
 
-const SFAD_REDIRECT_URL = "https://test-amc-url.com/authorize?state=test-state";
+const SFAD_REDIRECT_URL =
+  "https://test-amc-url.com/authorize?state=test-state&request=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U";
 
 const fakeSfadAuthorizeService = (successfulAuthorizeResponse: boolean) => {
   return {
@@ -48,6 +50,25 @@ describe("sfad authorize controller", () => {
         res as Response
       );
       expect(res.redirect).to.have.been.calledWith(SFAD_REDIRECT_URL);
+    });
+
+    it("should set amc cookie with SHA256 hash of request parameter", async () => {
+      res.cookie = sinon.spy();
+      await sfadAuthorizeGet(fakeSfadAuthorizeService(true))(
+        req as Request,
+        res as Response
+      );
+      const expectedHash = crypto
+        .createHash("sha256")
+        .update(
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U"
+        )
+        .digest("hex");
+      expect(res.cookie).to.have.been.calledWith(
+        "amc",
+        expectedHash,
+        sinon.match.object
+      );
     });
 
     it("should throw a BadRequestError when the request is not successful", async () => {

@@ -3,6 +3,7 @@ import { sfadAuthorizeService } from "./sfad-authorize-service.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import type { Request, Response } from "express";
 import { BadRequestError } from "../../utils/error.js";
+import { setAmcCookie } from "../../utils/amc-cookie.js";
 
 export function sfadAuthorizeGet(
   service: SfadAuthorizeInterface = sfadAuthorizeService()
@@ -22,6 +23,8 @@ export function sfadAuthorizeGet(
     }
 
     const redirectUrl = result.data.redirectUrl;
+
+    setAmcCookie(redirectUrl, res);
 
     res.redirect(redirectUrl);
   };
