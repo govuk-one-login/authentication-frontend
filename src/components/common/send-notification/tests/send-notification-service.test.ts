@@ -17,7 +17,10 @@ import {
 import type { SendNotificationServiceInterface } from "../types.js";
 import { sendNotificationService } from "../send-notification-service.js";
 import { JOURNEY_TYPE } from "../../constants.js";
-import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
 describe("send notification service", () => {
   let postStub: SinonStub;
@@ -27,11 +30,11 @@ describe("send notification service", () => {
     status: 200,
     statusText: "OK",
   });
-  const { sessionId, clientSessionId, email, diPersistentSessionId } =
-    commonVariables;
+  const { email } = commonVariables;
   const req = createMockRequest(PATH_NAMES.RESEND_MFA_CODE, {
     headers: requestHeadersWithIpAndAuditEncoded,
   });
+  const res = createMockResponse();
   const notificationType = NOTIFICATION_TYPE.VERIFY_EMAIL;
   const userLanguage = "cy";
   const expectedHeaders = {
@@ -54,13 +57,11 @@ describe("send notification service", () => {
 
   it("successfully calls the API to send a notification", async () => {
     const result = await service.sendNotification(
-      sessionId,
-      clientSessionId,
       email,
       notificationType,
-      diPersistentSessionId,
       userLanguage,
-      req
+      req,
+      res
     );
 
     const expectedApiCallDetails = {
@@ -83,13 +84,11 @@ describe("send notification service", () => {
     const phoneNumber = "123456";
     const requestNewCode = true;
     const result = await service.sendNotification(
-      sessionId,
-      clientSessionId,
       email,
       notificationType,
-      diPersistentSessionId,
       userLanguage,
       req,
+      res,
       journeyType,
       phoneNumber,
       requestNewCode

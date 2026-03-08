@@ -1,6 +1,5 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import type { ConfigOptions } from "../../../src/utils/http.js";
 import {
   getAdditionalAxiosConfig,
   getInternalRequestConfigWithSecurityHeaders,
@@ -9,22 +8,24 @@ import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
 } from "../../../src/app.constants.js";
-import { createMockRequest } from "../../helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../helpers/mock-request-helper.js";
 import * as headersLibrary from "@govuk-one-login/frontend-passthrough-headers";
 import type { SinonSpy } from "sinon";
 import sinon from "sinon";
 import { commonVariables } from "../../helpers/common-test-variables.js";
 import esmock from "esmock";
-import type { Request } from "express";
-import type { AxiosRequestConfig } from "axios";
 
 describe("getInternalRequestConfigWithSecurityHeaders", () => {
   const req = createMockRequest(API_ENDPOINTS.START);
+  const res = createMockResponse();
   const path = API_ENDPOINTS.START;
   const {
     apiKey,
     sessionId,
-    clientSessionId,
+    journeyId,
     diPersistentSessionId,
     ip,
     auditEncodedString,
@@ -42,11 +43,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
 
   describe("headers", () => {
     let createPersonalDataHeadersSpy: SinonSpy;
-    let mockGetInternalRequestConfigWithSecurityHeaders: (
-      options: ConfigOptions,
-      req: Request,
-      path: string
-    ) => AxiosRequestConfig;
+    let mockGetInternalRequestConfigWithSecurityHeaders: typeof getInternalRequestConfigWithSecurityHeaders;
 
     beforeEach(async () => {
       createPersonalDataHeadersSpy = sinon.spy(
@@ -69,21 +66,20 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
       req.ip = ip;
       req.headers["x-forwarded-for"] = ip;
       const actualConfig = mockGetInternalRequestConfigWithSecurityHeaders(
+        req,
+        res,
+        path,
         {
-          sessionId: sessionId,
-          clientSessionId: clientSessionId,
-          persistentSessionId: diPersistentSessionId,
           reauthenticate: reauthenticate,
           userLanguage: userLanguage,
-        },
-        req,
-        path
+        }
       );
 
       const expectedHeaders = {
         "X-API-Key": apiKey,
         "Session-Id": sessionId,
-        "Client-Session-Id": clientSessionId,
+        "govuk-signin-journey-id": journeyId,
+        "Client-Session-Id": journeyId,
         "x-forwarded-for": ip,
         "di-persistent-session-id": diPersistentSessionId,
         Reauthenticate: reauthenticate,
@@ -101,31 +97,26 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
       };
 
       const actualConfig = mockGetInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId: sessionId,
-          clientSessionId: clientSessionId,
-          persistentSessionId: diPersistentSessionId,
-        },
         req,
+        res,
         path
       );
 
       const expectedHeaders = {
         "X-API-Key": apiKey,
         "Session-Id": sessionId,
-        "Client-Session-Id": clientSessionId,
+        "govuk-signin-journey-id": journeyId,
+        "Client-Session-Id": journeyId,
         "x-forwarded-for": ipAddressFromCloudfrontHeader,
         "di-persistent-session-id": diPersistentSessionId,
         "txma-audit-encoded": auditEncodedString,
       };
 
       expect(actualConfig.headers).to.deep.eq(expectedHeaders);
-      expect(
-        createPersonalDataHeadersSpy.calledWith(
-          "https://example.com/start",
-          req
-        )
-      ).to.be.true;
+      expect(createPersonalDataHeadersSpy).to.be.calledWith(
+        "https://example.com/start",
+        req
+      );
     });
 
     it("should use the correct base path when calling create personal headers and the options contain a base path", () => {
@@ -136,24 +127,27 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
       };
 
       const actualConfig = mockGetInternalRequestConfigWithSecurityHeaders(
+        req,
+        res,
+        path,
         {
           baseURL: "https://some-other-base",
-        },
-        req,
-        path
+        }
       );
 
-      expect(
-        createPersonalDataHeadersSpy.calledWith(
-          "https://some-other-base/start",
-          req
-        )
-      ).to.be.true;
+      expect(createPersonalDataHeadersSpy).to.be.calledWith(
+        "https://some-other-base/start",
+        req
+      );
 
       const expectedHeaders = {
         "X-API-Key": apiKey,
+        "Session-Id": sessionId,
+        "govuk-signin-journey-id": journeyId,
+        "Client-Session-Id": journeyId,
         "txma-audit-encoded": auditEncodedString,
         "x-forwarded-for": ipAddressFromCloudfrontHeader,
+        "di-persistent-session-id": diPersistentSessionId,
       };
 
       expect(actualConfig.headers).to.deep.eq(expectedHeaders);
@@ -161,8 +155,8 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
 
     it("should handle errors from the frontend-passthrough-headers library", () => {
       const actualConfig = mockGetInternalRequestConfigWithSecurityHeaders(
-        {},
         req,
+        res,
         "bad path"
       );
 
@@ -174,11 +168,12 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
     const overridingBaseURL = "https://www.example.com";
 
     const actualConfig = getInternalRequestConfigWithSecurityHeaders(
+      req,
+      res,
+      path,
       {
         baseURL: overridingBaseURL,
-      },
-      req,
-      path
+      }
     );
 
     expect(actualConfig.baseURL).to.eq(overridingBaseURL);
@@ -188,15 +183,16 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
     const validStatus = HTTP_STATUS_CODES.OK;
 
     const actualConfig = getInternalRequestConfigWithSecurityHeaders(
+      req,
+      res,
+      path,
       {
         validationStatuses: [validStatus],
-      },
-      req,
-      path
+      }
     );
 
-    expect(actualConfig.validateStatus(validStatus)).to.eq(true);
-    expect(actualConfig.validateStatus(HTTP_STATUS_CODES.BAD_REQUEST)).to.eq(
+    expect(actualConfig.validateStatus?.(validStatus)).to.eq(true);
+    expect(actualConfig.validateStatus?.(HTTP_STATUS_CODES.BAD_REQUEST)).to.eq(
       false
     );
   });

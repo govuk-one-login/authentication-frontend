@@ -12,7 +12,7 @@ export const crossBrowserMiddleware = (
   ): Promise<void> => {
     if (!sessionIsValid(req) && crossBrowserService.isCrossBrowserIssue(req)) {
       const orchestrationRedirectUrl =
-        await crossBrowserService.getOrchestrationRedirectUrl(req);
+        await crossBrowserService.getOrchestrationRedirectUrl(req, res);
       return res.redirect(orchestrationRedirectUrl);
     }
     next();

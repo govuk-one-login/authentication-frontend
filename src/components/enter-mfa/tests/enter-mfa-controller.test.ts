@@ -204,8 +204,6 @@ describe("enter mfa controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        sinon.match.any,
-        sinon.match.any,
         TEST_DEFAULT_MFA_ID,
         JOURNEY_TYPE.REAUTHENTICATION
       );

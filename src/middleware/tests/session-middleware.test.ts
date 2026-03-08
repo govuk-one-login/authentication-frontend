@@ -71,7 +71,6 @@ describe("session-middleware", () => {
 
     it("should handle a missing session", () => {
       req.session = {} as Session;
-      res.locals.clientSessionId = "test-journey-id";
 
       initialiseSessionMiddleware(req, res, next);
 

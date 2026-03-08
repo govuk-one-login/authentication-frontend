@@ -1,14 +1,12 @@
 import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export interface UpdateProfileServiceInterface {
   updateProfile: (
-    sessionId: string,
-    clientSessionId: string,
     email: string,
     requestType: RequestType,
-    persistentSessionId: string,
-    req: Request
+    req: Request,
+    res: Response
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;
 }
 

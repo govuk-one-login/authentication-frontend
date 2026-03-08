@@ -10,17 +10,15 @@ import type {
   AccountInterventionsInterface,
 } from "./types.js";
 import type { ApiResponseResult } from "../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export function accountInterventionService(
   axios: Http = http
 ): AccountInterventionsInterface {
   const accountInterventionStatus = async function (
-    sessionId: string,
     emailAddress: string,
-    clientSessionId: string,
-    persistentSessionId: string,
     req: Request,
+    res: Response,
     authenticated?: boolean
   ): Promise<ApiResponseResult<AccountInterventionStatus>> {
     const bodyWithEmail = { email: emailAddress.toLowerCase() };
@@ -32,12 +30,8 @@ export function accountInterventionService(
       API_ENDPOINTS.ACCOUNT_INTERVENTIONS,
       body,
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId: sessionId,
-          clientSessionId: clientSessionId,
-          persistentSessionId: persistentSessionId,
-        },
         req,
+        res,
         API_ENDPOINTS.ACCOUNT_INTERVENTIONS
       )
     );
