@@ -31,8 +31,9 @@ FROM node:20.17.0-alpine@sha256:2d07db07a2df6830718ae2a47db6fedce6745f5bcd174c39
 
 RUN apk add --no-cache tini
 
-COPY --from=oneagent_codemodules / /
-ENV LD_PRELOAD=/opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so
+# Temporarily removed for testing
+# COPY --from=oneagent_codemodules / /
+# ENV LD_PRELOAD=/opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so
 
 WORKDIR /app
 COPY --from=builder /app/package*.json ./
