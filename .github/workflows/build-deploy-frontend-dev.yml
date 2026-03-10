@@ -42,6 +42,11 @@ jobs:
       id-token: write
       contents: read
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
       - name: Extract PR number and commit message
         id: version_info
         run: |
@@ -55,7 +60,7 @@ jobs:
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Build, push and deploy frontend
-        uses: govuk-one-login/devplatform-upload-action-ecr@fe924f7a5ce1033d270c3c8fdba7588f38e2eddc # bau-add-codepipeline-artifact-revision-summary-to-s3-metadata
+        uses: govuk-one-login/devplatform-upload-action-ecr@fe924f7a5ce1033d270c3c8fdba7588f38e2eddc # v1.5.0
         with:
           role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
           container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY_ARN }}
