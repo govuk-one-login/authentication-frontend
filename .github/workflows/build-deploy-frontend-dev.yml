@@ -72,4 +72,4 @@ jobs:
           private-docker-login-password: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
           build-contexts: |
             oneagent_codemodules=docker-image://${{ secrets.DYNATRACE_REGISTRY_NAME}}.live.dynatrace.com/linux/oneagent-codemodules-musl:nodejs
-          version: ${{ steps.version_info.outputs.version }}
+          version-number: ${{ steps.version_info.outputs.version }}
