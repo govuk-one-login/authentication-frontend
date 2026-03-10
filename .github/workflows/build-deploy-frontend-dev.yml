@@ -70,3 +70,5 @@ jobs:
           private-docker-registry: khw46367.live.dynatrace.com
           private-docker-login-username: khw46367
           private-docker-login-password: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
+          build-contexts: |
+            oneagent_codemodules=docker-image://${{ secrets.DYNATRACE_REGISTRY_NAME}}.live.dynatrace.com/linux/oneagent-codemodules-musl:nodejs
