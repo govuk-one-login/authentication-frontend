@@ -42,8 +42,20 @@ jobs:
       id-token: write
       contents: read
     steps:
+      - name: Extract PR number and commit message
+        id: version_info
+        run: |
+          HEAD_MESSAGE=$(git log -1 --format=%s)
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          if [[ "$HEAD_MESSAGE" =~ \(#([0-9]+)\) ]]; then
+            VERSION="#${BASH_REMATCH[1]} - ${HEAD_MESSAGE}"
+          else
+            VERSION="${SHORT_SHA}${HEAD_MESSAGE:+: $HEAD_MESSAGE}"
+          fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
       - name: Build, push and deploy frontend
-        uses: govuk-one-login/devplatform-upload-action-ecr@3931602236c176dd4ec2c11dceb38002110b5d87 # v1.3.0
+        uses: govuk-one-login/devplatform-upload-action-ecr@fe924f7a5ce1033d270c3c8fdba7588f38e2eddc # bau-add-codepipeline-artifact-revision-summary-to-s3-metadata
         with:
           role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
           container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY_ARN }}
@@ -55,3 +67,4 @@ jobs:
           private-docker-login-password: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
           build-contexts: |
             oneagent_codemodules=docker-image://${{ secrets.DYNATRACE_REGISTRY_NAME}}.live.dynatrace.com/linux/oneagent-codemodules-musl:nodejs
+          version: ${{ steps.version_info.outputs.version }}
