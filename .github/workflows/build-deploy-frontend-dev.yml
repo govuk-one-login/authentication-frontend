@@ -44,8 +44,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          fetch-depth: 0
 
       - name: Extract PR number and commit message
         id: version_info
@@ -68,7 +66,6 @@ jobs:
           ecr-repo-name: ${{ secrets.FRONTEND_ECR_REPOSITORY }}
           template-file: cloudformation/deploy/template.yaml
           private-docker-registry: khw46367.live.dynatrace.com
-          version-number: ${{ steps.version_info.outputs.version }}
           private-docker-login-username: khw46367
           private-docker-login-password: ${{ secrets.DYNATRACE_PAAS_TOKEN }}
           build-contexts: |
