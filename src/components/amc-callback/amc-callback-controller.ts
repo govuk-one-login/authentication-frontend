@@ -3,6 +3,7 @@ import { BadRequestError } from "../../utils/error.js";
 import { amcResultService } from "./amc-result-service.js";
 import type { AMCResultInterface } from "./types.js";
 import type { ExpressRouteFunc } from "../../types.js";
+import xss from "xss";
 
 export function amcCallbackGet(
   service: AMCResultInterface = amcResultService()
@@ -30,7 +31,8 @@ export function amcCallbackGet(
       persistentSessionId,
       req,
       code,
-      state
+      state,
+      xss(req.cookies.lng as string)
     );
 
     if (!result.success) {

@@ -8,6 +8,7 @@ export interface AMCResultInterface {
     persistentSessionId: string,
     req: Request,
     code: string,
-    state: string
+    state: string,
+    language: string
   ) => Promise<ApiResponseResult<string>>;
 }

@@ -16,6 +16,7 @@ describe("amc result service", () => {
   const state = "state-value";
   const apiKey = "apiKey";
   const auditEncodedString = "audit-encoded-string";
+  const language = "en";
 
   const expectedHeaders = {
     "X-API-Key": apiKey,
@@ -24,6 +25,7 @@ describe("amc result service", () => {
     "x-forwarded-for": sourceIp,
     "txma-audit-encoded": auditEncodedString,
     "di-persistent-session-id": persistentSessionId,
+    "User-Language": language,
   };
 
   const axiosResponse = Promise.resolve({
@@ -65,7 +67,8 @@ describe("amc result service", () => {
       persistentSessionId,
       req,
       code,
-      state
+      state,
+      language
     );
 
     expect(
