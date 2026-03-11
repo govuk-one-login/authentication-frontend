@@ -6,6 +6,7 @@ export function shouldPromptToRegisterPasskey(
 ): boolean {
   return (
     req.session.user?.hasActivePasskey === false &&
+    req.session.user?.hasSkippedPasskeyRegistration !== true &&
     res.locals.supportPasskeyRegistration === true
   );
 }

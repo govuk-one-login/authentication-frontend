@@ -1,0 +1,51 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitleName = 'pages.createPasskey.title' | translate  %}
+
+{% block content %}
+
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+    {{'pages.createPasskey.header' | translate }}
+  </h1>
+
+  <p class="govuk-body">
+    {{'pages.createPasskey.paragraph1' | translate }}
+  </p>
+  <p class="govuk-body">
+    {{'pages.createPasskey.paragraph2' | translate }}
+  </p>
+  <p class="govuk-body">
+    {{'pages.createPasskey.paragraph3' | translate }}
+  </p>
+
+  {{ govukInsetText({
+    text: 'pages.createPasskey.insetText' | translate
+  }) }}
+
+<form action="/create-passkey" method="post" novalidate>
+  <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+  <div class="govuk-button-group">
+    {{ govukButton({
+      text: 'general.continue.label' | translate,
+      name: "createPasskeyOption",
+      value: "submit",
+      type: "submit",
+      "preventDoubleClick": true
+    }) }}
+    {{ govukButton({
+      text: 'pages.createPasskey.skipButtonText' | translate,
+      name: "createPasskeyOption",
+      value: "skip",
+      "preventDoubleClick": true,
+      classes: "govuk-button--secondary"
+    }) }}
+  </div>
+  </form>
+
+{% endblock %}
+
+{% block scripts %}
+    <script defer type="text/javascript" src="/public/scripts/prevent-double-form-submit.js"></script>
+{% endblock %}
