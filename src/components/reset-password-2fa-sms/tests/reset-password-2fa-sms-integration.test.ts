@@ -1,5 +1,5 @@
 import { describe } from "mocha";
-import { sinon } from "../../../../test/utils/test-utils.js";
+import { expect, sinon } from "../../../../test/utils/test-utils.js";
 import {
   API_ENDPOINTS,
   HTTP_STATUS_CODES,
@@ -13,6 +13,7 @@ import { getPermittedJourneyForPath } from "../../../../test/helpers/session-hel
 import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
+import * as cheerio from "cheerio";
 
 const TEST_MFA_METHOD_ID = "test-id";
 const TEST_REDACTED_PHONE_NUMBER = "495";
@@ -115,5 +116,75 @@ describe("Integration::2fa sms (in reset password flow)", () => {
         `${PATH_NAMES.SECURITY_CODE_INVALID}?actionType=${SecurityCodeErrorType.MfaMaxRetries}`
       )
       .expect(302);
+  });
+
+  it("should return validation error when code not entered", async () => {
+    await request(app)
+      .post(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#code-error").text()).to.contains("Enter the code");
+      })
+      .expect(400);
+  });
+
+  it("should return validation error when code is less than 6 characters", async () => {
+    await request(app)
+      .post(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "2",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#code-error").text()).to.contains(
+          "Enter the code using only 6 digits"
+        );
+      })
+      .expect(400);
+  });
+
+  it("should return validation error when code is more than 6 characters", async () => {
+    await request(app)
+      .post(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "1234567",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#code-error").text()).to.contains(
+          "Enter the code using only 6 digits"
+        );
+      })
+      .expect(400);
+  });
+
+  it("should return validation error when code entered contains letters", async () => {
+    await request(app)
+      .post(PATH_NAMES.RESET_PASSWORD_2FA_SMS)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        code: "12ert-",
+      })
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#code-error").text()).to.contains(
+          "Enter the code using only 6 digits"
+        );
+      })
+      .expect(400);
   });
 });
