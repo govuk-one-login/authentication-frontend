@@ -13,7 +13,7 @@ import {
   supportHttpKeepAlive,
 } from "../config.js";
 import type { ApiResponseResult } from "../types.js";
-import { HTTP_STATUS_CODES } from "../app.constants.js";
+import { HTTP_STATUS_CODES, LOCALE } from "../app.constants.js";
 import { ApiError } from "./error.js";
 import type { Request } from "express";
 import { createPersonalDataHeaders } from "@govuk-one-login/frontend-passthrough-headers";
@@ -102,11 +102,19 @@ export function getInternalRequestConfigWithSecurityHeaders(
     config.headers["Reauthenticate"] = options.reauthenticate;
   }
 
-  if (options.userLanguage) {
+  if (options.userLanguage && validateUserLanguage(options.userLanguage)) {
     config.headers["User-Language"] = options.userLanguage;
   }
 
   return config;
+}
+
+function validateUserLanguage(userLanguage: string) {
+  if (Object.values(LOCALE).includes(userLanguage as LOCALE)) {
+    return userLanguage;
+  } else {
+    return undefined;
+  }
 }
 
 export class Http {

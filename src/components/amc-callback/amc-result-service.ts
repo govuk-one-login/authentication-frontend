@@ -16,13 +16,15 @@ export function amcResultService(axios: Http = http): AMCResultInterface {
     persistentSessionId: string,
     req: Request,
     code: string,
-    state: string
+    state: string,
+    language: string
   ): Promise<ApiResponseResult<string>> {
     const config = getInternalRequestConfigWithSecurityHeaders(
       {
         sessionId: sessionId,
         clientSessionId: clientSessionId,
         persistentSessionId: persistentSessionId,
+        userLanguage: language,
       },
       req,
       API_ENDPOINTS.AMC_CALLBACK
