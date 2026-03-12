@@ -3,7 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "common/show-password/macro.njk" import govukInputWithShowPassword %}
+{% from "common/show-password/macro.njk" import customGovukPasswordInput with context %}
 {% set showBack = true %}
 {% set hrefBack = 'enter-email-create' %}
 {% set pageTitleName = 'pages.enterPasswordAccountExists.title' | translate %}
@@ -24,20 +24,14 @@
 </p>
 
 <p class="govuk-body">{{'pages.enterPasswordAccountExists.info' | translate}}</p>
-    {{ govukInputWithShowPassword(
-        'pages.enterPasswordAccountExists.password.label' | translate,
-        "password",
-        errors,
-        {
-            show: 'general.showPassword.show' | translate,
-            hide: 'general.showPassword.hide' | translate,
-            showFullText: 'general.showPassword.showFullText' | translate,
-            hideFullText: 'general.showPassword.hideFullText' | translate,
-            announceShown: 'general.showPassword.announceShown' | translate,
-            announceHidden: 'general.showPassword.announceHidden' | translate
+    {{ customGovukPasswordInput({
+        label: {
+            text: 'pages.enterPasswordAccountExists.password.label' | translate
         },
-        "off"
-    ) }}
+        id: 'password',
+        autocomplete: 'off',
+        errors: errors
+    }) }}
 
     {{ govukButton({
         "text": "general.continue.label" | translate,
@@ -56,6 +50,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript" src="/public/scripts/showPassword.js"></script>
     <script defer type="text/javascript" src="/public/scripts/prevent-double-form-submit.js"></script>
 {% endblock %}
