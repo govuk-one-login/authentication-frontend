@@ -6,6 +6,10 @@
 
 {% from "../header/macro.njk" import strategicAppHeader %}
 
+{% if isPageDataSensitive is not defined %}
+    {% set isPageDataSensitive = true %}
+{% endif %}
+
 {% if isApp %}
   {% set htmlClasses = 'govuk-template__mobile' %}
 {% endif %}
@@ -191,7 +195,9 @@
                         uaContainerId: "not used" // We don't use UA anymore, but it's a required param
                     }, {
                         enableGa4Tracking: {{isGa4Enabled}},
-                        cookieDomain: "{{analyticsCookieDomain}}"
+                        cookieDomain: "{{analyticsCookieDomain}}",
+                        isDataSensitive: false, // We set this to false as we don't want DI to block GA4 on any pages, but we will set the isPageDataSensitive variable in the individual pages where needed
+                        isPageDataSensitive: {{isPageDataSensitive}},
                     });
             }
         }

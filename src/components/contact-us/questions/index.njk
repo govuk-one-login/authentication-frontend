@@ -172,7 +172,8 @@
         {% include 'contact-us/questions/_wallet-questions.njk' %}
     {% endif %}
 
-    {% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
+    {% set isPageDataSensitive = false %}
+    {% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false, contentId: contentId } %}
     {%- include "ga4-opl/template.njk" -%}
 
 {% endblock %}
