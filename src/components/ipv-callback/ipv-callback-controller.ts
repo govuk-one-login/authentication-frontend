@@ -39,8 +39,6 @@ export function ipvCallbackGet(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response): Promise<void> {
     const { email } = req.session.user;
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
     const { code, state } = req.query;
 
     if (code === undefined) {
@@ -56,10 +54,8 @@ export function ipvCallbackGet(
     }
 
     const result = await service.getReverificationResult(
-      sessionId,
-      clientSessionId,
-      persistentSessionId,
       req,
+      res,
       email,
       code,
       state

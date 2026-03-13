@@ -72,7 +72,6 @@ export function authorizeGet(
   jwtService: JwtServiceInterface = new JwtService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const loginPrompt = sanitize(req.query.prompt as string);
 
     const clientId = req.query.client_id as string;
@@ -94,25 +93,13 @@ export function authorizeGet(
       );
     }
 
-    if (claims.govuk_signin_journey_id !== clientSessionId) {
-      req.log.warn(
-        `clientSessionId in claims (${claims.govuk_signin_journey_id}) does not match one found in cookie (${clientSessionId})`
-      );
-    }
-
     // Set client session properties
     req.session.client.prompt = loginPrompt;
     setSessionDataFromClaims(req, claims);
 
-    const startAuthResponse = await authService.start(
-      sessionId,
-      clientSessionId,
-      persistentSessionId,
-      req,
-      {
-        ...claims,
-      }
-    );
+    const startAuthResponse = await authService.start(req, res, {
+      ...claims,
+    });
 
     if (!startAuthResponse.success) {
       const startError = new BadRequestError(

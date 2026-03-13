@@ -12,7 +12,10 @@ import {
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
 } from "../../../../test/helpers/service-test-helper.js";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../test/helpers/mock-request-helper.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { BadRequestError } from "../../../utils/error.js";
 describe("CrossBrowserService", () => {
@@ -24,7 +27,9 @@ describe("CrossBrowserService", () => {
   const authenticationState = "authentication_state";
   const req: Request = createMockRequest(PATH_NAMES.IPV_CALLBACK, {
     headers: requestHeadersWithIpAndAuditEncoded,
+    session: {},
   });
+  const res = createMockResponse({ locals: {} });
   req.query = { error: "access_denied", state: authenticationState };
   const backendSuccessResponse = Promise.resolve({
     data: { orchestrationRedirectUrl },
@@ -78,7 +83,8 @@ describe("CrossBrowserService", () => {
     it("Returns the correct location", async () => {
       postStub.resolves(backendSuccessResponse);
       const result = await underTest.getOrchestrationRedirectUrl(
-        req as CrossBrowserRequest
+        req as CrossBrowserRequest,
+        res
       );
 
       expect(result).to.eql(
@@ -111,7 +117,10 @@ describe("CrossBrowserService", () => {
       postStub.resolves(backendFailureResponse);
       let caughtError;
       try {
-        await underTest.getOrchestrationRedirectUrl(req as CrossBrowserRequest);
+        await underTest.getOrchestrationRedirectUrl(
+          req as CrossBrowserRequest,
+          res
+        );
       } catch (error) {
         caughtError = error;
       }

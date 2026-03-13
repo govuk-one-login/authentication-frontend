@@ -51,7 +51,6 @@ describe("Integration:: enter authenticator app code", () => {
             res.locals = {
               ...res.locals,
               sessionId: "tDy103saszhcxbQq0-mjdzU854",
-              clientSessionId: "test-client-session-id",
               persistentSessionId: "test-persistent-session-id",
             };
 

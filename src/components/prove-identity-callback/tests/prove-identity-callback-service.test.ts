@@ -17,7 +17,10 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants.js";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import {
+  createMockRequest,
+  createMockResponse,
+} from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { expect } from "chai";
 import type { CookieConsentServiceInterface } from "../../common/cookie-consent/types.js";
@@ -48,11 +51,11 @@ describe("prove identity callback service", () => {
         statusText: "OK",
       });
       postStub.resolves(axiosResponse);
-      const { email, sessionId, clientSessionId, diPersistentSessionId } =
-        commonVariables;
+      const { email } = commonVariables;
       const req = createMockRequest("/testPath", {
         headers: requestHeadersWithIpAndAuditEncoded,
       });
+      const res = createMockResponse();
 
       const expectedApiCallDetails = {
         expectedPath: API_ENDPOINTS.IPV_PROCESSING_IDENTITY,
@@ -60,13 +63,7 @@ describe("prove identity callback service", () => {
         expectedBody: { email },
       };
 
-      const result = await service.processIdentity(
-        email,
-        sessionId,
-        clientSessionId,
-        diPersistentSessionId,
-        req
-      );
+      const result = await service.processIdentity(email, req, res);
 
       checkApiCallMadeWithExpectedBodyAndHeaders(
         result,
@@ -81,22 +78,20 @@ describe("prove identity callback service", () => {
     const redirectUriReturnedFromResponse =
       "/redirect-here?with-some-params=added-by-the-endpoint";
     const apiBaseUrl = "https://base-url";
-    const sessionId = "sessionId";
     const apiKey = "apiKey";
-    const clientSessionId = "clientSessionId";
     const sourceIp = "sourceIp";
-    const persistentSessionId = "persistentSessionId";
     const auditEncodedString =
       "R21vLmd3QilNKHJsaGkvTFxhZDZrKF44SStoLFsieG0oSUY3aEhWRVtOMFRNMVw1dyInKzB8OVV5N09hOi8kLmlLcWJjJGQiK1NPUEJPPHBrYWJHP358NDg2ZDVc";
     const crossDomainGaTrackingId =
       "2.172053219.3232.1636392870-444224.1635165988";
     const expectedHeaders = {
       "X-API-Key": apiKey,
-      "Session-Id": sessionId,
-      "Client-Session-Id": clientSessionId,
+      "Session-Id": commonVariables.sessionId,
+      "govuk-signin-journey-id": commonVariables.journeyId,
+      "Client-Session-Id": commonVariables.journeyId,
       "x-forwarded-for": sourceIp,
       "txma-audit-encoded": auditEncodedString,
-      "di-persistent-session-id": persistentSessionId,
+      "di-persistent-session-id": commonVariables.diPersistentSessionId,
     };
     const axiosResponse = Promise.resolve({
       data: {
@@ -109,6 +104,7 @@ describe("prove identity callback service", () => {
     });
     let getStub: SinonStub;
     let req = {} as any as Request;
+    const res = createMockResponse();
 
     beforeEach(() => {
       process.env.API_BASE_URL = apiBaseUrl;
@@ -127,20 +123,13 @@ describe("prove identity callback service", () => {
     });
 
     it("should make a request for an RP auth code", async () => {
-      const result = await service.generateSuccessfulRpReturnUrl(
-        sessionId,
-        clientSessionId,
-        persistentSessionId,
-        req
-      );
+      const result = await service.generateSuccessfulRpReturnUrl(req, res);
 
-      expect(
-        getStub.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
-          headers: expectedHeaders,
-          baseURL: apiBaseUrl,
-          proxy: sinon.match.bool,
-        })
-      ).to.be.true;
+      expect(getStub).to.be.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
+        headers: expectedHeaders,
+        baseURL: apiBaseUrl,
+        proxy: sinon.match.bool,
+      });
       expect(result).to.eq(redirectUriReturnedFromResponse);
     });
 
@@ -156,12 +145,7 @@ describe("prove identity callback service", () => {
         const result = await proveIdentityCallbackService(
           httpInstance,
           fakeCookieConsentService
-        ).generateSuccessfulRpReturnUrl(
-          sessionId,
-          clientSessionId,
-          persistentSessionId,
-          req
-        );
+        ).generateSuccessfulRpReturnUrl(req, res);
 
         expect(result).to.eq(
           `${redirectUriReturnedFromResponse}&cookie_consent=not-engaged`
@@ -175,12 +159,7 @@ describe("prove identity callback service", () => {
         const result = await proveIdentityCallbackService(
           httpInstance,
           fakeCookieConsentService
-        ).generateSuccessfulRpReturnUrl(
-          sessionId,
-          clientSessionId,
-          persistentSessionId,
-          req
-        );
+        ).generateSuccessfulRpReturnUrl(req, res);
 
         expect(result).to.eq(
           `${redirectUriReturnedFromResponse}&cookie_consent=accept`
@@ -195,20 +174,13 @@ describe("prove identity callback service", () => {
         const result = await proveIdentityCallbackService(
           httpInstance,
           fakeCookieConsentService
-        ).generateSuccessfulRpReturnUrl(
-          sessionId,
-          clientSessionId,
-          persistentSessionId,
-          req
-        );
+        ).generateSuccessfulRpReturnUrl(req, res);
 
-        expect(
-          getStub.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
-            headers: expectedHeaders,
-            baseURL: apiBaseUrl,
-            proxy: sinon.match.bool,
-          })
-        ).to.be.true;
+        expect(getStub).to.be.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
+          headers: expectedHeaders,
+          baseURL: apiBaseUrl,
+          proxy: sinon.match.bool,
+        });
         expect(result).to.eq(
           `${redirectUriReturnedFromResponse}&cookie_consent=reject`
         );
@@ -224,20 +196,13 @@ describe("prove identity callback service", () => {
         const result = await proveIdentityCallbackService(
           httpInstance,
           fakeCookieConsentService
-        ).generateSuccessfulRpReturnUrl(
-          sessionId,
-          clientSessionId,
-          persistentSessionId,
-          req
-        );
+        ).generateSuccessfulRpReturnUrl(req, res);
 
-        expect(
-          getStub.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
-            headers: expectedHeaders,
-            baseURL: apiBaseUrl,
-            proxy: sinon.match.bool,
-          })
-        ).to.be.true;
+        expect(getStub).to.be.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
+          headers: expectedHeaders,
+          baseURL: apiBaseUrl,
+          proxy: sinon.match.bool,
+        });
         expect(result).to.eq(
           `${redirectUriReturnedFromResponse}&cookie_consent=accept&_ga=${crossDomainGaTrackingId}`
         );
@@ -258,20 +223,13 @@ describe("prove identity callback service", () => {
         const result = await proveIdentityCallbackService(
           httpInstance,
           fakeCookieConsentService
-        ).generateSuccessfulRpReturnUrl(
-          sessionId,
-          clientSessionId,
-          persistentSessionId,
-          req
-        );
+        ).generateSuccessfulRpReturnUrl(req, res);
 
-        expect(
-          getStub.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
-            headers: expectedHeaders,
-            baseURL: apiBaseUrl,
-            proxy: sinon.match.bool,
-          })
-        ).to.be.true;
+        expect(getStub).to.be.calledOnceWithExactly(API_ENDPOINTS.AUTH_CODE, {
+          headers: expectedHeaders,
+          baseURL: apiBaseUrl,
+          proxy: sinon.match.bool,
+        });
         expect(result).to.eq(`${redirectUriReturnedFromResponse}`);
       });
     });

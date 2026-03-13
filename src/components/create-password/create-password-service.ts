@@ -7,18 +7,16 @@ import {
 import { API_ENDPOINTS } from "../../app.constants.js";
 import type { CreatePasswordServiceInterface } from "./types.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 
 export function createPasswordService(
   axios: Http = http
 ): CreatePasswordServiceInterface {
   const signUpUser = async function (
-    sessionId: string,
-    clientSessionId: string,
     emailAddress: string,
     password: string,
-    persistentSessionId: string,
-    req: Request
+    req: Request,
+    res: Response
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
       API_ENDPOINTS.SIGNUP_USER,
@@ -27,12 +25,8 @@ export function createPasswordService(
         password: password,
       },
       getInternalRequestConfigWithSecurityHeaders(
-        {
-          sessionId: sessionId,
-          clientSessionId: clientSessionId,
-          persistentSessionId: persistentSessionId,
-        },
         req,
+        res,
         API_ENDPOINTS.SIGNUP_USER
       )
     );

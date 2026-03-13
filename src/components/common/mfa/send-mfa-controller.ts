@@ -80,17 +80,14 @@ export function sendMfaGeneric(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email, activeMfaMethodId } = req.session.user;
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const isResendCodeRequest: boolean = req.body.isResendCodeRequest;
 
     const result = await mfaCodeService.sendMfaCode(
-      sessionId,
-      clientSessionId,
       email,
-      persistentSessionId,
       isResendCodeRequest,
       xss(req.cookies.lng as string),
       req,
+      res,
       activeMfaMethodId,
       getJourneyTypeFromUserSession(req.session.user, {
         includeReauthentication: true,
