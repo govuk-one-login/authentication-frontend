@@ -48,6 +48,7 @@ const postValidationLocals = function locals(
   req: Request
 ): Record<string, unknown> {
   return {
+    otpUrl: req.session.user.qrCodeText,
     qrCode: req.session.user.authAppQrCodeUrl,
     secretKeyFragmentArray: splitSecretKeyIntoFragments(
       req.session.user.authAppSecret
