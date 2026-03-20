@@ -6,17 +6,16 @@ import {
   http,
 } from "../../utils/http.js";
 import type { ApiResponseResult } from "../../types.js";
-import { AMC_JOURNEY_TYPES, API_ENDPOINTS } from "../../app.constants.js";
+import { API_ENDPOINTS } from "../../app.constants.js";
 import type { Request } from "express";
 
-export function amcAuthorizeService(
-  axios: Http = http
-): AmcAuthorizeInterface {
+export function amcAuthorizeService(axios: Http = http): AmcAuthorizeInterface {
   const getRedirectUrl = async function (
     sessionId: string,
     clientSessionId: string,
     persistentSessionId: string,
-    req: Request
+    req: Request,
+    journeyType: string
   ): Promise<ApiResponseResult<AmcAuthorizeResponse>> {
     const config = getInternalRequestConfigWithSecurityHeaders(
       {
@@ -30,9 +29,7 @@ export function amcAuthorizeService(
 
     const response = await axios.client.post<AmcAuthorizeResponse>(
       API_ENDPOINTS.AMC_AUTHORIZE,
-      {
-        journeyType: AMC_JOURNEY_TYPES.SINGLE_FACTOR_ACCOUNT_DELETION,
-      },
+      { journeyType },
       config
     );
     return createApiResponse<AmcAuthorizeResponse>(response);

@@ -10,6 +10,7 @@ export interface AmcAuthorizeInterface {
     sessionId: string,
     clientSessionId: string,
     persistentSessionId: string,
-    req: Request
+    req: Request,
+    journeyType: string
   ) => Promise<ApiResponseResult<AmcAuthorizeResponse>>;
 }

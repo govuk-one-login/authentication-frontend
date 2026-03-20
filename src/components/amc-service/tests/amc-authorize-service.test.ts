@@ -45,28 +45,35 @@ describe("amc authorize service", () => {
     resetApiKeyAndBaseUrlEnvVars();
   });
 
-  it("successfully calls the AMC authorize API with SFAD journey type", async () => {
-    const result = await service.getRedirectUrl(
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
-      req
-    );
+  const JOURNEY_TYPES = [
+    AMC_JOURNEY_TYPES.SINGLE_FACTOR_ACCOUNT_DELETION,
+    AMC_JOURNEY_TYPES.PASSKEY_CREATE,
+  ];
+  for (const journeyType of JOURNEY_TYPES) {
+    it(`successfully calls the AMC authorize API with ${journeyType} journey type`, async () => {
+      const result = await service.getRedirectUrl(
+        sessionId,
+        clientSessionId,
+        diPersistentSessionId,
+        req,
+        journeyType
+      );
 
-    const expectedApiCallDetails = {
-      expectedPath: API_ENDPOINTS.AMC_AUTHORIZE,
-      expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
-      expectedBody: {
-        journeyType: AMC_JOURNEY_TYPES.SINGLE_FACTOR_ACCOUNT_DELETION,
-      },
-    };
+      const expectedApiCallDetails = {
+        expectedPath: API_ENDPOINTS.AMC_AUTHORIZE,
+        expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
+        expectedBody: {
+          journeyType: journeyType,
+        },
+      };
 
-    checkApiCallMadeWithExpectedBodyAndHeaders(
-      result,
-      postStub,
-      true,
-      expectedApiCallDetails
-    );
-    expect(result.success).to.equal(true);
-  });
+      checkApiCallMadeWithExpectedBodyAndHeaders(
+        result,
+        postStub,
+        true,
+        expectedApiCallDetails
+      );
+      expect(result.success).to.equal(true);
+    });
+  }
 });
