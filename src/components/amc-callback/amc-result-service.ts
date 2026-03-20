@@ -17,6 +17,7 @@ export function amcResultService(axios: Http = http): AMCResultInterface {
     req: Request,
     code: string,
     state: string,
+    usedRedirectUrl: string,
     language: string
   ): Promise<ApiResponseResult<string>> {
     const config = getInternalRequestConfigWithSecurityHeaders(
@@ -32,7 +33,7 @@ export function amcResultService(axios: Http = http): AMCResultInterface {
 
     const response = await axios.client.post<string>(
       API_ENDPOINTS.AMC_CALLBACK,
-      { code, state },
+      { code, state, usedRedirectUrl },
       config
     );
 

@@ -14,6 +14,7 @@ describe("amc result service", () => {
   const sourceIp = "127.0.0.1";
   const code = "auth-code";
   const state = "state-value";
+  const usedRedirectUrl = "usedRedirectUrl";
   const apiKey = "apiKey";
   const auditEncodedString = "audit-encoded-string";
   const language = "en";
@@ -68,13 +69,14 @@ describe("amc result service", () => {
       req,
       code,
       state,
+      usedRedirectUrl,
       language
     );
 
     expect(
       postStub.calledOnceWithExactly(
         API_ENDPOINTS.AMC_CALLBACK,
-        { code, state },
+        { code, state, usedRedirectUrl },
         {
           headers: expectedHeaders,
           proxy: sinon.match.bool,
