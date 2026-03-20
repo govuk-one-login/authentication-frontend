@@ -31,7 +31,7 @@ describe("amc-callback-controller", () => {
   const USED_REDIRECT_URL = "https://www.test.com/amc-callback";
 
   beforeEach(() => {
-    req = createMockRequest(PATH_NAMES.AMC_CALLBACK);
+    req = createMockRequest(PATH_NAMES.SFAD_CALLBACK);
     req.query = { code: AUTH_CODE, state: STATE };
     req.cookies = { lng: LANGUAGE };
     res = mockResponse();

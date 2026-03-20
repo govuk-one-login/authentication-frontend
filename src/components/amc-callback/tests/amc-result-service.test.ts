@@ -55,7 +55,7 @@ describe("amc result service", () => {
     const service = amcResultService(httpInstance);
     postStub = sinon.stub(httpInstance.client, "post").resolves(axiosResponse);
 
-    const req = createMockRequest(PATH_NAMES.AMC_CALLBACK);
+    const req = createMockRequest(PATH_NAMES.SFAD_CALLBACK);
     req.ip = sourceIp;
     req.headers = {
       "txma-audit-encoded": auditEncodedString,

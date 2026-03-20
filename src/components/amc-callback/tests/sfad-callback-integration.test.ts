@@ -30,7 +30,7 @@ describe("Integration:: sfad callback", () => {
       .reply(200, "Success message");
 
     const requestPath =
-      PATH_NAMES.AMC_CALLBACK + "?code=test-code&state=test-state";
+      PATH_NAMES.SFAD_CALLBACK + "?code=test-code&state=test-state";
 
     await request(app)
       .get(requestPath)
@@ -47,19 +47,19 @@ describe("Integration:: sfad callback", () => {
       .reply(400, "Error message");
 
     const requestPath =
-      PATH_NAMES.AMC_CALLBACK + "?code=test-code&state=test-state";
+      PATH_NAMES.SFAD_CALLBACK + "?code=test-code&state=test-state";
 
     await request(app).get(requestPath).expect(400);
   });
 
   it("should return 400 when code parameter is missing", async () => {
-    const requestPath = PATH_NAMES.AMC_CALLBACK + "?state=test-state";
+    const requestPath = PATH_NAMES.SFAD_CALLBACK + "?state=test-state";
 
     await request(app).get(requestPath).expect(400);
   });
 
   it("should return 400 when state parameter is missing", async () => {
-    const requestPath = PATH_NAMES.AMC_CALLBACK + "?code=test-code";
+    const requestPath = PATH_NAMES.SFAD_CALLBACK + "?code=test-code";
 
     await request(app).get(requestPath).expect(400);
   });
@@ -83,7 +83,7 @@ const stubMiddlewareAndCreateApp = async (): Promise<Application> => {
 
           req.session.user = {
             email: "test@test.com",
-            journey: getPermittedJourneyForPath(PATH_NAMES.AMC_CALLBACK),
+            journey: getPermittedJourneyForPath(PATH_NAMES.SFAD_CALLBACK),
           };
 
           next();

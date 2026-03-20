@@ -7,7 +7,7 @@ import { sfadCallbackGet } from "./sfad-callback-controller.js";
 const router = Router();
 
 router.get(
-  PATH_NAMES.AMC_CALLBACK,
+  PATH_NAMES.SFAD_CALLBACK,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   sfadCallbackGet()
