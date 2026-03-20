@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
-import type { Request, Response } from "express";
+import type { Request } from "express";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import {
@@ -62,6 +62,7 @@ describe("create passkey controller", () => {
         log: {
           debug: sinon.spy(),
           info: sinon.spy(),
+          error: sinon.spy(),
         },
       } as unknown as Request;
     };
@@ -78,11 +79,7 @@ describe("create passkey controller", () => {
       const req = createRequestWithPasskeyOption("submit");
 
       await assert.rejects(
-        async () =>
-          createPasskeyPost(fakeAmcAuthorizeService(false))(
-            req as Request,
-            res as Response
-          ),
+        async () => createPasskeyPost(fakeAmcAuthorizeService(false))(req, res),
         BadRequestError,
         "500:Test error message"
       );

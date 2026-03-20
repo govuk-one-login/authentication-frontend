@@ -31,6 +31,7 @@ export function createPasskeyPost(
 }
 
 async function handleSkipCreatePasskey(req: Request, res: Response) {
+  req.log.info("User has skipped passkey registration");
   req.session.user.hasSkippedPasskeyRegistration = true;
   await saveSessionState(req);
   const userJourneyEvent = USER_JOURNEY_EVENTS.SKIP_CREATE_PASSKEY;
@@ -45,6 +46,7 @@ async function handleCreatePasskey(
   res: Response
 ) {
   const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+  req.log.info("User has chosen to create a passkey");
 
   const result = await service.getRedirectUrl(
     sessionId,
@@ -55,9 +57,13 @@ async function handleCreatePasskey(
   );
 
   if (!result.success) {
+    req.log.error("Failed to get redirect URL for passkey creation");
     throw new BadRequestError(result.data.message, result.data.code);
   }
 
+  req.log.info(
+    "Got redirect url from authorize endpoint. Redirecting user to AMC for passkey creation"
+  );
   const userJourneyEvent = USER_JOURNEY_EVENTS.CREATE_PASSKEY_INIT;
   await getNextPathAndUpdateJourney(req, res, userJourneyEvent);
 
