@@ -1,6 +1,10 @@
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
-import { AMC_JOURNEY_TYPES, API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
+import {
+  AMC_JOURNEY_TYPES,
+  API_ENDPOINTS,
+  PATH_NAMES,
+} from "../../../app.constants.js";
 import nock from "nock";
 import request from "supertest";
 import type { NextFunction, Request, Response } from "express";
@@ -33,13 +37,16 @@ describe("SFAD authorize", () => {
     function allowCallToSfadAuthorizeEndpointReturningRedirectUrl(url: string) {
       const baseApi = process.env.FRONTEND_API_BASE_URL;
 
-      nock(baseApi).post(API_ENDPOINTS.AMC_AUTHORIZE, {
-        journeyType: AMC_JOURNEY_TYPES.SINGLE_FACTOR_ACCOUNT_DELETION
-      }).once().reply(200, {
-        redirectUrl: url,
-        code: 200,
-        success: true,
-      });
+      nock(baseApi)
+        .post(API_ENDPOINTS.AMC_AUTHORIZE, {
+          journeyType: AMC_JOURNEY_TYPES.SINGLE_FACTOR_ACCOUNT_DELETION,
+        })
+        .once()
+        .reply(200, {
+          redirectUrl: url,
+          code: 200,
+          success: true,
+        });
     }
 
     async function setupAppWithSessionMiddleware(nextPath: string) {

@@ -78,6 +78,7 @@ export const PATH_NAMES = {
   SFAD_AUTHORIZE: "/sfad-authorize",
   AMC_CALLBACK: "/amc-callback",
   CREATE_PASSKEY: "/create-passkey",
+  CREATE_PASSKEY_CALLBACK: "/create-passkey-callback",
 };
 
 export const HREF_BACK = {
