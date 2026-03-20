@@ -7,7 +7,7 @@ import { getPermittedJourneyForPath } from "../../../../test/helpers/session-hel
 import esmock from "esmock";
 import request from "supertest";
 
-describe("Integration:: amc callback", () => {
+describe("Integration:: sfad callback", () => {
   let app: Application;
   let baseApi: string;
 
@@ -23,7 +23,7 @@ describe("Integration:: amc callback", () => {
     sinon.restore();
   });
 
-  it("should return 200 with success message when AMC callback is successful", async () => {
+  it("should return 200 with success message when SFAD callback is successful", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.AMC_CALLBACK)
       .once()
@@ -40,7 +40,7 @@ describe("Integration:: amc callback", () => {
       });
   });
 
-  it("should return 400 when AMC callback fails", async () => {
+  it("should return 400 when SFAD callback fails", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.AMC_CALLBACK)
       .once()

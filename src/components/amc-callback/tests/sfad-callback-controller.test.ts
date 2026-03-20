@@ -4,7 +4,7 @@ import { mockResponse } from "mock-req-res";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { PATH_NAMES } from "../../../app.constants.js";
-import { amcCallbackGet } from "../amc-callback-controller.js";
+import { sfadCallbackGet } from "../sfad-callback-controller.js";
 import { BadRequestError } from "../../../utils/error.js";
 import sinon from "sinon";
 import type { Request, Response } from "express";
@@ -47,7 +47,7 @@ describe("amc-callback-controller", () => {
     const expectedResult = "Great success";
     const fakeService = createMockService(true, expectedResult);
 
-    await amcCallbackGet(fakeService)(req as Request, res as Response);
+    await sfadCallbackGet(fakeService)(req as Request, res as Response);
 
     expect(fakeService.getAMCResult).to.have.been.calledWith(
       sessionId,
@@ -66,7 +66,7 @@ describe("amc-callback-controller", () => {
     const fakeService = createMockService(false, expectedErrorMessage);
 
     await assert.rejects(
-      async () => amcCallbackGet(fakeService)(req as Request, res as Response),
+      async () => sfadCallbackGet(fakeService)(req as Request, res as Response),
       (error: Error) => {
         expect(error).to.be.instanceOf(BadRequestError);
         expect(error.message).to.equal(
@@ -103,7 +103,7 @@ describe("amc-callback-controller", () => {
       req.query = testCase.query;
 
       await assert.rejects(
-        async () => amcCallbackGet()(req as Request, res as Response),
+        async () => sfadCallbackGet()(req as Request, res as Response),
         (error: Error) => {
           expect(error).to.be.instanceOf(BadRequestError);
           expect(error.message).to.equal(testCase.expectedMessage);
