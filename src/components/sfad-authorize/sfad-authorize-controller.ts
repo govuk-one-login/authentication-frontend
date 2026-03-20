@@ -1,5 +1,5 @@
-import type { SfadAuthorizeInterface } from "./types.js";
-import { sfadAuthorizeService } from "./sfad-authorize-service.js";
+import { sfadAuthorizeService } from "../amc-service/sfad-authorize-service.js";
+import type { SfadAuthorizeInterface } from "../amc-service/types.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import type { Request, Response } from "express";
 import { BadRequestError } from "../../utils/error.js";
