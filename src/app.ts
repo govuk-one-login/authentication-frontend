@@ -111,6 +111,7 @@ import { wellKnownRouter } from "./components/well-known/well-known-routes.js";
 import { sfadAuthorizeRouter } from "./components/sfad-authorize/sfad-authorize-routes.js";
 import { amcCallbackRouter } from "./components/amc-callback/amc-callback-routes.js";
 import { createPasskeyRouter } from "./components/create-passkey/create-passkey-routes.js";
+import { createPasskeyCallbackRouter } from "./components/create-passkey-callback/create-passkey-callback-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -177,6 +178,7 @@ function registerRoutes(app: express.Application) {
   }
   if (supportPasskeyRegistration()) {
     app.use(createPasskeyRouter);
+    app.use(createPasskeyCallbackRouter);
   }
 
   // Development tools

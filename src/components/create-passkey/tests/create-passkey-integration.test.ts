@@ -19,6 +19,7 @@ describe("Integration:: create passkey", () => {
   let cookies: string;
   let app: any;
   let sessionUserOverrides: Partial<UserSession> = {};
+  let capturedUserSession: UserSession;
 
   before(async () => {
     process.env.SUPPORT_PASSKEY_REGISTRATION = "1";
@@ -38,6 +39,8 @@ describe("Integration:: create passkey", () => {
               journey: getPermittedJourneyForPath(PATH_NAMES.CREATE_PASSKEY),
               ...sessionUserOverrides,
             };
+
+            capturedUserSession = req.session.user;
 
             next();
           }),
@@ -108,6 +111,10 @@ describe("Integration:: create passkey", () => {
       })
       .expect(302)
       .expect("Location", redirectUrl);
+
+    expect(capturedUserSession.journey.nextPath).to.equal(
+      PATH_NAMES.CREATE_PASSKEY_CALLBACK
+    );
   });
 
   const testValues = [

@@ -12,3 +12,5 @@ router.get(
   allowUserJourneyMiddleware,
   createPasskeyCallbackGet
 );
+
+export { router as createPasskeyCallbackRouter };
