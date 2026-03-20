@@ -242,7 +242,7 @@ describe("state-machine", () => {
   });
 
   it("should move from CREATE_PASSKEY to relevant next state dependent on journey type when submit", () => {
-    const userJourneyEvent = USER_JOURNEY_EVENTS.CREATE_PASSKEY;
+    const userJourneyEvent = USER_JOURNEY_EVENTS.CREATE_PASSKEY_INIT;
     const nextState = getNextState(
       PATH_NAMES.CREATE_PASSKEY,
       userJourneyEvent,

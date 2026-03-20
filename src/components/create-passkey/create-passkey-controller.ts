@@ -58,7 +58,7 @@ async function handleCreatePasskey(
     throw new BadRequestError(result.data.message, result.data.code);
   }
 
-  const userJourneyEvent = USER_JOURNEY_EVENTS.CREATE_PASSKEY;
+  const userJourneyEvent = USER_JOURNEY_EVENTS.CREATE_PASSKEY_INIT;
   await getNextPathAndUpdateJourney(req, res, userJourneyEvent);
 
   const redirectUrl = result.data.redirectUrl;
