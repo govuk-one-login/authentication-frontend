@@ -29,8 +29,7 @@ export function createPasskeyPost(
   };
 }
 
-async function handleSkipCreatePasskey(req: Request,
-  res: Response) {
+async function handleSkipCreatePasskey(req: Request, res: Response) {
   req.session.user.hasSkippedPasskeyRegistration = true;
   await saveSessionState(req);
   const userJourneyEvent = USER_JOURNEY_EVENTS.SKIP_CREATE_PASSKEY;

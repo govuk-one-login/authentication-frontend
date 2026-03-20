@@ -50,9 +50,9 @@ describe("create passkey controller", () => {
   });
 
   describe("createPasskeyPost", () => {
-    it("should redirect to the url of the amc authorization response when submit button is clicked", async () => {
-      const req = {
-        body: { createPasskeyOption: "submit" },
+    const createRequestWithPasskeyOption = (createPasskeyOption: string) => {
+      return {
+        body: { createPasskeyOption: createPasskeyOption },
         session: {
           user: {},
           save: sinon.spy((callback) => callback(null)),
@@ -62,23 +62,18 @@ describe("create passkey controller", () => {
           info: sinon.spy(),
         },
       } as unknown as Request;
+    };
+
+    it("should redirect to the url of the amc authorization response when submit button is clicked", async () => {
+      const req = createRequestWithPasskeyOption("submit");
 
       await createPasskeyPost(fakeAmcAuthorizeService(true))(req, res);
 
       expect(res.redirect).calledWith(REDIRECT_URL);
     });
+
     it("should set hasSkippedPasskeyRegistration when skip button is clicked", async () => {
-      const req = {
-        body: { createPasskeyOption: "skip" },
-        session: {
-          user: {},
-          save: sinon.spy((callback) => callback(null)),
-        },
-        log: {
-          debug: sinon.spy(),
-          info: sinon.spy(),
-        },
-      } as unknown as Request;
+      const req = createRequestWithPasskeyOption("skip");
 
       await createPasskeyPost(fakeAmcAuthorizeService(true))(req, res);
 
@@ -87,17 +82,7 @@ describe("create passkey controller", () => {
     });
 
     it("should not set hasSkippedPasskeyRegistration when submit button is clicked", async () => {
-      const req = {
-        body: { createPasskeyOption: "submit" },
-        session: {
-          user: {},
-          save: sinon.spy((callback) => callback(null)),
-        },
-        log: {
-          debug: sinon.spy(),
-          info: sinon.spy(),
-        },
-      } as unknown as Request;
+      const req = createRequestWithPasskeyOption("submit");
 
       await createPasskeyPost(fakeAmcAuthorizeService(true))(req, res);
 
