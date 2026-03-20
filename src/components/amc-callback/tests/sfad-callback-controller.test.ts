@@ -27,6 +27,7 @@ describe("amc-callback-controller", () => {
   const { sessionId, clientSessionId, diPersistentSessionId } = commonVariables;
   const AUTH_CODE = "test-code";
   const STATE = "test-state";
+  const USED_REDIRECT_URL = "https://www.test.com/amc-callback";
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.AMC_CALLBACK);
@@ -36,6 +37,7 @@ describe("amc-callback-controller", () => {
       sessionId,
       clientSessionId,
       persistentSessionId: diPersistentSessionId,
+      currentUrl: new URL(USED_REDIRECT_URL + "?code=123&state=abc"),
     };
   });
 
@@ -55,7 +57,8 @@ describe("amc-callback-controller", () => {
       diPersistentSessionId,
       req,
       AUTH_CODE,
-      STATE
+      STATE,
+      USED_REDIRECT_URL
     );
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith({ message: expectedResult });

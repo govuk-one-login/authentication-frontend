@@ -32,6 +32,7 @@ export function sfadCallbackGet(
       req,
       code,
       state,
+      res.locals.currentUrl.origin + res.locals.currentUrl.pathname,
       xss(req.cookies.lng as string)
     );
 
