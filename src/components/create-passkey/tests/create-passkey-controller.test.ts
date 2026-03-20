@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import {
@@ -11,6 +11,8 @@ import {
 import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import type { AmcAuthorizeInterface } from "../../amc-service/types.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
+import { strict as assert } from "assert";
+import { BadRequestError } from "../../../utils/error.js";
 
 describe("create passkey controller", () => {
   let res: ResponseOutput;
@@ -70,6 +72,20 @@ describe("create passkey controller", () => {
       await createPasskeyPost(fakeAmcAuthorizeService(true))(req, res);
 
       expect(res.redirect).calledWith(REDIRECT_URL);
+    });
+
+    it("should return an error when amc authorize endpoint returns non successful result", async () => {
+      const req = createRequestWithPasskeyOption("submit");
+
+      await assert.rejects(
+        async () =>
+          createPasskeyPost(fakeAmcAuthorizeService(false))(
+            req as Request,
+            res as Response
+          ),
+        BadRequestError,
+        "500:Test error message"
+      );
     });
 
     it("should set hasSkippedPasskeyRegistration when skip button is clicked", async () => {

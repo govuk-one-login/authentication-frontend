@@ -6,6 +6,7 @@ import { AMC_JOURNEY_TYPES } from "../../app.constants.js";
 import type { AmcAuthorizeInterface } from "../amc-service/types.js";
 import { amcAuthorizeService } from "../amc-service/amc-authorize-service.js";
 import type { ExpressRouteFunc } from "../../types.js";
+import { BadRequestError } from "../../utils/error.js";
 
 const TEMPLATE_NAME = "create-passkey/index.njk";
 
@@ -52,6 +53,10 @@ async function handleCreatePasskey(
     req,
     AMC_JOURNEY_TYPES.PASSKEY_CREATE
   );
+
+  if (!result.success) {
+    throw new BadRequestError(result.data.message, result.data.code);
+  }
 
   const redirectUrl = result.data.redirectUrl;
 
