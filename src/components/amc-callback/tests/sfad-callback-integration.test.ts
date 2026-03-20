@@ -79,6 +79,7 @@ const stubMiddlewareAndCreateApp = async (): Promise<Application> => {
           res.locals.sessionId = "test-session-id";
           res.locals.clientSessionId = "test-client-session-id";
           res.locals.persistentSessionId = "test-persistent-session-id";
+          res.locals.currentUrl = new URL("http://localhost" + req.originalUrl);
 
           req.session.user = {
             email: "test@test.com",

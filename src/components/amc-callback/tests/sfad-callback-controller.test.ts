@@ -27,11 +27,13 @@ describe("amc-callback-controller", () => {
   const { sessionId, clientSessionId, diPersistentSessionId } = commonVariables;
   const AUTH_CODE = "test-code";
   const STATE = "test-state";
+  const LANGUAGE = "en";
   const USED_REDIRECT_URL = "https://www.test.com/amc-callback";
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.AMC_CALLBACK);
     req.query = { code: AUTH_CODE, state: STATE };
+    req.cookies = { lng: LANGUAGE };
     res = mockResponse();
     res.locals = {
       sessionId,
@@ -58,7 +60,8 @@ describe("amc-callback-controller", () => {
       req,
       AUTH_CODE,
       STATE,
-      USED_REDIRECT_URL
+      USED_REDIRECT_URL,
+      LANGUAGE
     );
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith({ message: expectedResult });
