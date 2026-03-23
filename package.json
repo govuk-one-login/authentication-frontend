@@ -110,7 +110,7 @@
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",
     "@eslint/eslintrc": "3.3.5",
-    "@eslint/js": "9.39.4",
+    "@eslint/js": "10.0.1",
     "@playwright/test": "1.56.1",
     "@types/chai": "4.3.0",
     "@types/cheerio": "0.22.35",
