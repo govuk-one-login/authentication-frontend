@@ -68,8 +68,6 @@
   "dependencies": {
     "@aws-sdk/client-kms": "3.1002.0",
     "@aws-sdk/client-ssm": "3.1002.0",
-    "@eslint/eslintrc": "3.3.3",
-    "@eslint/js": "9.34.0",
     "@govuk-one-login/frontend-analytics": "4.0.5",
     "@govuk-one-login/frontend-device-intelligence": "1.2.0",
     "@govuk-one-login/frontend-language-toggle": "2.2.2",
@@ -112,6 +110,8 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",
+    "@eslint/eslintrc": "3.3.5",
+    "@eslint/js": "9.39.4",
     "@playwright/test": "1.56.1",
     "@types/chai": "4.3.0",
     "@types/cheerio": "0.22.35",
