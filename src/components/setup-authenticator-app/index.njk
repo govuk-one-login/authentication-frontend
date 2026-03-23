@@ -72,6 +72,9 @@
                 inputmode: "numeric",
                 spellcheck: false,
                 autocomplete: "one-time-code",
+                attributes: {
+                    pattern: "([0-9]{6})"
+                },
                 errorMessage: {
                     text: errors['code'].text
                 } if (errors['code'])}) }}

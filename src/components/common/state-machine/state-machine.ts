@@ -15,6 +15,7 @@ const USER_JOURNEY_EVENTS = {
   EMAIL_CODE_VERIFIED: "EMAIL_CODE_VERIFIED",
   CONSENT_ACCEPTED: "CONSENT_ACCEPTED",
   TERMS_AND_CONDITIONS_ACCEPTED: "TERMS_AND_CONDITIONS_ACCEPTED",
+  START_MFA_RESET: "START_MFA_RESET",
   VERIFY_PHONE_NUMBER: "VERIFY_PHONE_NUMBER",
   VERIFY_EMAIL_CODE: "VERIFY_EMAIL_CODE",
   ACCOUNT_CREATED: "ACCOUNT_CREATED",
@@ -66,6 +67,11 @@ const USER_JOURNEY_EVENTS = {
   CANNOT_USE_EMAIL_ADDRESS: "CANNOT_USE_EMAIL_ADDRESS",
   ENTER_EMAIL_ADDRESS_AFTER_EXPERIAN_CHECK:
     "ENTER_EMAIL_ADDRESS_AFTER_EXPERIAN_CHECK",
+  INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION:
+    "INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION",
+  MFA_INDEFINITELY_BLOCKED: "MFA_INDEFINITELY_BLOCKED",
+  CREATE_PASSKEY_INIT: "CREATE_PASSKEY_INIT",
+  SKIP_CREATE_PASSKEY: "SKIP_CREATE_PASSKEY",
 };
 
 export interface AuthStateContext {
@@ -80,6 +86,7 @@ export interface AuthStateContext {
   mfaMethodType: MFA_METHOD_TYPE | undefined;
   shouldPromptToRegisterPasskey: boolean;
   shouldPromptToSignInWithPasskey: boolean;
+  needsForcedMFAReset: boolean;
 }
 
 const authStateMachine = createMachine<AuthStateContext>(
@@ -223,6 +230,11 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
+      [PATH_NAMES.CANNOT_USE_SECURITY_CODE]: {
+        meta: {
+          optionalPaths: [PATH_NAMES.MFA_RESET_WITH_IPV],
+        },
+      },
       [PATH_NAMES.CREATE_ACCOUNT_SET_PASSWORD]: {
         on: {
           [USER_JOURNEY_EVENTS.PASSWORD_CREATED]: [
@@ -316,6 +328,9 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.CREDENTIALS_VALIDATED]: [
             INTERMEDIATE_STATES.PASSWORD_VERIFIED,
           ],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
+          ],
         },
         meta: {
           optionalPaths: [
@@ -375,6 +390,9 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.RESEND_MFA_CODE]: {
         on: {
           [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
+          ],
         },
       },
       [PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE]: {
@@ -397,12 +415,24 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.UPLIFT_JOURNEY]: {
         on: {
           [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
+          ],
         },
       },
       [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS]: {
         on: {
           [USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED]: [
             { target: [PATH_NAMES.AUTH_CODE] },
+          ],
+        },
+      },
+      [PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN]: {
+        on: {
+          [USER_JOURNEY_EVENTS.START_MFA_RESET]: [
+            {
+              target: [PATH_NAMES.GET_SECURITY_CODES],
+            },
           ],
         },
       },
@@ -427,6 +457,9 @@ const authStateMachine = createMachine<AuthStateContext>(
             {
               target: [PATH_NAMES.RESET_PASSWORD],
             },
+          ],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
           ],
         },
         meta: {
@@ -501,8 +534,32 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
+      [PATH_NAMES.AMC_CALLBACK]: {
+        type: "final",
+      },
+      [PATH_NAMES.CREATE_PASSKEY]: {
+        on: {
+          [USER_JOURNEY_EVENTS.SKIP_CREATE_PASSKEY]: [
+            INTERMEDIATE_STATES.SIGN_IN_END,
+          ],
+          [USER_JOURNEY_EVENTS.CREATE_PASSKEY_INIT]: [
+            PATH_NAMES.CREATE_PASSKEY_CALLBACK,
+          ],
+        },
+      },
+      [PATH_NAMES.CREATE_PASSKEY_CALLBACK]: {
+        type: "final",
+      },
       [INTERMEDIATE_STATES.SIGN_IN_END]: {
         always: [
+          {
+            target: [PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN],
+            cond: "needsForcedMFAReset",
+          },
+          {
+            target: [PATH_NAMES.CREATE_PASSKEY],
+            cond: "shouldPromptToRegisterPasskey",
+          },
           {
             target: [PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS],
             cond: "needsLatestTermsAndConditions",
@@ -600,6 +657,9 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE]: [
             PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           ],
+          [USER_JOURNEY_EVENTS.INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION]: [
+            PATH_NAMES.SFAD_AUTHORIZE,
+          ],
         },
       },
       [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: {
@@ -608,6 +668,12 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE]: [
             PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           ],
+        },
+      },
+      [PATH_NAMES.SFAD_AUTHORIZE]: {
+        type: "final",
+        meta: {
+          optionalPaths: [PATH_NAMES.AMC_CALLBACK],
         },
       },
       [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES]: {
@@ -626,12 +692,16 @@ const authStateMachine = createMachine<AuthStateContext>(
             },
             PATH_NAMES.ENTER_MFA,
           ],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
+          ],
         },
       },
     },
   },
   {
     guards: {
+      needsForcedMFAReset: (context) => context.needsForcedMFAReset,
       needsLatestTermsAndConditions: (context) =>
         !context.isLatestTermsAndConditionsAccepted,
       isMfaRequired: (context) => context.isMfaRequired,

@@ -10,6 +10,7 @@ import type { NextFunction, Request, Response } from "express";
 import type express from "express";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import * as cheerio from "cheerio";
 import { MfaMethodPriority } from "../../../types.js";
 import type { MfaMethod } from "../../../types.js";
@@ -17,14 +18,9 @@ import nock from "nock";
 import request from "supertest";
 
 const getTokenAndCookies = async (app: express.Application) => {
-  let cookies, token;
-  await request(app)
-    .get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
-    .then((res) => {
-      const $ = cheerio.load(res.text);
-      token = $("[name=_csrf]").val();
-      cookies = res.headers["set-cookie"];
-    });
+  const { token, cookies } = extractCsrfTokenAndCookies(
+    await request(app).get(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
+  );
   return { token, cookies };
 };
 
@@ -247,8 +243,34 @@ describe("Integration::how do you want security codes", () => {
       }
     );
 
+    it("should redirect to cannot-use-security-code page when MFA returns indefinite international SMS block error", async () => {
+      app = await createDefaultSmsBackupAppExpressApp(
+        false,
+        BACKUP_AUTH_APP_ID
+      );
+      const { token, cookies } = await getTokenAndCookies(app);
+
+      nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
+        code: 1092,
+        message:
+          "User is indefinitely blocked from sending SMS to international numbers",
+      });
+
+      await request(app)
+        .post(PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          "mfa-method-id": DEFAULT_PHONE_NUMBER_ID,
+        })
+        .expect("Location", PATH_NAMES.CANNOT_USE_SECURITY_CODE)
+        .expect(302);
+    });
+
     async function createDefaultSmsBackupAppExpressApp(
-      isPasswordResetJourney: boolean = false
+      isPasswordResetJourney: boolean = false,
+      activeMfaMethodId: string = DEFAULT_PHONE_NUMBER_ID
     ): Promise<express.Application> {
       const { createApp } = await esmock(
         "../../../app.js",
@@ -266,7 +288,7 @@ describe("Integration::how do you want security codes", () => {
                   authApp: true,
                 },
               ]),
-              DEFAULT_PHONE_NUMBER_ID,
+              activeMfaMethodId,
               isPasswordResetJourney
             ),
           },

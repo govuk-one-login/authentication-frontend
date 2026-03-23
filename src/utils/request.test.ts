@@ -11,12 +11,15 @@ import {
   supportTypeIsGovService,
   urlContains,
   isPasswordChangeRequired,
+  needsForcedMFAReset as needsForcedMFAResetFunc,
+  isSecondFactorCheckRequired,
 } from "./request.js";
 import {
   CONTACT_US_THEMES,
   SERVICE_TYPE,
   SUPPORT_TYPE,
 } from "../app.constants.js";
+
 describe("request utilities", () => {
   const blankRequest = {} as Request;
 
@@ -271,5 +274,71 @@ describe("request utilities", () => {
         )
       ).to.equal(true);
     });
+  });
+
+  describe("isSecondFactorCheckRequired", () => {
+    it(`returns true when UserSession isMfaRequired is true`, async () => {
+      expect(
+        isSecondFactorCheckRequired({
+          session: { user: { isMfaRequired: true } },
+        } as Request)
+      ).to.equal(true);
+    });
+
+    it(`returns true when UserSession isUpliftRequired is true`, async () => {
+      expect(
+        isSecondFactorCheckRequired({
+          session: { user: { isUpliftRequired: true } },
+        } as Request)
+      ).to.equal(true);
+    });
+
+    it(`returns true when UserSession isPasswordResetJourney is true`, async () => {
+      expect(
+        isSecondFactorCheckRequired({
+          session: { user: { isPasswordResetJourney: true } },
+        } as Request)
+      ).to.equal(true);
+    });
+  });
+
+  describe("needsForcedMFAReset", () => {
+    [
+      {
+        secondFactorRequired: false,
+        needsForcedMFAReset: false,
+        expectedValue: false,
+      },
+      {
+        secondFactorRequired: true,
+        needsForcedMFAReset: false,
+        expectedValue: false,
+      },
+      {
+        secondFactorRequired: false,
+        needsForcedMFAReset: true,
+        expectedValue: false,
+      },
+      {
+        secondFactorRequired: true,
+        needsForcedMFAReset: true,
+        expectedValue: true,
+      },
+    ].forEach(
+      ({ secondFactorRequired, needsForcedMFAReset, expectedValue }) => {
+        it(`returns ${expectedValue} when UserSession needsForcedMFAReset is ${needsForcedMFAReset} and second factor is ${secondFactorRequired ? "" : "not "}required`, async () => {
+          expect(
+            needsForcedMFAResetFunc({
+              session: {
+                user: {
+                  needsForcedMFAReset,
+                  isMfaRequired: secondFactorRequired,
+                },
+              },
+            } as Request)
+          ).to.equal(expectedValue);
+        });
+      }
+    );
   });
 });

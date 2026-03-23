@@ -93,6 +93,32 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
       expect(actualConfig.headers).to.deep.eq(expectedHeaders);
     });
 
+    it("should not set an invalid language", () => {
+      const userLanguage = "not a real language code";
+      req.ip = ip;
+      req.headers["x-forwarded-for"] = ip;
+      const actualConfig = mockGetInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId: sessionId,
+          clientSessionId: clientSessionId,
+          persistentSessionId: diPersistentSessionId,
+          userLanguage: userLanguage,
+        },
+        req,
+        path
+      );
+
+      const expectedHeaders = {
+        "X-API-Key": apiKey,
+        "Session-Id": sessionId,
+        "Client-Session-Id": clientSessionId,
+        "x-forwarded-for": ip,
+        "di-persistent-session-id": diPersistentSessionId,
+      };
+
+      expect(actualConfig.headers).to.deep.eq(expectedHeaders);
+    });
+
     it("should set the security headers on all requests when added to the request in CloudFront", () => {
       const ipAddressFromCloudfrontHeader = "111.111.111.111";
       req.headers = {

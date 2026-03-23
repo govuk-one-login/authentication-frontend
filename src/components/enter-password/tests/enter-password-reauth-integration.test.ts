@@ -7,6 +7,7 @@ import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
 import { ERROR_CODES } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import type { UserLoginResponse } from "../types.js";
@@ -57,13 +58,9 @@ describe("Integration::enter password", () => {
     baseApi = process.env.FRONTEND_API_BASE_URL;
     process.env.SUPPORT_REAUTHENTICATION = "1";
 
-    await request(app)
-      .get(ENDPOINT)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(ENDPOINT)
+    ));
   });
 
   after(() => {

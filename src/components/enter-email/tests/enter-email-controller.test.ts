@@ -153,7 +153,10 @@ describe("enter email controller", () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
           success: true,
-          data: { doesUserExist: true },
+          data: {
+            doesUserExist: true,
+            needsForcedMFAResetAfterMFACheck: false,
+          },
         }),
       } as unknown as EnterEmailServiceInterface;
 
@@ -166,11 +169,31 @@ describe("enter email controller", () => {
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_PASSWORD);
     });
 
+    it("should set needsForcedMFAReset when API returns needsForcedMFAResetAfterMFACheck as true", async () => {
+      const fakeService: EnterEmailServiceInterface = {
+        userExists: sinon.fake.returns({
+          success: true,
+          data: { doesUserExist: true, needsForcedMFAResetAfterMFACheck: true },
+        }),
+      } as unknown as EnterEmailServiceInterface;
+
+      await enterEmailPost(fakeService, checkReauthSuccessfulFakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(req.session.user.needsForcedMFAReset).to.be.true;
+      expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_PASSWORD);
+    });
+
     it("should redirect to /account-not-found when no account exists", async () => {
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
           success: true,
-          data: { doesUserExist: false },
+          data: {
+            doesUserExist: false,
+            needsForcedMFAResetAfterMFACheck: false,
+          },
         }),
       } as unknown as EnterEmailServiceInterface;
 

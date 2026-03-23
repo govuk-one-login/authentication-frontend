@@ -25,7 +25,9 @@ describe("error page controller", () => {
     it("should render the error page", () => {
       errorPageGet(req as Request, res as Response);
 
-      expect(res.render).to.have.been.calledWith("common/errors/500.njk");
+      expect(res.render).to.have.been.calledWith(
+        "common/errors/generic-error.njk"
+      );
     });
   });
 });

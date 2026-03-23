@@ -143,6 +143,15 @@ export function enterPasswordPost(
             }
           );
 
+        case ERROR_CODES.INDEFINITELY_BLOCKED_INTERNATIONAL_SMS:
+          return res.redirect(
+            await getNextPathAndUpdateJourney(
+              req,
+              res,
+              USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED
+            )
+          );
+
         default: {
           let validationKey;
           let template;
@@ -210,7 +219,7 @@ export function enterPasswordPost(
       );
 
       if (!result.success) {
-        return handleSendMfaCodeError(result, res);
+        return handleSendMfaCodeError(result, req, res);
       } else {
         req.session.user.sentOtpMfaMethodIds = [
           req.session.user.activeMfaMethodId,

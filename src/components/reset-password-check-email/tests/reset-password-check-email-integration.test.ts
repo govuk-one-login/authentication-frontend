@@ -11,6 +11,7 @@ import request from "supertest";
 import { ERROR_CODES } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 
@@ -62,13 +63,9 @@ describe("Integration::reset password check email ", () => {
       .once()
       .reply(200, { mfaMethods: [] });
 
-    await request(app)
-      .get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+    ));
   });
 
   beforeEach(() => {
@@ -265,6 +262,30 @@ describe("Integration::reset password check email ", () => {
           expect($(".govuk-body").text()).to.contains(expectedString);
         })
         .expect(200);
+    });
+
+    it("should render 500 error page when MFA returns indefinite international SMS block error", async () => {
+      nock(baseApi).post(API_ENDPOINTS.VERIFY_CODE).once().reply(204, {});
+
+      nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
+        code: 1092,
+        message:
+          "User is indefinitely blocked from sending SMS to international numbers",
+      });
+
+      const result = await request(app)
+        .post(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          code: "123456",
+        })
+        .expect(200);
+
+      const $ = cheerio.load(result.text);
+      expect($("h1").text()).to.contains("Sorry, there is a problem");
+      expect($("body").text()).to.contains("Try again later");
     });
   });
 });

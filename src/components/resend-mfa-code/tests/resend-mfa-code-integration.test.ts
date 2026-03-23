@@ -12,6 +12,7 @@ import { ERROR_CODES } from "../../common/constants.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import esmock from "esmock";
 const { testPhoneNumber, testRedactedPhoneNumber } = commonVariables;
@@ -55,13 +56,9 @@ describe("Integration:: resend mfa code", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(app)
-      .get(PATH_NAMES.RESEND_MFA_CODE)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(PATH_NAMES.RESEND_MFA_CODE)
+    ));
   });
 
   beforeEach(() => {
@@ -251,6 +248,26 @@ describe("Integration:: resend mfa code", () => {
         "Location",
         "/security-code-invalid-request?actionType=mfaBlocked"
       )
+      .expect(302);
+  });
+
+  it("should redirect to cannot-use-security-code page when MFA returns indefinite international SMS block error", async () => {
+    process.env.SUPPORT_REAUTHENTICATION = "0";
+
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
+      code: 1092,
+      message:
+        "User is indefinitely blocked from sending SMS to international numbers",
+    });
+
+    await request(app)
+      .post(PATH_NAMES.RESEND_MFA_CODE)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+      })
+      .expect("Location", PATH_NAMES.CANNOT_USE_SECURITY_CODE)
       .expect(302);
   });
 });

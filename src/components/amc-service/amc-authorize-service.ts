@@ -1,0 +1,41 @@
+import type { AmcAuthorizeInterface, AmcAuthorizeResponse } from "./types.js";
+import type { Http } from "../../utils/http.js";
+import {
+  createApiResponse,
+  getInternalRequestConfigWithSecurityHeaders,
+  http,
+} from "../../utils/http.js";
+import type { ApiResponseResult } from "../../types.js";
+import { API_ENDPOINTS } from "../../app.constants.js";
+import type { Request } from "express";
+
+export function amcAuthorizeService(axios: Http = http): AmcAuthorizeInterface {
+  const getRedirectUrl = async function (
+    sessionId: string,
+    clientSessionId: string,
+    persistentSessionId: string,
+    req: Request,
+    journeyType: string
+  ): Promise<ApiResponseResult<AmcAuthorizeResponse>> {
+    const config = getInternalRequestConfigWithSecurityHeaders(
+      {
+        sessionId: sessionId,
+        clientSessionId: clientSessionId,
+        persistentSessionId: persistentSessionId,
+      },
+      req,
+      API_ENDPOINTS.AMC_AUTHORIZE
+    );
+
+    const response = await axios.client.post<AmcAuthorizeResponse>(
+      API_ENDPOINTS.AMC_AUTHORIZE,
+      { journeyType },
+      config
+    );
+    return createApiResponse<AmcAuthorizeResponse>(response);
+  };
+
+  return {
+    getRedirectUrl,
+  };
+}

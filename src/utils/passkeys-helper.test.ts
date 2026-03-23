@@ -28,6 +28,27 @@ describe("passkeys helper", () => {
     });
   });
 
+  it(`should return false when user has skipped passkey registration already in the journey`, () => {
+    // Arrange
+    const expected = false;
+
+    const req = {
+      session: {
+        user: { hasActivePasskey: true, hasSkippedPasskeyRegistration: true },
+      },
+    } as any as Request;
+
+    const res = {
+      locals: { supportPasskeyUsage: true },
+    } as any as Response;
+
+    // Act
+    const actual = shouldPromptToRegisterPasskey(req, res);
+
+    // Assert
+    expect(actual).to.eq(expected);
+  });
+
   describe("shouldPromptToSignInWithPasskey", () => {
     it(`should return true when hasActivePasskey=true and supportPasskeyUsage=true`, () => {
       // Arrange

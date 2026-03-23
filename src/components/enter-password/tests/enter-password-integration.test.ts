@@ -11,6 +11,7 @@ import {
 } from "../../../../test/helpers/account-interventions-helpers.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import type { UserLoginResponse } from "../types.js";
@@ -53,13 +54,9 @@ describe("Integration::enter password", () => {
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
-    await request(app)
-      .get(ENDPOINT)
-      .then((res) => {
-        const $ = cheerio.load(res.text);
-        token = $("[name=_csrf]").val();
-        cookies = res.headers["set-cookie"];
-      });
+    ({ token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(ENDPOINT)
+    ));
   });
 
   after(() => {
@@ -252,6 +249,59 @@ describe("Integration::enter password", () => {
         password: "password",
       })
       .expect("Location", PATH_NAMES.ACCOUNT_LOCKED)
+      .expect(302);
+  });
+
+  it("should redirect to cannot-use-security-code page when mfa returns indefinite international SMS block error", async () => {
+    nock(baseApi)
+      .post(API_ENDPOINTS.LOG_IN_USER)
+      .once()
+      .reply(200, {
+        success: true,
+        mfaRequired: true,
+        mfaMethodVerified: true,
+        mfaMethodType: "SMS",
+        mfaMethods: buildMfaMethods({ redactedPhoneNumber: "1234" }),
+      });
+
+    setupAccountInterventionsResponse(baseApi, noInterventions);
+
+    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
+      code: 1092,
+      message:
+        "User is indefinitely blocked from sending SMS to international numbers",
+    });
+
+    await request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        password: "password",
+      })
+      .expect(302)
+      .expect("Location", PATH_NAMES.CANNOT_USE_SECURITY_CODE);
+  });
+
+  it("should redirect to cannot-use-security-code page when login returns indefinite international SMS block error", async () => {
+    nock(baseApi).post(API_ENDPOINTS.LOG_IN_USER).once().reply(400, {
+      code: 1092,
+      message:
+        "User is indefinitely blocked from sending SMS to international numbers",
+    });
+
+    setupAccountInterventionsResponse(baseApi, noInterventions);
+
+    await request(app)
+      .post(ENDPOINT)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        password: "password",
+      })
+      .expect("Location", PATH_NAMES.CANNOT_USE_SECURITY_CODE)
       .expect(302);
   });
 });

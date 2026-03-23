@@ -126,3 +126,5 @@ src/authentication_frontend.egg-info/
 
 !journey-map/public
 journey-map/public/application*
+
+.kiro/

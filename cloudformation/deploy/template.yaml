@@ -383,6 +383,29 @@ Conditions:
                 ]
               - "Yes"
 
+  SupportSingleFactorAccountDeletion:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  SupportSingleFactorAccountDeletion,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  SupportSingleFactorAccountDeletion,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+
   EnableDwpKbvContactFormChanges:
     Fn::Or:
       - Fn::And:
@@ -415,11 +438,6 @@ Mappings:
     authdev1:
       cloudfrontDistributionStackName: "authdev1-cloudfront"
       frontendApiBaseUrl: https://5fgwu5kpd2-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev1/
-      orchToAuthSigningPublicKey: |
-        -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENB3csRUIdoaTHNn079Jl7JpiXzxF
-        0p2ZIddCErxtIhGMTTqtbQZJCPesSKUVE/DQbpIko3mLoisuFgmQfFouCw==
-        -----END PUBLIC KEY-----
       orchStubToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEM0ZehmrdDd89uYEFMTakbS7JgwCG
@@ -436,14 +454,10 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      SupportSingleFactorAccountDeletion: "Yes"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       frontendApiBaseUrl: https://nw0dah7bxk-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev2/
-      orchToAuthSigningPublicKey: |
-        -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/Yz722IDLN1mPqkPTihkwAkp/rUm
-        BhnWynwAkE/YZlskX+N7VmwIjupla7O6hczlIOqkmPdQ1ayDqI8yY2QOiw==
-        -----END PUBLIC KEY-----
       orchStubToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwe8ey1GnTbH6E69EJFUkt4WQc1Kl
@@ -460,14 +474,10 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      SupportSingleFactorAccountDeletion: "Yes"
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: https://y3s69ubaz5-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev3/
-      orchToAuthSigningPublicKey: |
-        -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEyu7XCXkDyxhHrmoOfLrl6tcd9e9V
-        L1pzzWqVo1P546NLL2c1H2Qd7UNaa7oQX1/eNFDKaAZuJY3YUAPwNN4Ypg==
-        -----END PUBLIC KEY-----
       migratedDomain: signin.authdev3.dev.account.gov.uk
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
@@ -479,6 +489,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      SupportSingleFactorAccountDeletion: "Yes"
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -488,11 +499,6 @@ Mappings:
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       cloudwatchLogRetentionInDays: 1
-      orchToAuthSigningPublicKey: |
-        -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHzG8IFx1jE1+Ul44jQk96efPknCX
-        VxWS4PqLrKfR/31UQovFQLfyxA46uiMOvr7+0hRwFX1fQhagsIK+dfB5PA==
-        -----END PUBLIC KEY-----
       orchStubToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1P2vcnCdqx+MDwMTrJy47tV5ryTf
@@ -513,6 +519,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      SupportSingleFactorAccountDeletion: "Yes"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -522,11 +529,6 @@ Mappings:
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       cloudwatchLogRetentionInDays: 7
-      orchToAuthSigningPublicKey: |
-        -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENRdvNXHwk1TvrgFUsWXAE5oDTcPr
-        CBp6HxbvYDLsqwNHiDFEzCwvbXKY2QQR/Rtel0o156CtU9k1lCZJGAsSIA==
-        -----END PUBLIC KEY-----
       orchStubToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmzWAucozlF6eykmgikXj2kI03O7V
@@ -545,8 +547,9 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
-      SupportNewInternationalSms: "Yes"
+      SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      SupportSingleFactorAccountDeletion: "No"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -556,11 +559,6 @@ Mappings:
       frontendTaskDefinitionCpu: 1024
       frontendTaskDefinitionMemory: 2048
       cloudwatchLogRetentionInDays: 7
-      orchToAuthSigningPublicKey: |
-        -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5PP1PZmhiuHR57ZEfZXARt9/uiG+
-        KKF+S7us4zEEEmEXZFR1H+kWP5RrLHQy9esxsul9X7V4pygDTY1I6QbMGg==
-        -----END PUBLIC KEY-----
       orchStubToAuthSigningPublicKey: |
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEw3VqLzY6ZFWmqruOpvMpPH8PWuQQ
@@ -588,6 +586,7 @@ Mappings:
       SupportPasskeyRegistration: "No"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      SupportSingleFactorAccountDeletion: "No"
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -597,11 +596,6 @@ Mappings:
       frontendTaskDefinitionCpu: 512
       frontendTaskDefinitionMemory: 1024
       cloudwatchLogRetentionInDays: 30
-      orchToAuthSigningPublicKey: |
-        -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzzwKLypUL89WVaeTbfBZu0Fws8T7
-        ppx89XLVfgXIoCs2P//N5qdghvzgNIgVehQ7CkzyorO/lnRlWPfjCG4Oxw==
-        -----END PUBLIC KEY-----
       accountRecoveryCodeEnteredWrongBlockedMinutes: 120
       codeEnteredWrongBlockedMinutes: 120
       codeRequestBlockedMinutes: 120
@@ -622,8 +616,8 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
-      SupportNewInternationalSms: "Yes"
-      EnableDwpKbvContactFormChanges: "No"
+      SupportNewInternationalSms: "No"
+      EnableDwpKbvContactFormChanges: "Yes"
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -633,11 +627,6 @@ Mappings:
       frontendTaskDefinitionCpu: 1024
       frontendTaskDefinitionMemory: 2048
       cloudwatchLogRetentionInDays: 30
-      orchToAuthSigningPublicKey: |
-        -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5iJXSuxgbfM6ADQVtNNDi7ED5ly5
-        +3VZPbjHv+v0AjQ5Ps+avkXWKwOeScG9sS0cDf0utEXi3fN3cEraa9WuKQ==
-        -----END PUBLIC KEY-----
       accountRecoveryCodeEnteredWrongBlockedMinutes: 120
       codeEnteredWrongBlockedMinutes: 120
       codeRequestBlockedMinutes: 120
@@ -660,8 +649,9 @@ Mappings:
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
-      SupportNewInternationalSms: "Yes"
-      EnableDwpKbvContactFormChanges: "No"
+      SupportNewInternationalSms: "No"
+      EnableDwpKbvContactFormChanges: "Yes"
+      SupportSingleFactorAccountDeletion: "No"
 
 Globals:
   Function:
@@ -1025,19 +1015,6 @@ Resources:
                 ]
             - Name: SUPPORT_AUTHORIZE_CONTROLLER
               Value: 1
-            - Name: ORCH_TO_AUTH_SIGNING_KEY
-              Value: !If
-                - UseSubEnvironment
-                - !FindInMap [
-                    EnvironmentConfiguration,
-                    !Ref SubEnvironment,
-                    orchToAuthSigningPublicKey,
-                  ]
-                - !FindInMap [
-                    EnvironmentConfiguration,
-                    !Ref Environment,
-                    orchToAuthSigningPublicKey,
-                  ]
             - Name: ORCH_TO_AUTH_CLIENT_ID
               Value: orchestrationAuth
             - Name: ORCH_TO_AUTH_AUDIENCE
@@ -1197,6 +1174,8 @@ Resources:
               Value: !If [EnableDwpKbvContactFormChanges, "1", "0"]
             - Name: SUPPORT_NEW_INTERNATIONAL_SMS
               Value: !If [SupportNewInternationalSms, "1", "0"]
+            - Name: SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION
+              Value: !If [SupportSingleFactorAccountDeletion, "1", "0"]
           Secrets:
             - Name: API_KEY
               ValueFrom: !If

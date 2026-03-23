@@ -120,18 +120,7 @@ const startTime = Date.now();
 
 const cucumber = spawnSync(
   process.platform === "win32" ? "npx.cmd" : "npx",
-  [
-    "cucumber-js",
-    "--require-module",
-    "ts-node/register",
-    "--require",
-    "src/support/**/*.ts",
-    "--require",
-    "src/steps/**/*.ts",
-    "--format",
-    "json:reports/json/cucumber-report.json",
-    "features/**/*.feature",
-  ],
+  ["cucumber-js", "--config", "cucumber.js", "--profile", "default"],
   { stdio: "inherit" }
 );
 

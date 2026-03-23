@@ -25,6 +25,8 @@ import {
   getVitalSignsIntervalSeconds,
   supportAccountInterventions,
   supportAuthorizeController,
+  supportPasskeyRegistration,
+  supportSingleFactorAccountDeletion,
 } from "./config.js";
 import { logErrorMiddleware } from "./middleware/log-error-middleware.js";
 import { getCookieLanguageMiddleware } from "./middleware/cookie-lang-middleware.js";
@@ -35,7 +37,7 @@ import { registerAccountCreatedRouter } from "./components/account-created/accou
 import { createPasswordRouter } from "./components/create-password/create-password-routes.js";
 import { enterPhoneNumberRouter } from "./components/enter-phone-number/enter-phone-number-routes.js";
 import { pageNotFoundHandler } from "./handlers/page-not-found-handler.js";
-import { serverErrorHandler } from "./handlers/internal-server-error-handler.js";
+import { errorHandler } from "./handlers/error-handler.js";
 import { csrfMiddleware } from "./middleware/csrf-middleware.js";
 import { checkYourPhoneRouter } from "./components/check-your-phone/check-your-phone-routes.js";
 import { landingRouter } from "./components/landing/landing-route.js";
@@ -103,7 +105,13 @@ import { dirname } from "node:path";
 import { csrfSynchronisedProtection } from "./utils/csrf.js";
 import { govukComponentRouter } from "./components/common/govuk-component/demo/govuk-component-routes.js";
 import { cannotUseEmailAddressRouter } from "./components/cannot-use-email-address/cannot-use-email-address-routes.js";
+import { cannotUseSecurityCodeRouter } from "./components/cannot-use-security-code/cannot-use-security-code-routes.js";
+import { changeSecurityCodesSignInRouter } from "./components/change-security-codes-sign-in/change-security-codes-sign-in-routes.js";
 import { wellKnownRouter } from "./components/well-known/well-known-routes.js";
+import { sfadAuthorizeRouter } from "./components/sfad-authorize/sfad-authorize-routes.js";
+import { amcCallbackRouter } from "./components/amc-callback/amc-callback-routes.js";
+import { createPasskeyRouter } from "./components/create-passkey/create-passkey-routes.js";
+import { createPasskeyCallbackRouter } from "./components/create-passkey-callback/create-passkey-callback-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -158,7 +166,20 @@ function registerRoutes(app: express.Application) {
   app.use(mfaResetWithIpvRouter);
   app.use(ipvCallbackRouter);
   app.use(cannotUseEmailAddressRouter);
+  app.use(cannotUseSecurityCodeRouter);
+  app.use(changeSecurityCodesSignInRouter);
   app.use(wellKnownRouter);
+  if (supportSingleFactorAccountDeletion()) {
+    app.use(sfadAuthorizeRouter);
+    // Using amc callback route in this feature flag for now for simplicity
+    // in initial implementation. Must create a new broader AMC feature flag
+    // when more services are using AMC
+    app.use(amcCallbackRouter);
+  }
+  if (supportPasskeyRegistration()) {
+    app.use(createPasskeyRouter);
+    app.use(createPasskeyCallbackRouter);
+  }
 
   // Development tools
   if (getAppEnv() !== APP_ENV_NAME.PROD && getAppEnv() !== APP_ENV_NAME.INT) {
@@ -301,7 +322,7 @@ async function createApp(): Promise<express.Application> {
   // Error Handlers
   app.use(csrfMissingHandler);
   app.use(logErrorMiddleware);
-  app.use(serverErrorHandler);
+  app.use(errorHandler);
 
   return app;
 }

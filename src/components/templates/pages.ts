@@ -374,20 +374,42 @@ export const pages: Record<string, Page | PageVariant[]> = {
       backLink: "#",
     },
   },
-  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: {
-    template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
-    options: {
-      variant: "incomplete",
-      formPostPath: "#",
+  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: [
+    {
+      name: "default",
+      template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
+      options: {
+        identityFailed: false,
+        onlyDeleteAccount: false,
+      },
     },
-  },
-  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: {
-    template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
-    options: {
-      variant: "identityFailed",
-      formPostPath: "#",
+    {
+      name: "only-delete-account",
+      template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
+      options: {
+        identityFailed: false,
+        onlyDeleteAccount: true,
+      },
     },
-  },
+  ],
+  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: [
+    {
+      name: "default",
+      template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
+      options: {
+        identityFailed: true,
+        onlyDeleteAccount: false,
+      },
+    },
+    {
+      name: "only-delete-account",
+      template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
+      options: {
+        identityFailed: true,
+        onlyDeleteAccount: true,
+      },
+    },
+  ],
   [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]: [
     {
       name: "sms",
@@ -515,7 +537,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.ERROR_PAGE]: [
     {
       name: "500",
-      template: "common/errors/500.njk",
+      template: "common/errors/generic-error.njk",
     },
     {
       name: "404",
@@ -536,6 +558,9 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.SIGNED_OUT]: {
     template: "signed-out/index.njk",
     options: { signinLink: "#" },
+  },
+  [PATH_NAMES.CREATE_PASSKEY]: {
+    template: "create-passkey/index.njk",
   },
 
   // Footer pages
@@ -576,5 +601,11 @@ export const pages: Record<string, Page | PageVariant[]> = {
   ],
   [PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS]: {
     template: "cannot-use-email-address/index.njk",
+  },
+  [PATH_NAMES.CANNOT_USE_SECURITY_CODE]: {
+    template: "cannot-use-security-code/index.njk",
+  },
+  [PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN]: {
+    template: "change-security-codes-sign-in/index.njk",
   },
 };

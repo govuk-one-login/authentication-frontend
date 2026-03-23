@@ -267,26 +267,3 @@
     border-bottom: 10px solid govuk-colour("yellow");
   }
 }
-
-//region Temporarily overwrite the tag component styling to match pre-v5 appearance.
-// This ensures a cohesive phase banner across One Login applications during the transition.
-.govuk-tag {
-  @include govuk-font($size: 16, $weight: bold, $line-height: 1);
-  display: inline-block;
-  padding-top: 5px;
-  padding-right: 8px;
-  padding-bottom: 4px;
-  padding-left: 8px;
-
-  // Accessibility: Ensure visibility for users customizing colours.
-  outline: 2px solid transparent;
-  outline-offset: -2px;
-
-  // Key properties to maintain the old appearance:
-  color: govuk-colour("white") !important;
-  background-color: govuk-colour("blue") !important;
-  letter-spacing: 1px !important;
-  text-decoration: none !important;
-  text-transform: uppercase !important;
-}
-//endregion

@@ -72,7 +72,7 @@ export function howDoYouWantSecurityCodesPost(
           );
 
           if (!result.success) {
-            return handleSendMfaCodeError(result, res);
+            return handleSendMfaCodeError(result, req, res);
           }
 
           req.session.user.sentOtpMfaMethodIds.push(mfaMethodId);

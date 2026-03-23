@@ -12,6 +12,7 @@ import {
   supportTypeIsGovService,
   urlContains,
   isPasswordChangeRequired,
+  needsForcedMFAReset,
 } from "./request.js";
 const CONTENT_IDS: {
   [path: string]: ContentIdFunction;
@@ -23,12 +24,20 @@ const CONTENT_IDS: {
     clientIsOneLogin(req) || clientUsesOneLoginOptionally(req)
       ? "a70b71e7-b444-46e5-895c-cd2e27bbe6ba"
       : "10e1b70b-e208-4db8-8863-3679a675b51d",
-  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: () =>
-    "d9290539-0b0c-468f-8f87-22d0400b6431",
-  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: () =>
-    "d1b7cd24-f508-49ce-bf0d-ac1fe980c09c",
+  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: (req: Request) =>
+    needsForcedMFAReset(req)
+      ? "5a10fdaa-ddbd-4427-8697-fd8a32414a0d"
+      : "d9290539-0b0c-468f-8f87-22d0400b6431",
+  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: (req: Request) =>
+    needsForcedMFAReset(req)
+      ? "e003e6dd-7d1f-4d64-b019-d3f1423e99cf"
+      : "d1b7cd24-f508-49ce-bf0d-ac1fe980c09c",
+  [PATH_NAMES.CANNOT_USE_SECURITY_CODE]: () =>
+    "f31eb32b-c0b3-4d94-a09d-826c8d4e28a3",
   [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]: () =>
     "1abedb1b-7d09-4e81-9f88-a8b4297635b3",
+  [PATH_NAMES.CHANGE_SECURITY_CODES_SIGN_IN]: () =>
+    "1707292e-b02b-4137-a861-bdeb5766946a",
   [PATH_NAMES.CHECK_YOUR_EMAIL]: () => "054e1ea8-97a8-461a-a964-07345c80098e",
   [PATH_NAMES.CHECK_YOUR_PHONE]: () => "1fef9388-34cd-4ea2-b899-a66b7327d2f7",
   [PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER]: (req: Request) =>

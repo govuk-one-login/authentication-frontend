@@ -10,8 +10,8 @@
     "sendMessage": "Anfon neges",
     "phaseBanner": {
       "tag": {
-        "beta": "beta",
-        "test": "test"
+        "beta": "Beta",
+        "test": "Test"
       },
       "message": {
         "start": "Mae hwn yn wasanaeth newydd – bydd eich ",
@@ -690,6 +690,15 @@
         "paragraph": "Efallai y bydd eich e-bost yn cymryd ychydig funudau i gyrraedd. Os na chewch e-bost, edrychwch ar eich ffolder spam."
       }
     },
+    "createPasskey": {
+      "title": "Mewngofnodi’n gyflymach gyda’ch wyneb, eich olion bysedd neu’ch cod mynediad - GOV.UK One Login",
+      "header": " Mewngofnodi’n gyflymach gyda’ch wyneb, eich olion bysedd neu’ch cod mynediad",
+      "paragraph1": "Sefydlwch allwedd mynediad ar gyfer ffordd ddiogel a hawdd o fewngofnodi, heb fod angen eich cyfrinair GOV.UK One Login.",
+      "paragraph2": "Gyda allwedd mynediad, gallwch sganio’ch wyneb neu’ch olion bysedd, neu nodi PIN neu batrwm eich dyfais.",
+      "paragraph3": "Bydd hyn sut bynnag y byddwch yn datgloi’ch ffôn, cyfrifiadur neu dabled.",
+      "insetText": "Ni ddylech sefydlu allwedd mynediad ar ddyfais rydych yn ei rhannu gyda phobl eraill.",
+      "skipButtonText": "Osgoi am y tro"
+    },
     "cannotChangeSecurityCodes": {
       "title": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd",
       "header": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd",
@@ -704,17 +713,27 @@
       }
     },
     "cannotChangeHowGetSecurityCodeMfaReset": {
-      "title": "Ni allwch newid sut rydych yn cael codau diogelwch",
-      "header": "Ni allwch newid sut rydych yn cael codau diogelwch",
+      "title": "Ni allwch chi newid sut rydych yn cael codau diogelwch",
+      "header": "Ni allwch chi newid sut rydych yn cael codau diogelwch",
       "identityFailedPreamble": "Mae hyn oherwydd bod problem cadarnhau eich hunaniaeth.",
-      "paragraph1": "Gallwch ond mewngofnodi i’ch GOV.UK One Login drwy ddefnyddio’r dull rydych eisoes wedi’i sefydlu i gael codau diogelwch.",
-      "paragraph2": "Os ydych wedi colli mynediad i’r dull hwn yn barhaol, dylech ddileu eich GOV.UK One Login er mwyn i chi allu creu un newydd.",
-      "radios": {
-        "header": "Beth hoffech chi ei wneud?",
-        "option1Text": "Cael help i ddileu eich GOV.UK One Login gan y tîm cymorth",
-        "option1Hint": "Ffoniwch neu defnyddiwch gwe-sgwrs i gysylltu â’r tîm GOV.UK One Login",
-        "option2Text": "Ceisiwch roi cod diogelwch i mewn eto gyda’r dull rydych eisoes wedi’i sefydlu",
-        "radioValidationError": "Dewiswch beth hoffech chi ei wneud"
+      "onlyDeleteAccount": {
+        "paragraph1": "Ni allwch fewngofnodi i’ch GOV.UK One Login gan ddefnyddio’r dull a sefydlwyd gennych o’r blaen i gael codau diogelwch.",
+        "paragraph2": "Bydd angen i chi ddileu eich GOV.UK One Login er mwyn i chi allu creu un newydd.",
+        "subHeader": "Beth allwch chi ei wneud",
+        "paragraph3": "Cael help i ddileu eich GOV.UK One Login gan y tîm cymorth.",
+        "paragraph4": "Gallwch ffonio neu ddefnyddio gwe-sgwrs i gysylltu â nhw."
+      },
+      "allOptions": {
+        "paragraph1": "Gallwch ond mewngofnodi i’ch GOV.UK One Login drwy ddefnyddio’r dull rydych eisoes wedi’i sefydlu i gael codau diogelwch.",
+        "paragraph2": "Os ydych wedi colli mynediad i’r dull hwn yn barhaol, dylech ddileu eich GOV.UK One Login er mwyn i chi allu creu un newydd.",
+        "radios": {
+          "header": "Beth hoffech chi ei wneud?",
+          "option1Text": "Cael help i ddileu eich GOV.UK One Login gan y tîm cymorth",
+          "option1Hint": "Ffoniwch neu defnyddiwch gwe-sgwrs i gysylltu â’r tîm GOV.UK One Login",
+          "option2Text": "Ceisiwch roi cod diogelwch i mewn eto gyda’r dull rydych eisoes wedi’i sefydlu",
+          "option3Text": "Initiate SFAD (this is placeholder content to initiate the journey, not in upper envs)",
+          "radioValidationError": "Dewiswch beth hoffech chi ei wneud"
+        }
       }
     },
     "changeSecurityCodesConfirmation": {
@@ -745,6 +764,24 @@
         "changeEmailLinkHref": "/cannot-use-email-address-continue",
         "changeEmailLinkText": "geisio defnyddio cyfeiriad e-bost arall",
         "text2": "i greu GOV.UK One Login."
+      }
+    },
+    "cannotUseSecurityCode": {
+      "title": "Mae’n ddrwg gennym, mae problem",
+      "header": "Mae’n ddrwg gennym, mae problem",
+      "paragraph1": "Nid oeddem yn gallu eich mewngofnodi gan ddefnyddio’ch dull cyfredol o gael codau diogelwch.",
+      "subHeader": "Beth allwch chi ei wneud",
+      "link": "Gwiriwch a allwch chi newid sut rydych yn cael codau diogelwch"
+    },
+    "changeSecurityCodesSignIn": {
+      "title": "Mae angen i chi newid sut rydych yn cael codau diogelwch - GOV.UK One Login",
+      "header": "Mae angen i chi newid sut rydych yn cael codau diogelwch",
+      "paragraph1": "Bydd angen i chi ddefnyddio ap dilysydd neu rif ffôn symudol yn y DU.",
+      "paragraph2": "Rhaid i chi wneud hyn er mwyn osgoi cael eich cloi allan o’ch GOV.UK One Login.",
+      "details": {
+        "summary": "Pam mae angen i mi newid sut rwy’n cael codau?",
+        "paragraph1": "Er mwyn cadw eich GOV.UK One Login yn ddiogel, rydym yn newid sut rydym yn anfon codau diogelwch.",
+        "paragraph2": "Os nad oes gennych rif yn y DU, bydd angen i chi ddefnyddio ap dilysydd."
       }
     },
     "updatedTermsAndConds": {
@@ -1004,6 +1041,7 @@
           "bulletPoint11": "mae rhai meysydd ffurflen yn cyfyngu ar faint o nodau y gellir eu rhoi ynddynt, a all ei gwneud hi’n anodd rhoi gwybodaeth wrth ddefnyddio technolegau cynorthwyol",
           "bulletPoint12": "nid yw botymau sy’n dangos animeiddiadau ‘spinner’ yn cadw at eich gosodiadau cynnig llai",
           "bulletPoint13": "nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni",
+          "bulletPoint14": "os ydych yn defnyddio darllenydd sgrin ac yn profi eich hunaniaeth trwy ateb cwestiynau am fudd-daliadau rydych yn eu derbyn, bydd y tirnodau ar y tudalennau hyn yn wahanol i dirnodau yng ngweddill y daith",
           "paragraph2": {
             "text1": "Ewch i’r ",
             "link": {
@@ -1079,7 +1117,8 @@
           "listItem9": "Mae dolenni yn y pennawd a’r troedyn y gallech ddisgwyl eu hagor mewn tab newydd weithiau’n agor yn yr un tab. Mae hyn yn methu WCAG 2.2 Guideline 3.2 (Predictable).",
           "listItem10": "Mae rhai meysydd ffurflen yn cyfyngu ar faint o nodau y gellir eu rhoi, a all ei gwneud hi’n anodd rhoi gwybodaeth os ydych chi’n defnyddio technolegau cynorthwyol. Mae hyn yn methu maen prawf llwyddiant 3.3.1 (Adnabod Gwallau) WCAG 2.2.",
           "listItem11": "Nid yw botymau sy’n dangos animeiddiadau ‘spinner’ yn cadw at eich gosodiadau cynnig llai. Mae hyn yn methu maen prawf llwyddiant 2.2.2 (Saib, Stop, Cuddio) WCAG 2.2.",
-          "listItem12": "Nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni. Mae hyn yn methu maen prawf llwyddiant 3.2.6 (Cymorth Cyson) WCAG 2.2."
+          "listItem12": "Nid yw’r wybodaeth yng nghynnwys y faner cwci yr un peth ar bob tudalen y mae’n ymddangos arni. Mae hyn yn methu maen prawf llwyddiant 3.2.6 (Cymorth Cyson) WCAG 2.2.",
+          "listItem13": "Nid yw tirnodau yr un fath ar bob tudalen. Os ydych yn defnyddio darllenydd sgrin ac yn profi eich hunaniaeth trwy ateb cwestiynau am fudd-daliadau rydych yn eu derbyn, bydd y tirnodau ar y tudalennau hyn yn wahanol i dirnodau yng ngweddill y daith."
         },
         "webchat": {
           "header": "Diffyg cydymffurfiaeth â’r rheoliadau hygyrchedd ar gyfer gwesgwrs GOV.UK One Login",

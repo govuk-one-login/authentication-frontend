@@ -11,33 +11,40 @@ import {
   createJwt,
   createMockClaims,
   getPrivateKey,
-  getWrongPrivateKey,
   getPublicKey,
 } from "./test-data.js";
-import type { KeyLike, GenerateKeyPairResult } from "jose";
-import { generateKeyPair, exportSPKI } from "jose";
+import type { KeyLike, GenerateKeyPairResult, JWK } from "jose";
+import { generateKeyPair, exportSPKI, exportJWK, importSPKI } from "jose";
+import sinon from "sinon";
+import esmock from "esmock";
 
 describe("JWT service", () => {
-  let claims: Claims;
+  const claims = createMockClaims();
   let publicKey: string;
   let privateKey: KeyLike;
+  let publicJwk: JWK;
   let wrongPrivateKey: KeyLike;
+  let wrongPublicJwk: JWK;
   let validJwt: string;
   let jwtService: JwtService;
 
   beforeEach(async () => {
-    claims = createMockClaims();
     publicKey = getPublicKey();
     privateKey = await getPrivateKey();
-    wrongPrivateKey = await getWrongPrivateKey();
-    validJwt = await createJwt(createMockClaims(), privateKey);
-    jwtService = new JwtService(publicKey);
+    const publicKeyLike = await importSPKI(publicKey, "ES256");
+    publicJwk = await exportJWK(publicKeyLike);
+    const wrongKeyPair = await generateKeyPair("ES256");
+    wrongPrivateKey = wrongKeyPair.privateKey;
+    wrongPublicJwk = await exportJWK(wrongKeyPair.privateKey);
+    validJwt = await createJwt(claims, privateKey, publicJwk.kid);
+    jwtService = await createJwtServiceWithJwksKey(publicJwk);
+    process.env.API_BASE_URL = "http://localhost";
   });
 
   describe("getPayloadWithValidation", () => {
     it("should return payload from valid JWT", async () => {
       const result = await jwtService.getPayloadWithValidation(validJwt);
-      expect(result).to.deep.equal(createMockClaims());
+      expect(result).to.deep.equal(claims);
     });
 
     it("should consider a jwt with a reautheticate claim as valid", async () => {
@@ -51,30 +58,51 @@ describe("JWT service", () => {
 
     describe("stub key validation", () => {
       let stubKeyPair: GenerateKeyPairResult;
+      let stubPublicKey: string;
       let jwtService: JwtService;
+      let validStubJwt: string;
 
       beforeEach(async () => {
         stubKeyPair = await generateKeyPair("ES256");
-        const stubPublicKey = await exportSPKI(stubKeyPair.publicKey);
-        jwtService = new JwtService(publicKey, stubPublicKey);
+        stubPublicKey = await exportSPKI(stubKeyPair.publicKey);
+        const stubPublicKeyLike = await importSPKI(publicKey, "ES256");
+        const stubPublicJwk = await exportJWK(stubPublicKeyLike);
+        jwtService = createJwtServiceWithStubKey(stubPublicKey);
+        validStubJwt = await createJwt(
+          claims,
+          stubKeyPair.privateKey,
+          stubPublicJwk.kid
+        );
       });
 
-      it("should accept payloads signed by the stub", async () => {
-        const jwt = await createJwt(createMockClaims(), stubKeyPair.privateKey);
+      it("should fail signature validation with hardcoded key, then pass signature validation with stub key", async () => {
+        const jwt = await createJwt(claims, stubKeyPair.privateKey);
 
         const result = await jwtService.getPayloadWithValidation(jwt);
 
-        expect(result).to.deep.equal(createMockClaims());
+        expect(result).to.deep.equal(claims);
+      });
+
+      it("should fail signature validation with JWKS key, then pass signature validation with stub key", async () => {
+        const jwt = await createJwt(claims, stubKeyPair.privateKey);
+        jwtService = await createJwtServiceWithJwksKeyAndStubKey(
+          wrongPublicJwk,
+          stubPublicKey
+        );
+
+        const result = await jwtService.getPayloadWithValidation(jwt);
+
+        expect(result).to.deep.equal(claims);
       });
 
       it("should accept standard payloads when a stub key is present", async () => {
-        const result = await jwtService.getPayloadWithValidation(validJwt);
+        const result = await jwtService.getPayloadWithValidation(validStubJwt);
 
-        expect(result).to.deep.equal(createMockClaims());
+        expect(result).to.deep.equal(claims);
       });
 
       it("should reject invalid payloads when a stub key is present", async () => {
-        const jwt = await createJwt(createMockClaims(), wrongPrivateKey);
+        const jwt = await createJwt(claims, wrongPrivateKey);
 
         try {
           await jwtService.getPayloadWithValidation(jwt);
@@ -97,7 +125,6 @@ describe("JWT service", () => {
       });
 
       it("should throw error when header incorrect", async () => {
-        jwtService = new JwtService(publicKey);
         const [, payload, sig] = validJwt.split(".");
         const modified = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.${payload}.${sig}`;
         try {
@@ -109,7 +136,6 @@ describe("JWT service", () => {
       });
 
       it("should throw error when jwt payload changed", async () => {
-        jwtService = new JwtService(publicKey);
         const [header, , sig] = validJwt.split(".");
 
         const modified = `${header}.eyJjbGllbnQtbmFtZSI6ImRpLWF1dGgtc3R1Yi1yZWx5aW5nLXBhcnR5LXNhbmRwaXQifQ.${sig}`;
@@ -122,15 +148,21 @@ describe("JWT service", () => {
         }
       });
 
+      it("should not throw error and fetch public key from jwks if JWKS feature flag enabled", async () => {
+        const result = await jwtService.getPayloadWithValidation(validJwt);
+
+        expect(result).to.deep.equal(claims);
+      });
+
       it("should throw error when jwt isn't signed with the correct public key", async () => {
-        const JwtWrongSig = await createJwt(
-          createMockClaims(),
-          wrongPrivateKey
+        const jwtWrongSig = await createJwt(
+          claims,
+          wrongPrivateKey,
+          "a-different-kid"
         );
-        jwtService = new JwtService(publicKey);
 
         try {
-          await jwtService.getPayloadWithValidation(JwtWrongSig);
+          await jwtService.getPayloadWithValidation(jwtWrongSig);
           assert.fail("Expected error to be thrown");
         } catch (error) {
           expect(error).to.be.an.instanceOf(JwtValidationError);
@@ -139,11 +171,14 @@ describe("JWT service", () => {
       });
 
       it("should throw error when jwt contains invalid claim object", async () => {
-        const claims = createMockClaims();
-        claims["claim"] = "not a json";
+        const claimsWithInvalidObject = createMockClaims();
+        claimsWithInvalidObject["claim"] = "not a json";
 
-        const jwtWithInvalidClaimObject = await createJwt(claims, privateKey);
-        jwtService = new JwtService(publicKey);
+        const jwtWithInvalidClaimObject = await createJwt(
+          claimsWithInvalidObject,
+          privateKey,
+          publicJwk.kid
+        );
 
         try {
           await jwtService.getPayloadWithValidation(jwtWithInvalidClaimObject);
@@ -157,15 +192,18 @@ describe("JWT service", () => {
       });
 
       it("should pass validation when jwt does not contain claim object", async () => {
-        const claims = createMockClaims();
-        delete claims["claim"];
+        const claimsWithoutClaimObject = createMockClaims();
+        delete claimsWithoutClaimObject["claim"];
 
-        const jwtWithoutClaimObject = await createJwt(claims, privateKey);
-        jwtService = new JwtService(publicKey);
+        const jwtWithoutClaimObject = await createJwt(
+          claimsWithoutClaimObject,
+          privateKey,
+          publicJwk.kid
+        );
         const result = await jwtService.getPayloadWithValidation(
           jwtWithoutClaimObject
         );
-        expect(result).to.deep.equal(claims);
+        expect(result).to.deep.equal(claimsWithoutClaimObject);
       });
     });
 
@@ -263,3 +301,31 @@ describe("JWT service", () => {
     });
   });
 });
+const createJwtServiceWithJwksKey = async (
+  jwksKey: JWK
+): Promise<JwtService> => {
+  const { JwtService } = await esmock("../jwt-service.ts", {
+    jose: {
+      createRemoteJWKSet: sinon.stub().callsFake((): KeyLike => {
+        return jwksKey as unknown as KeyLike;
+      }),
+    },
+  });
+  return new JwtService("");
+};
+const createJwtServiceWithStubKey = (stubKey: string): JwtService => {
+  return new JwtService(stubKey);
+};
+const createJwtServiceWithJwksKeyAndStubKey = async (
+  jwksKey: JWK,
+  stubKey: string
+): Promise<JwtService> => {
+  const { JwtService } = await esmock("../jwt-service.ts", {
+    jose: {
+      createRemoteJWKSet: sinon.stub().callsFake((): KeyLike => {
+        return jwksKey as unknown as KeyLike;
+      }),
+    },
+  });
+  return new JwtService(stubKey);
+};

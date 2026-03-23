@@ -20,7 +20,7 @@ export const isAccountRecoveryJourney = (req: Request): boolean =>
 export const isAccountRecoveryJourneyAndPermitted = (req: Request): boolean =>
   Boolean(
     req.session?.user?.isAccountRecoveryJourney &&
-      req.session?.user?.isAccountRecoveryPermitted
+    req.session?.user?.isAccountRecoveryPermitted
   );
 
 export const isContactUsSuggestionsFeedbackSubtheme = (req: Request): boolean =>
@@ -35,8 +35,18 @@ export const clientUsesOneLoginOptionally = (req: Request): boolean =>
 export const supportTypeIsGovService = (req: Request): boolean =>
   Boolean(
     req.query?.supportType === SUPPORT_TYPE.GOV_SERVICE ||
-      req.body?.supportType === SUPPORT_TYPE.GOV_SERVICE
+    req.body?.supportType === SUPPORT_TYPE.GOV_SERVICE
   );
 
 export const urlContains = (req: Request, str: string): boolean =>
   Boolean(req.originalUrl?.includes(str));
+
+export const isSecondFactorCheckRequired = (req: Request): boolean =>
+  req.session?.user?.isMfaRequired ||
+  req.session?.user?.isUpliftRequired ||
+  req.session?.user?.isPasswordResetJourney;
+
+export const needsForcedMFAReset = (req: Request): boolean =>
+  Boolean(
+    req.session?.user?.needsForcedMFAReset && isSecondFactorCheckRequired(req)
+  );
