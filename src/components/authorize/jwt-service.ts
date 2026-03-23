@@ -1,6 +1,7 @@
 import type { JwtServiceInterface } from "./types.js";
 import {
   getAuthJwksUrl,
+  getJwksCacheExpiry,
   getOrchStubToAuthSigningPublicKey,
 } from "../../config.js";
 import { JwtClaimsValueError, JwtValidationError } from "../../utils/error.js";
@@ -12,7 +13,7 @@ import {
 } from "./claims-config.js";
 import * as jose from "jose";
 import { logger } from "../../utils/logger.js";
-
+let jwksCache: ReturnType<typeof jose.createRemoteJWKSet>;
 export class JwtService implements JwtServiceInterface {
   private readonly stubPublicKey;
 
@@ -21,6 +22,11 @@ export class JwtService implements JwtServiceInterface {
   }
 
   async getPayloadWithValidation(jwt: string): Promise<Claims> {
+    if (!jwksCache) {
+      jwksCache = jose.createRemoteJWKSet(new URL(getAuthJwksUrl()), {
+        cacheMaxAge: getJwksCacheExpiry(),
+      });
+    }
     let claims: jose.JWTPayload;
 
     try {
@@ -51,9 +57,7 @@ export class JwtService implements JwtServiceInterface {
   }
 
   async validateUsingJwks(jwt: string): Promise<jose.JWTPayload> {
-    const jwksUrl = new URL(getAuthJwksUrl());
-    const jwks = jose.createRemoteJWKSet(jwksUrl);
-    const result = await jose.jwtVerify(jwt, jwks, {
+    const result = await jose.jwtVerify(jwt, jwksCache, {
       requiredClaims: requiredClaimsKeys,
       clockTolerance: 30,
     });

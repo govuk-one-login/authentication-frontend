@@ -27,6 +27,7 @@ describe("JWT service", () => {
   let wrongPublicJwk: JWK;
   let validJwt: string;
   let jwtService: JwtService;
+  let getJwkFromEndpointStub: sinon.SinonStub;
 
   beforeEach(async () => {
     publicKey = getPublicKey();
@@ -205,6 +206,16 @@ describe("JWT service", () => {
         );
         expect(result).to.deep.equal(claimsWithoutClaimObject);
       });
+      it("should cache JWKS if multiple validations are performed before cache expiration", async () => {
+        const result1 = await jwtService.getPayloadWithValidation(validJwt);
+        const result2 = await jwtService.getPayloadWithValidation(validJwt);
+        const result3 = await jwtService.getPayloadWithValidation(validJwt);
+
+        expect(result1).to.deep.equal(claims);
+        expect(result2).to.deep.equal(claims);
+        expect(result3).to.deep.equal(claims);
+        expect(getJwkFromEndpointStub.calledOnce).to.be.true;
+      });
     });
 
     describe("Validate Generic Claims", () => {
@@ -300,19 +311,21 @@ describe("JWT service", () => {
       });
     });
   });
+  const createJwtServiceWithJwksKey = async (
+    jwksKey: JWK
+  ): Promise<JwtService> => {
+    getJwkFromEndpointStub = sinon
+      .stub()
+      .callsFake(() => jwksKey as unknown as KeyLike);
+    const { JwtService } = await esmock("../jwt-service.ts", {
+      jose: {
+        createRemoteJWKSet: getJwkFromEndpointStub,
+      },
+    });
+    return new JwtService("");
+  };
 });
-const createJwtServiceWithJwksKey = async (
-  jwksKey: JWK
-): Promise<JwtService> => {
-  const { JwtService } = await esmock("../jwt-service.ts", {
-    jose: {
-      createRemoteJWKSet: sinon.stub().callsFake((): KeyLike => {
-        return jwksKey as unknown as KeyLike;
-      }),
-    },
-  });
-  return new JwtService("");
-};
+
 const createJwtServiceWithStubKey = (stubKey: string): JwtService => {
   return new JwtService(stubKey);
 };

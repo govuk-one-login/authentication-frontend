@@ -214,3 +214,7 @@ export function supportSingleFactorAccountDeletion(): boolean {
 export function getAuthJwksUrl(): string {
   return `${getApiBaseUrl()}/.well-known/auth-jwks.json`;
 }
+
+export function getJwksCacheExpiry(): number {
+  return Number(process.env.AUTH_JWKS_CACHE_EXPIRY) || 300000;
+}
