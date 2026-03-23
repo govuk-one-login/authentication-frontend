@@ -23,7 +23,11 @@ export function sfadCallbackGet(
       throw new BadRequestError("Invalid state param type", 400);
     }
 
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const { sessionId, clientSessionId, persistentSessionId, currentUrl } =
+      res.locals;
+
+    const redirectUrlWithoutQueryParams =
+      currentUrl.origin + currentUrl.pathname;
 
     const result = await service.getAMCResult(
       sessionId,
@@ -32,7 +36,7 @@ export function sfadCallbackGet(
       req,
       code,
       state,
-      res.locals.currentUrl.origin + res.locals.currentUrl.pathname,
+      redirectUrlWithoutQueryParams,
       xss(req.cookies.lng as string)
     );
 
