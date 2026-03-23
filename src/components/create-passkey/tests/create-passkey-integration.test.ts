@@ -2,18 +2,24 @@ import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
 import request from "supertest";
-import { PATH_NAMES } from "../../../app.constants.js";
+import {
+  AMC_JOURNEY_TYPES,
+  API_ENDPOINTS,
+  PATH_NAMES,
+} from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 import type { UserSession } from "../../../types.js";
+import nock from "nock";
 
 describe("Integration:: create passkey", () => {
   let token: string | string[];
   let cookies: string;
   let app: any;
   let sessionUserOverrides: Partial<UserSession> = {};
+  let capturedUserSession: UserSession;
 
   before(async () => {
     process.env.SUPPORT_PASSKEY_REGISTRATION = "1";
@@ -33,6 +39,8 @@ describe("Integration:: create passkey", () => {
               journey: getPermittedJourneyForPath(PATH_NAMES.CREATE_PASSKEY),
               ...sessionUserOverrides,
             };
+
+            capturedUserSession = req.session.user;
 
             next();
           }),
@@ -67,7 +75,7 @@ describe("Integration:: create passkey", () => {
       .expect(403);
   });
 
-  it("should do nothing on continue button submission", async () => {
+  it("should redirect to amc authorize uri on continue button submission", async () => {
     const getResponse = await request(app).get(PATH_NAMES.CREATE_PASSKEY);
     const $ = cheerio.load(getResponse.text);
 
@@ -79,6 +87,20 @@ describe("Integration:: create passkey", () => {
     const buttonName = continueButton.attr("name");
     const buttonValue = continueButton.attr("value");
 
+    const baseApi = process.env.FRONTEND_API_BASE_URL;
+    const redirectUrl = "https://example.com";
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.AMC_AUTHORIZE, {
+        journeyType: AMC_JOURNEY_TYPES.PASSKEY_CREATE,
+      })
+      .once()
+      .reply(200, {
+        redirectUrl: redirectUrl,
+        code: 200,
+        success: true,
+      });
+
     await request(app)
       .post(PATH_NAMES.CREATE_PASSKEY)
       .type("form")
@@ -88,7 +110,11 @@ describe("Integration:: create passkey", () => {
         [buttonName]: buttonValue,
       })
       .expect(302)
-      .expect("Location", PATH_NAMES.CREATE_PASSKEY);
+      .expect("Location", redirectUrl);
+
+    expect(capturedUserSession.journey.nextPath).to.equal(
+      PATH_NAMES.CREATE_PASSKEY_CALLBACK
+    );
   });
 
   const testValues = [

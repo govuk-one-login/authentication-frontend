@@ -230,6 +230,28 @@ describe("state-machine", () => {
     });
   });
 
+  it("should move from CREATE_PASSKEY to relevant next state dependent on journey type", () => {
+    const userJourneyEvent = USER_JOURNEY_EVENTS.SKIP_CREATE_PASSKEY;
+    const nextState = getNextState(
+      PATH_NAMES.CREATE_PASSKEY,
+      userJourneyEvent,
+      DEFAULT_CONTEXT
+    );
+
+    expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
+  });
+
+  it("should move from CREATE_PASSKEY to relevant next state dependent on journey type when submit", () => {
+    const userJourneyEvent = USER_JOURNEY_EVENTS.CREATE_PASSKEY_INIT;
+    const nextState = getNextState(
+      PATH_NAMES.CREATE_PASSKEY,
+      userJourneyEvent,
+      DEFAULT_CONTEXT
+    );
+
+    expect(nextState.value).to.equal(PATH_NAMES.CREATE_PASSKEY_CALLBACK);
+  });
+
   describe("SIGN_IN_END intermediate state", () => {
     it("should redirect to CHANGE_SECURITY_CODES_SIGN_IN when needsForcedMFAReset is true", () => {
       const nextState = getNextState(

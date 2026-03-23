@@ -5,7 +5,7 @@ import { createMockRequest } from "../../../../test/helpers/mock-request-helper.
 import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
 import { sfadAuthorizeGet } from "../sfad-authorize-controller.js";
 import { expect } from "chai";
-import type { SfadAuthorizeInterface } from "../types.js";
+import type { AmcAuthorizeInterface } from "../../amc-service/types.js";
 import type { Request, Response } from "express";
 import { BadRequestError } from "../../../utils/error.js";
 import { strict as assert } from "assert";
@@ -25,7 +25,7 @@ const fakeSfadAuthorizeService = (successfulAuthorizeResponse: boolean) => {
         message: successfulAuthorizeResponse ? null : "Test error message",
       },
     }),
-  } as unknown as SfadAuthorizeInterface;
+  } as unknown as AmcAuthorizeInterface;
 };
 
 describe("sfad authorize controller", () => {

@@ -19,7 +19,7 @@ router.post(
   PATH_NAMES.CREATE_PASSKEY,
   validateSessionMiddleware,
   allowAndPersistUserJourneyMiddleware,
-  createPasskeyPost
+  createPasskeyPost()
 );
 
 export { router as createPasskeyRouter };

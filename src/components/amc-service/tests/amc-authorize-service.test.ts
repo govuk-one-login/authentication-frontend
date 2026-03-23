@@ -1,7 +1,7 @@
 import { describe } from "mocha";
 import type { SinonStub } from "sinon";
 import sinon from "sinon";
-import type { SfadAuthorizeInterface } from "../types.js";
+import type { AmcAuthorizeInterface } from "../types.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -17,12 +17,12 @@ import {
 import { Http } from "../../../utils/http.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
-import { sfadAuthorizeService } from "../sfad-authorize-service.js";
+import { amcAuthorizeService } from "../amc-authorize-service.js";
 import { expect } from "chai";
 
-describe("sfad authorize service", () => {
+describe("amc authorize service", () => {
   const http = new Http();
-  const service: SfadAuthorizeInterface = sfadAuthorizeService(http);
+  const service: AmcAuthorizeInterface = amcAuthorizeService(http);
   let postStub: SinonStub;
   const { sessionId, clientSessionId, diPersistentSessionId } = commonVariables;
   const req = createMockRequest(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES, {
@@ -45,28 +45,35 @@ describe("sfad authorize service", () => {
     resetApiKeyAndBaseUrlEnvVars();
   });
 
-  it("successfully calls the AMC authorize API with SFAD journey type", async () => {
-    const result = await service.getRedirectUrl(
-      sessionId,
-      clientSessionId,
-      diPersistentSessionId,
-      req
-    );
+  const JOURNEY_TYPES = [
+    AMC_JOURNEY_TYPES.SINGLE_FACTOR_ACCOUNT_DELETION,
+    AMC_JOURNEY_TYPES.PASSKEY_CREATE,
+  ];
+  for (const journeyType of JOURNEY_TYPES) {
+    it(`successfully calls the AMC authorize API with ${journeyType} journey type`, async () => {
+      const result = await service.getRedirectUrl(
+        sessionId,
+        clientSessionId,
+        diPersistentSessionId,
+        req,
+        journeyType
+      );
 
-    const expectedApiCallDetails = {
-      expectedPath: API_ENDPOINTS.AMC_AUTHORIZE,
-      expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
-      expectedBody: {
-        journeyType: AMC_JOURNEY_TYPES.SINGLE_FACTOR_ACCOUNT_DELETION,
-      },
-    };
+      const expectedApiCallDetails = {
+        expectedPath: API_ENDPOINTS.AMC_AUTHORIZE,
+        expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
+        expectedBody: {
+          journeyType: journeyType,
+        },
+      };
 
-    checkApiCallMadeWithExpectedBodyAndHeaders(
-      result,
-      postStub,
-      true,
-      expectedApiCallDetails
-    );
-    expect(result.success).to.equal(true);
-  });
+      checkApiCallMadeWithExpectedBodyAndHeaders(
+        result,
+        postStub,
+        true,
+        expectedApiCallDetails
+      );
+      expect(result.success).to.equal(true);
+    });
+  }
 });

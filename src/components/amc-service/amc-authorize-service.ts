@@ -1,4 +1,4 @@
-import type { SfadAuthorizeInterface, SfadAuthorizeResponse } from "./types.js";
+import type { AmcAuthorizeInterface, AmcAuthorizeResponse } from "./types.js";
 import type { Http } from "../../utils/http.js";
 import {
   createApiResponse,
@@ -6,18 +6,17 @@ import {
   http,
 } from "../../utils/http.js";
 import type { ApiResponseResult } from "../../types.js";
-import { AMC_JOURNEY_TYPES, API_ENDPOINTS } from "../../app.constants.js";
+import { API_ENDPOINTS } from "../../app.constants.js";
 import type { Request } from "express";
 
-export function sfadAuthorizeService(
-  axios: Http = http
-): SfadAuthorizeInterface {
+export function amcAuthorizeService(axios: Http = http): AmcAuthorizeInterface {
   const getRedirectUrl = async function (
     sessionId: string,
     clientSessionId: string,
     persistentSessionId: string,
-    req: Request
-  ): Promise<ApiResponseResult<SfadAuthorizeResponse>> {
+    req: Request,
+    journeyType: string
+  ): Promise<ApiResponseResult<AmcAuthorizeResponse>> {
     const config = getInternalRequestConfigWithSecurityHeaders(
       {
         sessionId: sessionId,
@@ -28,14 +27,12 @@ export function sfadAuthorizeService(
       API_ENDPOINTS.AMC_AUTHORIZE
     );
 
-    const response = await axios.client.post<SfadAuthorizeResponse>(
+    const response = await axios.client.post<AmcAuthorizeResponse>(
       API_ENDPOINTS.AMC_AUTHORIZE,
-      {
-        journeyType: AMC_JOURNEY_TYPES.SINGLE_FACTOR_ACCOUNT_DELETION,
-      },
+      { journeyType },
       config
     );
-    return createApiResponse<SfadAuthorizeResponse>(response);
+    return createApiResponse<AmcAuthorizeResponse>(response);
   };
 
   return {

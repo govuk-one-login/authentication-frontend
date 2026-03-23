@@ -78,6 +78,7 @@ export const PATH_NAMES = {
   SFAD_AUTHORIZE: "/sfad-authorize",
   AMC_CALLBACK: "/amc-callback",
   CREATE_PASSKEY: "/create-passkey",
+  CREATE_PASSKEY_CALLBACK: "/create-passkey-callback",
 };
 
 export const HREF_BACK = {
@@ -342,4 +343,5 @@ export const CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION = {
 
 export const AMC_JOURNEY_TYPES = {
   SINGLE_FACTOR_ACCOUNT_DELETION: "SFAD",
+  PASSKEY_CREATE: "PASSKEY_CREATE",
 };
