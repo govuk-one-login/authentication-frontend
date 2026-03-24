@@ -65,6 +65,11 @@ async function handleCreatePasskey(
     "Got successful response with redirect uri for AMC from the backend"
   );
 
+  if (!result.data.amcCookie) {
+    req.log.error("AMC cookie is undefined");
+    throw new Error("AMC cookie is undefined");
+  }
+
   res.cookie("amc", result.data.amcCookie, {
     secure: true,
     httpOnly: true,

@@ -20,11 +20,14 @@ describe("create passkey controller", () => {
 
   const REDIRECT_URL = "https://example.com";
   const AMC_COOKIE = "some-hashed-value";
-  const fakeAmcAuthorizeService = (successfulAuthorizeResponse: boolean) => {
+  const fakeAmcAuthorizeService = (
+    successfulAuthorizeResponse: boolean,
+    cookie?: string
+  ) => {
     const data = successfulAuthorizeResponse
       ? {
           redirectUrl: REDIRECT_URL,
-          amcCookie: AMC_COOKIE,
+          amcCookie: cookie,
           code: HTTP_STATUS_CODES.OK,
         }
       : {
@@ -75,7 +78,10 @@ describe("create passkey controller", () => {
     it("should set the amc cookie and redirect to the url of the amc authorization response when submit button is clicked", async () => {
       const req = createRequestWithPasskeyOption("submit");
 
-      await createPasskeyPost(fakeAmcAuthorizeService(true))(req, res);
+      await createPasskeyPost(fakeAmcAuthorizeService(true, AMC_COOKIE))(
+        req,
+        res
+      );
 
       expect(res.cookie).to.have.been.calledWith("amc", AMC_COOKIE, {
         secure: true,
@@ -90,15 +96,27 @@ describe("create passkey controller", () => {
 
       await assert.rejects(
         async () => createPasskeyPost(fakeAmcAuthorizeService(false))(req, res),
-        BadRequestError,
-        "500:Test error message"
+        BadRequestError
+      );
+    });
+
+    it("should return an error when amc authorize endpoint returns empty amc cookie", async () => {
+      const req = createRequestWithPasskeyOption("submit");
+
+      await assert.rejects(
+        async () =>
+          createPasskeyPost(fakeAmcAuthorizeService(true, null))(req, res),
+        Error
       );
     });
 
     it("should set hasSkippedPasskeyRegistration when skip button is clicked", async () => {
       const req = createRequestWithPasskeyOption("skip");
 
-      await createPasskeyPost(fakeAmcAuthorizeService(true))(req, res);
+      await createPasskeyPost(fakeAmcAuthorizeService(true, AMC_COOKIE))(
+        req,
+        res
+      );
 
       expect(req.session.user.hasSkippedPasskeyRegistration).to.be.true;
       expect(req.session.save).to.have.been.called;
@@ -107,7 +125,10 @@ describe("create passkey controller", () => {
     it("should not set hasSkippedPasskeyRegistration when submit button is clicked", async () => {
       const req = createRequestWithPasskeyOption("submit");
 
-      await createPasskeyPost(fakeAmcAuthorizeService(true))(req, res);
+      await createPasskeyPost(fakeAmcAuthorizeService(true, AMC_COOKIE))(
+        req,
+        res
+      );
 
       expect(req.session.user.hasSkippedPasskeyRegistration).to.be.undefined;
     });
