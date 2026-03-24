@@ -197,6 +197,7 @@
     <p class="govuk-body">{{ 'pages.accessibilityStatement.preparation.paragraph2' | translate }}</p>
     <p class="govuk-body">{{ 'pages.accessibilityStatement.preparation.paragraph3' | translate }}</p>
 
+    {% set isPageDataSensitive = false %}
     {% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
     {%- include "ga4-opl/template.njk" -%}
 
