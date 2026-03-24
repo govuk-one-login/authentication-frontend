@@ -5,7 +5,7 @@ import type { AMCResultInterface } from "./types.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import xss from "xss";
 
-export function amcCallbackGet(
+export function sfadCallbackGet(
   service: AMCResultInterface = amcResultService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response): Promise<void> {
@@ -23,7 +23,11 @@ export function amcCallbackGet(
       throw new BadRequestError("Invalid state param type", 400);
     }
 
-    const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const { sessionId, clientSessionId, persistentSessionId, currentUrl } =
+      res.locals;
+
+    const redirectUrlWithoutQueryParams =
+      currentUrl.origin + currentUrl.pathname;
 
     const result = await service.getAMCResult(
       sessionId,
@@ -32,6 +36,7 @@ export function amcCallbackGet(
       req,
       code,
       state,
+      redirectUrlWithoutQueryParams,
       xss(req.cookies.lng as string)
     );
 

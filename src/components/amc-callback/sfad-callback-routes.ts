@@ -2,15 +2,15 @@ import { Router } from "express";
 import { PATH_NAMES } from "../../app.constants.js";
 import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
-import { amcCallbackGet } from "./amc-callback-controller.js";
+import { sfadCallbackGet } from "./sfad-callback-controller.js";
 
 const router = Router();
 
 router.get(
-  PATH_NAMES.AMC_CALLBACK,
+  PATH_NAMES.SFAD_CALLBACK,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  amcCallbackGet()
+  sfadCallbackGet()
 );
 
-export { router as amcCallbackRouter };
+export { router as sfadCallbackRouter };

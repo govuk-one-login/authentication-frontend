@@ -14,6 +14,7 @@ describe("amc result service", () => {
   const sourceIp = "127.0.0.1";
   const code = "auth-code";
   const state = "state-value";
+  const usedRedirectUrl = "usedRedirectUrl";
   const apiKey = "apiKey";
   const auditEncodedString = "audit-encoded-string";
   const language = "en";
@@ -54,7 +55,7 @@ describe("amc result service", () => {
     const service = amcResultService(httpInstance);
     postStub = sinon.stub(httpInstance.client, "post").resolves(axiosResponse);
 
-    const req = createMockRequest(PATH_NAMES.AMC_CALLBACK);
+    const req = createMockRequest(PATH_NAMES.SFAD_CALLBACK);
     req.ip = sourceIp;
     req.headers = {
       "txma-audit-encoded": auditEncodedString,
@@ -68,13 +69,14 @@ describe("amc result service", () => {
       req,
       code,
       state,
+      usedRedirectUrl,
       language
     );
 
     expect(
       postStub.calledOnceWithExactly(
         API_ENDPOINTS.AMC_CALLBACK,
-        { code, state },
+        { code, state, usedRedirectUrl },
         {
           headers: expectedHeaders,
           proxy: sinon.match.bool,

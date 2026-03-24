@@ -76,7 +76,7 @@ export const PATH_NAMES = {
   CHANGE_SECURITY_CODES_SIGN_IN: "/change-security-codes-sign-in",
   WELL_KNOWN_APPLE_ASSOCIATION: "/.well-known/apple-app-site-association",
   SFAD_AUTHORIZE: "/sfad-authorize",
-  AMC_CALLBACK: "/amc-callback",
+  SFAD_CALLBACK: "/sfad-callback",
   CREATE_PASSKEY: "/create-passkey",
   CREATE_PASSKEY_CALLBACK: "/create-passkey-callback",
 };

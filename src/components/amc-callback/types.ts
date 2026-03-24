@@ -9,6 +9,7 @@ export interface AMCResultInterface {
     req: Request,
     code: string,
     state: string,
+    usedRedirectUrl: string,
     language: string
   ) => Promise<ApiResponseResult<string>>;
 }
