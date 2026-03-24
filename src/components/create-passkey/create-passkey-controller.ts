@@ -62,6 +62,15 @@ async function handleCreatePasskey(
   }
 
   req.log.info(
+    "Got successful response with redirect uri for AMC from the backend"
+  );
+
+  res.cookie("amc", result.data.amcCookie, {
+    secure: true,
+    httpOnly: true,
+  });
+
+  req.log.info(
     "Got redirect url from authorize endpoint. Redirecting user to AMC for passkey creation"
   );
   const userJourneyEvent = USER_JOURNEY_EVENTS.CREATE_PASSKEY_INIT;

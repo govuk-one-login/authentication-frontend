@@ -19,17 +19,22 @@ describe("create passkey controller", () => {
   let req: RequestOutput;
 
   const REDIRECT_URL = "https://example.com";
+  const AMC_COOKIE = "some-hashed-value";
   const fakeAmcAuthorizeService = (successfulAuthorizeResponse: boolean) => {
+    const data = successfulAuthorizeResponse
+      ? {
+          redirectUrl: REDIRECT_URL,
+          amcCookie: AMC_COOKIE,
+          code: HTTP_STATUS_CODES.OK,
+        }
+      : {
+          code: HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
+          message: "Test error message",
+        };
     return {
       getRedirectUrl: sinon.fake.returns({
         success: successfulAuthorizeResponse,
-        data: {
-          redirectUrl: successfulAuthorizeResponse ? REDIRECT_URL : null,
-          code: successfulAuthorizeResponse
-            ? HTTP_STATUS_CODES.OK
-            : HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-          message: successfulAuthorizeResponse ? null : "Test error message",
-        },
+        data,
       }),
     } as unknown as AmcAuthorizeInterface;
   };
@@ -67,10 +72,15 @@ describe("create passkey controller", () => {
       } as unknown as Request;
     };
 
-    it("should redirect to the url of the amc authorization response when submit button is clicked", async () => {
+    it("should set the amc cookie and redirect to the url of the amc authorization response when submit button is clicked", async () => {
       const req = createRequestWithPasskeyOption("submit");
 
       await createPasskeyPost(fakeAmcAuthorizeService(true))(req, res);
+
+      expect(res.cookie).to.have.been.calledWith("amc", AMC_COOKIE, {
+        secure: true,
+        httpOnly: true,
+      });
 
       expect(res.redirect).calledWith(REDIRECT_URL);
     });

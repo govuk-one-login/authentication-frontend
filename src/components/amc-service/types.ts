@@ -3,6 +3,7 @@ import type { Request } from "express";
 
 export interface AmcAuthorizeResponse extends DefaultApiResponse {
   redirectUrl: string;
+  amcCookie: string;
 }
 
 export interface AmcAuthorizeInterface {
