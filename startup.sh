@@ -117,7 +117,7 @@ elif [ "${ACTION_FULL_LOCAL:-0}" == "1" ]; then
     docker compose restart aws
     docker compose up --build -d authentication-api orchestration-stub
   )
-  npm run dev
+  npm run copy-assets && npm run dev
 else
   echo "Starting frontend service..."
   docker compose -f docker-compose.yml -f docker-compose.frontend.yml up -d --wait --build

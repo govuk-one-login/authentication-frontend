@@ -66,6 +66,8 @@ This might include updates to the README.md, Confluence pages etc.
 
 - [ ] Documentation has been updated to reflect these changes.
 
+- [ ] Local running `./startup -L` still works.
+
 ## Related PRs
 
 <!-- Links to PRs in other repositories that are relevant to this PR.
