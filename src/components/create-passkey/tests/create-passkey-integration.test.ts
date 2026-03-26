@@ -89,6 +89,7 @@ describe("Integration:: create passkey", () => {
 
     const baseApi = process.env.FRONTEND_API_BASE_URL;
     const redirectUrl = "https://example.com";
+    const amcCookie = "some-cookie-value";
 
     nock(baseApi)
       .post(API_ENDPOINTS.AMC_AUTHORIZE, {
@@ -97,6 +98,7 @@ describe("Integration:: create passkey", () => {
       .once()
       .reply(200, {
         redirectUrl: redirectUrl,
+        amcCookie: amcCookie,
         code: 200,
         success: true,
       });
