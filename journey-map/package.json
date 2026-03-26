@@ -23,7 +23,7 @@
     "mermaid": "11.10.0",
     "svg-pan-zoom": "3.6.2",
     "xstate": "4.26.1",
-    "yaml": "2.8.0"
+    "yaml": "2.8.3"
   },
   "devDependencies": {
     "@eslint/js": "9.28.0",
