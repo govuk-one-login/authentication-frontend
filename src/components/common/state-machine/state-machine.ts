@@ -72,6 +72,9 @@ const USER_JOURNEY_EVENTS = {
   MFA_INDEFINITELY_BLOCKED: "MFA_INDEFINITELY_BLOCKED",
   CREATE_PASSKEY_INIT: "CREATE_PASSKEY_INIT",
   SKIP_CREATE_PASSKEY: "SKIP_CREATE_PASSKEY",
+  CREATE_PASSKEY_COMPLETED: "CREATE_PASSKEY_COMPLETED",
+  CREATE_PASSKEY_SKIPPED: "CREATE_PASSKEY_SKIPPED",
+  CREATE_PASSKEY_BACK: "CREATE_PASSKEY_BACK",
 };
 
 export interface AuthStateContext {
@@ -548,7 +551,20 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
       },
       [PATH_NAMES.CREATE_PASSKEY_CALLBACK]: {
-        type: "final",
+        on: {
+          [USER_JOURNEY_EVENTS.CREATE_PASSKEY_COMPLETED]: [
+            INTERMEDIATE_STATES.SIGN_IN_END,
+          ],
+          [USER_JOURNEY_EVENTS.CREATE_PASSKEY_SKIPPED]: [
+            INTERMEDIATE_STATES.SIGN_IN_END,
+          ],
+          [USER_JOURNEY_EVENTS.CREATE_PASSKEY_BACK]: [
+            PATH_NAMES.CREATE_PASSKEY,
+          ],
+        },
+        meta: {
+          optionalPaths: [PATH_NAMES.CREATE_PASSKEY],
+        },
       },
       [INTERMEDIATE_STATES.SIGN_IN_END]: {
         always: [
