@@ -20,7 +20,7 @@ const createMockService = (success: boolean, data: string) => {
   };
 };
 
-describe("amc-callback-controller", () => {
+describe("sfad-callback-controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
