@@ -1,12 +1,12 @@
 import type { Request, Response } from "express";
 import { BadRequestError } from "../../utils/error.js";
-import { amcResultService } from "./amc-result-service.js";
-import type { AMCResultInterface } from "./types.js";
+import { amcResultService } from "../amc-service/amc-result-service.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import xss from "xss";
+import type { AMCResultInterface } from "../amc-service/types.js";
 
 export function sfadCallbackGet(
-  service: AMCResultInterface = amcResultService()
+  service: AMCResultInterface<boolean> = amcResultService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response): Promise<void> {
     const { code, state } = req.query;
