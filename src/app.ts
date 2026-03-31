@@ -109,7 +109,7 @@ import { cannotUseSecurityCodeRouter } from "./components/cannot-use-security-co
 import { changeSecurityCodesSignInRouter } from "./components/change-security-codes-sign-in/change-security-codes-sign-in-routes.js";
 import { wellKnownRouter } from "./components/well-known/well-known-routes.js";
 import { sfadAuthorizeRouter } from "./components/sfad-authorize/sfad-authorize-routes.js";
-import { sfadCallbackRouter } from "./components/amc-callback/sfad-callback-routes.js";
+import { sfadCallbackRouter } from "./components/sfad-callback/sfad-callback-routes.js";
 import { createPasskeyRouter } from "./components/create-passkey/create-passkey-routes.js";
 import { createPasskeyCallbackRouter } from "./components/create-passkey-callback/create-passkey-callback-routes.js";
 

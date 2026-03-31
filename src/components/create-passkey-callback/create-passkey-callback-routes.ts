@@ -10,7 +10,7 @@ router.get(
   PATH_NAMES.CREATE_PASSKEY_CALLBACK,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  createPasskeyCallbackGet
+  createPasskeyCallbackGet()
 );
 
 export { router as createPasskeyCallbackRouter };
