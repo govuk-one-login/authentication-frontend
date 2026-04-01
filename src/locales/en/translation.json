@@ -811,11 +811,7 @@
         "paragraph2": " to find out about cookies that are used on GOV.UK.",
         "paragraph3": "Cookies are files saved on to your phone, tablet or computer when you visit a website. We use cookies to make GOV.UK One Login work.",
         "paragraph4": "We may also use analytics cookies to learn about how you use GOV.UK One Login and help us improve it. We’ll ask for your permission before we do this.",
-        "paragraph5": "Cookies are not used to identify you personally.",
-        "paragraph6": "Find out more about",
-        "linkHref": "https://ico.org.uk/your-data-matters/online/cookies/",
-        "linkText": "how to manage cookies",
-        "paragraph7": " on the Information Commissioner’s Office (ICO) website."
+        "paragraph5": "Cookies are not used to identify you personally."
       },
       "essential": {
         "header": "Strictly necessary cookies",
