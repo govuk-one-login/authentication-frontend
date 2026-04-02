@@ -15,6 +15,62 @@ updates:
         versions: ["> 20"]
       - dependency-name: "@govuk-one-login/frontend-analytics"
         versions: [">=4.0.1"]
+      - dependency-name: "@axe-core/*"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "@eslint/*"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "@playwright/*"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "@types/*"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "@typescript-eslint/*"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "c8"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "chai*"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "cheerio"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "concurrently"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "debug"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "dotenv"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "eslint-plugin-no-only-tests"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "esmock"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "globals"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "husky"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "mocha"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "mock-req-res"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "nock"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "nodemon"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "pino-pretty"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "prettier"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "sass"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "sinon"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "sinon-chai"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "supertest"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "ts-node"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "uglify-js"
+        update-types: ["version-update:semver-patch"]
     groups:
       npm-pino-dependencies:
         patterns:
