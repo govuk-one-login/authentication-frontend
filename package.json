@@ -104,7 +104,7 @@
     "uglify-js": "3.19.3",
     "uid-safe": "2.1.5",
     "xss": "1.0.15",
-    "xstate": "4.26.1"
+    "xstate": "5.29.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.11.1",
