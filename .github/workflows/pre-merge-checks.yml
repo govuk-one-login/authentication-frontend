@@ -8,20 +8,8 @@ on:
       - synchronize
 
 jobs:
-  run-tests:
+  build-and-lint:
     runs-on: ubuntu-latest
-
-    services:
-      redis:
-        image: redis
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 6389:6379
-
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Use Node.js 20.x
@@ -46,10 +34,105 @@ jobs:
         run: npm run lint
       - name: Build app
         run: npm run build
+    env:
+      ENVIRONMENT: development
+      API_BASE_URL: http://localhost:6000/api
+      FRONTEND_API_BASE_URL: http://localhost:6060/api
+      SESSION_SECRET: secret
+      API_KEY: test-key
+      REDIS_HOST: localhost
+      REDIS_PORT: 6389
+      SMARTAGENT_API_URL: https://uat.smartagent.app/ # Dummy URL for SmartAgent UAT environment
+
+  unit-tests:
+    needs: build-and-lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 20.17.0
+          cache: "npm"
+          cache-dependency-path: "package-lock.json"
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Build app
+        run: npm run build
       - name: Run unit tests
         run: npm run test:unit
+    env:
+      ENVIRONMENT: development
+      API_BASE_URL: http://localhost:6000/api
+      FRONTEND_API_BASE_URL: http://localhost:6060/api
+      SESSION_SECRET: secret
+      API_KEY: test-key
+      REDIS_HOST: localhost
+      REDIS_PORT: 6389
+      SMARTAGENT_API_URL: https://uat.smartagent.app/ # Dummy URL for SmartAgent UAT environment
+
+  integration-tests:
+    needs: build-and-lint
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6389:6379
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 20.17.0
+          cache: "npm"
+          cache-dependency-path: "package-lock.json"
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Build app
+        run: npm run build
       - name: Run integration tests
         run: npm run test:integration-no-clear-cov
+    env:
+      ENVIRONMENT: development
+      API_BASE_URL: http://localhost:6000/api
+      FRONTEND_API_BASE_URL: http://localhost:6060/api
+      SESSION_SECRET: secret
+      API_KEY: test-key
+      REDIS_HOST: localhost
+      REDIS_PORT: 6389
+      SMARTAGENT_API_URL: https://uat.smartagent.app/ # Dummy URL for SmartAgent UAT environment
+
+  coverage:
+    needs: [unit-tests, integration-tests]
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6389:6379
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 20.17.0
+          cache: "npm"
+          cache-dependency-path: "package-lock.json"
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Build app
+        run: npm run build
       - name: Run test coverage
         run: npm run test:coverage
       - name: SonarCloud Scan
