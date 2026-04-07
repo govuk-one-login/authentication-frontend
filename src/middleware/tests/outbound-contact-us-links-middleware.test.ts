@@ -1,4 +1,4 @@
-import chai, { expect } from "chai";
+import { expect, use } from "chai";
 import type { Request, Response } from "express";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
@@ -7,7 +7,7 @@ import {
   buildUrlFromRequest,
   outboundContactUsLinksMiddleware,
 } from "../outbound-contact-us-links-middleware.js";
-chai.use(sinonChai);
+use(sinonChai);
 
 describe("Middleware", () => {
   describe("outboundContactUsLinksMiddleware", () => {
