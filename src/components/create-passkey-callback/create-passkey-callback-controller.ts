@@ -76,7 +76,7 @@ export function createPasskeyCallbackGet(
       persistentSessionId,
       req,
       code,
-      state,
+      "not-the-correct-state",
       redirectUrlWithoutQueryParams,
       xss(req.cookies.lng as string)
     );
