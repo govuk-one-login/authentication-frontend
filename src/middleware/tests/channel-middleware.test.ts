@@ -1,4 +1,4 @@
-import chai, { expect } from "chai";
+import { expect, use } from "chai";
 import type { Request, Response } from "express";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
@@ -6,7 +6,7 @@ import { channelMiddleware } from "../channel-middleware.js";
 import { describe } from "mocha";
 import { mockRequest, mockResponse } from "mock-req-res";
 
-chai.use(sinonChai);
+use(sinonChai);
 
 describe("session-middleware", () => {
   let next: sinon.SinonSpy;

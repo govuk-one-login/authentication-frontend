@@ -1,10 +1,7 @@
-import chai from "chai";
+import { expect, use } from "chai";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 
-chai.should();
-chai.use(sinonChai);
-
-const expect = chai.expect;
+use(sinonChai);
 
 export { expect, sinon };

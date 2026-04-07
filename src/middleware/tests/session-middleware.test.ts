@@ -1,4 +1,4 @@
-import chai, { expect } from "chai";
+import { expect, use } from "chai";
 import type { Request, Response } from "express";
 import type { Session } from "express-session";
 import sinon from "sinon";
@@ -20,7 +20,7 @@ import { mockRequest, mockResponse } from "mock-req-res";
 import { buildMfaMethods } from "../../../test/helpers/mfa-helper";
 import { createMockRequest } from "../../../test/helpers/mock-request-helper.js";
 
-chai.use(sinonChai);
+use(sinonChai);
 
 describe("session-middleware", () => {
   let next: sinon.SinonSpy;
