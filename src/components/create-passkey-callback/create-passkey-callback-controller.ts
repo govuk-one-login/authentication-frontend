@@ -72,7 +72,7 @@ export function createPasskeyCallbackGet(
 
     const result = await service.getAMCResult(
       sessionId,
-      clientSessionId,
+      "not-correct-client-session-id",
       persistentSessionId,
       req,
       code,
