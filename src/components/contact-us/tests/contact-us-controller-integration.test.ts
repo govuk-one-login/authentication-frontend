@@ -38,6 +38,13 @@ describe("Integration:: contact us - public user", () => {
             next();
           }),
         },
+        "../../../config/smartAgent.js": {
+          default: {
+            webformID: "test-webform-id",
+            apiKey: "test-api-key",
+            apiUrl: "http://smartagentmockurl",
+          },
+        },
       }
     );
 
