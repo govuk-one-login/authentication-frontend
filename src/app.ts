@@ -112,6 +112,8 @@ import { sfadAuthorizeRouter } from "./components/sfad-authorize/sfad-authorize-
 import { sfadCallbackRouter } from "./components/sfad-callback/sfad-callback-routes.js";
 import { createPasskeyRouter } from "./components/create-passkey/create-passkey-routes.js";
 import { createPasskeyCallbackRouter } from "./components/create-passkey-callback/create-passkey-callback-routes.js";
+import { initialiseUserHistoryMiddleware } from "./middleware/initialise-user-history-middleware.js";
+import { journeyRouter } from "./components/journey/journey-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -180,6 +182,7 @@ function registerRoutes(app: express.Application) {
     app.use(createPasskeyRouter);
     app.use(createPasskeyCallbackRouter);
   }
+  app.use(journeyRouter)
 
   // Development tools
   if (getAppEnv() !== APP_ENV_NAME.PROD && getAppEnv() !== APP_ENV_NAME.INT) {
@@ -301,6 +304,7 @@ async function createApp(): Promise<express.Application> {
   app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
   app.use(initialiseSessionMiddleware);
+  app.use(initialiseUserHistoryMiddleware)
   app.use(crossDomainTrackingMiddleware);
   app.use(outboundContactUsLinksMiddleware);
   if (getLanguageToggleEnabled()) {

@@ -106,11 +106,21 @@
         {% endif %}
 
 
-        {% if showBack %}
+        {% if (showBack) %}
             {{ govukBackLink({
                 text: "general.back" | translate,
                 href: hrefBack
             }) }}
+        {% endif %}
+
+        {% if (showBack) and (showGoBackHistory) %}
+            {{ govukBackLink({
+                text: "new back" | translate,
+                href: history | last
+            }) }}
+        {% endif %}
+        {% if history %}
+            <p>Journey history: {{ history | join(', ') }}</p>
         {% endif %}
         <main class="govuk-main-wrapper {{ mainClasses }}" id="main-content"
               role="main"{% if mainLang %} lang="{{ mainLang }}"{% endif %}>

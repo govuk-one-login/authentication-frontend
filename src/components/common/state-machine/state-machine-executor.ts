@@ -39,13 +39,25 @@ export async function getNextPathAndUpdateJourney(
 
   const nextState = getNextState(currentState, event, context);
 
+  const isTransitionReversible = authStateMachine.states[currentState].on[event][0]?.meta?.reversible
+
+  const getGoBackHistory = () => {
+    if (isTransitionReversible === undefined) {
+      return req.session.user.journey?.goBackHistory
+    }
+
+    return isTransitionReversible ? [...req.session.user.journey?.goBackHistory ?? [], currentState] : []
+  }
+
   req.session.user.journey = {
+    previousPath: currentState,
     nextPath: nextState.value,
     optionalPaths:
       Object.keys(nextState.meta).length > 0
         ? nextState.meta[`${authStateMachine.id}.${nextState.value}`]
             .optionalPaths
         : [],
+    goBackHistory: getGoBackHistory()
   };
 
   await saveSessionState(req);

@@ -7,7 +7,8 @@
 {% if isReauthJourney === false or isReauthJourney === "false" %}
     {% set showBack = true %}
 {% endif %}
-{% set hrefBack = 'enter-email' %}
+{% set showGoBackHistory = true %}
+{#{% set hrefBack = 'enter-email' %}#}
 {% set pageTitleName = 'pages.enterPassword.title' | translate %}
 
 {% block content %}
@@ -37,6 +38,10 @@
 
 <p class="govuk-body">
     <a href="/reset-password-request" class="govuk-link" rel="noreferrer noopener">{{'pages.enterPassword.forgottenPassword.text' | translate }}</a>
+</p>
+
+<p class="govuk-body">
+    <a href="/journey/enter-password/RESET_PASSWORD" class="govuk-link" rel="noreferrer noopener">forgot password (test)</a>
 </p>
 
 </form>
