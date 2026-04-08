@@ -108,7 +108,12 @@ const authStateMachine = createMachine<AuthStateContext>(
             { target: [PATH_NAMES.UPLIFT_JOURNEY] },
           ],
           [USER_JOURNEY_EVENTS.PROMPT_LOGIN]: [PATH_NAMES.ENTER_PASSWORD],
-          [USER_JOURNEY_EVENTS.REAUTH]: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
+          [USER_JOURNEY_EVENTS.REAUTH]: {
+            target: PATH_NAMES.ENTER_EMAIL_SIGN_IN,
+            meta: {
+              reversible: true
+            }
+          },
           [USER_JOURNEY_EVENTS.NO_EXISTING_SESSION]: [
             PATH_NAMES.SIGN_IN_OR_CREATE,
           ],
@@ -129,7 +134,7 @@ const authStateMachine = createMachine<AuthStateContext>(
         on: {
           [USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS]: {
             target: PATH_NAMES.ENTER_PASSWORD,
-            // meta: { reversible: true },
+            meta: { reversible: true },
           },
           [USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND]: [
             PATH_NAMES.ACCOUNT_NOT_FOUND,
@@ -459,6 +464,9 @@ const authStateMachine = createMachine<AuthStateContext>(
             {
               target: [PATH_NAMES.RESET_PASSWORD_2FA_SMS],
               cond: "requiresResetPasswordMFASmsCode",
+              meta: {
+                reversible: false
+              }
             },
             {
               target: [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP],
