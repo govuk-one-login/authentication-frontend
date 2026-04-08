@@ -127,9 +127,10 @@ const authStateMachine = createMachine<AuthStateContext>(
       },
       [PATH_NAMES.ENTER_EMAIL_SIGN_IN]: {
         on: {
-          [USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS]: [
-            PATH_NAMES.ENTER_PASSWORD,
-          ],
+          [USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS]: {
+            target: PATH_NAMES.ENTER_PASSWORD,
+            // meta: { reversible: true },
+          },
           [USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND]: [
             PATH_NAMES.ACCOUNT_NOT_FOUND,
           ],
@@ -209,6 +210,8 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.CANNOT_USE_EMAIL_ADDRESS]: [
             PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS,
           ],
+          ["USE_DIFFERENT_EMAIL"]: {target: PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT},
+          ["RESEND_EMAIL_CODE"]: {target: PATH_NAMES.RESEND_EMAIL_CODE,  meta: {reversible: true}},
         },
         meta: {
           optionalPaths: [
@@ -334,6 +337,10 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
             PATH_NAMES.CANNOT_USE_SECURITY_CODE,
           ],
+          ["RESET_PASSWORD"]: {
+            target: PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL,
+            meta: { reversible: true },
+          },
         },
         meta: {
           optionalPaths: [

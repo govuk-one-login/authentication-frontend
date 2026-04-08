@@ -14,10 +14,11 @@ import { needsForcedMFAReset } from "../../../utils/request.js";
 export async function getNextPathAndUpdateJourney(
   req: Request,
   res: Response,
-  event: string
+  event: string,
+  currentStateOverride?: string
 ): Promise<string> {
   const sessionId = res.locals.sessionId;
-  const currentState = req.path;
+  const currentState = currentStateOverride ? currentStateOverride : req.path;
   const sessionState = req.session.user?.journey?.nextPath;
 
   const context: AuthStateContext = {
