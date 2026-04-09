@@ -1,0 +1,265 @@
+openapi: 3.0.1
+info:
+  title: "Authentication Internal API"
+  version: "1.0.0"
+paths:
+  /.well-known/mfa-reset-jwk.json:
+    get:
+      responses:
+        "200":
+          description: "Successfully retrieved MFA reset storage token JWK set"
+        "500":
+          description: "Failed to serve storage token signature verification key"
+  /.well-known/reverification-jwk.json:
+    get:
+      responses:
+        "200":
+          description: "Successfully retrieved reverification JAR JWK set"
+        "500":
+          description: "Failed to serve reverification JAR signature verification key"
+  /.well-known/amc-jwks.json:
+    get:
+      responses:
+        "200":
+          description: "Successfully retrieved JWKS"
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: "Bad Request / Forbidden"
+        "404":
+          description: "JWKS file not found"
+        "500":
+          description: "Internal Server Error"
+  /.well-known/ad-jwks.json:
+    get:
+      responses:
+        "200":
+          description: "Successfully retrieved JWKS"
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: "Bad Request / Forbidden"
+        "404":
+          description: "JWKS file not found"
+        "500":
+          description: "Internal Server Error"
+  /account-interventions:
+    post:
+      responses:
+        "200":
+          description: "Successfully retrieved account interventions status"
+        "400":
+          description: "Bad Request - session missing, missing params, or no user profile"
+        "429":
+          description: "Account interventions API throttled"
+        "500":
+          description: "Account interventions server error"
+        "502":
+          description: "Account interventions bad gateway"
+        "504":
+          description: "Account interventions gateway timeout"
+  /account-recovery:
+    post:
+      responses:
+        "200":
+          description: "Successfully determined account recovery permission"
+        "400":
+          description: "Bad Request - session missing or missing params"
+        "500":
+          description: "Internal Server Error - serialization failure"
+  /amc-authorize:
+    post:
+      responses:
+        "200":
+          description: "Successfully generated AMC authorization URL and cookie"
+        "400":
+          description: "Bad Request - session missing, missing params, no user profile, JWT encoding or transcoding error"
+        "500":
+          description: "Internal Server Error - serialization, signing, or encryption error"
+  /amc-callback:
+    post:
+      responses:
+        "200":
+          description: "Successfully retrieved AMC journey outcome"
+        "400":
+          description: "Bad Request - session missing, missing params, JWT encoding/transcoding error, or journey outcome error response"
+        "500":
+          description: "Internal Server Error - signing, encryption, token, or journey outcome error"
+  /check-email-fraud-block:
+    post:
+      responses:
+        "200":
+          description: "Successfully checked email fraud block status"
+        "400":
+          description: "Bad Request - session missing or missing params"
+        "500":
+          description: "Internal Server Error - serialization failure"
+  /check-reauth-user:
+    post:
+      responses:
+        "200":
+          description: "Re-authentication user check passed"
+        "400":
+          description: "Bad Request - session missing, missing params, too many reauth attempts, or invalid user context"
+        "404":
+          description: "User not found or pairwise ID mismatch"
+        "500":
+          description: "Internal Server Error - storage or configuration error"
+  /id-reverification-state:
+    post:
+      responses:
+        "200":
+          description: "Successfully retrieved orchestration redirect URL"
+        "404":
+          description: "State not found"
+  /login:
+    post:
+      responses:
+        "200":
+          description: "Successfully authenticated user"
+        "400":
+          description: "Bad Request - session missing, missing params, account not found, too many attempts, or MFA code blocked"
+        "401":
+          description: "Invalid login credentials"
+        "500":
+          description: "Internal Server Error - MFA method error, storage, or configuration error"
+  /mfa:
+    post:
+      responses:
+        "204":
+          description: "MFA code sent successfully"
+        "400":
+          description: "Bad Request - session missing, missing params, invalid notification type, no user profile, phone not registered, or code blocked"
+        "500":
+          description: "Internal Server Error - MFA method error, storage, or configuration error"
+  /mfa-reset-authorize:
+    post:
+      responses:
+        "200":
+          description: "Successfully generated MFA reset IPV reverification redirect URI"
+        "400":
+          description: "Bad Request - session missing or missing params"
+        "500":
+          description: "MFA reset JAR generation error"
+  /orch-auth-code:
+    post:
+      responses:
+        "200":
+          description: "Successfully generated authentication auth code"
+        "400":
+          description: "Bad Request - session missing, missing params, or no user profile"
+        "500":
+          description: "Internal Server Error - unexpected error during auth code generation"
+  /reset-password:
+    post:
+      responses:
+        "204":
+          description: "Password reset successfully"
+        "400":
+          description: "Bad Request - session missing, missing params, password validation failure, or new password matches old"
+  /reset-password-request:
+    post:
+      responses:
+        "200":
+          description: "Password reset request processed with MFA method info"
+        "400":
+          description: "Bad Request - session missing, missing params, too many reset requests, or too many invalid codes"
+        "404":
+          description: "User not found"
+        "500":
+          description: "Internal Server Error - MFA method error or queue error"
+  /reverification-result:
+    post:
+      responses:
+        "200":
+          description: "Successfully retrieved reverification result from IPV"
+        "400":
+          description: "Bad Request - session missing, missing params, IPV state mismatch, unsuccessful token response, or reverification result error"
+  /send-notification:
+    post:
+      responses:
+        "204":
+          description: "Notification sent successfully"
+        "400":
+          description: "Bad Request - session missing, missing params, invalid notification type, phone validation failure, or code limit reached"
+        "500":
+          description: "Internal Server Error - queue error, storage, or configuration error"
+  /signup:
+    post:
+      responses:
+        "200":
+          description: "User signed up successfully"
+        "400":
+          description: "Bad Request - session missing, missing params, account already exists, or password validation failure"
+  /start:
+    post:
+      responses:
+        "200":
+          description: "Session started successfully"
+        "400":
+          description: "Bad Request - session missing, invalid client session ID, or missing params"
+  /update-profile:
+    post:
+      responses:
+        "204":
+          description: "Profile updated successfully"
+        "400":
+          description: "Bad Request - session missing, missing params, or invalid update profile type"
+  /user-exists:
+    post:
+      responses:
+        "200":
+          description: "User existence check completed"
+        "400":
+          description: "Bad Request - session missing, missing params, invalid email, account locked, or invalid user context"
+        "500":
+          description: "Internal Server Error - storage or configuration error"
+  /verify-code:
+    post:
+      responses:
+        "204":
+          description: "Code verified successfully"
+        "400":
+          description: "Bad Request - session missing, missing params, invalid code, too many attempts, no user profile, or phone not registered"
+        "500":
+          description: "Internal Server Error - MFA method error"
+  /verify-mfa-code:
+    post:
+      responses:
+        "204":
+          description: "MFA code verified successfully"
+        "400":
+          description: "Bad Request - session missing, missing params, invalid code, invalid auth app secret, too many attempts, or no user profile"
+  /processing-identity:
+    post:
+      responses:
+        "200":
+          description: "Processing identity status returned (PROCESSING, COMPLETED, NO_ENTRY, ERROR, or INTERVENTION)"
+        "400":
+          description: "Bad Request - session missing or missing params"
+        "500":
+          description: "Internal Server Error - serialization or data retrieval failure"
+  /start-passkey-assertion:
+    post:
+      responses:
+        "200":
+          description: "Passkey assertion request started successfully"
+        "400":
+          description: "Bad Request - session missing, missing params, empty email, or user not found"
+        "500":
+          description: "Internal Server Error - serialization failure"
+  /finish-passkey-assertion:
+    post:
+      responses:
+        "200":
+          description: "Passkey assertion completed successfully"
+        "400":
+          description: "Bad Request - session missing, missing params, or invalid public key credential"
+        "401":
+          description: "Passkey assertion failed"
+        "500":
+          description: "Internal Server Error - assertion request parsing error"

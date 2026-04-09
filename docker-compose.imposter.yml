@@ -1,0 +1,14 @@
+services:
+  api-stub:
+    image: outofcoffee/imposter:3.28.3
+    ports:
+      - "${API_STUB_PORT:-8080}:8080"
+    volumes:
+      - ./imposter-stub:/opt/imposter/config
+    networks:
+      - di-net
+
+networks:
+  di-net:
+    name: authentication-frontend_di-net
+    external: true
