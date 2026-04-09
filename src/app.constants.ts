@@ -79,6 +79,7 @@ export const PATH_NAMES = {
   SFAD_CALLBACK: "/sfad-callback",
   CREATE_PASSKEY: "/create-passkey",
   CREATE_PASSKEY_CALLBACK: "/create-passkey-callback",
+  SESSION_ENDED: "/session-ended",
 };
 
 export const HREF_BACK = {

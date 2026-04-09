@@ -112,6 +112,7 @@ import { sfadAuthorizeRouter } from "./components/sfad-authorize/sfad-authorize-
 import { sfadCallbackRouter } from "./components/sfad-callback/sfad-callback-routes.js";
 import { createPasskeyRouter } from "./components/create-passkey/create-passkey-routes.js";
 import { createPasskeyCallbackRouter } from "./components/create-passkey-callback/create-passkey-callback-routes.js";
+import { sessionEndedRouter } from "./components/session-ended/session-ended-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -158,6 +159,7 @@ function registerRoutes(app: express.Application) {
   app.use(proveIdentityCallbackRouter);
   app.use(cookiesRouter);
   app.use(errorPageRouter);
+  app.use(sessionEndedRouter);
   if (supportAccountInterventions()) {
     app.use(accountInterventionRouter);
     app.use(permanentlyBlockedRouter);
