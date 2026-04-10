@@ -699,6 +699,13 @@
       "insetText": "Ni ddylech sefydlu allwedd mynediad ar ddyfais rydych yn ei rhannu gyda phobl eraill.",
       "skipButtonText": "Osgoi am y tro"
     },
+    "passkeyCreated": {
+      "title": "Rydych wedi sefydlu allwedd mynediad",
+      "header": "Rydych wedi sefydlu allwedd mynediad",
+      "paragraph1": "Y tro nesaf y byddwch yn mewngofnodi, gallwch sganio’ch wyneb neu’ch olion bysedd, neu nodi PIN, cod mynediad neu batrwm eich dyfais.",
+      "paragraph2": "Ni fyddwch angen eich cyfrinair na chod diogelwch GOV.UK One Login.",
+      "continueButtonText": "Parhau"
+    },
     "cannotChangeSecurityCodes": {
       "title": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd",
       "header": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd",

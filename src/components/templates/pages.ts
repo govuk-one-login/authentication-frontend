@@ -565,6 +565,9 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.CREATE_PASSKEY]: {
     template: "create-passkey/index.njk",
   },
+  [PATH_NAMES.PASSKEY_CREATED]: {
+    template: "passkey-created/index.njk",
+  },
 
   // Footer pages
   [PATH_NAMES.PRIVACY_POLICY]: {
