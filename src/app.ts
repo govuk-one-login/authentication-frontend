@@ -113,6 +113,7 @@ import { sfadCallbackRouter } from "./components/sfad-callback/sfad-callback-rou
 import { createPasskeyRouter } from "./components/create-passkey/create-passkey-routes.js";
 import { createPasskeyCallbackRouter } from "./components/create-passkey-callback/create-passkey-callback-routes.js";
 import { sessionEndedRouter } from "./components/session-ended/session-ended-routes.js";
+import { passkeyCreatedRouter } from "./components/passkey-created/passkey-created-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -181,6 +182,7 @@ function registerRoutes(app: express.Application) {
   if (supportPasskeyRegistration()) {
     app.use(createPasskeyRouter);
     app.use(createPasskeyCallbackRouter);
+    app.use(passkeyCreatedRouter);
   }
 
   // Development tools
