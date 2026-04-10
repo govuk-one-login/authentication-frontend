@@ -144,7 +144,7 @@ describe("create-passkey-callback controller", () => {
             success: true,
             scope: AMC_SCOPE.PASSKEY_CREATE,
           },
-          expectedRedirectUri: PATH_NAMES.AUTH_CODE,
+          expectedRedirectUri: PATH_NAMES.PASSKEY_CREATED,
         },
         {
           resultFromAmc: {
