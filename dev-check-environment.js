@@ -1,6 +1,6 @@
-import chai from "chai";
-chai.config.truncateThreshold = 0;
+import * as chai from "chai";
 const { expect } = chai;
+chai.config.truncateThreshold = 0;
 
 import { describe, it } from "mocha";
 import * as jose from "jose";
