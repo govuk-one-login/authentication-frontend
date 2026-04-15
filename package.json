@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-kms": "3.1017.0",
-    "@aws-sdk/client-ssm": "3.1002.0",
+    "@aws-sdk/client-ssm": "3.1026.0",
     "@govuk-one-login/frontend-analytics": "4.0.5",
     "@govuk-one-login/frontend-device-intelligence": "1.2.0",
     "@govuk-one-login/frontend-language-toggle": "2.2.2",
