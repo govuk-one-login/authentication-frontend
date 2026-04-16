@@ -774,7 +774,7 @@
       "link": "Check if you can change how you get security codes"
     },
     "changeSecurityCodesSignIn": {
-      "title": "You need to change how you get security codes - GOV.UK One Login",
+      "title": "You need to change how you get security codes",
       "header": "You need to change how you get security codes",
       "paragraph1": "You’ll need to use an authenticator app or a UK mobile phone number.",
       "paragraph2": "You must do this to avoid getting locked out of your GOV.UK One Login.",
