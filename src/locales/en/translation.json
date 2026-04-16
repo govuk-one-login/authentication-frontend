@@ -699,6 +699,13 @@
       "insetText": "You should not set up a passkey on a device that you share with other people.",
       "skipButtonText": "Skip for now"
     },
+    "passkeyCreated": {
+      "title": "You’ve set up a passkey",
+      "header": "You’ve set up a passkey",
+      "paragraph1": "Next time you sign in, you can scan your face or fingerprint, or enter your device PIN, passcode or pattern.",
+      "paragraph2": "You won’t need your GOV.UK One Login  password or a security code.",
+      "continueButtonText": "Continue"
+    },
     "cannotChangeSecurityCodes": {
       "title": "You cannot change how you get security codes at the moment",
       "header": "You cannot change how you get security codes at the moment",

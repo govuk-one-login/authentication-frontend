@@ -1,0 +1,29 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% set pageTitleName = 'pages.passkeyCreated.title' | translate %}
+{% block content %}
+
+<h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.passkeyCreated.header' | translate}}</h1>
+
+<form id="form-tracking" action="/passkey-created" method="post" novalidate>
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+    <p class="govuk-body">{{'pages.passkeyCreated.paragraph1' | translate}}</p>
+    <p class="govuk-body">{{'pages.passkeyCreated.paragraph2' | translate}}</p>
+
+    {{ govukButton({
+        "text": "pages.passkeyCreated.continueButtonText" | translate,
+        "type": "Submit",
+        "preventDoubleClick": true
+    }) }}
+</form>
+
+{% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
+{%- include "ga4-opl/template.njk" -%}
+{% endblock %}
+
+{% block scripts %}
+    <script defer type="text/javascript" src="/public/scripts/prevent-double-form-submit.js"></script>
+{% endblock %}
