@@ -691,7 +691,7 @@
       }
     },
     "createPasskey": {
-      "title": "Sign in faster with your face, fingerprint or passcode - GOV.UK One Login",
+      "title": "Sign in faster with your face, fingerprint or passcode",
       "header": "Sign in faster with your face, fingerprint or passcode",
       "paragraph1": "Set up a passkey for a secure and easy way to sign in, without needing your GOV.UK One Login password.",
       "paragraph2": "With a passkey, you can scan your face or fingerprint, or enter your device PIN or pattern.",
