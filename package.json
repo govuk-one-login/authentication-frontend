@@ -141,7 +141,7 @@
     "eslint": "9.39.2",
     "eslint-plugin-no-only-tests": "3.3.0",
     "esmock": "2.7.3",
-    "globals": "17.4.0",
+    "globals": "17.5.0",
     "husky": "9.1.7",
     "mocha": "11.7.5",
     "mock-req-res": "1.2.1",
