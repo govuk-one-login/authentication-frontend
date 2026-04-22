@@ -5,6 +5,7 @@ export function shouldPromptToRegisterPasskey(
   res: Response
 ): boolean {
   return (
+    req.session.user?.browserSupportsWebAuthn === true &&
     req.session.user?.hasActivePasskey === false &&
     req.session.user?.hasSkippedPasskeyRegistration !== true &&
     res.locals.supportPasskeyRegistration === true
@@ -16,6 +17,7 @@ export function shouldPromptToSignInWithPasskey(
   res: Response
 ): boolean {
   return (
+    req.session.user?.browserSupportsWebAuthn === true &&
     req.session.user?.hasActivePasskey === true &&
     res.locals.supportPasskeyUsage === true
   );

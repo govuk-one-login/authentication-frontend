@@ -8,65 +8,118 @@ import type { Request, Response } from "express";
 
 describe("passkeys helper", () => {
   describe("shouldPromptToRegisterPasskey", () => {
-    it(`should return true when hasActivePasskey=false and supportPasskeyRegistration=true`, () => {
-      // Arrange
-      const expected = true;
-
-      const req = {
-        session: { user: { hasActivePasskey: false } },
-      } as any as Request;
-
-      const res = {
-        locals: { supportPasskeyRegistration: true },
-      } as any as Response;
-
-      // Act
-      const actual = shouldPromptToRegisterPasskey(req, res);
-
-      // Assert
-      expect(actual).to.eq(expected);
-    });
-  });
-
-  it(`should return false when user has skipped passkey registration already in the journey`, () => {
-    // Arrange
-    const expected = false;
-
-    const req = {
-      session: {
-        user: { hasActivePasskey: true, hasSkippedPasskeyRegistration: true },
+    const testCases = [
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: false,
+        hasSkippedPasskeyRegistration: false,
+        supportPasskeyRegistration: true,
+        expected: true,
       },
-    } as any as Request;
+      {
+        browserSupportsWebAuthn: false,
+        hasActivePasskey: false,
+        hasSkippedPasskeyRegistration: false,
+        supportPasskeyRegistration: true,
+        expected: false,
+      },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: true,
+        hasSkippedPasskeyRegistration: false,
+        supportPasskeyRegistration: true,
+        expected: false,
+      },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: false,
+        hasSkippedPasskeyRegistration: true,
+        supportPasskeyRegistration: true,
+        expected: false,
+      },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: false,
+        hasSkippedPasskeyRegistration: false,
+        supportPasskeyRegistration: false,
+        expected: false,
+      },
+    ];
 
-    const res = {
-      locals: { supportPasskeyUsage: true },
-    } as any as Response;
+    testCases.forEach(
+      ({
+        browserSupportsWebAuthn,
+        hasActivePasskey,
+        hasSkippedPasskeyRegistration,
+        supportPasskeyRegistration,
+        expected,
+      }) => {
+        it(`should return ${expected} when browserSupportsWebAuthn=${browserSupportsWebAuthn}, hasActivePasskey=${hasActivePasskey}, hasSkippedPasskeyRegistration=${hasSkippedPasskeyRegistration}, supportPasskeyRegistration=${supportPasskeyRegistration}`, () => {
+          const req = {
+            session: {
+              user: {
+                browserSupportsWebAuthn,
+                hasActivePasskey,
+                hasSkippedPasskeyRegistration,
+              },
+            },
+          } as any as Request;
+          const res = {
+            locals: { supportPasskeyRegistration },
+          } as any as Response;
 
-    // Act
-    const actual = shouldPromptToRegisterPasskey(req, res);
-
-    // Assert
-    expect(actual).to.eq(expected);
+          expect(shouldPromptToRegisterPasskey(req, res)).to.eq(expected);
+        });
+      }
+    );
   });
 
   describe("shouldPromptToSignInWithPasskey", () => {
-    it(`should return true when hasActivePasskey=true and supportPasskeyUsage=true`, () => {
-      // Arrange
-      const expected = true;
+    const testCases = [
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: true,
+        supportPasskeyUsage: true,
+        expected: true,
+      },
+      {
+        browserSupportsWebAuthn: false,
+        hasActivePasskey: true,
+        supportPasskeyUsage: true,
+        expected: false,
+      },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: false,
+        supportPasskeyUsage: true,
+        expected: false,
+      },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: true,
+        supportPasskeyUsage: false,
+        expected: false,
+      },
+    ];
 
-      const req = {
-        session: { user: { hasActivePasskey: true } },
-      } as any as Request;
+    testCases.forEach(
+      ({
+        browserSupportsWebAuthn,
+        hasActivePasskey,
+        supportPasskeyUsage,
+        expected,
+      }) => {
+        it(`should return ${expected} when browserSupportsWebAuthn=${browserSupportsWebAuthn}, hasActivePasskey=${hasActivePasskey}, supportPasskeyUsage=${supportPasskeyUsage}`, () => {
+          const req = {
+            session: { user: { browserSupportsWebAuthn, hasActivePasskey } },
+          } as any as Request;
+          const res = {
+            locals: { supportPasskeyUsage },
+          } as any as Response;
 
-      const res = {
-        locals: { supportPasskeyUsage: true },
-      } as any as Response;
-
-      // Act
-      const actual = shouldPromptToSignInWithPasskey(req, res);
-
-      // Assert
-      expect(actual).to.eq(expected);
-    });
+          expect(shouldPromptToSignInWithPasskey(req, res)).to.eq(expected);
+        });
+      }
+    );
   });
 });
