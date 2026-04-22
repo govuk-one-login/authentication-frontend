@@ -1,18 +1,22 @@
 import type { NextFunction, Request, Response } from "express";
-import { validationResult } from "express-validator";
+import {
+  validationResult,
+  type ErrorFormatter,
+  type ValidationError,
+} from "express-validator";
 import { isObjectEmpty, renderBadRequest } from "../utils/validation.js";
 import { isReauth, isUpliftRequired } from "../utils/request.js";
-export const validationErrorFormatter = ({
-  msg,
-  param,
-}: {
-  msg: string;
-  param: string;
-}): any => {
-  return {
-    text: msg,
-    href: `#${param}`,
-  };
+
+export const validationErrorFormatter: ErrorFormatter = (
+  error: ValidationError
+) => {
+  if (error.type === "field") {
+    return {
+      text: error.msg,
+      href: `#${error.path}`,
+    };
+  }
+  throw new Error(`Unsupported express-validator error type: ${error.type}`);
 };
 
 export function validateBodyMiddleware(

@@ -8,6 +8,7 @@ import {
 } from "../../../src/middleware/form-validation-middleware.js";
 import { mockRequest, mockResponse } from "mock-req-res";
 import type { SinonStub } from "sinon";
+import type { FieldValidationError } from "express-validator";
 
 describe("HTML Lang middleware", () => {
   let req: Partial<Request>;
@@ -26,18 +27,34 @@ describe("HTML Lang middleware", () => {
   });
 
   describe("validationErrorFormatter", () => {
-    it("should format error message", () => {
-      const error = {
+    it("should format field error message", () => {
+      const error: FieldValidationError = {
+        type: "field",
         location: "body",
         msg: "error message",
-        param: "param",
+        path: "param",
       };
 
       const formattedError = validationErrorFormatter(error);
 
       expect(formattedError).to.be.eql({
         text: error.msg,
-        href: `#${error.param}`,
+        href: `#${error.path}`,
+      });
+    });
+
+    [
+      "alternative",
+      "alternative_grouped",
+      "unknown_fields",
+      "unknown_type",
+    ].forEach((type) => {
+      it(`should throw for unsupported error type '${type}'`, () => {
+        const error = { type } as any;
+
+        expect(() => validationErrorFormatter(error)).to.throw(
+          `Unsupported express-validator error type: ${type}`
+        );
       });
     });
   });
