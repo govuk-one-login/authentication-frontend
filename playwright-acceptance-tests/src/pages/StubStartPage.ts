@@ -1,4 +1,5 @@
 import type { Page } from "playwright";
+import { expect } from "../support/expect";
 import { BasePage } from "./BasePage";
 
 export class StubStartPage extends BasePage {
@@ -14,19 +15,14 @@ export class StubStartPage extends BasePage {
 
     await this.goto(url);
 
-    // The Orchestration Stub main heading
-    await this.page
-      .getByRole("heading", { name: /orchestration stub/i })
-      .waitFor({ state: "visible" });
+    await expect(
+      this.page.getByRole("heading", { name: /orchestration stub/i })
+    ).toBeVisible();
 
     await this.assertBasicSecurity();
     await this.runAccessibilityCheck();
   }
 
-  /**
-   * Your stub page already loads with defaults selected.
-   * This method exists for BDD readability and future expansion.
-   */
   async selectDefaultOptions(): Promise<void> {
     return;
   }
