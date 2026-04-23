@@ -1,0 +1,15 @@
+{
+  "redactedPhoneNumber": "****7890",
+  "mfaMethodType": "AUTH_APP",
+  "latestTermsAndConditionsAccepted": true,
+  "mfaRequired": true,
+  "mfaMethodVerified": true,
+  "passwordChangeRequired": false,
+  "mfaMethods": [
+    {
+      "id": "stub-mfa-method-id",
+      "type": "AUTH_APP",
+      "priority": "DEFAULT"
+    }
+  ]
+}
