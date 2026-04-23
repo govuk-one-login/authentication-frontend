@@ -94,6 +94,7 @@ export interface UserSession {
   hasActivePasskey?: boolean;
   hasSkippedPasskeyRegistration?: boolean;
   needsForcedMFAReset?: boolean;
+  browserSupportsWebAuthn?: boolean;
 }
 
 export interface UserSessionClient {

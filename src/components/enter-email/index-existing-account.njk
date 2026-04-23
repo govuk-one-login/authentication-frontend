@@ -14,6 +14,8 @@
 <form action="/enter-email" method="post" novalidate>
 
 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+<input type="hidden" name="browserSupportsWebAuthn" id="browserSupportsWebAuthn" value="false"/>
+
 
 {{ govukInput({
      label: {
@@ -42,4 +44,10 @@
 
 {% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
 {%- include "ga4-opl/template.njk" -%}
+{% endblock %}
+
+{% block scripts %}
+    {% if supportPasskeyUsage or supportPasskeyRegistration %}
+        <script defer type="text/javascript" src="/public/scripts/check-passkeys-supported.js"></script>
+    {% endif %}
 {% endblock %}
