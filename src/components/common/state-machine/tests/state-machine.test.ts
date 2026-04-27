@@ -99,6 +99,17 @@ describe("state-machine", () => {
     });
   });
 
+  describe(`getNextState - ${PATH_NAMES.SIGN_IN_WITH_PASSKEY}`, () => {
+    it(`should move from ${PATH_NAMES.ENTER_EMAIL_SIGN_IN} to ${PATH_NAMES.SIGN_IN_WITH_PASSKEY} when shouldPromptToSignInWithPasskey is true`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.ENTER_EMAIL_SIGN_IN,
+        USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS,
+        { ...DEFAULT_CONTEXT, shouldPromptToSignInWithPasskey: true }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_WITH_PASSKEY);
+    });
+  });
+
   describe("getNextState - login journey (non 2fa)", () => {
     it("should move from sign or create to enter email when user event is sign in", () => {
       const nextState = getNextState(
