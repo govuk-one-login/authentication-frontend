@@ -55,6 +55,7 @@ import {
 } from "./middleware/session-middleware.js";
 import { updatedTermsConditionsRouter } from "./components/updated-terms-conditions/updated-terms-conditions-routes.js";
 import { signInOrCreateRouter } from "./components/sign-in-or-create/sign-in-or-create-routes.js";
+import { signInWithPasskeyRouter } from "./components/sign-in-with-passkey/sign-in-with-passkey-routes.js";
 import { accountNotFoundRouter } from "./components/account-not-found/account-not-found-routes.js";
 import { resetPasswordCheckEmailRouter } from "./components/reset-password-check-email/reset-password-check-email-routes.js";
 import { setLocalVarsMiddleware } from "./middleware/set-local-vars-middleware.js";
@@ -125,6 +126,7 @@ const APP_VIEWS = [
 function registerRoutes(app: express.Application) {
   app.use(landingRouter);
   app.use(signInOrCreateRouter);
+  app.use(signInWithPasskeyRouter);
   app.use(enterEmailRouter);
   app.use(accountNotFoundRouter);
   app.use(enterPasswordRouter);
