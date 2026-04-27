@@ -357,6 +357,14 @@
       "tryAnotherLinkText": "Try another email address",
       "tryAnotherLinkHref": "/enter-email-existing-account"
     },
+    "signInWithPasskey": {
+      "title": "Sign in with your face, fingerprint or passcode",
+      "header": "Sign in with your face, fingerprint or passcode",
+      "paragraph1": "Use your passkey to sign into GOV.UK One Login.",
+      "paragraph2": "You’ll be asked to scan your face or fingerprint, or enter your device PIN or pattern.",
+      "paragraph3": "This will be however you unlock your phone, computer or tablet.",
+      "signInAnotherWayLinkText": "Sign in another way"
+    },
     "enterPassword": {
       "title": "Enter your password",
       "header": "Enter your password",
