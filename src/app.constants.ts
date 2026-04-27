@@ -12,6 +12,7 @@ export const PATH_NAMES = {
   PRIVACY_POLICY_NEW: "/govuk-one-login-privacy-notice",
   SUPPORT: "/support",
   SIGN_IN_OR_CREATE: "/sign-in-or-create",
+  SIGN_IN_WITH_PASSKEY: "/sign-in-passkey",
   ENTER_EMAIL_CREATE_ACCOUNT: "/enter-email-create",
   ENTER_EMAIL_CREATE_ACCOUNT_REQUEST: "/enter-email-create-request",
   ENTER_EMAIL_SIGN_IN: "/enter-email",
