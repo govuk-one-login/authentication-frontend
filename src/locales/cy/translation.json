@@ -357,6 +357,14 @@
       "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
       "tryAnotherLinkHref": "/enter-email-existing-account"
     },
+    "signInWithPasskey": {
+      "title": "Mewngofnodi gyda’ch wyneb, olion bysedd neu god mynediad",
+      "header": "Mewngofnodi gyda’ch wyneb, olion bysedd neu god mynediad",
+      "paragraph1": "Defnyddiwch eich allwedd mynediad i fewngofnodi i GOV.UK One Login.",
+      "paragraph2": "Gofynnir i chi sganio’ch wyneb neu’ch olion bysedd, neu roi PIN neu batrwm eich dyfais.",
+      "paragraph3": "Bydd hyn fodd bynnag yn datgloi eich ffôn, cyfrifiadur neu dabled.",
+      "signInAnotherWayLinkText": "Mewngofnodi mewn ffordd arall"
+    },
     "enterPassword": {
       "title": "Rhowch eich cyfrinair",
       "header": "Rhowch eich cyfrinair",
