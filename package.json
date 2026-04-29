@@ -87,7 +87,7 @@
     "express-validator": "7.2.1",
     "govuk-frontend": "5.11.2",
     "helmet": "8.1.0",
-    "i18next": "25.7.3",
+    "i18next": "26.0.6",
     "i18next-fs-backend": "2.6.5",
     "i18next-http-middleware": "3.9.3",
     "jose": "6.2.2",
