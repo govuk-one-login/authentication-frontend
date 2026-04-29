@@ -39,8 +39,7 @@
     "watch-node": "nodemon -r dotenv/config --inspect=0.0.0.0:9230 dist/server.js | pino-pretty",
     "watch-ts": "tsc -w",
     "watch-sass": "sass --load-path=node_modules/govuk-frontend/dist/govuk --watch --quiet-deps src/assets/scss/application.scss dist/public/style.css",
-    "dev:render-user-journey-documentation": "node --loader ts-node/esm ./scripts/render-user-journey-documentation.ts",
-    "prepare": "husky"
+    "dev:render-user-journey-documentation": "node --loader ts-node/esm ./scripts/render-user-journey-documentation.ts"
   },
   "mocha": {
     "diff": true,
@@ -54,11 +53,6 @@
       "tsx"
     ],
     "exit": true
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty"
-    }
   },
   "prettier": {
     "trailingComma": "es5",
@@ -141,7 +135,6 @@
     "eslint-plugin-no-only-tests": "3.3.0",
     "esmock": "2.7.3",
     "globals": "17.4.0",
-    "husky": "9.1.7",
     "mocha": "11.7.5",
     "mock-req-res": "1.2.1",
     "nock": "15.0.0",
