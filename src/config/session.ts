@@ -17,6 +17,9 @@ export function getSessionStore(redisConfig: RedisConfig): RedisStore {
       socket: {
         host: redisConfig.host,
         port: redisConfig.port,
+        reconnectStrategy: (retries) => {
+          return Math.min(retries * 100, 3000) + Math.random() * 100;
+        },
       },
     };
 
