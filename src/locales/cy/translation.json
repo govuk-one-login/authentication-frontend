@@ -1158,21 +1158,26 @@
           "linkText": "telerau ac amodau ar gyfer GOV.UK"
         },
         "paragraph2": {
-          "text1": "Rheolir y GOV.UK One Login gan ",
-          "linkText": "Gwasanaeth Digidol y Llywodraeth",
-          "text2": " (GDS) ar ran y Goron. Mae GDS yn rhan o Swyddfa’r Cabinet a chaiff ei gyfeirio ato fel ’ni’ o hyn ymlaen."
+          "text1": "Mae GOV.UK One Login yn cael ei reoli gan ",
+          "linkText": "Wasanaeth Digidol y Llywodraeth",
+          "text2": " (GDS). Mae GDS yn rhan o’r Adran Gwyddoniaeth, Arloesi a Thechnoleg (DSIT) a chyfeirir ato fel ’ni’ o hyn ymlaen."
         },
         "paragraph3": {
+          "text1": "DSIT yw’r rheolydd data ar gyfer GOV.UK One Login. Mae hyn yn golygu bod DSIT yn rheoli sut a pham mae data personol yn cael ei ddefnyddio. Gallwch ddarganfod mwy ar ",
+          "linkText": "wefan Swyddfa’r Comisiynydd Gwybodaeth",
+          "text2": "."
+        },
+        "paragraph4": {
           "text1": "Darllenwch y telerau ac amodau hyn, yr ",
           "linkText1": "hysbysiad preifatrwydd GOV.UK One Login",
           "text2": " a ",
           "linkText2": "Pholisi cwcis cyfrifon GOV.UK",
-          "text3": "cyn defnyddio’r GOV.UK One Login. Mae’r hysbysiad preifatrwydd yn egluro’r telerau rydym yn prosesu unrhyw ddata personol y byddwn yn ei gasglu gennych neu eich bod yn ei ddarparu i ni. Mae’r polisi cwcis yn rhoi gwybodaeth am y cwcis rydym yn eu defnyddio a sut rydym yn eu defnyddio pan rydych yn defnyddio GOV.UK neu eich GOV.UK One Login."
+          "text3": "cyn defnyddio GOV.UK One Login. Mae’r hysbysiad preifatrwydd yn esbonio sut rydym yn prosesu unrhyw ddata personol a gasglwn gennych chi neu rydych yn ei ddarparu i ni. Mae’r polisi cwcis yn rhoi gwybodaeth am y cwcis rydym yn eu defnyddio a sut rydym yn eu defnyddio pan rydych yn defnyddio GOV.UK One Login."
         },
-        "paragraph4": "Drwy gofrestru ar gyfer a pharhau i ddefnyddio GOV.UK One Login, rydych yn cytuno i’r telerau ac amodau hyn, yr hysbysiad preifatrwydd a’r polisi cwcis.",
+        "paragraph5": "Trwy gofrestru ar gyfer a pharhau i ddefnyddio GOV.UK One Login, rydych yn cytuno i’r telerau ac amodau hyn ac wedi darllen ein hysbysiad preifatrwydd a’n polisi cwcis.",
         "subHeader": "Newidiadau i’r telerau ac amodau hyn",
-        "paragraph5": "Gallwn ddiweddaru’r telerau hyn, yn ogystal â’r polisi cwcis a’r hysbysiad preifatrwydd, ar unrhyw adeg heb rybudd.",
-        "paragraph6": "Os ydym yn newid y telerau ac amodau, byddwn yn gofyn i chi eu derbyn y tro nesaf y byddwch yn mewngofnodi i GOV.UK One Login."
+        "paragraph6": "Gallwn ddiweddaru’r telerau hyn, yn ogystal â’r polisi cwcis a’r hysbysiad preifatrwydd, ar unrhyw adeg heb rybudd.",
+        "paragraph7": "Os ydym yn newid y telerau ac amodau, byddwn yn gofyn i chi eu derbyn y tro nesaf y byddwch yn mewngofnodi i GOV.UK One Login."
       },
       "section2": {
         "header": "Cael mynydiad i’ch GOV.UK One Login",

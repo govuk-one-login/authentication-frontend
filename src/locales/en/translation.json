@@ -1160,19 +1160,24 @@
         "paragraph2": {
           "text1": "GOV.UK One Login is managed by ",
           "linkText": "Government Digital Service",
-          "text2": " (GDS) on behalf of the Crown. GDS is part of the Cabinet Office and will be referred to as ‘we’ from now on."
+          "text2": " (GDS). GDS is part of the Department for Science, Innovation and Technology (DSIT) and will be referred to as ‘we’ from now on."
         },
         "paragraph3": {
+          "text1": "DSIT is the data controller for GOV.UK One Login. This means DSIT manages how and why personal data is used. You can find out more on the ",
+          "linkText": "Information Commissioner’s Office website",
+          "text2": "."
+        },
+        "paragraph4": {
           "text1": "Please read these terms and conditions, the ",
           "linkText1": "GOV.UK One Login privacy notice",
           "text2": " and the ",
           "linkText2": "GOV.UK One Login cookies policy",
-          "text3": "before using GOV.UK One Login. The privacy notice explains the terms on which we process any personal data we collect from you or that you provide to us. The cookie policy gives information about the cookies we use and how we use them when you use GOV.UK One Login."
+          "text3": "before using GOV.UK One Login. The privacy notice explains how we process any personal data we collect from you or that you provide to us. The cookie policy gives information about the cookies we use and how we use them when you use GOV.UK One Login."
         },
-        "paragraph4": "By registering for and continuing to use GOV.UK One Login, you agree to these terms and conditions, the privacy notice and cookies policy.",
+        "paragraph5": "By registering for and continuing to use GOV.UK One Login, you agree to these terms and conditions, and have read our privacy notice and cookies policy.",
         "subHeader": "Changes to these terms and conditions",
-        "paragraph5": "We can update these terms, as well as the cookies policy and privacy notice, at any time without notice.",
-        "paragraph6": "If we change the terms and conditions, we’ll ask you to accept them the next time you sign in to GOV.UK One Login."
+        "paragraph6": "We can update these terms, as well as the cookies policy and privacy notice, at any time without notice.",
+        "paragraph7": "If we change the terms and conditions, we’ll ask you to accept them the next time you sign in to GOV.UK One Login."
       },
       "section2": {
         "header": "Accessing GOV.UK One Login",
