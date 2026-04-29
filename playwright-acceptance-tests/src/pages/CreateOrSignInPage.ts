@@ -1,4 +1,5 @@
 import type { Page } from "playwright";
+import { expect } from "../support/expect";
 import { BasePage } from "./BasePage";
 
 export class CreateOrSignInPage extends BasePage {
@@ -7,11 +8,11 @@ export class CreateOrSignInPage extends BasePage {
   }
 
   async assertLoaded(): Promise<void> {
-    await this.page
-      .getByRole("heading", {
+    await expect(
+      this.page.getByRole("heading", {
         name: /create your gov\.uk one login or sign in/i,
       })
-      .waitFor({ state: "visible" });
+    ).toBeVisible();
 
     await this.assertBasicSecurity();
     await this.runAccessibilityCheck();

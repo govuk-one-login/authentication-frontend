@@ -7,8 +7,24 @@ import {
 import type { Browser, BrowserContext, Page, BrowserType } from "playwright";
 import { chromium, firefox, webkit } from "playwright";
 
+let sharedBrowser: Browser | undefined;
+
+async function getBrowser(): Promise<Browser> {
+  if (!sharedBrowser) {
+    const browserName = (process.env.BROWSER || "chromium").toLowerCase();
+    const headless = (process.env.HEADLESS || "true").toLowerCase() === "true";
+    const browserType: BrowserType =
+      browserName === "firefox"
+        ? firefox
+        : browserName === "webkit"
+          ? webkit
+          : chromium;
+    sharedBrowser = await browserType.launch({ headless });
+  }
+  return sharedBrowser;
+}
+
 export class PlaywrightWorld extends World {
-  browser?: Browser;
   context?: BrowserContext;
   page?: Page;
 
@@ -16,34 +32,17 @@ export class PlaywrightWorld extends World {
     super(options);
   }
 
-  async openBrowser(): Promise<void> {
-    const browserName = (process.env.BROWSER || "chromium").toLowerCase();
-    const headless = (process.env.HEADLESS || "true").toLowerCase() === "true";
-
-    const browserType = setBrowserType(browserName);
-
-    this.browser = await browserType.launch({ headless });
-    this.context = await this.browser.newContext();
+  async createContext(): Promise<void> {
+    const browser = await getBrowser();
+    this.context = await browser.newContext();
     this.page = await this.context.newPage();
   }
 
-  async closeBrowser(): Promise<void> {
+  async closeContext(): Promise<void> {
     if (this.page) await this.page.close();
     if (this.context) await this.context.close();
-    if (this.browser) await this.browser.close();
   }
 }
 
 setWorldConstructor(PlaywrightWorld);
 setDefaultTimeout(30 * 1000);
-
-function setBrowserType(browserName: string): BrowserType {
-  switch (browserName) {
-    case "firefox":
-      return firefox;
-    case "webkit":
-      return webkit;
-    default:
-      return chromium;
-  }
-}
