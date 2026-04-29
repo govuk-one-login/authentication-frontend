@@ -691,13 +691,20 @@
       }
     },
     "createPasskey": {
-      "title": "Sign in faster with your face, fingerprint or passcode - GOV.UK One Login",
+      "title": "Sign in faster with your face, fingerprint or passcode",
       "header": "Sign in faster with your face, fingerprint or passcode",
       "paragraph1": "Set up a passkey for a secure and easy way to sign in, without needing your GOV.UK One Login password.",
       "paragraph2": "With a passkey, you can scan your face or fingerprint, or enter your device PIN or pattern.",
       "paragraph3": "This will be however you unlock your phone, computer or tablet.",
       "insetText": "You should not set up a passkey on a device that you share with other people.",
       "skipButtonText": "Skip for now"
+    },
+    "passkeyCreated": {
+      "title": "You’ve set up a passkey",
+      "header": "You’ve set up a passkey",
+      "paragraph1": "Next time you sign in, you can scan your face or fingerprint, or enter your device PIN, passcode or pattern.",
+      "paragraph2": "You won’t need your GOV.UK One Login  password or a security code.",
+      "continueButtonText": "Continue"
     },
     "cannotChangeSecurityCodes": {
       "title": "You cannot change how you get security codes at the moment",
@@ -774,7 +781,7 @@
       "link": "Check if you can change how you get security codes"
     },
     "changeSecurityCodesSignIn": {
-      "title": "You need to change how you get security codes - GOV.UK One Login",
+      "title": "You need to change how you get security codes",
       "header": "You need to change how you get security codes",
       "paragraph1": "You’ll need to use an authenticator app or a UK mobile phone number.",
       "paragraph2": "You must do this to avoid getting locked out of your GOV.UK One Login.",

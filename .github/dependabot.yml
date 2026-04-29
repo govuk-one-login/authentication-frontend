@@ -3,8 +3,8 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: daily
-      time: "03:00"
+      interval: "cron"
+      cronjob: "0 3 1,15 * *"
     cooldown:
       default-days: 7
     target-branch: main
@@ -56,7 +56,8 @@ updates:
       - dependency-name: "nodemon"
         update-types: ["version-update:semver-patch"]
       - dependency-name: "pino-pretty"
-        update-types: ["version-update:semver-patch"]
+        update-types:
+          ["version-update:semver-patch", "version-update:semver-minor"]
       - dependency-name: "prettier"
         update-types: ["version-update:semver-patch"]
       - dependency-name: "sass"
@@ -108,7 +109,8 @@ updates:
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: weekly
+      interval: "cron"
+      cronjob: "0 3 1,15 * *"
     open-pull-requests-limit: 10
     groups:
       gha-all-dependencies:

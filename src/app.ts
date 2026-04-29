@@ -1,6 +1,5 @@
 import type { Application } from "express";
 import express from "express";
-import "express-async-errors";
 import cookieParser from "cookie-parser";
 import type serveStatic from "serve-static";
 import { getRequestContext, logger, loggerMiddleware } from "./utils/logger.js";
@@ -112,6 +111,8 @@ import { sfadAuthorizeRouter } from "./components/sfad-authorize/sfad-authorize-
 import { sfadCallbackRouter } from "./components/sfad-callback/sfad-callback-routes.js";
 import { createPasskeyRouter } from "./components/create-passkey/create-passkey-routes.js";
 import { createPasskeyCallbackRouter } from "./components/create-passkey-callback/create-passkey-callback-routes.js";
+import { sessionEndedRouter } from "./components/session-ended/session-ended-routes.js";
+import { passkeyCreatedRouter } from "./components/passkey-created/passkey-created-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -158,6 +159,7 @@ function registerRoutes(app: express.Application) {
   app.use(proveIdentityCallbackRouter);
   app.use(cookiesRouter);
   app.use(errorPageRouter);
+  app.use(sessionEndedRouter);
   if (supportAccountInterventions()) {
     app.use(accountInterventionRouter);
     app.use(permanentlyBlockedRouter);
@@ -179,6 +181,7 @@ function registerRoutes(app: express.Application) {
   if (supportPasskeyRegistration()) {
     app.use(createPasskeyRouter);
     app.use(createPasskeyCallbackRouter);
+    app.use(passkeyCreatedRouter);
   }
 
   // Development tools
@@ -297,7 +300,7 @@ async function createApp(): Promise<express.Application> {
   app.use(channelMiddleware);
   app.use(environmentBannerMiddleware);
   app.use(getSessionIdMiddleware);
-  app.post("*", sanitizeRequestMiddleware);
+  app.post("/*splat", sanitizeRequestMiddleware);
   app.use(csrfMiddleware);
   app.use(setHtmlLangMiddleware);
   app.use(initialiseSessionMiddleware);

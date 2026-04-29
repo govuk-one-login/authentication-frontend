@@ -75,6 +75,7 @@ const USER_JOURNEY_EVENTS = {
   CREATE_PASSKEY_COMPLETED: "CREATE_PASSKEY_COMPLETED",
   CREATE_PASSKEY_SKIPPED: "CREATE_PASSKEY_SKIPPED",
   CREATE_PASSKEY_BACK: "CREATE_PASSKEY_BACK",
+  PASSKEY_CREATED: "PASSKEY_CREATED",
 };
 
 export interface AuthStateContext {
@@ -553,7 +554,7 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.CREATE_PASSKEY_CALLBACK]: {
         on: {
           [USER_JOURNEY_EVENTS.CREATE_PASSKEY_COMPLETED]: [
-            INTERMEDIATE_STATES.SIGN_IN_END,
+            PATH_NAMES.PASSKEY_CREATED,
           ],
           [USER_JOURNEY_EVENTS.CREATE_PASSKEY_SKIPPED]: [
             INTERMEDIATE_STATES.SIGN_IN_END,
@@ -564,6 +565,13 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
         meta: {
           optionalPaths: [PATH_NAMES.CREATE_PASSKEY],
+        },
+      },
+      [PATH_NAMES.PASSKEY_CREATED]: {
+        on: {
+          [USER_JOURNEY_EVENTS.PASSKEY_CREATED]: [
+            INTERMEDIATE_STATES.SIGN_IN_END,
+          ],
         },
       },
       [INTERMEDIATE_STATES.SIGN_IN_END]: {

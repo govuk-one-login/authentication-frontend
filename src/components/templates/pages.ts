@@ -559,8 +559,14 @@ export const pages: Record<string, Page | PageVariant[]> = {
     template: "signed-out/index.njk",
     options: { signinLink: "#" },
   },
+  [PATH_NAMES.SESSION_ENDED]: {
+    template: "session-ended/index.njk",
+  },
   [PATH_NAMES.CREATE_PASSKEY]: {
     template: "create-passkey/index.njk",
+  },
+  [PATH_NAMES.PASSKEY_CREATED]: {
+    template: "passkey-created/index.njk",
   },
 
   // Footer pages

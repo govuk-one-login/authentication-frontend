@@ -691,13 +691,20 @@
       }
     },
     "createPasskey": {
-      "title": "Mewngofnodi’n gyflymach gyda’ch wyneb, eich olion bysedd neu’ch cod mynediad - GOV.UK One Login",
+      "title": "Mewngofnodi’n gyflymach gyda’ch wyneb, eich olion bysedd neu’ch cod mynediad",
       "header": " Mewngofnodi’n gyflymach gyda’ch wyneb, eich olion bysedd neu’ch cod mynediad",
       "paragraph1": "Sefydlwch allwedd mynediad ar gyfer ffordd ddiogel a hawdd o fewngofnodi, heb fod angen eich cyfrinair GOV.UK One Login.",
       "paragraph2": "Gyda allwedd mynediad, gallwch sganio’ch wyneb neu’ch olion bysedd, neu nodi PIN neu batrwm eich dyfais.",
       "paragraph3": "Bydd hyn sut bynnag y byddwch yn datgloi’ch ffôn, cyfrifiadur neu dabled.",
       "insetText": "Ni ddylech sefydlu allwedd mynediad ar ddyfais rydych yn ei rhannu gyda phobl eraill.",
       "skipButtonText": "Osgoi am y tro"
+    },
+    "passkeyCreated": {
+      "title": "Rydych wedi sefydlu allwedd mynediad",
+      "header": "Rydych wedi sefydlu allwedd mynediad",
+      "paragraph1": "Y tro nesaf y byddwch yn mewngofnodi, gallwch sganio’ch wyneb neu’ch olion bysedd, neu nodi PIN, cod mynediad neu batrwm eich dyfais.",
+      "paragraph2": "Ni fyddwch angen eich cyfrinair na chod diogelwch GOV.UK One Login.",
+      "continueButtonText": "Parhau"
     },
     "cannotChangeSecurityCodes": {
       "title": "Ni allwch newid sut rydych yn cael codau diogelwch ar hyn o bryd",
@@ -774,7 +781,7 @@
       "link": "Gwiriwch a allwch chi newid sut rydych yn cael codau diogelwch"
     },
     "changeSecurityCodesSignIn": {
-      "title": "Mae angen i chi newid sut rydych yn cael codau diogelwch - GOV.UK One Login",
+      "title": "Mae angen i chi newid sut rydych yn cael codau diogelwch",
       "header": "Mae angen i chi newid sut rydych yn cael codau diogelwch",
       "paragraph1": "Bydd angen i chi ddefnyddio ap dilysydd neu rif ffôn symudol yn y DU.",
       "paragraph2": "Rhaid i chi wneud hyn er mwyn osgoi cael eich cloi allan o’ch GOV.UK One Login.",

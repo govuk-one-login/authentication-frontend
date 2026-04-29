@@ -14,8 +14,8 @@ import type {
   EnterEmailServiceInterface,
   LockoutInformation,
 } from "../types.js";
-import { JOURNEY_TYPE, ERROR_CODES } from "../../common/constants.js";
-import { PATH_NAMES } from "../../../app.constants.js";
+import { ERROR_CODES, JOURNEY_TYPE } from "../../common/constants.js";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants.js";
 import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
@@ -36,6 +36,12 @@ describe("enter email controller", () => {
       success: true,
     }),
   } as unknown as CheckReauthServiceInterface;
+
+  const passkeysSupportedValues = [
+    { browserSupportsWebAuthn: "true", expectedValInSession: true },
+    { browserSupportsWebAuthn: "false", expectedValInSession: false },
+    { browserSupportsWebAuthn: undefined, expectedValInSession: false },
+  ];
 
   beforeEach(() => {
     res = mockResponse();
@@ -213,7 +219,7 @@ describe("enter email controller", () => {
         lockType: "codeBlock",
         lockTTL: lockTTlInSeconds.toString(),
         journeyType: "SIGN_IN",
-        mfaMethodType: "SMS",
+        mfaMethodType: MFA_METHOD_TYPE.SMS,
       };
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
@@ -472,6 +478,28 @@ describe("enter email controller", () => {
       );
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_PASSWORD);
+    });
+
+    passkeysSupportedValues.forEach((testInput) => {
+      it(`should correctly store the browserSupportsWebAuthn result in the users session when it is ${testInput.browserSupportsWebAuthn}`, async () => {
+        req.body.browserSupportsWebAuthn = testInput.browserSupportsWebAuthn;
+
+        const fakeService: EnterEmailServiceInterface = {
+          userExists: sinon.fake.returns({
+            success: true,
+            data: {
+              doesUserExist: true,
+              needsForcedMFAResetAfterMFACheck: false,
+            },
+          }),
+        } as unknown as EnterEmailServiceInterface;
+
+        await enterEmailPost(fakeService)(req as Request, res as Response);
+
+        expect(req.session.user.browserSupportsWebAuthn).to.eq(
+          testInput.expectedValInSession
+        );
+      });
     });
   });
 

@@ -606,8 +606,8 @@ export function furtherInformationPost(req: Request, res: Response): void {
 }
 
 export function generatePageTitle(req: Request): string {
-  const theme = (req.query.theme || req.body.theme) as string;
-  const subtheme = (req.query.subtheme || req.body.subtheme) as string;
+  const theme = (req.query.theme || req.body?.theme) as string;
+  const subtheme = (req.query.subtheme || req.body?.subtheme) as string;
   let pageTitle = themeToPageTitle[theme];
   if (
     subtheme === CONTACT_US_THEMES.SOMETHING_ELSE &&

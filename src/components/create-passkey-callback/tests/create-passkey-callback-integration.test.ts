@@ -61,7 +61,7 @@ describe("Integration:: create passkey callback", () => {
     sessionUserOverrides = {};
   });
 
-  it("should redirect to auth-code when create passkey was successful in amc", async () => {
+  it("should redirect to passkey-created when create passkey was successful in amc", async () => {
     nock(baseApi).post(API_ENDPOINTS.AMC_CALLBACK).once().reply(200, {
       success: true,
       scope: AMC_SCOPE.PASSKEY_CREATE,
@@ -73,10 +73,10 @@ describe("Integration:: create passkey callback", () => {
     await request(app)
       .get(requestPath)
       .expect(302)
-      .expect("Location", PATH_NAMES.AUTH_CODE);
+      .expect("Location", PATH_NAMES.PASSKEY_CREATED);
   });
 
-  it("should redirect to terms and conditions when create passkey was successful in amc", async () => {
+  it("should redirect to passkey-created when create passkey was successful in amc and terms not accepted", async () => {
     sessionUserOverrides = { isLatestTermsAndConditionsAccepted: false };
 
     nock(baseApi).post(API_ENDPOINTS.AMC_CALLBACK).once().reply(200, {
@@ -90,7 +90,7 @@ describe("Integration:: create passkey callback", () => {
     await request(app)
       .get(requestPath)
       .expect(302)
-      .expect("Location", PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS);
+      .expect("Location", PATH_NAMES.PASSKEY_CREATED);
   });
 
   it("should redirect to auth-code when create passkey was skipped in amc", async () => {
