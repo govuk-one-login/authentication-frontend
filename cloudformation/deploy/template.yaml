@@ -583,7 +583,7 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.staging.account.gov.uk"
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
-      SupportPasskeyRegistration: "No"
+      SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
