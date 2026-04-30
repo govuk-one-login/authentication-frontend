@@ -8,6 +8,7 @@ export function shouldPromptToRegisterPasskey(
     req.session.user?.browserSupportsWebAuthn === true &&
     req.session.user?.hasActivePasskey === false &&
     req.session.user?.hasSkippedPasskeyRegistration !== true &&
+    !req.session.user?.reauthenticate &&
     res.locals.supportPasskeyRegistration === true
   );
 }

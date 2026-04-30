@@ -44,6 +44,14 @@ describe("passkeys helper", () => {
         supportPasskeyRegistration: false,
         expected: false,
       },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: false,
+        hasSkippedPasskeyRegistration: false,
+        supportPasskeyRegistration: true,
+        reauthenticate: "12345",
+        expected: false,
+      },
     ];
 
     testCases.forEach(
@@ -52,15 +60,17 @@ describe("passkeys helper", () => {
         hasActivePasskey,
         hasSkippedPasskeyRegistration,
         supportPasskeyRegistration,
+        reauthenticate,
         expected,
       }) => {
-        it(`should return ${expected} when browserSupportsWebAuthn=${browserSupportsWebAuthn}, hasActivePasskey=${hasActivePasskey}, hasSkippedPasskeyRegistration=${hasSkippedPasskeyRegistration}, supportPasskeyRegistration=${supportPasskeyRegistration}`, () => {
+        it(`should return ${expected} when browserSupportsWebAuthn=${browserSupportsWebAuthn}, hasActivePasskey=${hasActivePasskey}, hasSkippedPasskeyRegistration=${hasSkippedPasskeyRegistration}, supportPasskeyRegistration=${supportPasskeyRegistration}, reauthenticate=${reauthenticate}`, () => {
           const req = {
             session: {
               user: {
                 browserSupportsWebAuthn,
                 hasActivePasskey,
                 hasSkippedPasskeyRegistration,
+                reauthenticate,
               },
             },
           } as any as Request;
