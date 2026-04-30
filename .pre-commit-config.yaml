@@ -1,5 +1,5 @@
 default_language_version:
-  node: 20.17.0
+  node: 24.15.0
   golang: 1.23.6
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
