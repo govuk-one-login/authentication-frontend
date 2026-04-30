@@ -72,6 +72,7 @@ const config = [
       "src/assets/javascript",
       "journey-map",
       ".venv/**",
+      "playwright-acceptance-tests/reports/**",
     ],
   },
 ];
