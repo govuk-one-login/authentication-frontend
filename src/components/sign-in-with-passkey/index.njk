@@ -1,0 +1,37 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitleName = 'pages.signInWithPasskey.title' | translate  %}
+
+{% block content %}
+
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+    {{'pages.signInWithPasskey.header' | translate }}
+  </h1>
+
+  <p class="govuk-body">
+    {{'pages.signInWithPasskey.paragraph1' | translate }}
+  </p>
+  <p class="govuk-body">
+    {{'pages.signInWithPasskey.paragraph2' | translate }}
+  </p>
+  <p class="govuk-body">
+    {{'pages.signInWithPasskey.paragraph3' | translate }}
+  </p>
+
+  {{ govukButton({
+    text: 'general.continue.label' | translate,
+    type: "Submit",
+    preventDoubleClick: true
+  }) }}
+
+  <p class="govuk-body">
+    <a href="/enter-password" class="govuk-link" rel="noreferrer noopener">{{'pages.signInWithPasskey.signInAnotherWayLinkText' | translate }}</a>
+  </p>
+
+{% endblock %}
+
+{% block scripts %}
+    <script defer type="text/javascript" src="/public/scripts/prevent-double-form-submit.js"></script>
+{% endblock %}
