@@ -128,3 +128,6 @@ src/authentication_frontend.egg-info/
 journey-map/public/application*
 
 .kiro/
+
+# Detect secrets
+.secrets.baseline
