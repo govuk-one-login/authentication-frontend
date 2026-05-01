@@ -6,6 +6,8 @@ import { logger } from "../utils/logger.js";
 
 let redisClient: ReturnType<typeof createClient> | undefined;
 let usedRedisConfig: RedisConfig | undefined;
+let consecutiveErrors = 0;
+const MAX_CONSECUTIVE_ERRORS = 5;
 
 export function getSessionStore(redisConfig: RedisConfig): RedisStore {
   if (redisClient && !isRedisConfigEqual(redisConfig, usedRedisConfig)) {
@@ -46,7 +48,20 @@ export function getSessionStore(redisConfig: RedisConfig): RedisStore {
     }
 
     redisClient = createClient(config);
-    redisClient.on("error", (err) => logger.error(err, "Redis client error"));
+
+    redisClient.on("error", (err) => {
+      consecutiveErrors++;
+      logger.error(err, `Redis client error (${consecutiveErrors})`);
+
+      if (consecutiveErrors >= MAX_CONSECUTIVE_ERRORS && redisClient) {
+        logger.warn("Recreating Redis client after sustained failures");
+        //redisClient.disconnect().catch(() => {});
+        redisClient = undefined;
+        usedRedisConfig = undefined;
+      }
+    });
+
+    redisClient.on("ready", () => logger.info("Redis client ready"))
     redisClient.connect();
     usedRedisConfig = redisConfig;
   }
