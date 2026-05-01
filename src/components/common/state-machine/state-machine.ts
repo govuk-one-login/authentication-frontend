@@ -133,7 +133,7 @@ const authStateMachine = createMachine<AuthStateContext>(
               target: [PATH_NAMES.SIGN_IN_WITH_PASSKEY],
               cond: "shouldPromptToSignInWithPasskey",
             },
-            { target: [PATH_NAMES.ENTER_PASSWORD] },
+            { target: [PATH_NAMES.ENTER_PASSWORD], meta: { reversible: true } },
           ],
           [USER_JOURNEY_EVENTS.ACCOUNT_NOT_FOUND]: [
             PATH_NAMES.ACCOUNT_NOT_FOUND,
