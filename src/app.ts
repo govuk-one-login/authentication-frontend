@@ -114,6 +114,7 @@ import { createPasskeyRouter } from "./components/create-passkey/create-passkey-
 import { createPasskeyCallbackRouter } from "./components/create-passkey-callback/create-passkey-callback-routes.js";
 import { sessionEndedRouter } from "./components/session-ended/session-ended-routes.js";
 import { passkeyCreatedRouter } from "./components/passkey-created/passkey-created-routes.js";
+import { setGoBackHistoryMiddleware } from "./middleware/set-go-back-history-middleware.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -312,6 +313,7 @@ async function createApp(): Promise<express.Application> {
     app.use(setCurrentUrlMiddleware);
   }
   app.use(getAnalyticsPropertiesMiddleware);
+  app.use(setGoBackHistoryMiddleware);
 
   // Attach context to request logs
   app.use((req, res, next) => {

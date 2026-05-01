@@ -55,6 +55,9 @@ declare global {
       showTestBanner?: boolean;
       accountManagementUrl?: string;
       contactUsLinkUrl?: string;
+
+      // History
+      goBackHistory?: string[];
     }
   }
 }
