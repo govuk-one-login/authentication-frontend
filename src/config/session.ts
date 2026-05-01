@@ -1,5 +1,5 @@
 import type { RedisClientOptions } from "redis";
-import { createClient } from "redis";
+import { createClient, SocketTimeoutError } from "redis";
 import { RedisStore } from "connect-redis";
 import type { RedisConfig } from "src/utils/types.js";
 import { logger } from "../utils/logger.js";
@@ -17,6 +17,24 @@ export function getSessionStore(redisConfig: RedisConfig): RedisStore {
       socket: {
         host: redisConfig.host,
         port: redisConfig.port,
+        reconnectStrategy: (retries, cause) => {
+          const jitter = Math.floor(Math.random() * 200);
+          const delay = Math.min(Math.pow(2, retries) * 50, 2000);
+        
+          if (cause instanceof SocketTimeoutError) {
+            logger.warn(
+              { retries, delay: delay + jitter },
+              "Redis socket timeout - reconnecting (default reconnectStrategy would've failed here)"
+            );
+          } else {
+            logger.warn(
+              { retries, delay: delay + jitter, cause: cause?.message },
+              "Redis reconnecting"
+            );
+          }
+        
+          return delay + jitter;
+        }
       },
     };
 
