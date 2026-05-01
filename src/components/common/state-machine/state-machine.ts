@@ -771,7 +771,7 @@ const authStateMachine = createMachine<AuthStateContext>(
 );
 
 // Extend the state interface to be more precise
-interface AuthState extends State<AuthStateContext> {
+export interface AuthState extends State<AuthStateContext> {
   value: string;
   meta: {
     [id: string]: {

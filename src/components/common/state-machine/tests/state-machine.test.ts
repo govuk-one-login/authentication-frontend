@@ -78,7 +78,8 @@ describe("state-machine", () => {
         DEFAULT_CONTEXT
       );
       expect(nextState.value).to.equal(PATH_NAMES.ENTER_PASSWORD);
-      expect(nextState.transitions[0]?.meta?.reversible).to.be.true;
+      expect(nextState.transitions.every((t) => t.meta?.reversible === true)).to
+        .be.true;
     });
 
     it("should move from enter password to enter mfa code when user event is credentials validated", () => {
