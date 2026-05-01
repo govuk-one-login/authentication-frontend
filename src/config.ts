@@ -218,3 +218,11 @@ export function getAuthJwksUrl(): string {
 export function getJwksCacheExpiry(): number {
   return Number(process.env.AUTH_JWKS_CACHE_EXPIRY) || 300000;
 }
+
+export function getPasskeyPromptClientAllowList(): string[] {
+  const rawList = process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST;
+  if (rawList) {
+    return rawList.split(",").map((id) => id.trim());
+  }
+  return [];
+}
