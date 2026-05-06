@@ -86,6 +86,7 @@ describe("create passkey controller", () => {
       expect(res.cookie).to.have.been.calledWith("amc", AMC_COOKIE, {
         secure: true,
         httpOnly: true,
+        domain: "localhost",
       });
 
       expect(res.redirect).calledWith(REDIRECT_URL);

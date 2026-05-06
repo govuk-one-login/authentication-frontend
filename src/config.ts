@@ -83,7 +83,7 @@ export function getAnalyticsCookieDomain(): string {
   return process.env.ANALYTICS_COOKIE_DOMAIN;
 }
 
-export function getGoogleAnalyticsAndDynatraceCookieDomain(): string {
+export function getAccountDomain(): string {
   return getServiceDomain() === "localhost" ? "localhost" : ".account.gov.uk";
 }
 
@@ -180,7 +180,7 @@ export function isValidChannel(channel: string): boolean {
 }
 
 export function showTestBanner(): boolean {
-  return getAppEnv() !== "production" || process.env.SHOW_TEST_BANNER === "1";
+  return getAppEnv() !== "production";
 }
 
 export function getPrivacyNoticeRedirectEnabled(): boolean {
