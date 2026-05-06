@@ -265,34 +265,20 @@ Reuse:
 
 ### Development Standards
 
-**Pre-commit Hook (Husky)**
-This project uses a root-level Git pre-commit hook (via Husky + lint-staged) to automatically run
-ESLint and Prettier on staged .ts files inside the playwright-acceptance-tests folder.
-
-This ensures all Playwright test code is formatted and linted before every commit.
-
-**Hook location:**
-
-```
-authentication-frontend/.husky/pre-commit
-```
-
-**Hook content:**
-
-```
-#!/usr/bin/env sh
-
-cd playwright-acceptance-tests
-npx lint-staged
-```
-
-Developers commit normally from the root repository — formatting runs automatically.
+Developers commit normally from the root repository — formatting needs to be run manually.
 
 - Code quality
 - ESLint must pass
 - Prettier formatting required
 - Keep steps declarative
 - Avoid long complex steps
+
+Run the following to format staged files:
+
+```
+cd playwright-acceptance-tests
+npx lint-staged
+```
 
 **Page Object Model**
 
