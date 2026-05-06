@@ -41,7 +41,6 @@ describe("config", () => {
     delete process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION;
     delete process.env.DEFAULT_CHANNEL;
     delete process.env.APP_ENV;
-    delete process.env.SHOW_TEST_BANNER;
     delete process.env.SERVICE_DOMAIN;
     delete process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST;
   });
@@ -167,17 +166,12 @@ describe("config", () => {
 
   describe("showTestBanner", () => {
     [
-      { appEnv: "local", showBanner: undefined, expected: true },
-      { appEnv: "development", showBanner: undefined, expected: true },
-      { appEnv: "production", showBanner: undefined, expected: false },
-      { appEnv: "production", showBanner: "1", expected: true },
-      { appEnv: "production", showBanner: "0", expected: false },
-    ].forEach(({ appEnv, showBanner, expected }) => {
-      it(`should return ${expected} when APP_ENV='${appEnv}' and SHOW_TEST_BANNER='${showBanner}'`, () => {
+      { appEnv: "local", expected: true },
+      { appEnv: "development", expected: true },
+      { appEnv: "production", expected: false },
+    ].forEach(({ appEnv, expected }) => {
+      it(`should return ${expected} when APP_ENV='${appEnv}'`, () => {
         process.env.APP_ENV = appEnv;
-        if (showBanner !== undefined) {
-          process.env.SHOW_TEST_BANNER = showBanner;
-        }
         expect(showTestBanner()).to.equal(expected);
       });
     });
