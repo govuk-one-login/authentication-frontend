@@ -19,6 +19,10 @@ There are three different ways to run the app on a local machine:
 - The frontend app running in a local node instance, with supporting services running in Docker and AWS connections
 - The frontend app running in a local node instance against a local running api in Docker
 
+To run locally you will need node.js installed on your machine, ideally using an environment manager such as [nodenv](https://github.com/nodenv/nodenv).
+
+Check the `.node-version` file to see which version is in use.
+
 To run the full stack locally in Docker, see `local-running` in the `authentication-api` repo.
 
 If not using full local running then the frontend must connect to the internal api running in a dev account. Now that the internal api is private tunneling is required to access the api from a local machine. See [how to configure tunneling to the api](#Frontend-API-Access-via-Proxy).
