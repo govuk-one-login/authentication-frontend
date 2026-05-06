@@ -492,6 +492,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
+      PasskeyPromptClientAllowList: ""
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -623,6 +624,7 @@ Mappings:
       SupportPasskeyRegistration: "No"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      PasskeyPromptClientAllowList: ""
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -657,6 +659,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
+      PasskeyPromptClientAllowList: ""
 
 Globals:
   Function:
@@ -1175,6 +1178,14 @@ Resources:
               Value: !If [SupportPasskeyUsage, "1", "0"]
             - Name: SUPPORT_PASSKEY_REGISTRATION
               Value: !If [SupportPasskeyRegistration, "1", "0"]
+            - Name: PASSKEY_PROMPT_CLIENT_ALLOW_LIST
+              Value: !FindInMap
+                - EnvironmentConfiguration
+                - !If
+                  - UseSubEnvironment
+                  - !Ref SubEnvironment
+                  - !Ref Environment
+                - PasskeyPromptClientAllowList
             - Name: ENABLE_DWP_KBV_CONTACT_FORM_CHANGES
               Value: !If [EnableDwpKbvContactFormChanges, "1", "0"]
             - Name: SUPPORT_NEW_INTERNATIONAL_SMS
