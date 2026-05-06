@@ -3,6 +3,7 @@ import { createClient } from "redis";
 import { RedisStore } from "connect-redis";
 import type { RedisConfig } from "src/utils/types.js";
 import { logger } from "../utils/logger.js";
+import { startHealthCheck, stopHealthCheck } from "./redis-health-check.js";
 
 let redisClient: ReturnType<typeof createClient> | undefined;
 let usedRedisConfig: RedisConfig | undefined;
@@ -29,6 +30,11 @@ export function getSessionStore(redisConfig: RedisConfig): RedisStore {
 
     redisClient = createClient(config);
     redisClient.on("error", (err) => logger.error(err, "Redis client error"));
+    redisClient.on("connect", () => logger.info("Redis client connecting"));
+    redisClient.on("ready", () => {
+      logger.info("Redis client ready");
+      startHealthCheck(redisClient);
+    });
     redisClient.connect();
     usedRedisConfig = redisConfig;
   }
@@ -39,6 +45,7 @@ export function getSessionStore(redisConfig: RedisConfig): RedisStore {
 }
 
 export async function disconnectRedisClient(): Promise<void> {
+  stopHealthCheck();
   if (redisClient) {
     await redisClient.disconnect();
     redisClient = undefined;
