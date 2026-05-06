@@ -7,6 +7,7 @@ import type { AmcAuthorizeInterface } from "../amc-service/types.js";
 import { amcAuthorizeService } from "../amc-service/amc-authorize-service.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import { BadRequestError } from "../../utils/error.js";
+import { getGoogleAnalyticsAndDynatraceCookieDomain } from "../../config.js";
 
 const TEMPLATE_NAME = "create-passkey/index.njk";
 
@@ -73,6 +74,7 @@ async function handleCreatePasskey(
   res.cookie("amc", result.data.amcCookie, {
     secure: true,
     httpOnly: true,
+    domain: getGoogleAnalyticsAndDynatraceCookieDomain(),
   });
 
   req.log.info(
