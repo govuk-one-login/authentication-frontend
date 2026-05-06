@@ -518,7 +518,7 @@ Mappings:
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.dev.account.gov.uk"
       UseRebrand: "Yes"
-      SupportPasskeyUsage: "Yes"
+      SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
