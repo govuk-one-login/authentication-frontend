@@ -17,7 +17,7 @@ import {
   supportSingleFactorAccountDeletion,
   getDefaultChannel,
   showTestBanner,
-  getGoogleAnalyticsAndDynatraceCookieDomain,
+  getAccountDomain,
   getPasskeyPromptClientAllowList,
 } from "../../src/config.js";
 import { CHANNEL } from "../../src/app.constants.js";
@@ -180,25 +180,19 @@ describe("config", () => {
   describe("getGoogleAnalyticsAndDynatraceCookieDomain", () => {
     it("should return 'localhost' when SERVICE_DOMAIN is 'localhost'", () => {
       process.env.SERVICE_DOMAIN = "localhost";
-      expect(getGoogleAnalyticsAndDynatraceCookieDomain()).to.equal(
-        "localhost"
-      );
+      expect(getAccountDomain()).to.equal("localhost");
     });
 
     it("should return 'localhost' when SERVICE_DOMAIN is not set", () => {
       delete process.env.SERVICE_DOMAIN;
-      expect(getGoogleAnalyticsAndDynatraceCookieDomain()).to.equal(
-        "localhost"
-      );
+      expect(getAccountDomain()).to.equal("localhost");
     });
 
     ["signin.account.gov.uk", "auth.account.gov.uk"].forEach(
       (serviceDomain) => {
         it(`should return '.account.gov.uk' when SERVICE_DOMAIN is not localhost ('${serviceDomain}')`, () => {
           process.env.SERVICE_DOMAIN = serviceDomain;
-          expect(getGoogleAnalyticsAndDynatraceCookieDomain()).to.equal(
-            ".account.gov.uk"
-          );
+          expect(getAccountDomain()).to.equal(".account.gov.uk");
         });
       }
     );

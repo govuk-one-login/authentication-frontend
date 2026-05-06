@@ -6,7 +6,7 @@ import {
   COOKIE_CONSENT,
   ANALYTICS_COOKIES,
 } from "../../../app.constants.js";
-import { getGoogleAnalyticsAndDynatraceCookieDomain } from "../../../config.js";
+import { getAccountDomain } from "../../../config.js";
 const cookieService = cookieConsentService();
 
 export function cookiesGet(req: Request, res: Response): void {
@@ -29,7 +29,7 @@ export function cookiesPost(req: Request, res: Response): void {
 
   if (consentValue === "false") {
     const options = {
-      domain: getGoogleAnalyticsAndDynatraceCookieDomain(),
+      domain: getAccountDomain(),
     };
 
     ANALYTICS_COOKIES.forEach((key) => {

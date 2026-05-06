@@ -83,7 +83,7 @@ export function getAnalyticsCookieDomain(): string {
   return process.env.ANALYTICS_COOKIE_DOMAIN;
 }
 
-export function getGoogleAnalyticsAndDynatraceCookieDomain(): string {
+export function getAccountDomain(): string {
   return getServiceDomain() === "localhost" ? "localhost" : ".account.gov.uk";
 }
 
