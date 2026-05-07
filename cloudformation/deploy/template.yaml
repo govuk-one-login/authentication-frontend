@@ -429,6 +429,29 @@ Conditions:
               ]
               - "Yes"
 
+  UseSessionAwareCanary:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  UseSessionAwareCanary,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  UseSessionAwareCanary,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   ElasticLoadBalancerAccountIds:
@@ -582,6 +605,7 @@ Mappings:
       UseMfaResetWithIpv: "Yes"
       UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
+      UseSessionAwareCanary: "Yes"
       Enableipvspinner: "No"
       UseAlarmActions: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
@@ -1536,7 +1560,27 @@ Resources:
         Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
-          Value: "90"
+          Value: !If [UseSessionAwareCanary, "3600", "90"]
+        - !If
+          - UseSessionAwareCanary
+          - Key: stickiness.enabled
+            Value: "true"
+          - !Ref AWS::NoValue
+        - !If
+          - UseSessionAwareCanary
+          - Key: stickiness.type
+            Value: "app_cookie"
+          - !Ref AWS::NoValue
+        - !If
+          - UseSessionAwareCanary
+          - Key: stickiness.app_cookie.cookie_name
+            Value: "aps"
+          - !Ref AWS::NoValue
+        - !If
+          - UseSessionAwareCanary
+          - Key: stickiness.app_cookie.duration_seconds
+            Value: "3600"
+          - !Ref AWS::NoValue
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ApplicationLoadBalancerTargetGroupA"
@@ -1570,7 +1614,27 @@ Resources:
         Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
-          Value: "90"
+          Value: !If [UseSessionAwareCanary, "3600", "90"]
+        - !If
+          - UseSessionAwareCanary
+          - Key: stickiness.enabled
+            Value: "true"
+          - !Ref AWS::NoValue
+        - !If
+          - UseSessionAwareCanary
+          - Key: stickiness.type
+            Value: "app_cookie"
+          - !Ref AWS::NoValue
+        - !If
+          - UseSessionAwareCanary
+          - Key: stickiness.app_cookie.cookie_name
+            Value: "aps"
+          - !Ref AWS::NoValue
+        - !If
+          - UseSessionAwareCanary
+          - Key: stickiness.app_cookie.duration_seconds
+            Value: "3600"
+          - !Ref AWS::NoValue
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ApplicationLoadBalancerTargetGroupB"
@@ -1586,7 +1650,13 @@ Resources:
     Properties:
       DefaultActions:
         - Type: forward
-          TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroupA
+          ForwardConfig:
+            TargetGroups:
+              - TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroupA
+                Weight: 1
+            TargetGroupStickinessConfig:
+              Enabled: !If [UseSessionAwareCanary, true, false]
+              DurationSeconds: !If [UseSessionAwareCanary, 3600, !Ref "AWS::NoValue"]
       LoadBalancerArn: !Ref ApplicationLoadBalancer
       Port: 443
       Protocol: HTTPS
