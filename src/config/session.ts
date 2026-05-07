@@ -29,12 +29,16 @@ export function getSessionStore(redisConfig: RedisConfig): RedisStore {
     }
 
     redisClient = createClient(config);
+
     redisClient.on("error", (err) => logger.error(err, "Redis client error"));
-    redisClient.on("connect", () => logger.info("Redis client connecting"));
+    redisClient.on("connect", () => logger.info("Redis client connecting."));
     redisClient.on("ready", () => {
-      logger.info("Redis client ready");
+      logger.info("Redis client ready.");
       startHealthCheck(redisClient);
     });
+    redisClient.on("end", () => logger.info("Redis client connection closed."));
+    redisClient.on("reconnecting", () => logger.info("Redis client connection reconnecting."));
+
     redisClient.connect();
     usedRedisConfig = redisConfig;
   }
