@@ -14,7 +14,7 @@ export class DualSessionStore extends session.Store {
   get(sid: string, cb: (err?: any, session?: session.SessionData | null) => void): void {
     this.redis.get!(sid, (err, redisSession) => {
       logger.info({ sid }, "Session read from Redis");
-      cb(err, redisSession);
+      // cb(err, redisSession);
 
       this.dynamo.get!(sid, (dynamoErr, dynamoSession) => {
         if (dynamoErr) {
@@ -22,7 +22,8 @@ export class DualSessionStore extends session.Store {
           return;
         }
 
-        logger.info({ sid }, "Session read from DynamoDB for consistency check");
+        logger.info({ sid }, "Session read from DynamoDB");
+        cb(err, dynamoSession);
 
         // TODO: This would need more work as failing at present - assume the actual session data is the same but other attributes differ.
         // if (JSON.stringify(redisSession ?? null) !== JSON.stringify(dynamoSession ?? null)) {

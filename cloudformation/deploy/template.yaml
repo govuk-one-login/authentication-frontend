@@ -1421,12 +1421,10 @@ Resources:
                   - dynamodb:DeleteItem
                   - dynamodb:DescribeTable
                 Resource: !GetAtt SessionTable.Arn
-      # For PoC only.
-      PermissionsBoundary: AWS::NoValue
-      # PermissionsBoundary: !If
-      #   - UsePermissionsBoundary
-      #   - !Ref PermissionsBoundary
-      #   - !Ref AWS::NoValue
+      PermissionsBoundary: !If
+        - UsePermissionsBoundary
+        - !Ref PermissionsBoundary
+        - !Ref AWS::NoValue
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-TaskRole"
