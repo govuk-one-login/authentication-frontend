@@ -1005,6 +1005,8 @@ Resources:
                   ],
                   frontendApiBaseUrl,
                 ]
+            - Name: DYNAMO_SESSION_TABLE_NAME
+              Value: !Ref SessionTable
             - Name: ACCOUNT_MANAGEMENT_URL
               Value: !If
                 - IsNotProduction
@@ -1407,10 +1409,24 @@ Resources:
                         !Ref SubEnvironment,
                         !Ref Environment,
                       ]
-      PermissionsBoundary: !If
-        - UsePermissionsBoundary
-        - !Ref PermissionsBoundary
-        - !Ref AWS::NoValue
+        - PolicyName: AllowDynamoDBSessionAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:DescribeTable
+                Resource: !GetAtt SessionTable.Arn
+      # For PoC only.
+      PermissionsBoundary: AWS::NoValue
+      # PermissionsBoundary: !If
+      #   - UsePermissionsBoundary
+      #   - !Ref PermissionsBoundary
+      #   - !Ref AWS::NoValue
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-TaskRole"
@@ -1420,6 +1436,36 @@ Resources:
           Value: "auth-frontend"
         - Key: Source
           Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+
+  # WIP - TEMPORARY DYNAMO RESOURCE LOCATION FOR PROOF OF CONCEPT
+
+  # NOTE: NO CMK AT PRESENT FOR PoC.
+
+  SessionTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    Properties:
+    # TODO: Does this respect subenvs??
+      TableName: !Sub "${Environment}-frontend-sessions"
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      TimeToLiveSpecification:
+        AttributeName: expires
+        Enabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+
+  # / WIP - TEMPORARY DYNAMO RESOURCE LOCATION FOR PROOF OF CONCEPT
 
   #
   # Migrated zone records

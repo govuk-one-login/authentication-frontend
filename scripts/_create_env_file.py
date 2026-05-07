@@ -47,6 +47,10 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
                 "comment": "Express session expiry time in milliseconds",
             },
             "SESSION_SECRET": {"value": 123456, "comment": "Express session secret"},
+            "DYNAMO_SESSION_TABLE_NAME": {
+                "value": "frontend-sessions",
+                "comment": "Express session store Dynamo table name"
+            },
         },
     },
     {

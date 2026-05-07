@@ -4,11 +4,13 @@ import { RedisStore } from "connect-redis";
 import type { RedisConfig } from "src/utils/types.js";
 import { logger } from "../utils/logger.js";
 import { startHealthCheck, stopHealthCheck } from "./redis-health-check.js";
+import { DualSessionStore } from "./dual-session-store.js";
+import { getDynamoSessionStore } from "./dynamodb-session.js";
 
 let redisClient: ReturnType<typeof createClient> | undefined;
 let usedRedisConfig: RedisConfig | undefined;
 
-export function getSessionStore(redisConfig: RedisConfig): RedisStore {
+function getRedisStore(redisConfig: RedisConfig): RedisStore {
   if (redisClient && !isRedisConfigEqual(redisConfig, usedRedisConfig)) {
     throw new Error("Redis client already established with different config");
   } else if (!redisClient) {
@@ -46,6 +48,12 @@ export function getSessionStore(redisConfig: RedisConfig): RedisStore {
   return new RedisStore({
     client: redisClient,
   });
+}
+
+export function getSessionStore(redisConfig: RedisConfig): DualSessionStore {
+  const redisStore = getRedisStore(redisConfig);
+  const dynamoStore = getDynamoSessionStore();
+  return new DualSessionStore(redisStore, dynamoStore);
 }
 
 export async function disconnectRedisClient(): Promise<void> {
