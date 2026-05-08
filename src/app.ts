@@ -4,6 +4,10 @@ import cookieParser from "cookie-parser";
 import type serveStatic from "serve-static";
 import { getRequestContext, logger, loggerMiddleware } from "./utils/logger.js";
 import { sanitizeRequestMiddleware } from "./middleware/sanitize-request-middleware.js";
+import {
+  initTaskVersion,
+  taskVersionMiddleware,
+} from "./middleware/task-version-middleware.js";
 import * as i18nextMiddleware from "i18next-http-middleware";
 import * as path from "path";
 import { configureNunjucks } from "./config/nunchucks.js";
@@ -200,7 +204,9 @@ async function createApp(): Promise<express.Application> {
 
   app.enable("trust proxy");
 
+  await initTaskVersion();
   app.use(loggerMiddleware);
+  app.use(taskVersionMiddleware);
   app.use(healthcheckRouter);
   if (getAppEnv() === APP_ENV_NAME.STAGING) {
     const protect = applyOverloadProtection(isProduction);
