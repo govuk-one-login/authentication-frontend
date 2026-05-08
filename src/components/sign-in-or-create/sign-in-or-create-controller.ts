@@ -10,6 +10,10 @@ export async function signInOrCreateGet(
   req.session.user.isAccountCreationJourney = false;
   req.session.user.isPasswordResetJourney = false;
   req.session.user.isSignInJourney = false;
+  // Reset goBackHistory as users can navigate back here from enter-password via optionalPaths, making the history stale
+  if (req.session.user.journey) {
+    req.session.user.journey.goBackHistory = [];
+  }
   if (req.query.redirectPost) {
     return await signInOrCreatePost(req, res);
   }

@@ -114,4 +114,69 @@ describe("Allow and persist user journey middleware", () => {
     expect(req.session.user.journey.optionalPaths).to.deep.eq([]);
     expect(req.session.save).to.have.not.been.called;
   });
+
+  describe("Go back history", () => {
+    it("Should allow transition to previous page in goBackHistory if passkeys are enabled", async () => {
+      const req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
+      req.session.user = {
+        journey: {
+          nextPath: PATH_NAMES.ENTER_PASSWORD,
+          optionalPaths: [],
+          goBackHistory: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
+        },
+      };
+      req.session.save = sinon.spy((callback) => callback(null));
+      const res = mockResponse();
+      res.locals.supportPasskeyRegistration = true;
+      const nextFunction: NextFunction =
+        sinon.fake() as unknown as NextFunction;
+
+      await allowAndPersistUserJourneyMiddleware(req, res, nextFunction);
+
+      expect(res.redirect).to.not.have.been.called;
+      expect(nextFunction).to.have.been.called;
+    });
+
+    it("Should not allow transition to previous page in goBackHistory if passkeys are not enabled", async () => {
+      const req = createMockRequest(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
+      req.session.user = {
+        journey: {
+          nextPath: PATH_NAMES.ENTER_PASSWORD,
+          optionalPaths: [],
+          goBackHistory: [PATH_NAMES.ENTER_EMAIL_SIGN_IN],
+        },
+      };
+      req.session.save = sinon.spy((callback) => callback(null));
+      const res = mockResponse();
+      res.locals.supportPasskeyRegistration = false;
+      const nextFunction: NextFunction =
+        sinon.fake() as unknown as NextFunction;
+
+      await allowAndPersistUserJourneyMiddleware(req, res, nextFunction);
+
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ENTER_PASSWORD);
+      expect(nextFunction).to.not.have.been.called;
+    });
+
+    it("Should not allow transition to previous page in goBackHistory if nextPath not in goBackHistoryAllowList", async () => {
+      const req = createMockRequest(PATH_NAMES.SIGN_IN_OR_CREATE);
+      req.session.user = {
+        journey: {
+          nextPath: PATH_NAMES.ENTER_EMAIL_SIGN_IN,
+          optionalPaths: [],
+          goBackHistory: [PATH_NAMES.SIGN_IN_OR_CREATE],
+        },
+      };
+      req.session.save = sinon.spy((callback) => callback(null));
+      const res = mockResponse();
+      res.locals.supportPasskeyRegistration = true;
+      const nextFunction: NextFunction =
+        sinon.fake() as unknown as NextFunction;
+
+      await allowAndPersistUserJourneyMiddleware(req, res, nextFunction);
+
+      expect(res.redirect).to.have.been.called;
+      expect(nextFunction).to.not.have.been.called;
+    });
+  });
 });
