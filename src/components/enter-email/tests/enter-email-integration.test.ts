@@ -21,6 +21,7 @@ describe("Integration::enter email", () => {
   let cookies: string;
   let app: any;
   let baseApi: string;
+  let capturedSession: any;
 
   before(async () => {
     const { createApp } = await esmock(
@@ -45,9 +46,19 @@ describe("Integration::enter email", () => {
               req.session.user.reauthenticate = "12345";
             }
 
+            if (process.env.SUPPORT_PASSKEY_USAGE === "1") {
+              res.locals.supportPasskeyUsage = true;
+            }
+
+            if (process.env.SUPPORT_PASSKEY_REGISTRATION === "1") {
+              res.locals.supportPasskeyRegistration = true;
+            }
+
             req.session.client = {
               redirectUri: REDIRECT_URI,
             };
+
+            capturedSession = req.session;
 
             next();
           }),
@@ -68,6 +79,8 @@ describe("Integration::enter email", () => {
     sinon.restore(); // Restore all stubs before each test
     process.env.SUPPORT_REAUTHENTICATION = "0";
     process.env.TEST_SETUP_REAUTH_SESSION = "0";
+    process.env.SUPPORT_PASSKEY_USAGE = "0";
+    process.env.SUPPORT_PASSKEY_REGISTRATION = "0";
   });
 
   afterEach(() => {
@@ -187,6 +200,36 @@ describe("Integration::enter email", () => {
       })
       .expect("Location", PATH_NAMES.ENTER_PASSWORD)
       .expect(302);
+
+    expect(capturedSession.user.journey.goBackHistory).to.be.empty;
+  });
+
+  it("should redirect to /enter-password and save enter-email in goBackHistory when passkeys are enabled", async () => {
+    process.env.SUPPORT_PASSKEY_REGISTRATION = "1";
+    process.env.SUPPORT_PASSKEY_USAGE = "1";
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.USER_EXISTS)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email: "test@test.com",
+        doesUserExist: true,
+      });
+
+    await request(app)
+      .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        email: "test@test.com",
+      })
+      .expect("Location", PATH_NAMES.ENTER_PASSWORD)
+      .expect(302);
+
+    expect(capturedSession.user.journey.goBackHistory).to.deep.equal([
+      PATH_NAMES.ENTER_EMAIL_SIGN_IN,
+    ]);
   });
 
   it("should redirect to /account-not-found when email address not found", async () => {

@@ -53,6 +53,7 @@ export interface PlaceholderReplacement {
 export interface UserJourney {
   nextPath: string;
   optionalPaths: string[];
+  goBackHistory?: string[];
 }
 
 export interface UserSession {

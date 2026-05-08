@@ -10,6 +10,7 @@ import {
   shouldPromptToSignInWithPasskey,
 } from "../../../utils/passkeys-helper.js";
 import { needsForcedMFAReset } from "../../../utils/request.js";
+import { getGoBackHistoryForTransition } from "./go-back-history.js";
 
 export async function getNextPathAndUpdateJourney(
   req: Request,
@@ -38,6 +39,12 @@ export async function getNextPathAndUpdateJourney(
   };
 
   const nextState = getNextState(currentState, event, context);
+  const goBackHistory = getGoBackHistoryForTransition(
+    req,
+    res,
+    currentState,
+    nextState
+  );
 
   req.session.user.journey = {
     nextPath: nextState.value,
@@ -46,6 +53,7 @@ export async function getNextPathAndUpdateJourney(
         ? nextState.meta[`${authStateMachine.id}.${nextState.value}`]
             .optionalPaths
         : [],
+    goBackHistory,
   };
 
   await saveSessionState(req);
@@ -59,6 +67,7 @@ export async function getNextPathAndUpdateJourney(
         sessionState,
       },
       sessionId,
+      goBackHistory,
     },
     `User journey transition`
   );
