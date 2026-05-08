@@ -7,7 +7,11 @@
 {% if isReauthJourney === false or isReauthJourney === "false" %}
     {% set showBack = true %}
 {% endif %}
-{% set hrefBack = 'enter-email' %}
+{% if (supportPasskeyUsage or supportPasskeyRegistration) and goBackHistory | length > 0 %}
+    {% set hrefBack = goBackHistory | last  %}
+{% else %}
+    {% set hrefBack = 'enter-email' %}
+{% endif %}
 {% set pageTitleName = 'pages.enterPassword.title' | translate %}
 
 {% block content %}

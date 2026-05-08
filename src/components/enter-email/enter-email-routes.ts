@@ -10,6 +10,7 @@ import {
 import * as express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
+import { goBackMiddleware } from "../../middleware/go-back-middleware.js";
 
 const router = express.Router();
 
@@ -17,6 +18,7 @@ router.get(
   PATH_NAMES.ENTER_EMAIL_SIGN_IN,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  goBackMiddleware,
   enterEmailGet
 );
 router.get(
