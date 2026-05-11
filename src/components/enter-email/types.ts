@@ -8,7 +8,7 @@ export interface UserExists extends DefaultApiResponse {
   mfaMethodType: MFA_METHOD_TYPE;
   phoneNumberLastThree?: string;
   lockoutInformation?: LockoutInformation[];
-  hasActivePasskey: boolean;
+  hasActivePasskey: boolean | null;
   needsForcedMFAResetAfterMFACheck: boolean;
 }
 export interface LockoutInformation {
