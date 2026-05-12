@@ -93,6 +93,9 @@ updates:
       npm-eslint-dependencies:
         patterns:
           - "*eslint*"
+      npm-typescript-eslint-dependencies:
+        patterns:
+          - "@typescript-eslint/*"
       npm-i18next-dependencies:
         patterns:
           - "i18next*"
