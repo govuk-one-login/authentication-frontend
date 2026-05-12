@@ -104,9 +104,9 @@ describe("create-passkey-callback controller", () => {
         const expectedResult = {
           success: false,
           scope: AMC_SCOPE.PASSKEY_CREATE,
-          journeys: [
+          actions: [
             {
-              journey: AMC_SCOPE.PASSKEY_CREATE,
+              action: AMC_SCOPE.PASSKEY_CREATE,
               details: {
                 error: {
                   code: 1,
@@ -150,7 +150,7 @@ describe("create-passkey-callback controller", () => {
           resultFromAmc: {
             success: false,
             scope: AMC_SCOPE.PASSKEY_CREATE,
-            journeys: [buildJourneyDetails("UserBackedOutOfJourney")],
+            actions: [buildActionDetails("UserBackedOutOfJourney")],
           },
           expectedRedirectUri: PATH_NAMES.CREATE_PASSKEY,
         },
@@ -158,7 +158,7 @@ describe("create-passkey-callback controller", () => {
           resultFromAmc: {
             success: false,
             scope: AMC_SCOPE.PASSKEY_CREATE,
-            journeys: [buildJourneyDetails("UserAbortedJourney")],
+            actions: [buildActionDetails("UserAbortedJourney")],
           },
           expectedRedirectUri: PATH_NAMES.AUTH_CODE,
         },
@@ -187,9 +187,9 @@ describe("create-passkey-callback controller", () => {
     });
   });
 
-  function buildJourneyDetails(description: string) {
+  function buildActionDetails(description: string) {
     return {
-      journey: AMC_SCOPE.PASSKEY_CREATE,
+      action: AMC_SCOPE.PASSKEY_CREATE,
       details: {
         error: {
           code: 1,

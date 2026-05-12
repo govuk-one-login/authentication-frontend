@@ -16,17 +16,17 @@ export interface CreatePasskeyResultSuccessResponse {
   email: string;
   scope: AMC_SCOPE;
   success: boolean;
-  journeys: AMCJourney[];
+  actions: AMCAction[];
 }
 
-export interface AMCJourney {
-  journey: AMC_SCOPE;
+export interface AMCAction {
+  action: AMC_SCOPE;
   timestamp: number;
   success: boolean;
-  details: AMCJourneyErrorDetails;
+  details: AMCActionErrorDetails;
 }
 
-export interface AMCJourneyErrorDetails {
+export interface AMCActionErrorDetails {
   error: {
     code: number;
     description: AMC_ERROR_DESCRIPTION;

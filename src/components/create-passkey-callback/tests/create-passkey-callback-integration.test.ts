@@ -100,9 +100,9 @@ describe("Integration:: create passkey callback", () => {
       .reply(200, {
         success: false,
         scope: AMC_SCOPE.PASSKEY_CREATE,
-        journeys: [
+        actions: [
           {
-            journey: "passkey-create",
+            action: "passkey-create",
             details: {
               error: {
                 code: 1,
@@ -129,9 +129,9 @@ describe("Integration:: create passkey callback", () => {
       .reply(200, {
         success: false,
         scope: AMC_SCOPE.PASSKEY_CREATE,
-        journeys: [
+        actions: [
           {
-            journey: "passkey-create",
+            action: "passkey-create",
             details: {
               error: {
                 code: 1,

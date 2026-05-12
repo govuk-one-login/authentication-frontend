@@ -37,8 +37,8 @@ const ERROR_CONFIG_MAP = new Map<string, ErrorConfiguration>([
 ]);
 
 function getErrorDescription(result: CreatePasskeyResultSuccessResponse) {
-  const createPasskeyJourney = result.journeys.find(
-    (journey) => journey.journey === AMC_SCOPE.PASSKEY_CREATE
+  const createPasskeyJourney = result.actions.find(
+    (journey) => journey.action === AMC_SCOPE.PASSKEY_CREATE
   );
 
   return (
