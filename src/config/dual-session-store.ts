@@ -14,7 +14,8 @@ export class DualSessionStore extends session.Store {
   get(sid: string, cb: (err?: any, session?: session.SessionData | null) => void): void {
     this.redis.get!(sid, (err, redisSession) => {
       logger.info({ sid }, "Session read from Redis");
-      // cb(err, redisSession);
+
+      cb(err, redisSession);
 
       this.dynamo.get!(sid, (dynamoErr, dynamoSession) => {
         if (dynamoErr) {
@@ -25,10 +26,32 @@ export class DualSessionStore extends session.Store {
         logger.info({ sid }, "Session read from DynamoDB");
         cb(err, dynamoSession);
 
+        // logger.info("PERFORMING CONSISTENCY CHECK"); // TODO: Remove after local debug.
+        // logger.info(JSON.stringify(redisSession));
+        // logger.info(JSON.stringify(dynamoSession));
+
         // TODO: This would need more work as failing at present - assume the actual session data is the same but other attributes differ.
-        // if (JSON.stringify(redisSession ?? null) !== JSON.stringify(dynamoSession ?? null)) {
-        //   logger.warn({ sid, redisExists: !!redisSession, dynamoExists: !!dynamoSession }, "Session consistency mismatch");
-        // }
+        if (JSON.stringify(redisSession ?? null) !== JSON.stringify(dynamoSession ?? null)) {
+          logger.warn({ sid, redisExists: !!redisSession, dynamoExists: !!dynamoSession }, "Session consistency mismatch");
+        }
+
+        const keysToCheck = ["client", "cookie", "csrfToken", "sessionRestored", "user"] as const;
+
+        for (const key of keysToCheck) {
+          const redisVal = redisSession[key];
+          const dynamoVal = dynamoSession[key];
+
+          if (JSON.stringify(redisVal ?? null) !== JSON.stringify(dynamoVal ?? null)) {
+            logger.warn(
+              { 
+                sid, 
+                redisExists: !!redisVal, 
+                dynamoExists: !!dynamoVal 
+              }, 
+              `Session ${key} consistency mismatch`
+            );
+          }
+        }
       });
     });
   }

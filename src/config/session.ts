@@ -51,6 +51,8 @@ function getRedisStore(redisConfig: RedisConfig): RedisStore {
 }
 
 export function getSessionStore(redisConfig: RedisConfig): DualSessionStore {
+  logger.info("GETTING SESSION STORE"); // TODO: Remove after debug.
+
   const redisStore = getRedisStore(redisConfig);
   const dynamoStore = getDynamoSessionStore();
   return new DualSessionStore(redisStore, dynamoStore);
