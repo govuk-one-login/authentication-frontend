@@ -75,7 +75,7 @@
     "connect-redis": "9.0.0",
     "cookie-parser": "1.4.7",
     "csrf-sync": "4.2.1",
-    "dompurify": "3.4.1",
+    "dompurify": "3.4.2",
     "express": "5.2.1",
     "express-session": "1.19.0",
     "express-validator": "7.3.2",
