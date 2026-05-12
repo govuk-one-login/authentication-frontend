@@ -66,6 +66,14 @@ describe("passkeys helper", () => {
         rpClientId: "invalid-rp-client-id",
         expected: false,
       },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: null,
+        hasSkippedPasskeyRegistration: false,
+        supportPasskeyRegistration: true,
+        rpClientId: "valid-rp-client-id",
+        expected: false,
+      },
     ];
 
     testCases.forEach(
@@ -128,6 +136,12 @@ describe("passkeys helper", () => {
         browserSupportsWebAuthn: true,
         hasActivePasskey: true,
         supportPasskeyUsage: false,
+        expected: false,
+      },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: null,
+        supportPasskeyUsage: true,
         expected: false,
       },
     ];

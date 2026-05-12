@@ -92,7 +92,7 @@ export interface UserSession {
   isMfaRequired?: boolean;
   activeMfaMethodId?: string;
   sentOtpMfaMethodIds?: string[];
-  hasActivePasskey?: boolean;
+  hasActivePasskey?: boolean | null;
   hasSkippedPasskeyRegistration?: boolean;
   needsForcedMFAReset?: boolean;
   browserSupportsWebAuthn?: boolean;
