@@ -16,16 +16,17 @@ export class DualSessionStore extends session.Store {
     this.redis.get!(sid, (err, redisSession) => {
       logger.info({ sid }, "Session read from Redis");
 
-      cb(err, redisSession);
+      // cb(err, redisSession);
 
       this.dynamo.get!(sid, (dynamoErr, dynamoSession) => {
         if (dynamoErr) {
           logger.warn({ err: dynamoErr, sid }, "DynamoDB consistency check read failed");
+          cb(err, redisSession);
           return;
         }
 
         logger.info({ sid }, "Session read from DynamoDB");
-        cb(err, dynamoSession);
+        // cb(err, dynamoSession);
 
         // TODO: Remove following the PoC work, DO NOT promote past local/dev as this would expose PII.
         // logger.info("PERFORMING CONSISTENCY CHECK");
@@ -35,6 +36,9 @@ export class DualSessionStore extends session.Store {
         // TODO: This would need more work as failing at present - assume the actual session data is the same but other attributes differ.
         if (JSON.stringify(redisSession ?? null) !== JSON.stringify(dynamoSession ?? null)) {
           logger.warn({ sid, redisExists: !!redisSession, dynamoExists: !!dynamoSession }, "Session consistency mismatch");
+        } else {
+          // TODO: Log if consistent just for the dev env? Don't promote past dev.
+          logger.info({ sid }, "Session consistency match");
         }
 
         // TODO: Remove this verbose consistency logging following the PoC work?
@@ -54,6 +58,8 @@ export class DualSessionStore extends session.Store {
             );
           }
         }
+
+        cb(err, redisSession);
       });
     });
   }

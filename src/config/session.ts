@@ -43,6 +43,12 @@ function getRedisStore(redisConfig: RedisConfig): RedisStore {
 export function getSessionStore(redisConfig: RedisConfig): DualSessionStore {
   logger.info("GETTING SESSION STORE"); // TODO: Remove after debug.
 
+  /*
+    TODO: Might want to flag this to use the dual session store only in 
+    staging initially, use existing Redis store for higher environments
+    in the meantime.
+  */
+
   const redisStore = getRedisStore(redisConfig);
   const dynamoStore = getDynamoSessionStore();
   return new DualSessionStore(redisStore, dynamoStore);
