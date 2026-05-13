@@ -1443,8 +1443,14 @@ Resources:
     Type: AWS::DynamoDB::Table
     DeletionPolicy: Retain
     Properties:
-    # TODO: Does this respect subenvs??
-      TableName: !Sub "${Environment}-frontend-sessions"
+      TableName: !Sub
+        - "${env}-frontend-sessions"
+        - env:
+            !If [
+              UseSubEnvironment,
+              !Ref SubEnvironment,
+              !Ref Environment,
+            ]
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
