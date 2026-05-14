@@ -14,6 +14,7 @@ describe("passkeys helper", () => {
         hasActivePasskey: false,
         hasSkippedPasskeyRegistration: false,
         supportPasskeyRegistration: true,
+        rpClientId: "valid-rp-client-id",
         expected: true,
       },
       {
@@ -21,6 +22,7 @@ describe("passkeys helper", () => {
         hasActivePasskey: false,
         hasSkippedPasskeyRegistration: false,
         supportPasskeyRegistration: true,
+        rpClientId: "invalid-rp-client-id",
         expected: false,
       },
       {
@@ -28,6 +30,7 @@ describe("passkeys helper", () => {
         hasActivePasskey: true,
         hasSkippedPasskeyRegistration: false,
         supportPasskeyRegistration: true,
+        rpClientId: "invalid-rp-client-id",
         expected: false,
       },
       {
@@ -35,6 +38,7 @@ describe("passkeys helper", () => {
         hasActivePasskey: false,
         hasSkippedPasskeyRegistration: true,
         supportPasskeyRegistration: true,
+        rpClientId: "invalid-rp-client-id",
         expected: false,
       },
       {
@@ -42,6 +46,32 @@ describe("passkeys helper", () => {
         hasActivePasskey: false,
         hasSkippedPasskeyRegistration: false,
         supportPasskeyRegistration: false,
+        rpClientId: "invalid-rp-client-id",
+        expected: false,
+      },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: false,
+        hasSkippedPasskeyRegistration: false,
+        supportPasskeyRegistration: true,
+        reauthenticate: "12345",
+        rpClientId: "invalid-rp-client-id",
+        expected: false,
+      },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: false,
+        hasSkippedPasskeyRegistration: false,
+        supportPasskeyRegistration: true,
+        rpClientId: "invalid-rp-client-id",
+        expected: false,
+      },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: null,
+        hasSkippedPasskeyRegistration: false,
+        supportPasskeyRegistration: true,
+        rpClientId: "valid-rp-client-id",
         expected: false,
       },
     ];
@@ -52,15 +82,23 @@ describe("passkeys helper", () => {
         hasActivePasskey,
         hasSkippedPasskeyRegistration,
         supportPasskeyRegistration,
+        reauthenticate,
+        rpClientId,
         expected,
       }) => {
-        it(`should return ${expected} when browserSupportsWebAuthn=${browserSupportsWebAuthn}, hasActivePasskey=${hasActivePasskey}, hasSkippedPasskeyRegistration=${hasSkippedPasskeyRegistration}, supportPasskeyRegistration=${supportPasskeyRegistration}`, () => {
+        it(`should return ${expected} when browserSupportsWebAuthn=${browserSupportsWebAuthn}, hasActivePasskey=${hasActivePasskey}, hasSkippedPasskeyRegistration=${hasSkippedPasskeyRegistration}, supportPasskeyRegistration=${supportPasskeyRegistration}, reauthenticate=${reauthenticate}, rpClientId=${rpClientId}`, () => {
+          process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
+
           const req = {
             session: {
               user: {
                 browserSupportsWebAuthn,
                 hasActivePasskey,
                 hasSkippedPasskeyRegistration,
+                reauthenticate,
+              },
+              client: {
+                rpClientId: rpClientId,
               },
             },
           } as any as Request;
@@ -98,6 +136,12 @@ describe("passkeys helper", () => {
         browserSupportsWebAuthn: true,
         hasActivePasskey: true,
         supportPasskeyUsage: false,
+        expected: false,
+      },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: null,
+        supportPasskeyUsage: true,
         expected: false,
       },
     ];

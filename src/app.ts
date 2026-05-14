@@ -55,6 +55,7 @@ import {
 } from "./middleware/session-middleware.js";
 import { updatedTermsConditionsRouter } from "./components/updated-terms-conditions/updated-terms-conditions-routes.js";
 import { signInOrCreateRouter } from "./components/sign-in-or-create/sign-in-or-create-routes.js";
+import { signInWithPasskeyRouter } from "./components/sign-in-with-passkey/sign-in-with-passkey-routes.js";
 import { accountNotFoundRouter } from "./components/account-not-found/account-not-found-routes.js";
 import { resetPasswordCheckEmailRouter } from "./components/reset-password-check-email/reset-password-check-email-routes.js";
 import { setLocalVarsMiddleware } from "./middleware/set-local-vars-middleware.js";
@@ -113,6 +114,7 @@ import { createPasskeyRouter } from "./components/create-passkey/create-passkey-
 import { createPasskeyCallbackRouter } from "./components/create-passkey-callback/create-passkey-callback-routes.js";
 import { sessionEndedRouter } from "./components/session-ended/session-ended-routes.js";
 import { passkeyCreatedRouter } from "./components/passkey-created/passkey-created-routes.js";
+import { setGoBackHistoryMiddleware } from "./middleware/set-go-back-history-middleware.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -125,6 +127,7 @@ const APP_VIEWS = [
 function registerRoutes(app: express.Application) {
   app.use(landingRouter);
   app.use(signInOrCreateRouter);
+  app.use(signInWithPasskeyRouter);
   app.use(enterEmailRouter);
   app.use(accountNotFoundRouter);
   app.use(enterPasswordRouter);
@@ -310,6 +313,7 @@ async function createApp(): Promise<express.Application> {
     app.use(setCurrentUrlMiddleware);
   }
   app.use(getAnalyticsPropertiesMiddleware);
+  app.use(setGoBackHistoryMiddleware);
 
   // Attach context to request logs
   app.use((req, res, next) => {

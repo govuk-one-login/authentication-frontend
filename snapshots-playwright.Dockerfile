@@ -1,4 +1,4 @@
-FROM node:20.17.0-alpine@sha256:2d07db07a2df6830718ae2a47db6fedce6745f5bcd174c398f2acdda90a11c03 AS builder
+FROM node:24.15.0-alpine3.22@sha256:b689d4005875ae167178471a7a622ec2909459a3bbb32277260be1971af7a99f AS builder
 
 WORKDIR /app
 COPY .npmrc ./
@@ -8,7 +8,7 @@ RUN npm config get ignore-scripts | grep -q "true" || exit 1
 RUN npm ci --ignore-scripts
 
 
-FROM mcr.microsoft.com/playwright:v1.58.2-noble AS playwright
+FROM mcr.microsoft.com/playwright:v1.59.1-noble AS playwright
 
 WORKDIR /app
 

@@ -45,8 +45,6 @@ updates:
         update-types: ["version-update:semver-patch"]
       - dependency-name: "globals"
         update-types: ["version-update:semver-patch"]
-      - dependency-name: "husky"
-        update-types: ["version-update:semver-patch"]
       - dependency-name: "mocha"
         update-types: ["version-update:semver-patch"]
       - dependency-name: "mock-req-res"
@@ -95,6 +93,9 @@ updates:
       npm-eslint-dependencies:
         patterns:
           - "*eslint*"
+      npm-typescript-eslint-dependencies:
+        patterns:
+          - "@typescript-eslint/*"
       npm-i18next-dependencies:
         patterns:
           - "i18next*"

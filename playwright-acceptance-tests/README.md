@@ -9,15 +9,11 @@ with built-in support for reporting, flaky-test analysis, environment configurat
 ### Table of Contents
 
 - Overview
-- Tech Stack
-- Project Structure
 - Environment Variables
 - Installation
 - Running Tests
 - Tags & Filtering
 - Reporting
-- Scripts
-- Adding New Tests
 - Development Standards
 - Troubleshooting
 - Roadmap
@@ -36,61 +32,6 @@ This project provides automated acceptance coverage for user journeys in GOV.UK 
 The suite is intentionally lightweight and modular, supporting migration from Selenium-Java to Playwright-TypeScript.
 
 Tests will run locally or in CI (GitHub Actions / AWS CodeBuild), using environment variables to configure runtime behaviour.
-
-### Tech Stack
-
-```
-Component	Version / Notes
-Playwright	1.56.1
-Cucumber.js	9.6.0
-TypeScript	5.9.3
-Node	Recommended: Node 20 LTS
-ESLint	Enabled
-Prettier	Enabled
-dotenv	.env loading
-multiple-cucumber-html-reporter	HTML reporting
-axe-core/playwright	Optional a11y testing
-```
-
-### Project Structure
-
-```
-playwright-acceptance-tests/
-│
-├── features/
-│   ├── create-or-signin.feature
-│   └── stub-journey.feature
-│
-├── reports/
-│   ├── cucumber-json/
-│   ├── html/
-│   └── screenshots/
-│
-├── src/
-│   ├── pages/
-│   │   ├── BasePage.ts
-│   │   ├── StubStartPage.ts
-│   │   ├── CreateOrSignInPage.ts
-│   │   └── EnterEmailPage.ts
-│   │
-│   ├── steps/
-│   │   └── stub-journey.steps.ts
-│   │
-│   ├── support/
-│   │   ├── hooks.ts
-│   │   └── world.ts
-│   │
-│   ├── clean-json.js
-│   ├── clean-reports.js
-│   ├── run-test-with-report.js
-│   └── cucumber.js
-│
-├── .env
-├── .gitignore
-├── package.json
-├── tsconfig.json
-└── .eslintrc.cjs
-```
 
 ### Environment Variables
 
@@ -219,74 +160,9 @@ Overall pass/failure metrics
 Handled by: run-test-with-report.js
 ```
 
-### Scripts
-
-From package.json:
-
-```
-"scripts": {
-"clean:reports": "node clean-reports.js",
-"bdd": "cucumber-js",
-"bdd:report": "node run-test-with-report.js",
-"test": "npm run bdd:report",
-"lint": "eslint . --ext .ts",
-"format": "prettier --write ."
-}
-```
-
-### Adding New Tests
-
-**Create feature file**
-
-```
-features/new-journey.feature
-```
-
-**Create page objects**
-Place inside:
-
-```
-src/pages/
-```
-
-**Create step definitions**
-Place inside:
-
-```
-src/steps/
-```
-
-**Test configuration**
-Reuse:
-
-- BasePage
-- PlaywrightWorld
-- Hooks for browser open/close + screenshot on fail
-
 ### Development Standards
 
-**Pre-commit Hook (Husky)**
-This project uses a root-level Git pre-commit hook (via Husky + lint-staged) to automatically run
-ESLint and Prettier on staged .ts files inside the playwright-acceptance-tests folder.
-
-This ensures all Playwright test code is formatted and linted before every commit.
-
-**Hook location:**
-
-```
-authentication-frontend/.husky/pre-commit
-```
-
-**Hook content:**
-
-```
-#!/usr/bin/env sh
-
-cd playwright-acceptance-tests
-npx lint-staged
-```
-
-Developers commit normally from the root repository — formatting runs automatically.
+Developers should consider the following when working on these tests:
 
 - Code quality
 - ESLint must pass
@@ -294,11 +170,12 @@ Developers commit normally from the root repository — formatting runs automati
 - Keep steps declarative
 - Avoid long complex steps
 
-**Page Object Model**
+Run the following to format staged files:
 
-- One class per page
-- Define locators at the top
-- No assertions inside page objects
+```
+cd playwright-acceptance-tests
+npx lint-staged
+```
 
 **Accessibility**
 

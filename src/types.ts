@@ -53,6 +53,7 @@ export interface PlaceholderReplacement {
 export interface UserJourney {
   nextPath: string;
   optionalPaths: string[];
+  goBackHistory?: string[];
 }
 
 export interface UserSession {
@@ -91,7 +92,7 @@ export interface UserSession {
   isMfaRequired?: boolean;
   activeMfaMethodId?: string;
   sentOtpMfaMethodIds?: string[];
-  hasActivePasskey?: boolean;
+  hasActivePasskey?: boolean | null;
   hasSkippedPasskeyRegistration?: boolean;
   needsForcedMFAReset?: boolean;
   browserSupportsWebAuthn?: boolean;

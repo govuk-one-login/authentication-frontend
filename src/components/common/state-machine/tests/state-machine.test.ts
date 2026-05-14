@@ -78,6 +78,8 @@ describe("state-machine", () => {
         DEFAULT_CONTEXT
       );
       expect(nextState.value).to.equal(PATH_NAMES.ENTER_PASSWORD);
+      expect(nextState.transitions.every((t) => t.meta?.reversible === true)).to
+        .be.true;
     });
 
     it("should move from enter password to enter mfa code when user event is credentials validated", () => {
@@ -96,6 +98,17 @@ describe("state-machine", () => {
         DEFAULT_CONTEXT
       );
       expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
+    });
+  });
+
+  describe(`getNextState - ${PATH_NAMES.SIGN_IN_WITH_PASSKEY}`, () => {
+    it(`should move from ${PATH_NAMES.ENTER_EMAIL_SIGN_IN} to ${PATH_NAMES.SIGN_IN_WITH_PASSKEY} when shouldPromptToSignInWithPasskey is true`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.ENTER_EMAIL_SIGN_IN,
+        USER_JOURNEY_EVENTS.VALIDATE_CREDENTIALS,
+        { ...DEFAULT_CONTEXT, shouldPromptToSignInWithPasskey: true }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_WITH_PASSKEY);
     });
   });
 

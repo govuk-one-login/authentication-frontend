@@ -455,6 +455,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
+      PasskeyPromptClientAllowList: "skwdHH2y6ERjJWTPSoAFbSt8lX04OgtI"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       frontendApiBaseUrl: https://nw0dah7bxk-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev2/
@@ -475,6 +476,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
+      PasskeyPromptClientAllowList: "rPEUe0hRrHqf0i0es1gYjKxE5ceGN7VK"
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: https://y3s69ubaz5-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev3/
@@ -490,6 +492,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
+      PasskeyPromptClientAllowList: ""
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -515,11 +518,12 @@ Mappings:
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.dev.account.gov.uk"
       UseRebrand: "Yes"
-      SupportPasskeyUsage: "Yes"
+      SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
+      PasskeyPromptClientAllowList: "J3tedNRsfssnsf4STuc2NNIV1C1gdxBB"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -550,6 +554,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
+      PasskeyPromptClientAllowList: "Ykg9fGyY76On4e8tPvFabK5BIl65EkGH"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -583,10 +588,11 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.staging.account.gov.uk"
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
-      SupportPasskeyRegistration: "No"
+      SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
+      PasskeyPromptClientAllowList: "nsR2wZ7EebJ2VOzE1LUa9iAVadunWQP3,EMGmY82k-92QSakDl_9keKDFmZY" # perf-test client, home client
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -618,6 +624,7 @@ Mappings:
       SupportPasskeyRegistration: "No"
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
+      PasskeyPromptClientAllowList: ""
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -652,6 +659,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
+      PasskeyPromptClientAllowList: ""
 
 Globals:
   Function:
@@ -1170,6 +1178,14 @@ Resources:
               Value: !If [SupportPasskeyUsage, "1", "0"]
             - Name: SUPPORT_PASSKEY_REGISTRATION
               Value: !If [SupportPasskeyRegistration, "1", "0"]
+            - Name: PASSKEY_PROMPT_CLIENT_ALLOW_LIST
+              Value: !FindInMap
+                - EnvironmentConfiguration
+                - !If
+                  - UseSubEnvironment
+                  - !Ref SubEnvironment
+                  - !Ref Environment
+                - PasskeyPromptClientAllowList
             - Name: ENABLE_DWP_KBV_CONTACT_FORM_CHANGES
               Value: !If [EnableDwpKbvContactFormChanges, "1", "0"]
             - Name: SUPPORT_NEW_INTERNATIONAL_SMS
