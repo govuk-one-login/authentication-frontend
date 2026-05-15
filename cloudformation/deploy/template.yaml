@@ -1407,6 +1407,16 @@ Resources:
                         !Ref SubEnvironment,
                         !Ref Environment,
                       ]
+        - PolicyName: AllowAccessToFrontendSessionsTableKmsEncryptionKey
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - kms:Decrypt
+                  - kms:GenerateDataKey*
+                  - kms:DescribeKey
+                Resource: !GetAtt FrontendSessionsTableKmsKey.Arn
       PermissionsBoundary: !If
         - UsePermissionsBoundary
         - !Ref PermissionsBoundary
