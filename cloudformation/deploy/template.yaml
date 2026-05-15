@@ -1417,6 +1417,18 @@ Resources:
                   - kms:GenerateDataKey*
                   - kms:DescribeKey
                 Resource: !GetAtt FrontendSessionsTableKmsKey.Arn
+        - PolicyName: AllowDynamoDbFrontendSessionAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:DescribeTable
+                Resource: !GetAtt FrontendSessionsTable.Arn
       PermissionsBoundary: !If
         - UsePermissionsBoundary
         - !Ref PermissionsBoundary
