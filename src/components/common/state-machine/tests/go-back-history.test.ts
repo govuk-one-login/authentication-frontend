@@ -3,6 +3,7 @@ import { describe } from "mocha";
 import {
   buildGoBackHistoryForTransition,
   getGoBackHistoryForTransition,
+  isBackTransition,
 } from "../go-back-history.js";
 import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
 import { mockResponse } from "mock-req-res";
@@ -258,6 +259,44 @@ describe("go-back-history", () => {
       );
 
       expect(result).to.deep.equal([]);
+    });
+  });
+
+  describe("isBackTransition", () => {
+    const testCases = [
+      {
+        goBackHistory: ["/first-path"],
+        currentPath: "/first-path",
+        expectedValue: true,
+      },
+      {
+        goBackHistory: ["/first-path", "/second-path"],
+        currentPath: "/second-path",
+        expectedValue: true,
+      },
+      {
+        goBackHistory: ["/first-path"],
+        currentPath: "/second-path",
+        expectedValue: false,
+      },
+      {
+        goBackHistory: ["/first-path", "/second-path"],
+        currentPath: "/first-path",
+        expectedValue: false,
+      },
+      {
+        goBackHistory: [],
+        currentPath: "/first-path",
+        expectedValue: false,
+      },
+    ];
+
+    testCases.forEach(({ goBackHistory, currentPath, expectedValue }) => {
+      it(`should return ${expectedValue} when goBackHistory is [${goBackHistory}] and currentPath is ${currentPath}`, () => {
+        expect(isBackTransition(goBackHistory, currentPath)).to.eq(
+          expectedValue
+        );
+      });
     });
   });
 });

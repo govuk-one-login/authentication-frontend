@@ -1,12 +1,27 @@
 import type { NextFunction, Request, Response } from "express";
 import { authStateMachine } from "../components/common/state-machine/state-machine.js";
 import { saveSessionState } from "../components/common/constants.js";
-export function transitionForbidden(req: Request): boolean {
+import {
+  goBackHistoryAllowList,
+  isBackTransition,
+} from "../components/common/state-machine/go-back-history.js";
+
+export function transitionForbidden(
+  req: Request,
+  passkeysEnabled?: boolean
+): boolean {
   const nextPath = req.session.user.journey.nextPath;
-  return (
-    nextPath !== req.path &&
-    !req.session.user.journey.optionalPaths.includes(req.path)
+
+  const isOnNextPath = nextPath === req.path;
+  const isOnOptionalPath = req.session.user.journey.optionalPaths.includes(
+    req.path
   );
+  const isGoingBack =
+    passkeysEnabled &&
+    goBackHistoryAllowList.includes(nextPath) &&
+    isBackTransition(req.session.user.journey.goBackHistory ?? [], req.path);
+
+  return !isOnNextPath && !isOnOptionalPath && !isGoingBack;
 }
 
 export function allowUserJourneyMiddleware(
@@ -14,7 +29,9 @@ export function allowUserJourneyMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  if (transitionForbidden(req)) {
+  const passkeysEnabled =
+    res.locals.supportPasskeyRegistration || res.locals.supportPasskeyUsage;
+  if (transitionForbidden(req, passkeysEnabled)) {
     const nextPath = req.session.user.journey.nextPath;
     req.log.warn(
       `User tried invalid journey to ${
@@ -34,7 +51,9 @@ export async function allowAndPersistUserJourneyMiddleware(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  if (transitionForbidden(req)) {
+  const passkeysEnabled =
+    res.locals.supportPasskeyRegistration || res.locals.supportPasskeyUsage;
+  if (transitionForbidden(req, passkeysEnabled)) {
     const nextPath = req.session.user.journey.nextPath;
     req.log.warn(
       `User tried invalid journey to ${

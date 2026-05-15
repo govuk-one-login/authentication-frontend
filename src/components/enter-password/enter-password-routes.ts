@@ -13,14 +13,17 @@ import {
   validateEnterPasswordRequest,
 } from "./enter-password-validation.js";
 import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
-import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
+import {
+  allowAndPersistUserJourneyMiddleware,
+  allowUserJourneyMiddleware,
+} from "../../middleware/allow-user-journey-middleware.js";
 
 const router = express.Router();
 
 router.get(
   PATH_NAMES.ENTER_PASSWORD,
   validateSessionMiddleware,
-  allowUserJourneyMiddleware,
+  allowAndPersistUserJourneyMiddleware,
   enterPasswordGet
 );
 

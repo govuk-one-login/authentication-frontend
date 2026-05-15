@@ -1,5 +1,8 @@
 import type { Request, Response } from "express";
 import type { AuthState } from "./state-machine.js";
+import { PATH_NAMES } from "../../../app.constants.js";
+
+export const goBackHistoryAllowList = [PATH_NAMES.ENTER_PASSWORD];
 
 export function getGoBackHistoryForTransition(
   req: Request,
@@ -32,4 +35,16 @@ export function buildGoBackHistoryForTransition(
   }
 
   return [...currentGoBackHistory, previousState];
+}
+
+export function isBackTransition(
+  goBackHistory: string[],
+  currentPath: string
+): boolean {
+  if (goBackHistory.length === 0) {
+    return false;
+  }
+
+  const lastPath = goBackHistory[goBackHistory.length - 1];
+  return lastPath === currentPath;
 }
