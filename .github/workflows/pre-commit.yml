@@ -38,8 +38,17 @@ jobs:
           else
             echo "ignore-scripts is set to true"
           fi
+
       - name: Install dependencies
         run: npm ci --ignore-scripts
+
+      - name: Check journey-map lockfile sync
+        run: npm ci --ignore-scripts
+        working-directory: journey-map
+
+      - name: Check playwright-acceptance-tests lockfile sync
+        run: npm ci --ignore-scripts
+        working-directory: playwright-acceptance-tests
 
       - name: Run pre-commit
         uses: whi-tw/pre-commit-action@9a134f4f53ddd4071215facfc20ea754f9cb337b # v3.1.1
