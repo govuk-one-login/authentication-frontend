@@ -2512,3 +2512,46 @@ Resources:
           Value: "auth-frontend"
         - Key: Source
           Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+
+  FrontendSessionsTableKmsKey:
+    Type: AWS::KMS::Key
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Description: KMS encryption key for Auth frontend session DynamoDB table
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: 2012-10-17
+        Statement:
+          - Sid: AllowIamManagement
+            Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+            Action:
+              - kms:*
+            Resource: "*"
+          - Sid: AllowDynamoDbAccessToEncryptionKey
+            Effect: Allow
+            Principal:
+              Service: dynamodb.amazonaws.com
+            Action:
+              - kms:Encrypt
+              - kms:Decrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+              - kms:DescribeKey
+            Resource: "*"
+            Condition:
+              ArnLike:
+                kms:EncryptionContext:aws:dynamodb:table/arn: !Sub
+                  - arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${env}-frontend-sessions
+                  - env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-FrontendSessionsTableKmsKey"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+        - Key: Source
+          Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
