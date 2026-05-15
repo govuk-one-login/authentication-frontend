@@ -1756,6 +1756,46 @@ Resources:
               - DefaultValue: "auth-fe-cloudfront"
 
   #
+  # Tables
+  #
+
+  FrontendSessionsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: !Sub
+        - "${env}-frontend-sessions"
+        - env:
+            !If [
+              UseSubEnvironment,
+              !Ref SubEnvironment,
+              !Ref Environment,
+            ]
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      DeletionProtectionEnabled: true
+      SSESpecification:
+        SSEEnabled: true
+        KMSMasterKeyId: !GetAtt FrontendSessionsTableKmsKey.Arn
+        SSEType: KMS
+      TimeToLiveSpecification:
+        AttributeName: expires
+        Enabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: "auth-frontend"
+
+  #
   # Anomaly detection
   #
 
