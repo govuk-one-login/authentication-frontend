@@ -7,14 +7,18 @@ import { mockResponse } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { getAccountExistsWithPasskey } from "../account-exists-with-passkey-controller.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 
 describe("account exists with passkey", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
+  const { email } = commonVariables;
+
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY);
     res = mockResponse();
+    req.session.user = { email };
   });
 
   afterEach(() => {
@@ -26,7 +30,8 @@ describe("account exists with passkey", () => {
       getAccountExistsWithPasskey(req, res);
 
       expect(res.render).to.have.calledWith(
-        "account-exists-with-passkey/index.njk"
+        "account-exists-with-passkey/index.njk",
+        { email }
       );
     });
   });

@@ -1,2 +1,24 @@
 {% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% set showBack = true %}
+{% set hrefBack = 'enter-email-create' %}
 {% set pageTitleName = 'pages.existingAccountWithPasskey.title' | translate %}
+
+{% block content %}
+
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.existingAccountWithPasskey.header' | translate }}</h1>
+
+    <p class="govuk-body">
+        {{ 'pages.existingAccountWithPasskey.paragraph1' | translate }}
+        <span class="govuk-body govuk-!-font-weight-bold">{{email}}</span>
+    </p>
+
+    <p class="govuk-body">{{'pages.existingAccountWithPasskey.paragraph2' | translate }}</p>
+
+    {{ govukButton({
+      "text": "general.continue.label" | translate,
+      "type": "Submit",
+      "preventDoubleClick": true
+    }) }}
+
+{% endblock %}

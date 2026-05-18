@@ -65,6 +65,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
   },
   [PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY]: {
     template: "account-exists-with-passkey/index.njk",
+    options: { email: "example@account.gov.uk" },
   },
   [PATH_NAMES.ENTER_MFA]: [
     {

@@ -325,7 +325,10 @@
       "paragraph2": "Wait 2 hours and go back to the service you were trying to use. You can look for the service using your search engine or find it from the GOV.UK homepage."
     },
     "existingAccountWithPasskey": {
-      "title": "You have a GOV.UK One Login"
+      "title": "You have a GOV.UK One Login",
+      "header": "You have a GOV.UK One Login",
+      "paragraph1": "There’s already a GOV.UK One Login using ",
+      "paragraph2": "Continue to sign in."
     },
     "accountNotFoundOneLogin": {
       "title": "You do not have a GOV.UK One Login",
