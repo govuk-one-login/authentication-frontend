@@ -30,6 +30,7 @@ import { isLocked, timestampNSecondsFromNow } from "../../utils/lock-helper.js";
 import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message.js";
 import { isReauth } from "../../utils/request.js";
 import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
+import { shouldPromptToSignInWithPasskey } from "../../utils/passkeys-helper.js";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -200,12 +201,11 @@ export function enterEmailCreatePost(
     if (doesUserExist === undefined) return;
 
     if (doesUserExist) {
+      const userJourneyEvent = shouldPromptToSignInWithPasskey(req, res)
+        ? USER_JOURNEY_EVENTS.ACCOUNT_FOUND_WITH_PASSKEY_CREATE
+        : USER_JOURNEY_EVENTS.ACCOUNT_FOUND_CREATE;
       return res.redirect(
-        await getNextPathAndUpdateJourney(
-          req,
-          res,
-          USER_JOURNEY_EVENTS.ACCOUNT_FOUND_CREATE
-        )
+        await getNextPathAndUpdateJourney(req, res, userJourneyEvent)
       );
     }
 

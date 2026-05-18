@@ -509,11 +509,73 @@ describe("enter email controller", () => {
       req.body.email = email;
     });
 
-    it("should redirect to /enter-password when account exists", async () => {
+    const FEATURE_FLAG_VALUES = [true, false];
+    FEATURE_FLAG_VALUES.forEach((featureFlagValue) => {
+      it(`should redirect to /enter-password when account exists with no passkey and passkey feature flag is ${featureFlagValue}`, async () => {
+        res.locals.supportPasskeyUsage = featureFlagValue;
+        req.session.user.browserSupportsWebAuthn = true;
+        const fakeService: EnterEmailServiceInterface = {
+          userExists: sinon.fake.returns({
+            success: true,
+            data: { doesUserExist: true, hasActivePasskey: false },
+          }),
+        } as unknown as EnterEmailServiceInterface;
+
+        await enterEmailCreatePost(fakeService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(fakeService.userExists).to.have.been.calledOnce;
+        expect(res.redirect).to.have.calledWith(
+          PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS
+        );
+      });
+    });
+
+    it("should redirect to /account-exists when account exists with a passkey", async () => {
+      res.locals.supportPasskeyUsage = true;
+      req.session.user.browserSupportsWebAuthn = true;
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
           success: true,
-          data: { doesUserExist: true },
+          data: { doesUserExist: true, hasActivePasskey: true },
+        }),
+      } as unknown as EnterEmailServiceInterface;
+
+      await enterEmailCreatePost(fakeService)(req as Request, res as Response);
+
+      expect(fakeService.userExists).to.have.been.calledOnce;
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY
+      );
+    });
+
+    it("should redirect to /enter-password when account exists with a passkey but browser does not support webAuthN", async () => {
+      res.locals.supportPasskeyUsage = true;
+      req.session.user.browserSupportsWebAuthn = false;
+      const fakeService: EnterEmailServiceInterface = {
+        userExists: sinon.fake.returns({
+          success: true,
+          data: { doesUserExist: true, hasActivePasskey: true },
+        }),
+      } as unknown as EnterEmailServiceInterface;
+
+      await enterEmailCreatePost(fakeService)(req as Request, res as Response);
+
+      expect(fakeService.userExists).to.have.been.calledOnce;
+      expect(res.redirect).to.have.calledWith(
+        PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS
+      );
+    });
+
+    it("should redirect to /enter-password when account exists with a passkey but support passkey usage feature flag turned off", async () => {
+      res.locals.supportPasskeyUsage = false;
+      req.session.user.browserSupportsWebAuthn = true;
+      const fakeService: EnterEmailServiceInterface = {
+        userExists: sinon.fake.returns({
+          success: true,
+          data: { doesUserExist: true, hasActivePasskey: true },
         }),
       } as unknown as EnterEmailServiceInterface;
 
