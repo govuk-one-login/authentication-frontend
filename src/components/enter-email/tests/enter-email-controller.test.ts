@@ -533,9 +533,31 @@ describe("enter email controller", () => {
       });
     });
 
+    passkeysSupportedValues.forEach((testInput) => {
+      it(`should correctly store the browserSupportsWebAuthn result in the users session when it is ${testInput.browserSupportsWebAuthn}`, async () => {
+        req.body.browserSupportsWebAuthn = testInput.browserSupportsWebAuthn;
+
+        const fakeService: EnterEmailServiceInterface = {
+          userExists: sinon.fake.returns({
+            success: true,
+            data: { doesUserExist: true },
+          }),
+        } as unknown as EnterEmailServiceInterface;
+
+        await enterEmailCreatePost(fakeService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(req.session.user.browserSupportsWebAuthn).to.eq(
+          testInput.expectedValInSession
+        );
+      });
+    });
+
     it("should redirect to /account-exists when account exists with a passkey", async () => {
       res.locals.supportPasskeyUsage = true;
-      req.session.user.browserSupportsWebAuthn = true;
+      req.body.browserSupportsWebAuthn = "true";
       const fakeService: EnterEmailServiceInterface = {
         userExists: sinon.fake.returns({
           success: true,

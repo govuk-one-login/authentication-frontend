@@ -184,10 +184,11 @@ export function enterEmailCreatePost(
   notificationService: SendNotificationServiceInterface = sendNotificationService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const email = req.body.email.toLowerCase();
+    const { email, browserSupportsWebAuthn } = req.body;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-
-    req.session.user.email = email;
+    req.session.user.browserSupportsWebAuthn =
+      browserSupportsWebAuthn === "true";
+    req.session.user.email = email.toLowerCase();
 
     const doesUserExist = await getExistingUserAndPopulateSessionData(
       service,
