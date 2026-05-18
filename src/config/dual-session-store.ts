@@ -4,89 +4,147 @@ import { isDeepStrictEqual } from "node:util";
 
 export class DualSessionStore extends Store {
   constructor(
-    private redis: Store,
-    private dynamo: Store
+    private readonly primary: Store,
+    private readonly secondary: Store,
+    private readonly primaryLabel: string,
+    private readonly secondaryLabel: string
   ) {
     super();
   }
 
-  get(sid: string, cb: (err?: any, session?: SessionData | null) => void): void {
-    this.redis.get(sid, (redisErr, redisSession) => {
-      if (redisErr) {
-        logger.warn({ err: redisErr, sid }, "Redis session read failed, falling back to DynamoDB");
+  get(
+    sid: string,
+    cb: (err?: any, session?: SessionData | null) => void
+  ): void {
+    this.primary.get(sid, (primaryErr, primarySession) => {
+      if (primaryErr) {
+        logger.warn(
+          { err: primaryErr, sid, store: this.primaryLabel },
+          "Primary session read failed, falling back to secondary"
+        );
       } else {
-        logger.info({ sid }, "Session read from Redis");
-        cb(null, redisSession);
+        logger.info(
+          { sid, store: this.primaryLabel },
+          "Session read from primary"
+        );
+        cb(null, primarySession);
       }
 
-      this.dynamo.get(sid, (dynamoErr, dynamoSession) => {
-        if (redisErr) {
-          cb(dynamoErr, dynamoSession);
+      this.secondary.get(sid, (secondaryErr, secondarySession) => {
+        if (primaryErr) {
+          cb(secondaryErr, secondarySession);
           return;
         }
 
-        if (dynamoErr) {
-          logger.warn({ err: dynamoErr, sid }, "DynamoDB consistency check read failed");
+        if (secondaryErr) {
+          logger.warn(
+            { err: secondaryErr, sid, store: this.secondaryLabel },
+            "Secondary consistency check read failed"
+          );
           return;
         }
 
-        logger.info({ sid }, "Session read from DynamoDB");
-        this.performConsistencyChecks(redisSession, dynamoSession, sid);
+        logger.info(
+          { sid, store: this.secondaryLabel },
+          "Session read from secondary"
+        );
+        this.performConsistencyChecks(primarySession, secondarySession, sid);
       });
     });
   }
 
   set(sid: string, sess: SessionData, cb: (err?: any) => void): void {
-    this.redis.set(sid, sess, (err) => {
-      logger.info({ sid }, "Session written to Redis");
+    this.primary.set(sid, sess, (err) => {
+      logger.info(
+        { sid, store: this.primaryLabel },
+        "Session written to primary"
+      );
       cb(err);
     });
 
-    this.writeToDynamo("set", sid, sess);
+    this.writeToSecondary("set", sid, sess);
   }
 
   destroy(sid: string, cb: (err?: any) => void): void {
-    this.redis.destroy(sid, (err) => {
-      logger.info({ sid }, "Session destroyed in Redis");
+    this.primary.destroy(sid, (err) => {
+      logger.info(
+        { sid, store: this.primaryLabel },
+        "Session destroyed in primary"
+      );
       cb(err);
     });
 
-    this.dynamo.destroy(sid, (dynamoErr) => {
-      if (dynamoErr) {
-        logger.warn({ err: dynamoErr, sid }, "DynamoDB session destroy failed");
+    this.secondary.destroy(sid, (secondaryErr) => {
+      if (secondaryErr) {
+        logger.warn(
+          { err: secondaryErr, sid, store: this.secondaryLabel },
+          "Secondary session destroy failed"
+        );
         return;
       }
-      logger.info({ sid }, "Session destroyed in DynamoDB");
+      logger.info(
+        { sid, store: this.secondaryLabel },
+        "Session destroyed in secondary"
+      );
     });
   }
 
   touch(sid: string, sess: SessionData, cb: () => void): void {
-    this.redis.touch(sid, sess, () => {
-      logger.info({ sid }, "Session touched in Redis");
+    this.primary.touch(sid, sess, () => {
+      logger.info(
+        { sid, store: this.primaryLabel },
+        "Session touched in primary"
+      );
       cb();
     });
 
-    this.writeToDynamo("touch", sid, sess);
+    this.writeToSecondary("touch", sid, sess);
   }
 
-  private writeToDynamo(operation: "set" | "touch", sid: string, sess: SessionData): void {
+  private writeToSecondary(
+    operation: "set" | "touch",
+    sid: string,
+    sess: SessionData
+  ): void {
     try {
-      this.dynamo[operation](sid, sess, (dynamoErr) => {
-        if (dynamoErr) {
-          logger.warn({ err: dynamoErr, sid, operation }, "DynamoDB session write failed");
+      this.secondary[operation](sid, sess, (secondaryErr) => {
+        if (secondaryErr) {
+          logger.warn(
+            { err: secondaryErr, sid, operation, store: this.secondaryLabel },
+            "Secondary session write failed"
+          );
           return;
         }
-        logger.info({ sid, operation }, "Session written to DynamoDB");
+        logger.info(
+          { sid, operation, store: this.secondaryLabel },
+          "Session written to secondary"
+        );
       });
     } catch (err) {
-      logger.warn({ err, sid, operation }, "DynamoDB session write threw unexpectedly");
+      logger.warn(
+        { err, sid, operation, store: this.secondaryLabel },
+        "Secondary session write threw unexpectedly"
+      );
     }
   }
 
-  private performConsistencyChecks(redisSession: SessionData, dynamoSession: SessionData, sid: string): void {
+  private performConsistencyChecks(
+    primarySession: SessionData,
+    secondarySession: SessionData,
+    sid: string
+  ): void {
     try {
-      if (!isDeepStrictEqual(redisSession ?? null, dynamoSession ?? null)) {
-        logger.warn({ sid, redisExists: !!redisSession, dynamoExists: !!dynamoSession }, "Session consistency mismatch");
+      if (
+        !isDeepStrictEqual(primarySession ?? null, secondarySession ?? null)
+      ) {
+        logger.warn(
+          {
+            sid,
+            primaryExists: !!primarySession,
+            secondaryExists: !!secondarySession,
+          },
+          "Session consistency mismatch"
+        );
       }
     } catch (err) {
       logger.warn({ err }, "Error performing session store consistency checks");
