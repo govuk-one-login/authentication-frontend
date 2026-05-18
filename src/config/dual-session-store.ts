@@ -2,6 +2,15 @@ import { type SessionData, Store } from "express-session";
 import { logger } from "../utils/logger.js";
 import { isDeepStrictEqual } from "node:util";
 
+export class DualStoreError extends Error {
+  constructor(
+    public readonly primary: Error,
+    public readonly secondary: Error
+  ) {
+    super("Both session stores failed");
+  }
+}
+
 export class DualSessionStore extends Store {
   constructor(
     private readonly primary: Store,
@@ -32,7 +41,10 @@ export class DualSessionStore extends Store {
 
       this.secondary.get(sid, (secondaryErr, secondarySession) => {
         if (primaryErr) {
-          cb(secondaryErr, secondarySession);
+          const error = secondaryErr
+            ? new DualStoreError(primaryErr, secondaryErr)
+            : null;
+          cb(error, secondarySession);
           return;
         }
 
