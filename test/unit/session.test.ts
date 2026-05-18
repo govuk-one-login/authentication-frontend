@@ -1,7 +1,9 @@
-import { beforeEach, describe, it } from "mocha";
+import { afterEach, beforeEach, describe, it } from "mocha";
 import type { RedisConfig } from "../../src/utils/types.js";
 import { isRedisConfigEqual } from "../../src/config/session.js";
 import { expect, sinon } from "../utils/test-utils.js";
+import { DualSessionStore } from "../../src/config/dual-session-store.js";
+import { RedisStore } from "connect-redis";
 import esmock from "esmock";
 
 describe("session", () => {
@@ -131,6 +133,61 @@ describe("session", () => {
           expectation.equal
         );
       });
+    });
+  });
+
+  describe("getSessionStore dual-write feature flag", () => {
+    const fakeDynamoStore = { fake: "dynamo-store" };
+    let getSessionStoreWithFlag: any;
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it("should return a RedisStore when dual write is disabled", async () => {
+      ({ getSessionStore: getSessionStoreWithFlag } = await esmock(
+        "../../src/config/session.js",
+        {
+          redis: {
+            createClient: sinon.fake(() => ({
+              connect: sinon.fake(),
+              on: sinon.fake(),
+            })),
+          },
+          "../../src/config.js": {
+            getSessionDualWriteEnabled: () => false,
+          },
+          "../../src/config/dynamodb-session.js": {
+            getDynamoSessionStore: () => fakeDynamoStore,
+          },
+        }
+      ));
+
+      const store = getSessionStoreWithFlag(redisConfig);
+      expect(store).to.be.instanceOf(RedisStore);
+    });
+
+    it("should return a DualSessionStore when dual write is enabled", async () => {
+      ({ getSessionStore: getSessionStoreWithFlag } = await esmock(
+        "../../src/config/session.js",
+        {
+          redis: {
+            createClient: sinon.fake(() => ({
+              connect: sinon.fake(),
+              on: sinon.fake(),
+            })),
+          },
+          "../../src/config.js": {
+            getSessionDualWriteEnabled: () => true,
+          },
+          "../../src/config/dynamodb-session.js": {
+            getDynamoSessionStore: () => fakeDynamoStore,
+          },
+        }
+      ));
+
+      const store = getSessionStoreWithFlag(redisConfig);
+      expect(store).to.be.instanceOf(DualSessionStore);
     });
   });
 });
