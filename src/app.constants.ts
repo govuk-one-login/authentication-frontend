@@ -82,6 +82,7 @@ export const PATH_NAMES = {
   CREATE_PASSKEY_CALLBACK: "/create-passkey-callback",
   SESSION_ENDED: "/session-ended",
   PASSKEY_CREATED: "/passkey-created",
+  ACCOUNT_EXISTS_WITH_PASSKEY: "/account-exists",
 };
 
 export const HREF_BACK = {
