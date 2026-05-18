@@ -212,6 +212,9 @@ const authStateMachine = createMachine<AuthStateContext>(
       },
       [PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY]: {
         type: "final",
+        meta: {
+          optionalPaths: [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT],
+        },
       },
       [PATH_NAMES.CHECK_YOUR_EMAIL]: {
         on: {
