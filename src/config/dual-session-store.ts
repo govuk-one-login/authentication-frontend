@@ -36,7 +36,6 @@ export class DualSessionStore extends Store {
           { sid, store: this.primaryLabel },
           "Session read from primary"
         );
-        cb(null, primarySession);
       }
 
       this.secondary.get(sid, (secondaryErr, secondarySession) => {
@@ -53,51 +52,92 @@ export class DualSessionStore extends Store {
             { err: secondaryErr, sid, store: this.secondaryLabel },
             "Secondary consistency check read failed"
           );
-          return;
+        } else {
+          logger.info(
+            { sid, store: this.secondaryLabel },
+            "Session read from secondary"
+          );
+          this.performConsistencyChecks(primarySession, secondarySession, sid);
         }
 
-        logger.info(
-          { sid, store: this.secondaryLabel },
-          "Session read from secondary"
-        );
-        this.performConsistencyChecks(primarySession, secondarySession, sid);
+        cb(null, primarySession);
       });
     });
   }
 
   set(sid: string, sess: SessionData, cb: (err?: any) => void): void {
-    this.primary.set(sid, sess, (err) => {
-      logger.info(
-        { sid, store: this.primaryLabel },
-        "Session written to primary"
-      );
-      cb(err);
-    });
+    this.primary.set(sid, sess, (primaryErr) => {
+      if (primaryErr) {
+        logger.warn(
+          { err: primaryErr, sid, store: this.primaryLabel },
+          "Primary session write failed"
+        );
+      } else {
+        logger.info(
+          { sid, store: this.primaryLabel },
+          "Session written to primary"
+        );
+      }
 
-    this.writeToSecondary("set", sid, sess);
+      this.secondary.set(sid, sess, (secondaryErr) => {
+        if (secondaryErr) {
+          logger.warn(
+            { err: secondaryErr, sid, store: this.secondaryLabel },
+            "Secondary session write failed"
+          );
+        } else {
+          logger.info(
+            { sid, store: this.secondaryLabel },
+            "Session written to secondary"
+          );
+        }
+
+        if (primaryErr && secondaryErr) {
+          cb(new DualStoreError(primaryErr, secondaryErr));
+        } else if (primaryErr) {
+          cb(primaryErr);
+        } else {
+          cb();
+        }
+      });
+    });
   }
 
   destroy(sid: string, cb: (err?: any) => void): void {
-    this.primary.destroy(sid, (err) => {
-      logger.info(
-        { sid, store: this.primaryLabel },
-        "Session destroyed in primary"
-      );
-      cb(err);
-    });
-
-    this.secondary.destroy(sid, (secondaryErr) => {
-      if (secondaryErr) {
+    this.primary.destroy(sid, (primaryErr) => {
+      if (primaryErr) {
         logger.warn(
-          { err: secondaryErr, sid, store: this.secondaryLabel },
-          "Secondary session destroy failed"
+          { err: primaryErr, sid, store: this.primaryLabel },
+          "Primary session destroy failed"
         );
-        return;
+      } else {
+        logger.info(
+          { sid, store: this.primaryLabel },
+          "Session destroyed in primary"
+        );
       }
-      logger.info(
-        { sid, store: this.secondaryLabel },
-        "Session destroyed in secondary"
-      );
+
+      this.secondary.destroy(sid, (secondaryErr) => {
+        if (secondaryErr) {
+          logger.warn(
+            { err: secondaryErr, sid, store: this.secondaryLabel },
+            "Secondary session destroy failed"
+          );
+        } else {
+          logger.info(
+            { sid, store: this.secondaryLabel },
+            "Session destroyed in secondary"
+          );
+        }
+
+        if (primaryErr && secondaryErr) {
+          cb(new DualStoreError(primaryErr, secondaryErr));
+        } else if (primaryErr) {
+          cb(primaryErr);
+        } else {
+          cb();
+        }
+      });
     });
   }
 
@@ -107,36 +147,34 @@ export class DualSessionStore extends Store {
         { sid, store: this.primaryLabel },
         "Session touched in primary"
       );
-      cb();
-    });
 
-    this.writeToSecondary("touch", sid, sess);
+      this.touchSecondary(sid, sess, cb);
+    });
   }
 
-  private writeToSecondary(
-    operation: "set" | "touch",
+  private touchSecondary(
     sid: string,
-    sess: SessionData
+    sess: SessionData,
+    cb: () => void
   ): void {
     try {
-      this.secondary[operation](sid, sess, (secondaryErr) => {
-        if (secondaryErr) {
-          logger.warn(
-            { err: secondaryErr, sid, operation, store: this.secondaryLabel },
-            "Secondary session write failed"
+      if (this.secondary.touch) {
+        this.secondary.touch(sid, sess, () => {
+          logger.info(
+            { sid, store: this.secondaryLabel },
+            "Session touched in secondary"
           );
-          return;
-        }
-        logger.info(
-          { sid, operation, store: this.secondaryLabel },
-          "Session written to secondary"
-        );
-      });
+          cb();
+        });
+      } else {
+        cb();
+      }
     } catch (err) {
       logger.warn(
-        { err, sid, operation, store: this.secondaryLabel },
-        "Secondary session write threw unexpectedly"
+        { err, sid, store: this.secondaryLabel },
+        "Secondary session touch threw unexpectedly"
       );
+      cb();
     }
   }
 
@@ -157,6 +195,8 @@ export class DualSessionStore extends Store {
           },
           "Session consistency mismatch"
         );
+      } else {
+        logger.info({ sid }, "Session consistency check passed");
       }
     } catch (err) {
       logger.warn({ err }, "Error performing session store consistency checks");

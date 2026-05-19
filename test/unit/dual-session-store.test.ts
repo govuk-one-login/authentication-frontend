@@ -103,12 +103,14 @@ describe("DualSessionStore", () => {
       store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.set(sid, session, (err) => {
-        expect(err).to.be.null;
+        expect(err).to.be.undefined;
+        expect(primary.set).to.have.been.calledOnce;
+        expect(secondary.set).to.have.been.calledOnce;
         done();
       });
     });
 
-    it("should return primary error to callback", (done) => {
+    it("should return primary error to callback and still write to secondary", (done) => {
       const error = new Error("primary write failure");
       primary.set = sinon.fake(
         (_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(error)
@@ -120,23 +122,9 @@ describe("DualSessionStore", () => {
 
       store.set(sid, session, (err) => {
         expect(err).to.equal(error);
+        expect(secondary.set).to.have.been.calledOnce;
         done();
       });
-    });
-
-    it("should also write to secondary", (done) => {
-      primary.set = sinon.fake(
-        (_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(null)
-      );
-      secondary.set = sinon.fake(
-        (_sid: string, _sess: SessionData, cb: (err?: any) => void) => {
-          cb(null);
-          done();
-        }
-      );
-      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
-
-      store.set(sid, session, () => {});
     });
 
     it("should not throw when secondary write fails", (done) => {
@@ -150,14 +138,35 @@ describe("DualSessionStore", () => {
       store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.set(sid, session, (err) => {
-        expect(err).to.be.null;
-        setTimeout(done, 10);
+        expect(err).to.be.undefined;
+        done();
+      });
+    });
+
+    it("should return DualStoreError when both stores fail", (done) => {
+      const primaryErr = new Error("primary write failure");
+      const secondaryErr = new Error("secondary write failure");
+      primary.set = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: (err?: any) => void) =>
+          cb(primaryErr)
+      );
+      secondary.set = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: (err?: any) => void) =>
+          cb(secondaryErr)
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
+
+      store.set(sid, session, (err) => {
+        expect(err).to.be.instanceOf(DualStoreError);
+        expect(err.primary).to.equal(primaryErr);
+        expect(err.secondary).to.equal(secondaryErr);
+        done();
       });
     });
   });
 
   describe("destroy", () => {
-    it("should destroy in primary and call back", (done) => {
+    it("should destroy in both stores and call back", (done) => {
       primary.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) =>
         cb(null)
       );
@@ -167,12 +176,14 @@ describe("DualSessionStore", () => {
       store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.destroy(sid, (err) => {
-        expect(err).to.be.null;
+        expect(err).to.be.undefined;
+        expect(primary.destroy).to.have.been.calledOnce;
+        expect(secondary.destroy).to.have.been.calledOnce;
         done();
       });
     });
 
-    it("should return primary error to callback", (done) => {
+    it("should return primary error and still destroy in secondary", (done) => {
       const error = new Error("primary destroy failure");
       primary.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) =>
         cb(error)
@@ -184,23 +195,9 @@ describe("DualSessionStore", () => {
 
       store.destroy(sid, (err) => {
         expect(err).to.equal(error);
+        expect(secondary.destroy).to.have.been.calledOnce;
         done();
       });
-    });
-
-    it("should also destroy in secondary", (done) => {
-      primary.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) =>
-        cb(null)
-      );
-      secondary.destroy = sinon.fake(
-        (_sid: string, cb: (err?: any) => void) => {
-          cb(null);
-          done();
-        }
-      );
-      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
-
-      store.destroy(sid, () => {});
     });
 
     it("should not throw when secondary destroy fails", (done) => {
@@ -213,14 +210,33 @@ describe("DualSessionStore", () => {
       store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.destroy(sid, (err) => {
-        expect(err).to.be.null;
-        setTimeout(done, 10);
+        expect(err).to.be.undefined;
+        done();
+      });
+    });
+
+    it("should return DualStoreError when both stores fail", (done) => {
+      const primaryErr = new Error("primary destroy failure");
+      const secondaryErr = new Error("secondary destroy failure");
+      primary.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) =>
+        cb(primaryErr)
+      );
+      secondary.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) =>
+        cb(secondaryErr)
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
+
+      store.destroy(sid, (err) => {
+        expect(err).to.be.instanceOf(DualStoreError);
+        expect(err.primary).to.equal(primaryErr);
+        expect(err.secondary).to.equal(secondaryErr);
+        done();
       });
     });
   });
 
   describe("touch", () => {
-    it("should touch in primary and call back", (done) => {
+    it("should touch in both stores and call back", (done) => {
       primary.touch = sinon.fake(
         (_sid: string, _sess: SessionData, cb: () => void) => cb()
       );
@@ -230,23 +246,10 @@ describe("DualSessionStore", () => {
       store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.touch(sid, session, () => {
+        expect(primary.touch).to.have.been.calledOnce;
+        expect(secondary.touch).to.have.been.calledOnce;
         done();
       });
-    });
-
-    it("should also touch in secondary", (done) => {
-      primary.touch = sinon.fake(
-        (_sid: string, _sess: SessionData, cb: () => void) => cb()
-      );
-      secondary.touch = sinon.fake(
-        (_sid: string, _sess: SessionData, cb: () => void) => {
-          cb();
-          done();
-        }
-      );
-      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
-
-      store.touch(sid, session, () => {});
     });
 
     it("should not throw when secondary touch fails", (done) => {
@@ -260,7 +263,7 @@ describe("DualSessionStore", () => {
       store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.touch(sid, session, () => {
-        setTimeout(done, 10);
+        done();
       });
     });
   });
@@ -313,6 +316,23 @@ describe("DualSessionStore", () => {
       store.get(sid, (err, sess) => {
         expect(err).to.be.null;
         expect(sess).to.be.null;
+        setTimeout(done, 10);
+      });
+    });
+
+    it("should catch exceptions thrown during consistency checks", (done) => {
+      const badSession = {
+        get cookie() {
+          throw new Error("unexpected error");
+        },
+      } as unknown as SessionData;
+      primary.get = sinon.fake((_sid, cb) => cb(null, session));
+      secondary.get = sinon.fake((_sid, cb) => cb(null, badSession));
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
+
+      store.get(sid, (err, sess) => {
+        expect(err).to.be.null;
+        expect(sess).to.deep.equal(session);
         setTimeout(done, 10);
       });
     });
