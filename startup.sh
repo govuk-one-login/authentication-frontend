@@ -117,6 +117,14 @@ elif [ "${ACTION_FULL_LOCAL:-0}" == "1" ]; then
     docker compose restart aws
     docker compose up --build -d authentication-api orchestration-stub
   )
+  if [ "$(npm config get ignore-scripts)" = "false" ]; then
+    echo "Error: ignore-scripts is set to false"
+    exit 1
+  else
+    echo "ignore-scripts is set to true"
+  fi
+  npm ci --ignore-scripts
+  node node_modules/esbuild/install.js
   npm run copy-assets && npm run dev
 else
   echo "Starting frontend service..."
