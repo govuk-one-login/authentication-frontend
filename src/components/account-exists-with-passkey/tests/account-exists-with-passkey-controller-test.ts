@@ -6,7 +6,7 @@ import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
-import { getAccountExistsWithPasskey } from "../account-exists-with-passkey-controller.js";
+import { accountExistsWithPasskeyGet } from "../account-exists-with-passkey-controller.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 
 describe("account exists with passkey", () => {
@@ -25,9 +25,9 @@ describe("account exists with passkey", () => {
     sinon.restore();
   });
 
-  describe("passwordResetRequiredGet", () => {
+  describe("accountExistsWithPasskeyGet", () => {
     it("should render the account exists with passkey view", () => {
-      getAccountExistsWithPasskey(req, res);
+      accountExistsWithPasskeyGet(req, res);
 
       expect(res.render).to.have.calledWith(
         "account-exists-with-passkey/index.njk",
