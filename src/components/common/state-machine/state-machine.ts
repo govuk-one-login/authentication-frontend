@@ -77,6 +77,7 @@ const USER_JOURNEY_EVENTS = {
   CREATE_PASSKEY_SKIPPED: "CREATE_PASSKEY_SKIPPED",
   CREATE_PASSKEY_BACK: "CREATE_PASSKEY_BACK",
   PASSKEY_CREATED: "PASSKEY_CREATED",
+  SIGN_IN_WITH_PASSKEY: "SIGN_IN_WITH_PASSKEY",
 };
 
 export interface AuthStateContext {
@@ -211,7 +212,11 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
       },
       [PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY]: {
-        type: "final",
+        on: {
+          [USER_JOURNEY_EVENTS.SIGN_IN_WITH_PASSKEY]: [
+            PATH_NAMES.SIGN_IN_WITH_PASSKEY,
+          ],
+        },
         meta: {
           optionalPaths: [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT],
         },
