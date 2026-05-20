@@ -1,6 +1,9 @@
 import { afterEach, beforeEach, describe, it } from "mocha";
 import { expect, sinon } from "../utils/test-utils.js";
-import { DualSessionStore } from "../../src/config/dual-session-store.js";
+import {
+  DualSessionStore,
+  DualStoreError,
+} from "../../src/config/dual-session-store.js";
 import { type SessionData, Store } from "express-session";
 
 describe("DualSessionStore", () => {
@@ -47,14 +50,18 @@ describe("DualSessionStore", () => {
       });
     });
 
-    it("should return secondary error when both primary and secondary fail", (done) => {
+    it("should return combined error when both primary and secondary fail", (done) => {
+      const primaryErr = new Error("primary failure");
       const secondaryErr = new Error("secondary failure");
-      primary.get = sinon.fake((_sid, cb) => cb(new Error("primary failure")));
+      primary.get = sinon.fake((_sid, cb) => cb(primaryErr));
       secondary.get = sinon.fake((_sid, cb) => cb(secondaryErr));
       store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.get(sid, (err) => {
-        expect(err).to.equal(secondaryErr);
+        expect(err).to.be.instanceOf(DualStoreError);
+        expect(err.message).to.equal("Both session stores failed");
+        expect(err.primary).to.equal(primaryErr);
+        expect(err.secondary).to.equal(secondaryErr);
         done();
       });
     });
