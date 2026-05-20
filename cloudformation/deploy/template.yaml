@@ -1005,6 +1005,8 @@ Resources:
                   ],
                   frontendApiBaseUrl,
                 ]
+            - Name: DYNAMO_SESSION_TABLE_NAME
+              Value: !Ref FrontendSessionsTable
             - Name: ACCOUNT_MANAGEMENT_URL
               Value: !If
                 - IsNotProduction
