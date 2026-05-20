@@ -59,7 +59,7 @@ export function getSessionStore(redisConfig: RedisConfig): Store {
 
   const dynamoStore = getDynamoSessionStore();
 
-  return new DualSessionStore(redisStore, dynamoStore);
+  return new DualSessionStore(redisStore, dynamoStore, "Redis", "DynamoDB");
 }
 
 export async function disconnectRedisClient(): Promise<void> {
