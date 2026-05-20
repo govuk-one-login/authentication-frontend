@@ -117,6 +117,7 @@ const getTransitions = (
         target: getSingleTransitionTarget(transition),
         event: transition.eventType,
         condition: transition.cond?.name ?? undefined,
+        reversible: transition.meta?.reversible ?? undefined,
       })
     );
   }
