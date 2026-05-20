@@ -4,15 +4,15 @@ import { DualSessionStore } from "../../src/config/dual-session-store.js";
 import { type SessionData, Store } from "express-session";
 
 describe("DualSessionStore", () => {
-  let redis: Store;
-  let dynamo: Store;
+  let primary: Store;
+  let secondary: Store;
   let store: DualSessionStore;
   const sid = "test-session-id";
   const session = { cookie: { originalMaxAge: 3600000 } } as SessionData;
 
   beforeEach(() => {
-    redis = Object.create(Store.prototype);
-    dynamo = Object.create(Store.prototype);
+    primary = Object.create(Store.prototype);
+    secondary = Object.create(Store.prototype);
   });
 
   afterEach(() => {
@@ -20,10 +20,10 @@ describe("DualSessionStore", () => {
   });
 
   describe("get", () => {
-    it("should return session from redis", (done) => {
-      redis.get = sinon.fake((_sid, cb) => cb(null, session));
-      dynamo.get = sinon.fake((_sid, cb) => cb(null, session));
-      store = new DualSessionStore(redis, dynamo);
+    it("should return session from primary", (done) => {
+      primary.get = sinon.fake((_sid, cb) => cb(null, session));
+      secondary.get = sinon.fake((_sid, cb) => cb(null, session));
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.get(sid, (err, sess) => {
         expect(err).to.be.null;
@@ -32,46 +32,50 @@ describe("DualSessionStore", () => {
       });
     });
 
-    it("should fallback to dynamo when redis fails", (done) => {
-      const dynamoSession = { cookie: { originalMaxAge: 9999 } } as SessionData;
-      redis.get = sinon.fake((_sid, cb) => cb(new Error("redis failure")));
-      dynamo.get = sinon.fake((_sid, cb) => cb(null, dynamoSession));
-      store = new DualSessionStore(redis, dynamo);
+    it("should fallback to secondary when primary fails", (done) => {
+      const secondarySession = {
+        cookie: { originalMaxAge: 9999 },
+      } as SessionData;
+      primary.get = sinon.fake((_sid, cb) => cb(new Error("primary failure")));
+      secondary.get = sinon.fake((_sid, cb) => cb(null, secondarySession));
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.get(sid, (err, sess) => {
         expect(err).to.be.null;
-        expect(sess).to.deep.equal(dynamoSession);
+        expect(sess).to.deep.equal(secondarySession);
         done();
       });
     });
 
-    it("should return dynamo error when both redis and dynamo fail", (done) => {
-      const dynamoErr = new Error("dynamo failure");
-      redis.get = sinon.fake((_sid, cb) => cb(new Error("redis failure")));
-      dynamo.get = sinon.fake((_sid, cb) => cb(dynamoErr));
-      store = new DualSessionStore(redis, dynamo);
+    it("should return secondary error when both primary and secondary fail", (done) => {
+      const secondaryErr = new Error("secondary failure");
+      primary.get = sinon.fake((_sid, cb) => cb(new Error("primary failure")));
+      secondary.get = sinon.fake((_sid, cb) => cb(secondaryErr));
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.get(sid, (err) => {
-        expect(err).to.equal(dynamoErr);
+        expect(err).to.equal(secondaryErr);
         done();
       });
     });
 
-    it("should perform dynamo consistency check read", (done) => {
-      redis.get = sinon.fake((_sid, cb) => cb(null, session));
-      dynamo.get = sinon.fake((_sid, cb) => {
+    it("should perform secondary consistency check read", (done) => {
+      primary.get = sinon.fake((_sid, cb) => cb(null, session));
+      secondary.get = sinon.fake((_sid, cb) => {
         cb(null, session);
         done();
       });
-      store = new DualSessionStore(redis, dynamo);
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.get(sid, () => {});
     });
 
-    it("should not throw when dynamo consistency check fails", (done) => {
-      redis.get = sinon.fake((_sid, cb) => cb(null, session));
-      dynamo.get = sinon.fake((_sid, cb) => cb(new Error("dynamo failure")));
-      store = new DualSessionStore(redis, dynamo);
+    it("should not throw when secondary consistency check fails", (done) => {
+      primary.get = sinon.fake((_sid, cb) => cb(null, session));
+      secondary.get = sinon.fake((_sid, cb) =>
+        cb(new Error("secondary failure"))
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.get(sid, (err, sess) => {
         expect(err).to.be.null;
@@ -82,10 +86,14 @@ describe("DualSessionStore", () => {
   });
 
   describe("set", () => {
-    it("should write to redis and call back", (done) => {
-      redis.set = sinon.fake((_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(null));
-      dynamo.set = sinon.fake((_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(null));
-      store = new DualSessionStore(redis, dynamo);
+    it("should write to primary and call back", (done) => {
+      primary.set = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(null)
+      );
+      secondary.set = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(null)
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.set(sid, session, (err) => {
         expect(err).to.be.null;
@@ -93,11 +101,15 @@ describe("DualSessionStore", () => {
       });
     });
 
-    it("should return redis error to callback", (done) => {
-      const error = new Error("redis write failure");
-      redis.set = sinon.fake((_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(error));
-      dynamo.set = sinon.fake((_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(null));
-      store = new DualSessionStore(redis, dynamo);
+    it("should return primary error to callback", (done) => {
+      const error = new Error("primary write failure");
+      primary.set = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(error)
+      );
+      secondary.set = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(null)
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.set(sid, session, (err) => {
         expect(err).to.equal(error);
@@ -105,23 +117,30 @@ describe("DualSessionStore", () => {
       });
     });
 
-    it("should also write to dynamo", (done) => {
-      redis.set = sinon.fake((_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(null));
-      dynamo.set = sinon.fake((_sid: string, _sess: SessionData, cb: (err?: any) => void) => {
-        cb(null);
-        done();
-      });
-      store = new DualSessionStore(redis, dynamo);
+    it("should also write to secondary", (done) => {
+      primary.set = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(null)
+      );
+      secondary.set = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: (err?: any) => void) => {
+          cb(null);
+          done();
+        }
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.set(sid, session, () => {});
     });
 
-    it("should not throw when dynamo write fails", (done) => {
-      redis.set = sinon.fake((_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(null));
-      dynamo.set = sinon.fake((_sid: string, _sess: SessionData, cb: (err?: any) => void) =>
-        cb(new Error("dynamo failure"))
+    it("should not throw when secondary write fails", (done) => {
+      primary.set = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: (err?: any) => void) => cb(null)
       );
-      store = new DualSessionStore(redis, dynamo);
+      secondary.set = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: (err?: any) => void) =>
+          cb(new Error("secondary failure"))
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.set(sid, session, (err) => {
         expect(err).to.be.null;
@@ -131,10 +150,14 @@ describe("DualSessionStore", () => {
   });
 
   describe("destroy", () => {
-    it("should destroy in redis and call back", (done) => {
-      redis.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) => cb(null));
-      dynamo.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) => cb(null));
-      store = new DualSessionStore(redis, dynamo);
+    it("should destroy in primary and call back", (done) => {
+      primary.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) =>
+        cb(null)
+      );
+      secondary.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) =>
+        cb(null)
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.destroy(sid, (err) => {
         expect(err).to.be.null;
@@ -142,11 +165,15 @@ describe("DualSessionStore", () => {
       });
     });
 
-    it("should return redis error to callback", (done) => {
-      const error = new Error("redis destroy failure");
-      redis.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) => cb(error));
-      dynamo.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) => cb(null));
-      store = new DualSessionStore(redis, dynamo);
+    it("should return primary error to callback", (done) => {
+      const error = new Error("primary destroy failure");
+      primary.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) =>
+        cb(error)
+      );
+      secondary.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) =>
+        cb(null)
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.destroy(sid, (err) => {
         expect(err).to.equal(error);
@@ -154,23 +181,29 @@ describe("DualSessionStore", () => {
       });
     });
 
-    it("should also destroy in dynamo", (done) => {
-      redis.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) => cb(null));
-      dynamo.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) => {
-        cb(null);
-        done();
-      });
-      store = new DualSessionStore(redis, dynamo);
+    it("should also destroy in secondary", (done) => {
+      primary.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) =>
+        cb(null)
+      );
+      secondary.destroy = sinon.fake(
+        (_sid: string, cb: (err?: any) => void) => {
+          cb(null);
+          done();
+        }
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.destroy(sid, () => {});
     });
 
-    it("should not throw when dynamo destroy fails", (done) => {
-      redis.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) => cb(null));
-      dynamo.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) =>
-        cb(new Error("dynamo failure"))
+    it("should not throw when secondary destroy fails", (done) => {
+      primary.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) =>
+        cb(null)
       );
-      store = new DualSessionStore(redis, dynamo);
+      secondary.destroy = sinon.fake((_sid: string, cb: (err?: any) => void) =>
+        cb(new Error("secondary failure"))
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.destroy(sid, (err) => {
         expect(err).to.be.null;
@@ -180,33 +213,44 @@ describe("DualSessionStore", () => {
   });
 
   describe("touch", () => {
-    it("should touch in redis and call back", (done) => {
-      redis.touch = sinon.fake((_sid: string, _sess: SessionData, cb: () => void) => cb());
-      dynamo.touch = sinon.fake((_sid: string, _sess: SessionData, cb: () => void) => cb());
-      store = new DualSessionStore(redis, dynamo);
+    it("should touch in primary and call back", (done) => {
+      primary.touch = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: () => void) => cb()
+      );
+      secondary.touch = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: () => void) => cb()
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.touch(sid, session, () => {
         done();
       });
     });
 
-    it("should also touch in dynamo", (done) => {
-      redis.touch = sinon.fake((_sid: string, _sess: SessionData, cb: () => void) => cb());
-      dynamo.touch = sinon.fake((_sid: string, _sess: SessionData, cb: () => void) => {
-        cb();
-        done();
-      });
-      store = new DualSessionStore(redis, dynamo);
+    it("should also touch in secondary", (done) => {
+      primary.touch = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: () => void) => cb()
+      );
+      secondary.touch = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: () => void) => {
+          cb();
+          done();
+        }
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.touch(sid, session, () => {});
     });
 
-    it("should not throw when dynamo touch fails", (done) => {
-      redis.touch = sinon.fake((_sid: string, _sess: SessionData, cb: () => void) => cb());
-      dynamo.touch = sinon.fake((_sid: string, _sess: SessionData, cb: (err?: any) => void) =>
-        cb(new Error("dynamo failure"))
+    it("should not throw when secondary touch fails", (done) => {
+      primary.touch = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: () => void) => cb()
       );
-      store = new DualSessionStore(redis, dynamo);
+      secondary.touch = sinon.fake(
+        (_sid: string, _sess: SessionData, cb: (err?: any) => void) =>
+          cb(new Error("secondary failure"))
+      );
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.touch(sid, session, () => {
         setTimeout(done, 10);
@@ -216,9 +260,9 @@ describe("DualSessionStore", () => {
 
   describe("consistency checks", () => {
     it("should not error when sessions match", (done) => {
-      redis.get = sinon.fake((_sid, cb) => cb(null, session));
-      dynamo.get = sinon.fake((_sid, cb) => cb(null, session));
-      store = new DualSessionStore(redis, dynamo);
+      primary.get = sinon.fake((_sid, cb) => cb(null, session));
+      secondary.get = sinon.fake((_sid, cb) => cb(null, session));
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.get(sid, (err, sess) => {
         expect(err).to.be.null;
@@ -231,9 +275,9 @@ describe("DualSessionStore", () => {
       const differentSession = {
         cookie: { originalMaxAge: 9999 },
       } as SessionData;
-      redis.get = sinon.fake((_sid, cb) => cb(null, session));
-      dynamo.get = sinon.fake((_sid, cb) => cb(null, differentSession));
-      store = new DualSessionStore(redis, dynamo);
+      primary.get = sinon.fake((_sid, cb) => cb(null, session));
+      secondary.get = sinon.fake((_sid, cb) => cb(null, differentSession));
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.get(sid, (err, sess) => {
         expect(err).to.be.null;
@@ -242,10 +286,10 @@ describe("DualSessionStore", () => {
       });
     });
 
-    it("should not throw when redis has session but dynamo does not", (done) => {
-      redis.get = sinon.fake((_sid, cb) => cb(null, session));
-      dynamo.get = sinon.fake((_sid, cb) => cb(null, null));
-      store = new DualSessionStore(redis, dynamo);
+    it("should not throw when primary has session but secondary does not", (done) => {
+      primary.get = sinon.fake((_sid, cb) => cb(null, session));
+      secondary.get = sinon.fake((_sid, cb) => cb(null, null));
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.get(sid, (err, sess) => {
         expect(err).to.be.null;
@@ -255,9 +299,9 @@ describe("DualSessionStore", () => {
     });
 
     it("should not throw when both stores return null", (done) => {
-      redis.get = sinon.fake((_sid, cb) => cb(null, null));
-      dynamo.get = sinon.fake((_sid, cb) => cb(null, null));
-      store = new DualSessionStore(redis, dynamo);
+      primary.get = sinon.fake((_sid, cb) => cb(null, null));
+      secondary.get = sinon.fake((_sid, cb) => cb(null, null));
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
 
       store.get(sid, (err, sess) => {
         expect(err).to.be.null;
