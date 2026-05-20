@@ -1,5 +1,6 @@
 import { type SessionData, Store } from "express-session";
 import { logger } from "../utils/logger.js";
+import { isDeepStrictEqual } from "node:util";
 
 export class DualSessionStore extends Store {
   constructor(
@@ -10,9 +11,28 @@ export class DualSessionStore extends Store {
   }
 
   get(sid: string, cb: (err?: any, session?: SessionData | null) => void): void {
-    this.redis.get(sid, (err, redisSession) => {
-      logger.info({ sid }, "Session read from Redis");
-      cb(err, redisSession);
+    this.redis.get(sid, (redisErr, redisSession) => {
+      if (redisErr) {
+        logger.warn({ err: redisErr, sid }, "Redis session read failed, falling back to DynamoDB");
+      } else {
+        logger.info({ sid }, "Session read from Redis");
+        cb(null, redisSession);
+      }
+
+      this.dynamo.get(sid, (dynamoErr, dynamoSession) => {
+        if (redisErr) {
+          cb(dynamoErr, dynamoSession);
+          return;
+        }
+
+        if (dynamoErr) {
+          logger.warn({ err: dynamoErr, sid }, "DynamoDB consistency check read failed");
+          return;
+        }
+
+        logger.info({ sid }, "Session read from DynamoDB");
+        this.performConsistencyChecks(redisSession, dynamoSession, sid);
+      });
     });
   }
 
@@ -60,6 +80,16 @@ export class DualSessionStore extends Store {
       });
     } catch (err) {
       logger.warn({ err, sid, operation }, "DynamoDB session write threw unexpectedly");
+    }
+  }
+
+  private performConsistencyChecks(redisSession: SessionData, dynamoSession: SessionData, sid: string): void {
+    try {
+      if (!isDeepStrictEqual(redisSession ?? null, dynamoSession ?? null)) {
+        logger.warn({ sid, redisExists: !!redisSession, dynamoExists: !!dynamoSession }, "Session consistency mismatch");
+      }
+    } catch (err) {
+      logger.warn({ err }, "Error performing session store consistency checks");
     }
   }
 }

@@ -32,6 +32,31 @@ describe("DualSessionStore", () => {
       });
     });
 
+    it("should fallback to dynamo when redis fails", (done) => {
+      const dynamoSession = { cookie: { originalMaxAge: 9999 } } as SessionData;
+      redis.get = sinon.fake((_sid, cb) => cb(new Error("redis failure")));
+      dynamo.get = sinon.fake((_sid, cb) => cb(null, dynamoSession));
+      store = new DualSessionStore(redis, dynamo);
+
+      store.get(sid, (err, sess) => {
+        expect(err).to.be.null;
+        expect(sess).to.deep.equal(dynamoSession);
+        done();
+      });
+    });
+
+    it("should return dynamo error when both redis and dynamo fail", (done) => {
+      const dynamoErr = new Error("dynamo failure");
+      redis.get = sinon.fake((_sid, cb) => cb(new Error("redis failure")));
+      dynamo.get = sinon.fake((_sid, cb) => cb(dynamoErr));
+      store = new DualSessionStore(redis, dynamo);
+
+      store.get(sid, (err) => {
+        expect(err).to.equal(dynamoErr);
+        done();
+      });
+    });
+
     it("should perform dynamo consistency check read", (done) => {
       redis.get = sinon.fake((_sid, cb) => cb(null, session));
       dynamo.get = sinon.fake((_sid, cb) => {
