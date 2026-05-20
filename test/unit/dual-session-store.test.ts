@@ -342,5 +342,27 @@ describe("DualSessionStore", () => {
         setTimeout(done, 10);
       });
     });
+
+    it("should safely handle key diffs with missing keys and nested differences", (done) => {
+      const primarySession = {
+        cookie: { originalMaxAge: 3600000 },
+        user: { id: 7777, role: "admin" },
+        token: "tokenValueOnlyInPrimary",
+      } as unknown as SessionData;
+      const secondarySession = {
+        cookie: { originalMaxAge: 9999 },
+        user: { id: 7777, role: "user" },
+        extra: "extraValueOnlyInSecondary",
+      } as unknown as SessionData;
+      primary.get = sinon.fake((_sid, cb) => cb(null, primarySession));
+      secondary.get = sinon.fake((_sid, cb) => cb(null, secondarySession));
+      store = new DualSessionStore(primary, secondary, "Redis", "DynamoDB");
+
+      store.get(sid, (err, sess) => {
+        expect(err).to.be.null;
+        expect(sess).to.deep.equal(primarySession);
+        setTimeout(done, 10);
+      });
+    });
   });
 });
