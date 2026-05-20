@@ -189,11 +189,16 @@ export class DualSessionStore extends Store {
       if (
         !isDeepStrictEqual(primarySession ?? null, secondarySession ?? null)
       ) {
+        const mismatchDetails = this.getKeyDiffs(
+          primarySession,
+          secondarySession
+        );
         logger.warn(
           {
             sid,
             primaryExists: !!primarySession,
             secondaryExists: !!secondarySession,
+            mismatchDetails,
           },
           "Session consistency mismatch"
         );
@@ -201,5 +206,68 @@ export class DualSessionStore extends Store {
     } catch (err) {
       logger.warn({ err }, "Error performing session store consistency checks");
     }
+  }
+
+  private getKeyDiffs(
+    primary: SessionData | null,
+    secondary: SessionData | null
+  ): {
+    keysOnlyInPrimary: string[];
+    keysOnlyInSecondary: string[];
+    keysDiffering: string[];
+  } {
+    const primaryKeys = primary ? Object.keys(primary) : [];
+    const secondaryKeys = secondary ? Object.keys(secondary) : [];
+    const allKeys = Array.from(new Set(primaryKeys.concat(secondaryKeys)));
+
+    const keysOnlyInPrimary: string[] = [];
+    const keysOnlyInSecondary: string[] = [];
+    const keysDiffering: string[] = [];
+
+    for (const key of allKeys) {
+      const inPrimary = primary && key in primary;
+      const inSecondary = secondary && key in secondary;
+
+      if (inPrimary && !inSecondary) {
+        keysOnlyInPrimary.push(key);
+      } else if (!inPrimary && inSecondary) {
+        keysOnlyInSecondary.push(key);
+      } else if (
+        !isDeepStrictEqual(
+          primary[key as keyof SessionData],
+          secondary[key as keyof SessionData]
+        )
+      ) {
+        const subDiffs = this.getDifferingPaths(
+          primary[key as keyof SessionData],
+          secondary[key as keyof SessionData],
+          key
+        );
+        keysDiffering.push(...subDiffs);
+      }
+    }
+
+    return { keysOnlyInPrimary, keysOnlyInSecondary, keysDiffering };
+  }
+
+  private getDifferingPaths(a: unknown, b: unknown, prefix: string): string[] {
+    if (
+      a &&
+      b &&
+      typeof a === "object" &&
+      typeof b === "object" &&
+      !Array.isArray(a) &&
+      !Array.isArray(b)
+    ) {
+      const aObj = a as Record<string, unknown>;
+      const bObj = b as Record<string, unknown>;
+      const keys = Array.from(
+        new Set(Object.keys(aObj).concat(Object.keys(bObj)))
+      );
+      return keys
+        .filter((k) => !isDeepStrictEqual(aObj[k], bObj[k]))
+        .map((k) => `${prefix}.${k}`);
+    }
+    return [prefix];
   }
 }
