@@ -25,6 +25,7 @@ import {
   supportAccountInterventions,
   supportAuthorizeController,
   supportPasskeyRegistration,
+  supportPasskeyUsage,
   supportSingleFactorAccountDeletion,
 } from "./config.js";
 import { logErrorMiddleware } from "./middleware/log-error-middleware.js";
@@ -115,6 +116,7 @@ import { createPasskeyCallbackRouter } from "./components/create-passkey-callbac
 import { sessionEndedRouter } from "./components/session-ended/session-ended-routes.js";
 import { passkeyCreatedRouter } from "./components/passkey-created/passkey-created-routes.js";
 import { setGoBackHistoryMiddleware } from "./middleware/set-go-back-history-middleware.js";
+import { accountExistsWithPasskeyRouter } from "./components/account-exists-with-passkey/account-exists-with-passkey-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -185,6 +187,9 @@ function registerRoutes(app: express.Application) {
     app.use(createPasskeyRouter);
     app.use(createPasskeyCallbackRouter);
     app.use(passkeyCreatedRouter);
+  }
+  if (supportPasskeyUsage()) {
+    app.use(accountExistsWithPasskeyRouter);
   }
 
   // Development tools

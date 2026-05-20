@@ -324,6 +324,12 @@
       "subheading": "Beth allwch chi ei wneud",
       "paragraph2": "Arhoswch 2 awr a mynd yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o hafan GOV.UK."
     },
+    "existingAccountWithPasskey": {
+      "title": "Mae gennych GOV.UK One Login",
+      "header": "Mae gennych GOV.UK One Login",
+      "paragraph1": "Mae yna GOV.UK One Login eisoes yn defnyddio ",
+      "paragraph2": "Parhau i fewngofnodi."
+    },
     "accountNotFoundOneLogin": {
       "title": "Nid oes gennych GOV.UK One Login",
       "header": "Nid oes gennych GOV.UK One Login",
