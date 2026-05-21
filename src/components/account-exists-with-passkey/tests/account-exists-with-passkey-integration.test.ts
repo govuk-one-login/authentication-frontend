@@ -3,6 +3,7 @@ import { sinon } from "../../../../test/utils/test-utils.js";
 import request from "supertest";
 import { PATH_NAMES } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
+import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 
 describe("Integration:: account exists with passkey", () => {
@@ -58,5 +59,21 @@ describe("Integration:: account exists with passkey", () => {
       .get(PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY)
       .expect(302)
       .expect("Location", PATH_NAMES.ENTER_PASSWORD);
+  });
+
+  it("should redirect to sign in with passkey on POST", async () => {
+    const app = await setupApp(PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY);
+
+    const { token, cookies } = extractCsrfTokenAndCookies(
+      await request(app).get(PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY)
+    );
+
+    await request(app)
+      .post(PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({ _csrf: token })
+      .expect(302)
+      .expect("Location", PATH_NAMES.SIGN_IN_WITH_PASSKEY);
   });
 });
