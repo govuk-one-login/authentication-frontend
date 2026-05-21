@@ -15,6 +15,7 @@ import {
   enableDwpKbvContactFormChanges,
   supportNewInternationalSms,
   supportSingleFactorAccountDeletion,
+  getSessionDualWriteEnabled,
   getDefaultChannel,
   showTestBanner,
   getAccountDomain,
@@ -39,6 +40,7 @@ describe("config", () => {
     delete process.env.ENABLE_DWP_KBV_CONTACT_FORM_CHANGES;
     delete process.env.SUPPORT_NEW_INTERNATIONAL_SMS;
     delete process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION;
+    delete process.env.SESSION_DUAL_WRITE_ENABLED;
     delete process.env.DEFAULT_CHANNEL;
     delete process.env.APP_ENV;
     delete process.env.SERVICE_DOMAIN;
@@ -120,6 +122,11 @@ describe("config", () => {
         name: "supportSingleFactorAccountDeletion",
         envVar: "SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION",
         fn: supportSingleFactorAccountDeletion,
+      },
+      {
+        name: "getSessionDualWriteEnabled",
+        envVar: "SESSION_DUAL_WRITE_ENABLED",
+        fn: getSessionDualWriteEnabled,
       },
     ];
 
