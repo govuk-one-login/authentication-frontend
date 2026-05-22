@@ -35,6 +35,7 @@ export interface Transition {
   event?: string;
   condition?: string;
   optional?: boolean;
+  reversible?: boolean;
 }
 
 const DOUBLE_CLICK_WINDOW_MILLIS = 1000;
@@ -103,7 +104,12 @@ const setupStateClickHandlers = (states: State[]): void => {
 
     // Remove existing highlights
     Array.from(document.getElementsByClassName("highlight")).forEach((edge) =>
-      edge.classList.remove("highlight", "outgoingEdge", "incomingEdge")
+      edge.classList.remove(
+        "highlight",
+        "outgoingEdge",
+        "incomingEdge",
+        "reversibleEdge"
+      )
     );
 
     // Add new highlights
@@ -113,12 +119,22 @@ const setupStateClickHandlers = (states: State[]): void => {
         const edgeStartNodeId = splitEdgeId[1];
         const edgeEndNodeId = splitEdgeId[2];
 
+        const isReversible = !!document.querySelector(
+          `[data-source="${edgeStartNodeId}"][data-target="${edgeEndNodeId}"][data-reversible="true"]`
+        );
+
         if (edgeStartNodeId === hexId) {
-          edge.classList.add("highlight", "outgoingEdge");
+          edge.classList.add(
+            "highlight",
+            isReversible ? "reversibleEdge" : "outgoingEdge"
+          );
         }
 
         if (edgeEndNodeId === hexId) {
-          edge.classList.add("highlight", "incomingEdge");
+          edge.classList.add(
+            "highlight",
+            isReversible ? "reversibleEdge" : "incomingEdge"
+          );
         }
       }
     );
@@ -134,10 +150,20 @@ const setupStateClickHandlers = (states: State[]): void => {
       .forEach((node) => node.classList.add("highlight"));
 
     Array.from(document.querySelectorAll(`[data-source="${hexId}"]`)).forEach(
-      (label) => label.classList.add("highlight", "outgoingEdge")
+      (label) => {
+        const cls = label.hasAttribute("data-reversible")
+          ? "reversibleEdge"
+          : "outgoingEdge";
+        label.classList.add("highlight", cls);
+      }
     );
     Array.from(document.querySelectorAll(`[data-target="${hexId}"]`)).forEach(
-      (label) => label.classList.add("highlight", "incomingEdge")
+      (label) => {
+        const cls = label.hasAttribute("data-reversible")
+          ? "reversibleEdge"
+          : "incomingEdge";
+        label.classList.add("highlight", cls);
+      }
     );
 
     currentHighlight = hexId;

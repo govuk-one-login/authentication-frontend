@@ -19,21 +19,29 @@ const renderState = (state: State): string => {
   return `    ${hexId}(${name})`;
 };
 
+const getArrow = (optional?: boolean, reversible?: boolean): string => {
+  if (optional) return "-.->";
+  if (reversible) return "--o";
+  return "-->";
+};
+
 const renderTransition = ({
   source,
   target,
   event,
   condition,
   optional,
+  reversible,
 }: Transition): string => {
   const hexSource = stringToUtf8Hex(source);
   const hexTarget = stringToUtf8Hex(target);
   const lineBreak = event && condition ? "<br/>" : "";
+  const reversibleAttr = reversible ? ` data-reversible="true"` : "";
   const label =
     event || condition
-      ? `|<span data-source="${hexSource}" data-target="${hexTarget}">${event ?? ""}${lineBreak}${condition ?? ""}</span>|`
+      ? `|<span data-source="${hexSource}" data-target="${hexTarget}"${reversibleAttr}>${event ?? ""}${lineBreak}${condition ?? ""}</span>|`
       : "";
-  const arrow = optional ? "-.->" : "-->";
+  const arrow = getArrow(optional, reversible);
   return `    ${hexSource}${arrow}${label}${hexTarget}`;
 };
 
