@@ -30,6 +30,20 @@ Edit the variables at the top of `generate_webauthn_script.py`:
 | `USER_EMAIL`      | The user's email address                                       |
 | `CHALLENGE`       | A Base64URL-encoded challenge string (can be any random value) |
 
+You can use the following `ENV_URL` for the corresponding environments.
+
+| Env           | Env URL                       |
+| ------------- | ----------------------------- |
+| `local`       | `localhost`                   |
+| `dev`         | `dev.account.gov.uk`          |
+| `authdev1`    | `authdev1.dev.account.gov.uk` |
+| `authdev2`    | `authdev2.dev.account.gov.uk` |
+| `authdev3`    | `authdev3.dev.account.gov.uk` |
+| `build`       | `build.account.gov.uk`        |
+| `staging`     | `staging.account.gov.uk`      |
+| `integration` | `integration.account.gov.uk`  |
+| `production`  | `account.gov.uk`              |
+
 ## Usage
 
 1. **Run the script locally** to generate the JavaScript snippet:

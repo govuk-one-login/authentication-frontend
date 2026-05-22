@@ -1,6 +1,6 @@
 # --- CONFIGURATION: Update these values ---
 ENV_NAME = "Dev"
-ENV_URL = "dev"  # e.g., 'build' for build.account.gov.uk
+ENV_URL = "dev.account.gov.uk"  # e.g., 'build.account.gov.uk' for build (see README for examples)
 USER_PUB_SUB_ID = "xxx"
 USER_EMAIL = "xxx@xxx.xxx"
 CHALLENGE = "6EP1s53M5sF7XL_G2RwbY-AbJoSNiiCIVb9DrNNITnM"  # Base64URL encoded
@@ -46,7 +46,7 @@ js_template = f"""
 
     const createOptions = {{
         challenge: bufferFromBase64("{CHALLENGE}"),
-        rp: {{ name: "GOV.UK One Login ({ENV_NAME})", id: "{ENV_URL}.account.gov.uk" }},
+        rp: {{ name: "GOV.UK One Login ({ENV_NAME})", id: "{ENV_URL}" }},
         user: {{ id: new TextEncoder().encode("{USER_PUB_SUB_ID}"), name: "{USER_EMAIL}", displayName: "" }},
         pubKeyCredParams: [{{ alg: -8, type: "public-key" }}, {{ alg: -7, type: "public-key" }}, {{ alg: -257, type: "public-key" }}],
         timeout: 60000,
