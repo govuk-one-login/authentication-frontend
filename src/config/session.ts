@@ -1,13 +1,17 @@
 import type { RedisClientOptions } from "redis";
 import { createClient } from "redis";
 import { RedisStore } from "connect-redis";
-import type { RedisConfig } from "src/utils/types.js";
+import type { RedisConfig } from "../utils/types.js";
 import { logger } from "../utils/logger.js";
+import { DualSessionStore } from "./dual-session-store.js";
+import { getDynamoSessionStore } from "./dynamodb-session.js";
+import { getSessionDualWriteEnabled } from "../config.js";
+import type { Store } from "express-session";
 
 let redisClient: ReturnType<typeof createClient> | undefined;
 let usedRedisConfig: RedisConfig | undefined;
 
-export function getSessionStore(redisConfig: RedisConfig): RedisStore {
+function getRedisStore(redisConfig: RedisConfig): RedisStore {
   if (redisClient && !isRedisConfigEqual(redisConfig, usedRedisConfig)) {
     throw new Error("Redis client already established with different config");
   } else if (!redisClient) {
@@ -36,6 +40,26 @@ export function getSessionStore(redisConfig: RedisConfig): RedisStore {
   return new RedisStore({
     client: redisClient,
   });
+}
+
+export function getSessionStore(redisConfig: RedisConfig): Store {
+  const redisStore = getRedisStore(redisConfig);
+
+  if (!getSessionDualWriteEnabled()) {
+    logger.info(
+      "Dual session store writing feature flag disabled, using Redis store."
+    );
+
+    return redisStore;
+  }
+
+  logger.info(
+    "Dual session store writing feature flag enabled, using dual session store."
+  );
+
+  const dynamoStore = getDynamoSessionStore();
+
+  return new DualSessionStore(redisStore, dynamoStore, "Redis", "DynamoDB");
 }
 
 export async function disconnectRedisClient(): Promise<void> {

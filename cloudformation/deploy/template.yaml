@@ -429,6 +429,29 @@ Conditions:
               ]
               - "Yes"
 
+  SessionDualWriteEnabled:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  SessionDualWriteEnabled,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  SessionDualWriteEnabled,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+
 Mappings:
   # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
   ElasticLoadBalancerAccountIds:
@@ -456,6 +479,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "skwdHH2y6ERjJWTPSoAFbSt8lX04OgtI"
+      SessionDualWriteEnabled: "Yes"
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       frontendApiBaseUrl: https://nw0dah7bxk-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev2/
@@ -477,6 +501,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "rPEUe0hRrHqf0i0es1gYjKxE5ceGN7VK"
+      SessionDualWriteEnabled: "Yes"
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: https://y3s69ubaz5-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev3/
@@ -493,6 +518,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: ""
+      SessionDualWriteEnabled: "Yes"
     dev:
       DeployServiceDownPage: "No"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -524,6 +550,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "J3tedNRsfssnsf4STuc2NNIV1C1gdxBB"
+      SessionDualWriteEnabled: "Yes"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -555,6 +582,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "Ykg9fGyY76On4e8tPvFabK5BIl65EkGH"
+      SessionDualWriteEnabled: "No"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "No"
@@ -593,6 +621,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "nsR2wZ7EebJ2VOzE1LUa9iAVadunWQP3,EMGmY82k-92QSakDl_9keKDFmZY" # perf-test client, home client
+      SessionDualWriteEnabled: "Yes"
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -625,6 +654,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       PasskeyPromptClientAllowList: ""
+      SessionDualWriteEnabled: "No"
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -660,6 +690,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: ""
+      SessionDualWriteEnabled: "No"
 
 Globals:
   Function:
@@ -1005,6 +1036,8 @@ Resources:
                   ],
                   frontendApiBaseUrl,
                 ]
+            - Name: DYNAMO_SESSION_TABLE_NAME
+              Value: !Ref FrontendSessionsTable
             - Name: ACCOUNT_MANAGEMENT_URL
               Value: !If
                 - IsNotProduction
@@ -1192,6 +1225,9 @@ Resources:
               Value: !If [SupportNewInternationalSms, "1", "0"]
             - Name: SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION
               Value: !If [SupportSingleFactorAccountDeletion, "1", "0"]
+            - Name: SESSION_DUAL_WRITE_ENABLED
+              Value: !If [SessionDualWriteEnabled, "1", "0"]
+
           Secrets:
             - Name: API_KEY
               ValueFrom: !If
