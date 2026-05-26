@@ -20,7 +20,6 @@ import {
   showTestBanner,
   getAccountDomain,
   getPasskeyPromptClientAllowList,
-  getSessionDynamoPrimaryEnabled,
 } from "../../src/config.js";
 import { CHANNEL } from "../../src/app.constants.js";
 
@@ -128,11 +127,6 @@ describe("config", () => {
         name: "getSessionDualWriteEnabled",
         envVar: "SESSION_DUAL_WRITE_ENABLED",
         fn: getSessionDualWriteEnabled,
-      },
-      {
-        name: "getSessionDynamoPrimaryEnabled",
-        envVar: "SESSION_DYNAMO_PRIMARY_ENABLED",
-        fn: getSessionDynamoPrimaryEnabled,
       },
     ];
 
