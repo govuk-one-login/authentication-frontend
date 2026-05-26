@@ -61,7 +61,7 @@ Parameters:
 
   ServiceDownPageRegistry:
     Type: String
-    Default: 058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l
+    Default: 975050272416.dkr.ecr.eu-west-2.amazonaws.com/authdev3-service-down-page-image-repository-containerrepository-gbtuy0ihiegw
 
 Conditions:
   DeployServiceDownPage:
@@ -500,6 +500,7 @@ Mappings:
       PasskeyPromptClientAllowList: "rPEUe0hRrHqf0i0es1gYjKxE5ceGN7VK"
       SessionDualWriteEnabled: "Yes"
     authdev3:
+      DeployServiceDownPage: "Yes"
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: https://y3s69ubaz5-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev3/
       migratedDomain: signin.authdev3.dev.account.gov.uk
