@@ -453,10 +453,7 @@ Conditions:
               - "Yes"
 
 Mappings:
-  # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html
-  ElasticLoadBalancerAccountIds:
-    eu-west-2:
-      AccountId: "652711504416"
+
   EnvironmentConfiguration:
     authdev1:
       cloudfrontDistributionStackName: "authdev1-cloudfront"
@@ -2498,12 +2495,7 @@ Resources:
             Principal:
               AWS: !Sub
                 - "arn:aws:iam::${ElbAccountId}:root"
-                - ElbAccountId:
-                    !FindInMap [
-                      ElasticLoadBalancerAccountIds,
-                      !Ref AWS::Region,
-                      AccountId,
-                    ]
+                - ElbAccountId: "652711504416"
             Action:
               - s3:PutObject
             Resource: !Sub "${AccessLogsBucket.Arn}/AWSLogs/${AWS::AccountId}/*"
