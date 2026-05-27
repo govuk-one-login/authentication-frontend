@@ -133,7 +133,7 @@ export const API_ENDPOINTS = {
   AMC_AUTHORIZE: "/amc-authorize",
   AMC_CALLBACK: "/amc-callback",
   START_PASSKEY_ASSERTION: "/start-passkey-assertion",
-  FINISH_PASSKEY_ASSERTION: "/finish-passkey-assertion"
+  FINISH_PASSKEY_ASSERTION: "/finish-passkey-assertion",
 };
 
 export const ERROR_MESSAGES = {

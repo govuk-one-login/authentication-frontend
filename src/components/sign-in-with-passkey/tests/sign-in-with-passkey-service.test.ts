@@ -8,8 +8,14 @@ import {
   PATH_NAMES,
 } from "../../../app.constants.js";
 import type { SinonStub } from "sinon";
-import { startSignInWithPasskeyService } from "../sign-in-with-passkey-service.js";
-import type { StartSignInWithPasskeyInterface } from "../types.js";
+import {
+  finishSignInWithPasskeyService,
+  startSignInWithPasskeyService,
+} from "../sign-in-with-passkey-service.js";
+import type {
+  FinishSignInWithPasskeyInterface,
+  StartSignInWithPasskeyInterface,
+} from "../types.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -19,6 +25,7 @@ import {
 } from "../../../../test/helpers/service-test-helper.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
+import type { AuthenticationResponseJSON } from "@simplewebauthn/browser";
 
 describe("sign in with passkey service", () => {
   const httpInstance = new Http();
@@ -102,6 +109,85 @@ describe("sign in with passkey service", () => {
         expectedPath: API_ENDPOINTS.START_PASSKEY_ASSERTION,
         expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
         expectedBody: {},
+      };
+      checkApiCallMadeWithExpectedBodyAndHeaders(
+        result,
+        postStub,
+        false,
+        expectedApiCallDetails
+      );
+    });
+  });
+
+  describe("finishSignInWithPasskeyService", () => {
+    const service: FinishSignInWithPasskeyInterface =
+      finishSignInWithPasskeyService(httpInstance);
+
+    it("should call the finish passkey assertion API endpoint and return successful response", async () => {
+      const req = createMockRequest(PATH_NAMES.SIGN_IN_WITH_PASSKEY, {
+        headers: requestHeadersWithIpAndAuditEncoded,
+      });
+      const startAuthenticationWebauthnResponse = {
+        id: "localhost",
+        response: "mock-response",
+        type: "public-key",
+      } as unknown as AuthenticationResponseJSON;
+      const axiosResponse = Promise.resolve({
+        data: {},
+        status: HTTP_STATUS_CODES.OK,
+        success: true,
+      });
+      postStub.resolves(axiosResponse);
+
+      const result = await service.finishSignInWithPasskey(
+        commonVariables.sessionId,
+        commonVariables.clientSessionId,
+        commonVariables.diPersistentSessionId,
+        req,
+        startAuthenticationWebauthnResponse
+      );
+
+      const expectedApiCallDetails = {
+        expectedPath: API_ENDPOINTS.FINISH_PASSKEY_ASSERTION,
+        expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
+        expectedBody: { pkc: startAuthenticationWebauthnResponse },
+      };
+      checkApiCallMadeWithExpectedBodyAndHeaders(
+        result,
+        postStub,
+        true,
+        expectedApiCallDetails
+      );
+    });
+
+    it("should return success false when the API returns non-200", async () => {
+      const req = createMockRequest(PATH_NAMES.SIGN_IN_WITH_PASSKEY, {
+        headers: requestHeadersWithIpAndAuditEncoded,
+      });
+      const startAuthenticationWebauthnResponse = {
+        id: "localhost",
+        response: "mock-response",
+        type: "public-key",
+      } as unknown as AuthenticationResponseJSON;
+      const axiosResponse = Promise.resolve({
+        data: {},
+        status: HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
+        success: false,
+      });
+      postStub.resolves(axiosResponse);
+
+      const result = await service.finishSignInWithPasskey(
+        commonVariables.sessionId,
+        commonVariables.clientSessionId,
+        commonVariables.diPersistentSessionId,
+        req,
+        startAuthenticationWebauthnResponse
+      );
+
+      const expectedApiCallDetails = {
+        expectedPath: API_ENDPOINTS.FINISH_PASSKEY_ASSERTION,
+        expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
+        expectedBody: { pkc: startAuthenticationWebauthnResponse },
       };
       checkApiCallMadeWithExpectedBodyAndHeaders(
         result,

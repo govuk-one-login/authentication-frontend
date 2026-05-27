@@ -7,8 +7,14 @@ import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { PATH_NAMES } from "../../../app.constants.js";
-import { signInWithPasskeyGet } from "../sign-in-with-passkey-controller.js";
-import type { StartSignInWithPasskeyInterface } from "../types.js";
+import {
+  signInWithPasskeyGet,
+  signInWithPasskeyPost,
+} from "../sign-in-with-passkey-controller.js";
+import type {
+  StartSignInWithPasskeyInterface,
+  FinishSignInWithPasskeyInterface,
+} from "../types.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { strict as assert } from "assert";
 
@@ -98,6 +104,70 @@ describe("sign in with passkey controller", () => {
         "StartPasskeyAssertionError: Session expired"
       );
       expect(res.render).to.not.have.been.called;
+    });
+  });
+
+  describe("signInWithPasskeyPost", () => {
+    it("should redirect to the next path when the finish service returns success", async () => {
+      const fakeFinishSignInService = {
+        finishSignInWithPasskey: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as FinishSignInWithPasskeyInterface;
+
+      await signInWithPasskeyPost(fakeFinishSignInService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
+    });
+
+    it("should pass the authentication response from the request body to the finish service", async () => {
+      const authenticationResponse = {
+        signedChallenge: "challenge",
+      };
+      req.body.authenticationResponse = authenticationResponse;
+      const fakeFinishSignInService = {
+        finishSignInWithPasskey: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as FinishSignInWithPasskeyInterface;
+
+      await signInWithPasskeyPost(fakeFinishSignInService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(
+        fakeFinishSignInService.finishSignInWithPasskey
+      ).to.have.been.calledWith(
+        commonVariables.sessionId,
+        commonVariables.clientSessionId,
+        commonVariables.diPersistentSessionId,
+        req,
+        authenticationResponse
+      );
+    });
+
+    it("should throw an error when the finish service returns unsuccessful", async () => {
+      const fakeFinishSignInService = {
+        finishSignInWithPasskey: sinon.fake.returns({
+          success: false,
+          data: { message: "Session expired", code: 1000 },
+        }),
+      } as unknown as FinishSignInWithPasskeyInterface;
+
+      await assert.rejects(
+        async () =>
+          signInWithPasskeyPost(fakeFinishSignInService)(
+            req as Request,
+            res as Response
+          ),
+        Error,
+        "FinishPasskeyAssertionError: Session expired"
+      );
+      expect(res.redirect).to.not.have.been.called;
     });
   });
 });

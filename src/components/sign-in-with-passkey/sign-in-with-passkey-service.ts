@@ -5,12 +5,14 @@ import {
   http,
 } from "../../utils/http.js";
 import type {
+  FinishSignInWithPasskeyInterface,
   StartSignInWithPasskeyInterface,
   StartSignInWithPasskeyResponse,
 } from "./types.js";
-import type { ApiResponseResult } from "../../types.js";
+import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
 import { API_ENDPOINTS } from "../../app.constants.js";
 import type { Request } from "express";
+import type { AuthenticationResponseJSON } from "@simplewebauthn/browser";
 
 export function startSignInWithPasskeyService(
   axios: Http = http
@@ -40,5 +42,37 @@ export function startSignInWithPasskeyService(
 
   return {
     startSignInWithPasskey,
+  };
+}
+
+export function finishSignInWithPasskeyService(
+  axios: Http = http
+): FinishSignInWithPasskeyInterface {
+  const finishSignInWithPasskey = async function (
+    sessionId: string,
+    clientSessionId: string,
+    persistentSessionId: string,
+    req: Request,
+    authenticationResponse: AuthenticationResponseJSON
+  ): Promise<ApiResponseResult<DefaultApiResponse>> {
+    const response = await axios.client.post<DefaultApiResponse>(
+      API_ENDPOINTS.FINISH_PASSKEY_ASSERTION,
+      { pkc: authenticationResponse },
+      getInternalRequestConfigWithSecurityHeaders(
+        {
+          sessionId: sessionId,
+          clientSessionId: clientSessionId,
+          persistentSessionId: persistentSessionId,
+        },
+        req,
+        API_ENDPOINTS.FINISH_PASSKEY_ASSERTION
+      )
+    );
+
+    return createApiResponse<DefaultApiResponse>(response);
+  };
+
+  return {
+    finishSignInWithPasskey,
   };
 }
