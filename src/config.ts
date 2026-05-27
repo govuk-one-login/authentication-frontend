@@ -219,6 +219,10 @@ export function getSessionDynamoPrimaryEnabled(): boolean {
   return process.env.SESSION_DYNAMO_PRIMARY_ENABLED === "1";
 }
 
+export function getSessionDynamoExclusiveEnabled(): boolean {
+  return process.env.SESSION_DYNAMO_EXCLUSIVE_ENABLED === "1";
+}
+
 export function getAuthJwksUrl(): string {
   return `${getApiBaseUrl()}/.well-known/auth-jwks.json`;
 }
