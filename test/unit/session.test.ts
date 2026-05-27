@@ -145,7 +145,8 @@ describe("session", () => {
 
     async function createSessionStoreWithFlags(
       dualWriteEnabled: boolean,
-      dynamoPrimaryEnabled: boolean
+      dynamoPrimaryEnabled: boolean,
+      dynamoExclusiveEnabled = false
     ) {
       const { getSessionStore: getSessionStoreWithFlag } = await esmock(
         "../../src/config/session.js",
@@ -159,6 +160,7 @@ describe("session", () => {
           "../../src/config.js": {
             getSessionDualWriteEnabled: () => dualWriteEnabled,
             getSessionDynamoPrimaryEnabled: () => dynamoPrimaryEnabled,
+            getSessionDynamoExclusiveEnabled: () => dynamoExclusiveEnabled,
           },
           "../../src/config/dynamodb-session.js": {
             getDynamoSessionStore: () => fakeDynamoStore,
@@ -194,6 +196,16 @@ describe("session", () => {
       expect(store["secondary"]).to.be.instanceOf(RedisStore);
       expect(store["primaryLabel"]).to.equal("DynamoDB");
       expect(store["secondaryLabel"]).to.equal("Redis");
+    });
+
+    it("should return the DynamoDB store directly when Dynamo exclusive flag is enabled", async () => {
+      const store = await createSessionStoreWithFlags(false, false, true);
+      expect(store).to.equal(fakeDynamoStore);
+    });
+
+    it("should return the DynamoDB store directly when Dynamo exclusive flag is enabled regardless of other flags", async () => {
+      const store = await createSessionStoreWithFlags(true, true, true);
+      expect(store).to.equal(fakeDynamoStore);
     });
   });
 });
