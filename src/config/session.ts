@@ -7,6 +7,7 @@ import { DualSessionStore } from "./dual-session-store.js";
 import { getDynamoSessionStore } from "./dynamodb-session.js";
 import {
   getSessionDualWriteEnabled,
+  getSessionDynamoExclusiveEnabled,
   getSessionDynamoPrimaryEnabled,
 } from "../config.js";
 import type { Store } from "express-session";
@@ -46,6 +47,16 @@ function getRedisStore(redisConfig: RedisConfig): RedisStore {
 }
 
 export function getSessionStore(redisConfig: RedisConfig): Store {
+  const dynamoStore = getDynamoSessionStore();
+
+  if (getSessionDynamoExclusiveEnabled()) {
+    logger.info(
+      "Session store DynamoDB exclusive feature flag enabled, using DynamoDB store."
+    );
+
+    return dynamoStore;
+  }
+
   const redisStore = getRedisStore(redisConfig);
 
   if (!getSessionDualWriteEnabled()) {
@@ -59,8 +70,6 @@ export function getSessionStore(redisConfig: RedisConfig): Store {
   logger.info(
     "Dual session store writing feature flag enabled, using dual session store."
   );
-
-  const dynamoStore = getDynamoSessionStore();
 
   if (getSessionDynamoPrimaryEnabled()) {
     logger.info(

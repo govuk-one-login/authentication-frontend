@@ -21,6 +21,7 @@ import {
   getAccountDomain,
   getPasskeyPromptClientAllowList,
   getSessionDynamoPrimaryEnabled,
+  getSessionDynamoExclusiveEnabled,
 } from "../../src/config.js";
 import { CHANNEL } from "../../src/app.constants.js";
 
@@ -133,6 +134,11 @@ describe("config", () => {
         name: "getSessionDynamoPrimaryEnabled",
         envVar: "SESSION_DYNAMO_PRIMARY_ENABLED",
         fn: getSessionDynamoPrimaryEnabled,
+      },
+      {
+        name: "getSessionDynamoExclusiveEnabled",
+        envVar: "SESSION_DYNAMO_EXCLUSIVE_ENABLED",
+        fn: getSessionDynamoExclusiveEnabled,
       },
     ];
 
