@@ -20,11 +20,18 @@
     {{'pages.signInWithPasskey.paragraph3' | translate }}
   </p>
 
-  {{ govukButton({
-    text: 'general.continue.label' | translate,
-    type: "Submit",
-    preventDoubleClick: true
-  }) }}
+  <form method="post" id="signInWithPasskeyForm" data-authentication-options="{{ authenticationOptions }}">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+    <input type="hidden" name="authenticationResponse" value='"' />
+    <input type="hidden" name="authenticationError" value="JavaScriptNotEnabled" />
+
+    {{ govukButton({
+      text: 'general.continue.label' | translate,
+      type: "Submit",
+      preventDoubleClick: true
+    }) }}
+
+  </form>
 
   <p class="govuk-body">
     <a href="/enter-password" class="govuk-link" rel="noreferrer noopener">{{'pages.signInWithPasskey.signInAnotherWayLinkText' | translate }}</a>

@@ -10,7 +10,7 @@ router.get(
   PATH_NAMES.SIGN_IN_WITH_PASSKEY,
   validateSessionMiddleware,
   allowAndPersistUserJourneyMiddleware,
-  signInWithPasskeyGet
+  signInWithPasskeyGet()
 );
 
 export { router as signInWithPasskeyRouter };
