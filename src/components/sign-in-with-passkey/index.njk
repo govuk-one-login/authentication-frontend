@@ -40,5 +40,37 @@
 {% endblock %}
 
 {% block scripts %}
-    <script defer type="text/javascript" src="/public/scripts/prevent-double-form-submit.js"></script>
+  <script {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
+    const signInWithPasskeyForm = document.getElementById("signInWithPasskeyForm");
+    let isSubmitting = false
+
+    async function handleSubmit(event) {
+      event.preventDefault();
+
+      if (isSubmitting) return
+      isSubmitting = true
+
+      try {
+        if (SimpleWebAuthnBrowser.browserSupportsWebAuthn()) {
+          // The reason we need to the publicKey from the response is toCredentialsJson in
+          // java-webauthn-server puts the authenticationOptions as the property of publicKey
+          const authenticationOptions = JSON.parse(signInWithPasskeyForm.dataset.authenticationOptions).publicKey
+          const authenticationResponse = await SimpleWebAuthnBrowser.startAuthentication({ optionsJSON: authenticationOptions})
+          signInWithPasskeyForm.querySelector('input[name="authenticationResponse"]').value = JSON.stringify(authenticationResponse)
+
+          const authenticationErrorField = signInWithPasskeyForm.querySelector('input[name="authenticationError"]');
+          authenticationErrorField.parentNode.removeChild(authenticationErrorField)
+        }
+      } catch (error) {
+        console.error(error.message);
+        signInWithPasskeyForm.querySelector('input[name="authenticationError"]').value = `${error.name} - ${error.message}`
+      }
+
+      signInWithPasskeyForm.submit();
+    }
+
+    signInWithPasskeyForm.addEventListener('submit', handleSubmit);
+
+  </script>
+  <script defer type="text/javascript" src="/public/scripts/prevent-double-form-submit.js"></script>
 {% endblock %}
