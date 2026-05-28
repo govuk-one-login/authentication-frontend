@@ -633,7 +633,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "Ykg9fGyY76On4e8tPvFabK5BIl65EkGH"
-      SessionDualWriteEnabled: "No"
+      SessionDualWriteEnabled: "Yes"
       SessionDynamoPrimaryEnabled: "No"
       SessionDynamoExclusiveEnabled: "No"
     staging:
@@ -747,7 +747,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: ""
-      SessionDualWriteEnabled: "No"
+      SessionDualWriteEnabled: "Yes"
       SessionDynamoPrimaryEnabled: "No"
       SessionDynamoExclusiveEnabled: "No"
 
