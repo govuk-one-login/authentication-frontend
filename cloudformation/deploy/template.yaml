@@ -710,7 +710,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       PasskeyPromptClientAllowList: ""
       SessionDualWriteEnabled: "Yes"
-      SessionDynamoPrimaryEnabled: "No"
+      SessionDynamoPrimaryEnabled: "Yes"
       SessionDynamoExclusiveEnabled: "No"
     production:
       DeployServiceDownPage: "Yes"
