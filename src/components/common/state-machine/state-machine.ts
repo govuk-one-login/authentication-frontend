@@ -77,6 +77,7 @@ const USER_JOURNEY_EVENTS = {
   CREATE_PASSKEY_SKIPPED: "CREATE_PASSKEY_SKIPPED",
   CREATE_PASSKEY_BACK: "CREATE_PASSKEY_BACK",
   PASSKEY_CREATED: "PASSKEY_CREATED",
+  PASSKEY_VALIDATED: "PASSKEY_VALIDATED",
   SIGN_IN_WITH_PASSKEY: "SIGN_IN_WITH_PASSKEY",
 };
 
@@ -344,6 +345,13 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
       },
       [PATH_NAMES.SIGN_IN_WITH_PASSKEY]: {
+        on: {
+          [USER_JOURNEY_EVENTS.PASSKEY_VALIDATED]: [
+            {
+              target: [INTERMEDIATE_STATES.SIGN_IN_END],
+            },
+          ],
+        },
         meta: {
           optionalPaths: [PATH_NAMES.ENTER_PASSWORD],
         },
