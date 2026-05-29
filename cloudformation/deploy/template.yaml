@@ -709,7 +709,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       PasskeyPromptClientAllowList: ""
-      SessionDualWriteEnabled: "No"
+      SessionDualWriteEnabled: "Yes"
       SessionDynamoPrimaryEnabled: "No"
       SessionDynamoExclusiveEnabled: "No"
     production:
