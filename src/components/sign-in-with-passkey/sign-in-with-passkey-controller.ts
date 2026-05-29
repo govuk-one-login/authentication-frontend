@@ -26,7 +26,7 @@ export function signInWithPasskeyGet(
     const authenticationOptions = startPasskeyAssertionResult.data;
 
     res.render("sign-in-with-passkey/index.njk", {
-      authenticationOptions: JSON.stringify(authenticationOptions),
+      authenticationOptions: JSON.stringify(authenticationOptions.publicKey),
     });
   };
 }

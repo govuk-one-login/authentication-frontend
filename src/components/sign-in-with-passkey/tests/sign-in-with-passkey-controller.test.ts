@@ -11,9 +11,7 @@ import {
   signInWithPasskeyGet,
   signInWithPasskeyPost,
 } from "../sign-in-with-passkey-controller.js";
-import type {
-  SignInWithPasskeyInterface,
-} from "../types.js";
+import type { SignInWithPasskeyInterface } from "../types.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { strict as assert } from "assert";
 
@@ -36,13 +34,13 @@ describe("sign in with passkey controller", () => {
   describe("signInWithPasskeyGet", () => {
     it("should render the sign in with passkey view with authentication options on success", async () => {
       const mockData = {
-        message: "success",
-        code: 200,
-        challenge: "dGVzdC1jaGFsbGVuZ2U",
-        rpId: "localhost",
-        allowCredentials: [{ type: "public-key", id: "credential-id-123" }],
-        timeout: 60000,
-        userVerification: "preferred",
+        publicKey: {
+          challenge: "dGVzdC1jaGFsbGVuZ2U",
+          rpId: "localhost",
+          allowCredentials: [{ type: "public-key", id: "credential-id-123" }],
+          timeout: 60000,
+          userVerification: "preferred",
+        },
       };
 
       const fakeStartSignInService = {
@@ -59,7 +57,7 @@ describe("sign in with passkey controller", () => {
 
       expect(res.render).to.have.been.calledWith(
         "sign-in-with-passkey/index.njk",
-        { authenticationOptions: JSON.stringify(mockData) }
+        { authenticationOptions: JSON.stringify(mockData.publicKey) }
       );
     });
 

@@ -52,10 +52,7 @@
 
       try {
         if (SimpleWebAuthnBrowser.browserSupportsWebAuthn()) {
-          // The reason we need to the publicKey from the response is toCredentialsJson in
-          // java-webauthn-server puts the authenticationOptions as the property of publicKey
-          const authenticationOptions = JSON.parse(signInWithPasskeyForm.dataset.authenticationOptions).publicKey
-          const authenticationResponse = await SimpleWebAuthnBrowser.startAuthentication({ optionsJSON: authenticationOptions})
+          const authenticationResponse = await SimpleWebAuthnBrowser.startAuthentication({ optionsJSON: JSON.parse(signInWithPasskeyForm.dataset.authenticationOptions)})
           signInWithPasskeyForm.querySelector('input[name="authenticationResponse"]').value = JSON.stringify(authenticationResponse)
 
           const authenticationErrorField = signInWithPasskeyForm.querySelector('input[name="authenticationError"]');

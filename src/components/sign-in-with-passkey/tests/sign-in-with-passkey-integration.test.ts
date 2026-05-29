@@ -56,11 +56,13 @@ describe("Integration:: sign in with passkey", () => {
 
   it("should return sign in with passkey page", async () => {
     const startPasskeyAssertionResponse = {
-      challenge: "challenge",
-      rpId: "localhost",
-      allowCredentials: [{ type: "public-key", id: "credential-id-123" }],
-      timeout: 60000,
-      userVerification: "preferred",
+      publicKey: {
+        challenge: "challenge",
+        rpId: "localhost",
+        allowCredentials: [{ type: "public-key", id: "credential-id-123" }],
+        timeout: 60000,
+        userVerification: "preferred",
+      },
     };
     nock(baseApi)
       .post(API_ENDPOINTS.START_PASSKEY_ASSERTION)
@@ -74,7 +76,9 @@ describe("Integration:: sign in with passkey", () => {
     const options = $("#signInWithPasskeyForm").attr(
       "data-authentication-options"
     );
-    expect(options).to.equal(JSON.stringify(startPasskeyAssertionResponse));
+    expect(options).to.equal(
+      JSON.stringify(startPasskeyAssertionResponse.publicKey)
+    );
   });
 
   it("should redirect on successful passkey finish assertion", async () => {
