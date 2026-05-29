@@ -5,17 +5,14 @@ import type { AuthenticationResponseJSON } from "@simplewebauthn/browser";
 export interface StartSignInWithPasskeyResponse
   extends DefaultApiResponse, PublicKeyCredentialRequestOptionsJSON {}
 
-export interface StartSignInWithPasskeyInterface {
-  startSignInWithPasskey: (
+export interface SignInWithPasskeyInterface {
+  startPasskeyAssertion: (
     sessionId: string,
     clientSessionId: string,
     persistentSessionId: string,
     req: Request
-  ) => Promise<ApiResponseResult<StartSignInWithPasskeyResponse>>;
-}
-
-export interface FinishSignInWithPasskeyInterface {
-  finishSignInWithPasskey: (
+  ) => Promise<ApiResponseResult<StartPasskeyAssertionResponse>>,
+  finishPasskeyAssertion: (
     sessionId: string,
     clientSessionId: string,
     persistentSessionId: string,

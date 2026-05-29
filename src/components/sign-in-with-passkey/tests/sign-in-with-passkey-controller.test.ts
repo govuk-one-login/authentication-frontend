@@ -12,8 +12,7 @@ import {
   signInWithPasskeyPost,
 } from "../sign-in-with-passkey-controller.js";
 import type {
-  StartSignInWithPasskeyInterface,
-  FinishSignInWithPasskeyInterface,
+  SignInWithPasskeyInterface,
 } from "../types.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { strict as assert } from "assert";
@@ -47,11 +46,11 @@ describe("sign in with passkey controller", () => {
       };
 
       const fakeStartSignInService = {
-        startSignInWithPasskey: sinon.fake.returns({
+        startPasskeyAssertion: sinon.fake.returns({
           success: true,
           data: mockData,
         }),
-      } as unknown as StartSignInWithPasskeyInterface;
+      } as unknown as SignInWithPasskeyInterface;
 
       await signInWithPasskeyGet(fakeStartSignInService)(
         req as Request,
@@ -66,11 +65,11 @@ describe("sign in with passkey controller", () => {
 
     it("should pass the correct session IDs to the start service", async () => {
       const fakeStartSignInService = {
-        startSignInWithPasskey: sinon.fake.returns({
+        startPasskeyAssertion: sinon.fake.returns({
           success: true,
           data: { message: "success", code: 200 },
         }),
-      } as unknown as StartSignInWithPasskeyInterface;
+      } as unknown as SignInWithPasskeyInterface;
 
       await signInWithPasskeyGet(fakeStartSignInService)(
         req as Request,
@@ -78,7 +77,7 @@ describe("sign in with passkey controller", () => {
       );
 
       expect(
-        fakeStartSignInService.startSignInWithPasskey
+        fakeStartSignInService.startPasskeyAssertion
       ).to.have.been.calledWith(
         commonVariables.sessionId,
         commonVariables.clientSessionId,
@@ -88,12 +87,12 @@ describe("sign in with passkey controller", () => {
     });
 
     it("should throw an error when the start service returns unsuccessful", async () => {
-      const fakeStartSignInService: StartSignInWithPasskeyInterface = {
-        startSignInWithPasskey: sinon.fake.returns({
+      const fakeStartSignInService: SignInWithPasskeyInterface = {
+        startPasskeyAssertion: sinon.fake.returns({
           success: false,
           data: { message: "Session expired", code: 1000 },
         }),
-      } as unknown as StartSignInWithPasskeyInterface;
+      } as unknown as SignInWithPasskeyInterface;
       await assert.rejects(
         async () =>
           signInWithPasskeyGet(fakeStartSignInService)(
@@ -110,10 +109,10 @@ describe("sign in with passkey controller", () => {
   describe("signInWithPasskeyPost", () => {
     it("should redirect to the next path when the finish service returns success", async () => {
       const fakeFinishSignInService = {
-        finishSignInWithPasskey: sinon.fake.returns({
+        finishPasskeyAssertion: sinon.fake.returns({
           success: true,
         }),
-      } as unknown as FinishSignInWithPasskeyInterface;
+      } as unknown as SignInWithPasskeyInterface;
 
       await signInWithPasskeyPost(fakeFinishSignInService)(
         req as Request,
@@ -129,10 +128,10 @@ describe("sign in with passkey controller", () => {
       };
       req.body.authenticationResponse = authenticationResponse;
       const fakeFinishSignInService = {
-        finishSignInWithPasskey: sinon.fake.returns({
+        finishPasskeyAssertion: sinon.fake.returns({
           success: true,
         }),
-      } as unknown as FinishSignInWithPasskeyInterface;
+      } as unknown as SignInWithPasskeyInterface;
 
       await signInWithPasskeyPost(fakeFinishSignInService)(
         req as Request,
@@ -140,7 +139,7 @@ describe("sign in with passkey controller", () => {
       );
 
       expect(
-        fakeFinishSignInService.finishSignInWithPasskey
+        fakeFinishSignInService.finishPasskeyAssertion
       ).to.have.been.calledWith(
         commonVariables.sessionId,
         commonVariables.clientSessionId,
@@ -152,11 +151,11 @@ describe("sign in with passkey controller", () => {
 
     it("should throw an error when the finish service returns unsuccessful", async () => {
       const fakeFinishSignInService = {
-        finishSignInWithPasskey: sinon.fake.returns({
+        finishPasskeyAssertion: sinon.fake.returns({
           success: false,
           data: { message: "Session expired", code: 1000 },
         }),
-      } as unknown as FinishSignInWithPasskeyInterface;
+      } as unknown as SignInWithPasskeyInterface;
 
       await assert.rejects(
         async () =>

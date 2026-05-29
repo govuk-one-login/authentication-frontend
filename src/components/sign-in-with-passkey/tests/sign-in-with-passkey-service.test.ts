@@ -8,14 +8,8 @@ import {
   PATH_NAMES,
 } from "../../../app.constants.js";
 import type { SinonStub } from "sinon";
-import {
-  finishSignInWithPasskeyService,
-  startSignInWithPasskeyService,
-} from "../sign-in-with-passkey-service.js";
-import type {
-  FinishSignInWithPasskeyInterface,
-  StartSignInWithPasskeyInterface,
-} from "../types.js";
+import { signInWithPasskeyService } from "../sign-in-with-passkey-service.js";
+import type { SignInWithPasskeyInterface } from "../types.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
@@ -41,9 +35,9 @@ describe("sign in with passkey service", () => {
     resetApiKeyAndBaseUrlEnvVars();
   });
 
-  describe("startSignInWithPasskeyService", () => {
-    const service: StartSignInWithPasskeyInterface =
-      startSignInWithPasskeyService(httpInstance);
+  describe("startPasskeyAssertion", () => {
+    const service: SignInWithPasskeyInterface =
+      signInWithPasskeyService(httpInstance);
 
     it("should call the start passkey assertion API endpoint and return successful response", async () => {
       const req = createMockRequest(PATH_NAMES.SIGN_IN_WITH_PASSKEY, {
@@ -63,7 +57,7 @@ describe("sign in with passkey service", () => {
       });
       postStub.resolves(axiosResponse);
 
-      const result = await service.startSignInWithPasskey(
+      const result = await service.startPasskeyAssertion(
         commonVariables.sessionId,
         commonVariables.clientSessionId,
         commonVariables.diPersistentSessionId,
@@ -98,7 +92,7 @@ describe("sign in with passkey service", () => {
       });
       postStub.resolves(axiosResponse);
 
-      const result = await service.startSignInWithPasskey(
+      const result = await service.startPasskeyAssertion(
         commonVariables.sessionId,
         commonVariables.clientSessionId,
         commonVariables.diPersistentSessionId,
@@ -119,9 +113,9 @@ describe("sign in with passkey service", () => {
     });
   });
 
-  describe("finishSignInWithPasskeyService", () => {
-    const service: FinishSignInWithPasskeyInterface =
-      finishSignInWithPasskeyService(httpInstance);
+  describe("finishPasskeyAssertion", () => {
+    const service: SignInWithPasskeyInterface =
+      signInWithPasskeyService(httpInstance);
 
     it("should call the finish passkey assertion API endpoint and return successful response", async () => {
       const req = createMockRequest(PATH_NAMES.SIGN_IN_WITH_PASSKEY, {
@@ -139,7 +133,7 @@ describe("sign in with passkey service", () => {
       });
       postStub.resolves(axiosResponse);
 
-      const result = await service.finishSignInWithPasskey(
+      const result = await service.finishPasskeyAssertion(
         commonVariables.sessionId,
         commonVariables.clientSessionId,
         commonVariables.diPersistentSessionId,
@@ -176,7 +170,7 @@ describe("sign in with passkey service", () => {
       });
       postStub.resolves(axiosResponse);
 
-      const result = await service.finishSignInWithPasskey(
+      const result = await service.finishPasskeyAssertion(
         commonVariables.sessionId,
         commonVariables.clientSessionId,
         commonVariables.diPersistentSessionId,

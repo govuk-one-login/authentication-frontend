@@ -5,25 +5,24 @@ import {
   http,
 } from "../../utils/http.js";
 import type {
-  FinishSignInWithPasskeyInterface,
-  StartSignInWithPasskeyInterface,
-  StartSignInWithPasskeyResponse,
+  SignInWithPasskeyInterface,
+  StartPasskeyAssertionResponse,
 } from "./types.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
 import { API_ENDPOINTS } from "../../app.constants.js";
 import type { Request } from "express";
 import type { AuthenticationResponseJSON } from "@simplewebauthn/browser";
 
-export function startSignInWithPasskeyService(
+export function signInWithPasskeyService(
   axios: Http = http
-): StartSignInWithPasskeyInterface {
-  const startSignInWithPasskey = async function (
+): SignInWithPasskeyInterface {
+  const startPasskeyAssertion = async function (
     sessionId: string,
     clientSessionId: string,
     persistentSessionId: string,
     req: Request
-  ): Promise<ApiResponseResult<StartSignInWithPasskeyResponse>> {
-    const response = await axios.client.post<StartSignInWithPasskeyResponse>(
+  ): Promise<ApiResponseResult<StartPasskeyAssertionResponse>> {
+    const response = await axios.client.post<StartPasskeyAssertionResponse>(
       API_ENDPOINTS.START_PASSKEY_ASSERTION,
       {},
       getInternalRequestConfigWithSecurityHeaders(
@@ -37,18 +36,10 @@ export function startSignInWithPasskeyService(
       )
     );
 
-    return createApiResponse<StartSignInWithPasskeyResponse>(response);
+    return createApiResponse<StartPasskeyAssertionResponse>(response);
   };
 
-  return {
-    startSignInWithPasskey,
-  };
-}
-
-export function finishSignInWithPasskeyService(
-  axios: Http = http
-): FinishSignInWithPasskeyInterface {
-  const finishSignInWithPasskey = async function (
+  const finishPasskeyAssertion = async function (
     sessionId: string,
     clientSessionId: string,
     persistentSessionId: string,
@@ -73,6 +64,7 @@ export function finishSignInWithPasskeyService(
   };
 
   return {
-    finishSignInWithPasskey,
+    startPasskeyAssertion: startPasskeyAssertion,
+    finishPasskeyAssertion: finishPasskeyAssertion,
   };
 }

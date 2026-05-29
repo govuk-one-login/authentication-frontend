@@ -1,22 +1,16 @@
 import type { Request, Response } from "express";
-import type {
-  FinishSignInWithPasskeyInterface,
-  StartSignInWithPasskeyInterface,
-} from "./types.js";
-import {
-  finishSignInWithPasskeyService,
-  startSignInWithPasskeyService,
-} from "./sign-in-with-passkey-service.js";
+import type { SignInWithPasskeyInterface } from "./types.js";
+import { signInWithPasskeyService } from "./sign-in-with-passkey-service.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import type { AuthenticationResponseJSON } from "@simplewebauthn/browser";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 
 export function signInWithPasskeyGet(
-  service: StartSignInWithPasskeyInterface = startSignInWithPasskeyService()
+  service: SignInWithPasskeyInterface = signInWithPasskeyService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
-    const startPasskeyAssertionResult = await service.startSignInWithPasskey(
+    const startPasskeyAssertionResult = await service.startPasskeyAssertion(
       res.locals.sessionId,
       res.locals.clientSessionId,
       res.locals.persistentSessionId,
@@ -38,13 +32,13 @@ export function signInWithPasskeyGet(
 }
 
 export function signInWithPasskeyPost(
-  service: FinishSignInWithPasskeyInterface = finishSignInWithPasskeyService()
+  service: SignInWithPasskeyInterface = signInWithPasskeyService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const authenticationResponse: AuthenticationResponseJSON =
       req.body.authenticationResponse;
 
-    const finishPasskeyAssertionResult = await service.finishSignInWithPasskey(
+    const finishPasskeyAssertionResult = await service.finishPasskeyAssertion(
       res.locals.sessionId,
       res.locals.clientSessionId,
       res.locals.persistentSessionId,
