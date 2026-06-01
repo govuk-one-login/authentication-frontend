@@ -1,0 +1,52 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set pageTitleName = 'We could not sign you in'  %}
+
+{% block content %}
+  {% include "common/errors/errorSummary.njk" %}
+
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+    {{ 'We could not sign you in' }}
+  </h1>
+
+  <form method="post" id="cannotSignInPasskeyForm">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+    {{ govukRadios({
+      name: "cannotSignInPasskeyAction",
+      fieldset: {
+        legend: {
+          text: 'What would you like to do?',
+          isPageHeading: false,
+          classes: "govuk-fieldset__legend--m"
+        }
+      },
+      items: [
+        {
+          value: "true",
+          text: 'Try signing in with your passkey again',
+          id: "retry-passkey",
+          checked: analyticsConsent === true
+        },
+        {
+          value: "false",
+          text: 'Sign in with your password and a security code',
+          id: "sign-in-with-password",
+          checked: analyticsConsent === false
+        }
+      ],
+      errorMessage: {
+        text: errors['cannotSignInPasskeyAction'].text
+      } if (errors['cannotSignInPasskeyAction'])
+    }) }}
+
+    {{ govukButton({
+      "text": "general.continue.label" | translate,
+      "type": "Submit",
+      "preventDoubleClick": true
+    }) }}
+  </form>
+{% endblock %}

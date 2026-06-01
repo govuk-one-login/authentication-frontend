@@ -58,6 +58,9 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.SIGN_IN_WITH_PASSKEY]: {
     template: "sign-in-with-passkey/index.njk",
   },
+  [PATH_NAMES.CANNOT_SIGN_IN_PASSKEY]: {
+    template: "cannot-sign-in-passkey/index.njk",
+  },
   [PATH_NAMES.ENTER_PASSWORD]: { template: "enter-password/index.njk" },
   [PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS]: {
     template: "enter-password/index-account-exists.njk",
