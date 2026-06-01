@@ -9,7 +9,7 @@
   {% include "common/errors/errorSummary.njk" %}
 
   <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-    {{ 'We could not sign you in' }}
+    {{ 'pages.cannotSignInPasskey.title' | translate }}
   </h1>
 
   <form method="post" id="cannotSignInPasskeyForm">
@@ -19,7 +19,7 @@
       name: "cannotSignInPasskeyAction",
       fieldset: {
         legend: {
-          text: 'What would you like to do?',
+          text: 'pages.cannotSignInPasskey.radios.header' | translate,
           isPageHeading: false,
           classes: "govuk-fieldset__legend--m"
         }
@@ -27,19 +27,19 @@
       items: [
         {
           value: "true",
-          text: 'Try signing in with your passkey again',
+          text: 'pages.cannotSignInPasskey.radios.retryPasskeyOption' | translate,
           id: "retry-passkey",
           checked: analyticsConsent === true
         },
         {
           value: "false",
-          text: 'Sign in with your password and a security code',
+          text: 'pages.cannotSignInPasskey.radios.signInWithPasswordMfaOption' | translate,
           id: "sign-in-with-password",
           checked: analyticsConsent === false
         }
       ],
       errorMessage: {
-        text: errors['cannotSignInPasskeyAction'].text
+        text: 'pages.cannotSignInPasskey.radios.validationError' | translate
       } if (errors['cannotSignInPasskeyAction'])
     }) }}
 

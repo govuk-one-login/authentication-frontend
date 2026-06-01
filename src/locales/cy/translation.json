@@ -371,6 +371,16 @@
       "paragraph3": "Bydd hyn fodd bynnag yn datgloi eich ffôn, cyfrifiadur neu dabled.",
       "signInAnotherWayLinkText": "Mewngofnodi mewn ffordd arall"
     },
+    "cannotSignInPasskey": {
+      "title": "Ni allwn eich mewngofnodi",
+      "radios":  {
+        "header": "Beth hoffech chi ei wneud?",
+        "retryPasskeyOption": "Ceisiwch fewngofnodi gyda’ch allwedd mynediad eto",
+        "signInWithPasswordMfaOption": "Mewngofnodi gyda’ch cyfrinair a chod diogelwch",
+        "signInWithPasswordOption":  "Mewngofnodi gyda’ch cyfrinair",
+        "validationError": "Dewiswch beth hoffech ei wneud"
+      }
+    },
     "enterPassword": {
       "title": "Rhowch eich cyfrinair",
       "header": "Rhowch eich cyfrinair",
