@@ -33,7 +33,7 @@
         },
         {
           value: "false",
-          text: 'pages.cannotSignInPasskey.radios.signInWithPasswordMfaOption' | translate,
+          text: ( 'pages.cannotSignInPasskey.radios.signInWithPasswordMfaOption' if is2FAJourney else 'pages.cannotSignInPasskey.radios.signInWithPasswordOption' ) | translate,
           id: "sign-in-with-password",
           checked: analyticsConsent === false
         }
