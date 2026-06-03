@@ -35,9 +35,20 @@ export function signInWithPasskeyPost(
   service: SignInWithPasskeyInterface = signInWithPasskeyService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
+    const authenticationError = req.body.authenticationError;
+    if (!!authenticationError) {
+      req.log.warn("Passkey usage failed with error: %s", authenticationError);
+      return res.redirect(
+        await getNextPathAndUpdateJourney(
+          req,
+          res,
+          USER_JOURNEY_EVENTS.PASSKEY_VALIDATION_FAILED
+        )
+      );
+    }
+
     const authenticationResponse: AuthenticationResponseJSON =
       req.body.authenticationResponse;
-
     const finishPasskeyAssertionResult = await service.finishPasskeyAssertion(
       res.locals.sessionId,
       res.locals.clientSessionId,
@@ -47,9 +58,12 @@ export function signInWithPasskeyPost(
     );
 
     if (!finishPasskeyAssertionResult.success) {
-      // TODO - AUT-4990 - Handle failure cases
-      throw new Error(
-        `FinishPasskeyAssertionError: ${finishPasskeyAssertionResult.data.message}`
+      return res.redirect(
+        await getNextPathAndUpdateJourney(
+          req,
+          res,
+          USER_JOURNEY_EVENTS.PASSKEY_VALIDATION_FAILED
+        )
       );
     }
 

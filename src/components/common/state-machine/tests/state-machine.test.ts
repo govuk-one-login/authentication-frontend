@@ -110,6 +110,15 @@ describe("state-machine", () => {
       );
       expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_WITH_PASSKEY);
     });
+
+    it(`should move from ${PATH_NAMES.SIGN_IN_WITH_PASSKEY} to ${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY} on PASSKEY_VALIDATION_FAILED`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.SIGN_IN_WITH_PASSKEY,
+        USER_JOURNEY_EVENTS.PASSKEY_VALIDATION_FAILED,
+        DEFAULT_CONTEXT
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY);
+    });
   });
 
   describe("getNextState - login journey (non 2fa)", () => {
