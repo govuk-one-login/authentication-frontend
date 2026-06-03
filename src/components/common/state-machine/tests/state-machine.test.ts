@@ -111,13 +111,31 @@ describe("state-machine", () => {
       expect(nextState.value).to.equal(PATH_NAMES.SIGN_IN_WITH_PASSKEY);
     });
 
-    it(`should move from ${PATH_NAMES.SIGN_IN_WITH_PASSKEY} to ${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY} on PASSKEY_VALIDATION_FAILED`, () => {
+    it(`should move from ${PATH_NAMES.SIGN_IN_WITH_PASSKEY} to ${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY} on ${USER_JOURNEY_EVENTS.PASSKEY_AUTHENTICATION_FAILED}`, () => {
       const nextState = getNextState(
         PATH_NAMES.SIGN_IN_WITH_PASSKEY,
-        USER_JOURNEY_EVENTS.PASSKEY_VALIDATION_FAILED,
+        USER_JOURNEY_EVENTS.PASSKEY_AUTHENTICATION_FAILED,
         DEFAULT_CONTEXT
       );
       expect(nextState.value).to.equal(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY);
+    });
+
+    it(`should move from ${PATH_NAMES.SIGN_IN_WITH_PASSKEY} to ${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY} on ${USER_JOURNEY_EVENTS.PASSKEY_VERIFICATION_FAILED}`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.SIGN_IN_WITH_PASSKEY,
+        USER_JOURNEY_EVENTS.PASSKEY_VERIFICATION_FAILED,
+        DEFAULT_CONTEXT
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY);
+    });
+
+    it(`should move from ${PATH_NAMES.SIGN_IN_WITH_PASSKEY} to ${PATH_NAMES.AUTH_CODE} on ${USER_JOURNEY_EVENTS.PASSKEY_VERIFICATION_SUCCESSFUL}`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.SIGN_IN_WITH_PASSKEY,
+        USER_JOURNEY_EVENTS.PASSKEY_VERIFICATION_SUCCESSFUL,
+        { ...DEFAULT_CONTEXT, isMfaRequired: false }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
     });
   });
 

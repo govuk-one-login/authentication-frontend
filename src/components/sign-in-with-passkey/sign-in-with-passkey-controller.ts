@@ -42,7 +42,7 @@ export function signInWithPasskeyPost(
         await getNextPathAndUpdateJourney(
           req,
           res,
-          USER_JOURNEY_EVENTS.PASSKEY_VALIDATION_FAILED
+          USER_JOURNEY_EVENTS.PASSKEY_AUTHENTICATION_FAILED
         )
       );
     }
@@ -62,7 +62,7 @@ export function signInWithPasskeyPost(
         await getNextPathAndUpdateJourney(
           req,
           res,
-          USER_JOURNEY_EVENTS.PASSKEY_VALIDATION_FAILED
+          USER_JOURNEY_EVENTS.PASSKEY_VERIFICATION_FAILED
         )
       );
     }
@@ -71,7 +71,7 @@ export function signInWithPasskeyPost(
       await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.PASSKEY_VALIDATED
+        USER_JOURNEY_EVENTS.PASSKEY_VERIFICATION_SUCCESSFUL
       )
     );
   };
