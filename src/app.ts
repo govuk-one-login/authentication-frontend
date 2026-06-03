@@ -129,7 +129,6 @@ const APP_VIEWS = [
 function registerRoutes(app: express.Application) {
   app.use(landingRouter);
   app.use(signInOrCreateRouter);
-  app.use(signInWithPasskeyRouter);
   app.use(enterEmailRouter);
   app.use(accountNotFoundRouter);
   app.use(enterPasswordRouter);
@@ -189,6 +188,7 @@ function registerRoutes(app: express.Application) {
     app.use(passkeyCreatedRouter);
   }
   if (supportPasskeyUsage()) {
+    app.use(signInWithPasskeyRouter);
     app.use(accountExistsWithPasskeyRouter);
   }
 
