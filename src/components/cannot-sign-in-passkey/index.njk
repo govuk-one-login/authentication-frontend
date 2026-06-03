@@ -16,31 +16,31 @@
     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
     {{ govukRadios({
-      name: "cannotSignInPasskeyAction",
+      name: "cannot-sign-in-passkey-action",
+      attributes: {
+        "id": "cannot-sign-in-passkey-action"
+      },
       fieldset: {
         legend: {
           text: 'pages.cannotSignInPasskey.radios.header' | translate,
-          isPageHeading: false,
           classes: "govuk-fieldset__legend--m"
         }
       },
       items: [
         {
-          value: "true",
+          value: "retry-passkey",
           text: 'pages.cannotSignInPasskey.radios.retryPasskeyOption' | translate,
-          id: "retry-passkey",
-          checked: analyticsConsent === true
+          id: "retry-passkey"
         },
         {
-          value: "false",
+          value: "sign-in-with-password",
           text: ( 'pages.cannotSignInPasskey.radios.signInWithPasswordMfaOption' if is2FAJourney else 'pages.cannotSignInPasskey.radios.signInWithPasswordOption' ) | translate,
-          id: "sign-in-with-password",
-          checked: analyticsConsent === false
+          id: "sign-in-with-password"
         }
       ],
       errorMessage: {
-        text: 'pages.cannotSignInPasskey.radios.validationError' | translate
-      } if (errors['cannotSignInPasskeyAction'])
+        text: errors['cannot-sign-in-passkey-action'].text | translate
+      } if (errors['cannot-sign-in-passkey-action'])
     }) }}
 
     {{ govukButton({
