@@ -1,8 +1,41 @@
-ENV_NAME = "Dev"
-USER_PUB_SUB_ID = "xxx"
-USER_EMAIL = "xxx@xxx.xxx"
-ENV_URL = "dev.account.gov.uk"  # e.g., 'build.account.gov.uk' for build (see README for examples)
-CHALLENGE = "6EP1s53M5sF7XL_G2RwbY-AbJoSNiiCIVb9DrNNITnM"
+import sys
+from pathlib import Path
+
+
+def load_env(required_keys):
+    env_file = Path(__file__).parent / ".env"
+    if not env_file.exists():
+        print(f"Error: .env file not found at {env_file}", file=sys.stderr)
+        print(f"Create a .env file with: {', '.join(required_keys)}", file=sys.stderr)
+        sys.exit(1)
+
+    env_vars = {}
+    for line in env_file.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        key, _, value = line.partition("=")
+        env_vars[key.strip()] = value.strip().strip('"').strip("'")
+
+    missing = [k for k in required_keys if k not in env_vars]
+    if missing:
+        print(
+            f"Error: Missing required variables in .env: {', '.join(missing)}",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    return env_vars
+
+
+REQUIRED = ["ENV_NAME", "USER_PUB_SUB_ID", "USER_EMAIL", "ENV_URL", "CHALLENGE"]
+env = load_env(REQUIRED)
+
+ENV_NAME = env["ENV_NAME"]
+USER_PUB_SUB_ID = env["USER_PUB_SUB_ID"]
+USER_EMAIL = env["USER_EMAIL"]
+ENV_URL = env["ENV_URL"]
+CHALLENGE = env["CHALLENGE"]
 
 js_template = f"""
 (async () => {{
