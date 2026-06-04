@@ -82,6 +82,7 @@ export const PATH_NAMES = {
   CREATE_PASSKEY_CALLBACK: "/create-passkey-callback",
   SESSION_ENDED: "/session-ended",
   PASSKEY_CREATED: "/passkey-created",
+  ACCOUNT_EXISTS_WITH_PASSKEY: "/account-exists",
 };
 
 export const HREF_BACK = {
@@ -131,6 +132,8 @@ export const API_ENDPOINTS = {
   ID_REVERIFICATION_STATE: "/id-reverification-state",
   AMC_AUTHORIZE: "/amc-authorize",
   AMC_CALLBACK: "/amc-callback",
+  START_PASSKEY_ASSERTION: "/start-passkey-assertion",
+  FINISH_PASSKEY_ASSERTION: "/finish-passkey-assertion",
 };
 
 export const ERROR_MESSAGES = {

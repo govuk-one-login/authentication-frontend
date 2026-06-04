@@ -21,6 +21,7 @@ describe("Integration::enter password", () => {
   let cookies: string;
   let app: any;
   let baseApi: string;
+  let capturedSession: any;
 
   const ENDPOINT = "/enter-password";
 
@@ -43,6 +44,15 @@ describe("Integration::enter password", () => {
               email: "test@test.com",
               journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_PASSWORD),
             };
+
+            if (process.env.SUPPORT_PASSKEY_USAGE === "1") {
+              req.session.user.journey.goBackHistory = [
+                PATH_NAMES.ENTER_EMAIL_SIGN_IN,
+              ];
+              req.session.user.journey.nextPath = PATH_NAMES.ENTER_PASSWORD;
+            }
+
+            capturedSession = req.session;
 
             next();
           }),
@@ -303,5 +313,18 @@ describe("Integration::enter password", () => {
       })
       .expect("Location", PATH_NAMES.CANNOT_USE_SECURITY_CODE)
       .expect(302);
+  });
+
+  it("should redirect to /enter-email using goBackHistory when passkeys enabled and user clicked back", async () => {
+    process.env.SUPPORT_PASSKEY_USAGE = "1";
+    await request(app).get(ENDPOINT).expect(200);
+
+    expect(capturedSession.user.journey.goBackHistory).to.deep.equal([
+      PATH_NAMES.ENTER_EMAIL_SIGN_IN,
+    ]);
+
+    await request(app).get(PATH_NAMES.ENTER_EMAIL_SIGN_IN).expect(200);
+
+    expect(capturedSession.user.journey.goBackHistory).to.deep.equal([]);
   });
 });

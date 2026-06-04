@@ -1,7 +1,9 @@
-import { beforeEach, describe, it } from "mocha";
+import { afterEach, beforeEach, describe, it } from "mocha";
 import type { RedisConfig } from "../../src/utils/types.js";
 import { isRedisConfigEqual } from "../../src/config/session.js";
 import { expect, sinon } from "../utils/test-utils.js";
+import { DualSessionStore } from "../../src/config/dual-session-store.js";
+import { RedisStore } from "connect-redis";
 import esmock from "esmock";
 
 describe("session", () => {
@@ -131,6 +133,79 @@ describe("session", () => {
           expectation.equal
         );
       });
+    });
+  });
+
+  describe("getSessionStore feature flags", () => {
+    const fakeDynamoStore = { fake: "dynamo-store" };
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    async function createSessionStoreWithFlags(
+      dualWriteEnabled: boolean,
+      dynamoPrimaryEnabled: boolean,
+      dynamoExclusiveEnabled = false
+    ) {
+      const { getSessionStore: getSessionStoreWithFlag } = await esmock(
+        "../../src/config/session.js",
+        {
+          redis: {
+            createClient: sinon.fake(() => ({
+              connect: sinon.fake(),
+              on: sinon.fake(),
+            })),
+          },
+          "../../src/config.js": {
+            getSessionDualWriteEnabled: () => dualWriteEnabled,
+            getSessionDynamoPrimaryEnabled: () => dynamoPrimaryEnabled,
+            getSessionDynamoExclusiveEnabled: () => dynamoExclusiveEnabled,
+          },
+          "../../src/config/dynamodb-session.js": {
+            getDynamoSessionStore: () => fakeDynamoStore,
+          },
+        }
+      );
+      return getSessionStoreWithFlag(redisConfig);
+    }
+
+    it("should return a RedisStore when dual write is disabled", async () => {
+      const store = await createSessionStoreWithFlags(false, false);
+      expect(store).to.be.instanceOf(RedisStore);
+    });
+
+    it("should return a RedisStore when dual write is disabled even if dynamo primary is enabled", async () => {
+      const store = await createSessionStoreWithFlags(false, true);
+      expect(store).to.be.instanceOf(RedisStore);
+    });
+
+    it("should return a DualSessionStore with Redis as primary when dual write enabled and dynamo primary disabled", async () => {
+      const store = await createSessionStoreWithFlags(true, false);
+      expect(store).to.be.instanceOf(DualSessionStore);
+      expect(store["primary"]).to.be.instanceOf(RedisStore);
+      expect(store["secondary"]).to.equal(fakeDynamoStore);
+      expect(store["primaryLabel"]).to.equal("Redis");
+      expect(store["secondaryLabel"]).to.equal("DynamoDB");
+    });
+
+    it("should return a DualSessionStore with DynamoDB as primary when both flags enabled", async () => {
+      const store = await createSessionStoreWithFlags(true, true);
+      expect(store).to.be.instanceOf(DualSessionStore);
+      expect(store["primary"]).to.equal(fakeDynamoStore);
+      expect(store["secondary"]).to.be.instanceOf(RedisStore);
+      expect(store["primaryLabel"]).to.equal("DynamoDB");
+      expect(store["secondaryLabel"]).to.equal("Redis");
+    });
+
+    it("should return the DynamoDB store directly when Dynamo exclusive flag is enabled", async () => {
+      const store = await createSessionStoreWithFlags(false, false, true);
+      expect(store).to.equal(fakeDynamoStore);
+    });
+
+    it("should return the DynamoDB store directly when Dynamo exclusive flag is enabled regardless of other flags", async () => {
+      const store = await createSessionStoreWithFlags(true, true, true);
+      expect(store).to.equal(fakeDynamoStore);
     });
   });
 });

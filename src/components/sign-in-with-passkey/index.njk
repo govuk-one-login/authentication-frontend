@@ -20,11 +20,18 @@
     {{'pages.signInWithPasskey.paragraph3' | translate }}
   </p>
 
-  {{ govukButton({
-    text: 'general.continue.label' | translate,
-    type: "Submit",
-    preventDoubleClick: true
-  }) }}
+  <form method="post" id="signInWithPasskeyForm" data-authentication-options="{{ authenticationOptions }}">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+    <input type="hidden" name="authenticationResponse" value='"' />
+    <input type="hidden" name="authenticationError" value="JavaScriptNotEnabled" />
+
+    {{ govukButton({
+      text: 'general.continue.label' | translate,
+      type: "Submit",
+      preventDoubleClick: true
+    }) }}
+
+  </form>
 
   <p class="govuk-body">
     <a href="/enter-password" class="govuk-link" rel="noreferrer noopener">{{'pages.signInWithPasskey.signInAnotherWayLinkText' | translate }}</a>
@@ -33,5 +40,34 @@
 {% endblock %}
 
 {% block scripts %}
-    <script defer type="text/javascript" src="/public/scripts/prevent-double-form-submit.js"></script>
+  <script {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
+    const signInWithPasskeyForm = document.getElementById("signInWithPasskeyForm");
+    let isSubmitting = false
+
+    async function handleSubmit(event) {
+      event.preventDefault();
+
+      if (isSubmitting) return
+      isSubmitting = true
+
+      try {
+        if (SimpleWebAuthnBrowser.browserSupportsWebAuthn()) {
+          const authenticationResponse = await SimpleWebAuthnBrowser.startAuthentication({ optionsJSON: JSON.parse(signInWithPasskeyForm.dataset.authenticationOptions)})
+          signInWithPasskeyForm.querySelector('input[name="authenticationResponse"]').value = JSON.stringify(authenticationResponse)
+
+          const authenticationErrorField = signInWithPasskeyForm.querySelector('input[name="authenticationError"]');
+          authenticationErrorField.parentNode.removeChild(authenticationErrorField)
+        }
+      } catch (error) {
+        console.error(error.message);
+        signInWithPasskeyForm.querySelector('input[name="authenticationError"]').value = `${error.name} - ${error.message}`
+      }
+
+      signInWithPasskeyForm.submit();
+    }
+
+    signInWithPasskeyForm.addEventListener('submit', handleSubmit);
+
+  </script>
+  <script defer type="text/javascript" src="/public/scripts/prevent-double-form-submit.js"></script>
 {% endblock %}

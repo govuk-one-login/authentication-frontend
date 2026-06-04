@@ -35,6 +35,7 @@ const USER_JOURNEY_EVENTS = {
   VALIDATE_CREDENTIALS: "VALIDATE_CREDENTIALS",
   ACCOUNT_NOT_FOUND: "ACCOUNT_NOT_FOUND",
   ACCOUNT_FOUND_CREATE: "ACCOUNT_FOUND_CREATE",
+  ACCOUNT_FOUND_WITH_PASSKEY_CREATE: "ACCOUNT_FOUND_WITH_PASSKEY_CREATE",
   ACCOUNT_FOUND: "ACCOUNT_FOUND",
   CREATE_OR_SIGN_IN: "CREATE_OR_SIGN_IN",
   SIGN_IN: "SIGN_IN",
@@ -76,6 +77,8 @@ const USER_JOURNEY_EVENTS = {
   CREATE_PASSKEY_SKIPPED: "CREATE_PASSKEY_SKIPPED",
   CREATE_PASSKEY_BACK: "CREATE_PASSKEY_BACK",
   PASSKEY_CREATED: "PASSKEY_CREATED",
+  PASSKEY_VALIDATED: "PASSKEY_VALIDATED",
+  SIGN_IN_WITH_PASSKEY: "SIGN_IN_WITH_PASSKEY",
 };
 
 export interface AuthStateContext {
@@ -165,6 +168,9 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.ACCOUNT_FOUND_CREATE]: [
             PATH_NAMES.ENTER_PASSWORD_ACCOUNT_EXISTS,
           ],
+          [USER_JOURNEY_EVENTS.ACCOUNT_FOUND_WITH_PASSKEY_CREATE]: [
+            PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY,
+          ],
           [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.CHECK_YOUR_EMAIL],
         },
         meta: {
@@ -204,6 +210,16 @@ const authStateMachine = createMachine<AuthStateContext>(
             PATH_NAMES.RESET_PASSWORD_REQUEST,
             PATH_NAMES.SIGN_IN_RETRY_BLOCKED,
           ],
+        },
+      },
+      [PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY]: {
+        on: {
+          [USER_JOURNEY_EVENTS.SIGN_IN_WITH_PASSKEY]: [
+            PATH_NAMES.SIGN_IN_WITH_PASSKEY,
+          ],
+        },
+        meta: {
+          optionalPaths: [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT],
         },
       },
       [PATH_NAMES.CHECK_YOUR_EMAIL]: {
@@ -329,6 +345,13 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
       },
       [PATH_NAMES.SIGN_IN_WITH_PASSKEY]: {
+        on: {
+          [USER_JOURNEY_EVENTS.PASSKEY_VALIDATED]: [
+            {
+              target: [INTERMEDIATE_STATES.SIGN_IN_END],
+            },
+          ],
+        },
         meta: {
           optionalPaths: [PATH_NAMES.ENTER_PASSWORD],
         },

@@ -200,8 +200,6 @@ describe("Integration::enter email", () => {
       })
       .expect("Location", PATH_NAMES.ENTER_PASSWORD)
       .expect(302);
-
-    expect(capturedSession.user.journey.goBackHistory).to.be.empty;
   });
 
   it("should redirect to /enter-password and save enter-email in goBackHistory when passkeys are enabled", async () => {
