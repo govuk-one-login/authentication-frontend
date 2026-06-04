@@ -634,7 +634,7 @@ Mappings:
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "Ykg9fGyY76On4e8tPvFabK5BIl65EkGH"
       SessionDualWriteEnabled: "Yes"
-      SessionDynamoPrimaryEnabled: "No"
+      SessionDynamoPrimaryEnabled: "Yes"
       SessionDynamoExclusiveEnabled: "No"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -748,7 +748,7 @@ Mappings:
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: ""
       SessionDualWriteEnabled: "Yes"
-      SessionDynamoPrimaryEnabled: "No"
+      SessionDynamoPrimaryEnabled: "Yes"
       SessionDynamoExclusiveEnabled: "No"
 
 Globals:
