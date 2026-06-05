@@ -67,11 +67,7 @@ import { checkYourEmailRouter } from "./components/check-your-email/check-your-e
 import { securityCodeErrorRouter } from "./components/security-code-error/security-code-error-routes.js";
 import { upliftJourneyRouter } from "./components/uplift-journey/uplift-journey-routes.js";
 import { contactUsRouter } from "./components/contact-us/contact-us-routes.js";
-import {
-  disconnectRedisClient,
-  getSessionCookieOptions,
-  getSessionStore,
-} from "./config/session.js";
+import { getSessionCookieOptions, getSessionStore } from "./config/session.js";
 import session from "express-session";
 import { healthcheckRouter } from "./components/healthcheck/healthcheck-routes.js";
 import { crossDomainTrackingMiddleware } from "./middleware/cross-domain-tracking-middleware.js";
@@ -90,7 +86,6 @@ import { resetPassword2FAAuthAppRouter } from "./components/reset-password-2fa-a
 import { templatesRouter } from "./components/templates/templates-routes.js";
 import { setGTM } from "./middleware/analytics-middleware.js";
 import { setCurrentUrlMiddleware } from "./middleware/current-url-middleware.js";
-import { getRedisConfig } from "./utils/redis.js";
 import { csrfMissingHandler } from "./handlers/csrf-missing-handler.js";
 import { channelMiddleware } from "./middleware/channel-middleware.js";
 import { applyOverloadProtection } from "./middleware/overload-protection-middleware.js";
@@ -277,9 +272,7 @@ async function createApp(): Promise<express.Application> {
 
   // Use in-memory sessions when running locally
   const sessionStore =
-    getAppEnv() === APP_ENV_NAME.LOCAL
-      ? undefined
-      : getSessionStore(await getRedisConfig());
+    getAppEnv() === APP_ENV_NAME.LOCAL ? undefined : getSessionStore();
 
   app.use(
     session({
@@ -366,8 +359,6 @@ async function startServer(app: Application): Promise<{
   });
 
   const closeServer = async () => {
-    await disconnectRedisClient();
-    logger.info(`redis client disconnected`);
     if (stopVitalSigns) {
       stopVitalSigns();
       logger.info(`vital-signs stopped`);

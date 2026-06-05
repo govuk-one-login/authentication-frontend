@@ -56,14 +56,10 @@ describe("app", () => {
 
     it("should close server properly", async () => {
       const fakeFrontendVitalSignsInit = sinon.fake();
-      const fakeDisconnectRedisClient = sinon.fake();
 
       const { startServer } = await esmock("../../src/app.js", {
         "@govuk-one-login/frontend-vital-signs": {
           frontendVitalSignsInit: fakeFrontendVitalSignsInit,
-        },
-        "../../src/config/session.js": {
-          disconnectRedisClient: fakeDisconnectRedisClient,
         },
       });
 
@@ -72,7 +68,6 @@ describe("app", () => {
 
       await closeServer();
 
-      expect(fakeDisconnectRedisClient).to.be.callCount(1);
       expect(fakeFrontendVitalSignsInit).to.be.callCount(1);
     });
   });
