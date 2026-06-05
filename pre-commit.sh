@@ -27,6 +27,6 @@ pre-commit run --all-files
 
 npm run test:unit
 
-REDIS_PORT=6379 REDIS_HOST=localhost npm run test:integration
+npm run test:integration
 
 ./shutdown.sh

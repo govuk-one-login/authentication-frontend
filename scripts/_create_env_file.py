@@ -95,13 +95,6 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
         },
     },
     {
-        "header": "Redis configuration",
-        "variables": {
-            "REDIS_HOST": {"value": "localhost", "comment": "Redis host"},
-            "REDIS_PORT": {"value": 6379, "comment": "Redis port"},
-        },
-    },
-    {
         "header": "Docker ports",
         "variables": {
             "DOCKER_FRONTEND_PORT": {

@@ -13,7 +13,7 @@ function usage() {
   echo "  -c: Clean dist and node_modules" >&2
   echo "  -l: Start frontend natively (not in docker)" >&2
   echo "  -L: Start frontend natively (not in docker) with local running backend" >&2
-  echo "  -x: Only start dependencies (redis, stubs)" >&2
+  echo "  -x: Only start dependencies (stubs)" >&2
   exit 1
 }
 
@@ -91,9 +91,6 @@ git config blame.ignoreRevsFile .git-blame-ignore-revs
 if [ "${ACTION_LOCAL:-0}" == "1" ]; then
   echo "Starting frontend local service..."
   docker compose -f docker-compose.yml up --build -d --wait
-  export REDIS_PORT=${REDIS_PORT:-6379}
-  export REDIS_HOST=localhost
-  echo "Redis listening on redis://localhost:${REDIS_PORT:-6379}"
   if [ "${ACTION_DEPS_ONLY:-0}" == "0" ]; then
     export PORT="${DOCKER_FRONTEND_PORT:-3000}"
     if [ "$(npm config get ignore-scripts)" = "false" ]; then
@@ -129,7 +126,6 @@ elif [ "${ACTION_FULL_LOCAL:-0}" == "1" ]; then
 else
   echo "Starting frontend service..."
   docker compose -f docker-compose.yml -f docker-compose.frontend.yml up -d --wait --build
-  echo "Redis listening on redis://localhost:${REDIS_PORT:-6379}"
   echo "Frontend listening on http://localhost:${DOCKER_FRONTEND_PORT:-3000}"
   echo "Frontend nodemon listening on localhost:${DOCKER_FRONTEND_NODEMON_PORT:-9230}"
   docker compose -f docker-compose.yml -f docker-compose.frontend.yml logs -f
