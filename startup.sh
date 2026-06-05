@@ -62,6 +62,30 @@ if [ "${ACTION_CLEAN:-0}" == "1" ]; then
   rm -rf logs
 fi
 
+# Check Docker daemon is running, attempt to start if not
+if ! docker info >/dev/null 2>&1; then
+  echo "Docker daemon is not running. Attempting to start Docker Desktop..."
+  open -a Docker
+
+  DOCKER_STARTUP_TIMEOUT=60
+  DOCKER_POLL_INTERVAL=3
+  echo "Waiting for Docker to start..."
+  elapsed=0
+
+  while ! docker info >/dev/null 2>&1; do
+    # Poll every ${DOCKER_POLL_INTERVAL}s to avoid hammering the CPU while waiting for daemon
+    sleep $DOCKER_POLL_INTERVAL
+    elapsed=$((elapsed + DOCKER_POLL_INTERVAL))
+
+    if [ $elapsed -ge $DOCKER_STARTUP_TIMEOUT ]; then
+      echo "Error: Docker failed to start within ${DOCKER_STARTUP_TIMEOUT}s" >&2
+      exit 1
+    fi
+  done
+
+  echo "Docker is now running."
+fi
+
 "${DIR}"/shutdown.sh
 
 if [ "${ACTION_FULL_LOCAL:-0}" == "1" ]; then
