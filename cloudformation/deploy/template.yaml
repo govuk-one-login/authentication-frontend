@@ -506,7 +506,6 @@ Mappings:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1P2vcnCdqx+MDwMTrJy47tV5ryTf
         kRaZYTpLsfCpC79ZgKSYEBcguuOUP4DvJpyHomBEnxeUs7s5KRgyMQjY4g==
         -----END PUBLIC KEY-----
-      redisNodeSize: cache.t2.small
       IsSplunkEnabled: "No"
       SupportHTTPKeepAlive: "No"
       migratedDomain: signin.dev.account.gov.uk
@@ -537,7 +536,6 @@ Mappings:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmzWAucozlF6eykmgikXj2kI03O7V
         WwuA51+3Ak+stF2dddC60WXEKhrFumKBUnE5GhJNg4v0iN948Mwl+vz5Xw==
         -----END PUBLIC KEY-----
-      redisNodeSize: cache.t2.small
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
       migratedDomain: signin.build.account.gov.uk
@@ -573,7 +571,6 @@ Mappings:
       codeRequestBlockedMinutes: 120
       passwordResetCodeEnteredWrongBlockedMinutes: 120
       reducedCodeBlockDurationMinutes: 15
-      redisNodeSize: cache.m4.xlarge
       GA4Enabled: "true"
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "Yes"
@@ -606,7 +603,6 @@ Mappings:
       codeRequestBlockedMinutes: 120
       passwordResetCodeEnteredWrongBlockedMinutes: 120
       reducedCodeBlockDurationMinutes: 15
-      redisNodeSize: cache.t2.small
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
       migratedDomain: signin.integration.account.gov.uk
@@ -638,7 +634,6 @@ Mappings:
       codeRequestBlockedMinutes: 120
       passwordResetCodeEnteredWrongBlockedMinutes: 120
       reducedCodeBlockDurationMinutes: 15
-      redisNodeSize: cache.m4.xlarge
       GA4Enabled: "true"
       googleAnalytics4GTMContainerId: "GTM-K4PBJH3"
       IsSplunkEnabled: "Yes"
