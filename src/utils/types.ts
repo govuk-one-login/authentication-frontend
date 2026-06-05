@@ -20,10 +20,3 @@ interface RequesterAnonymous {
   name?: string;
   email?: string;
 }
-
-export interface RedisConfig {
-  host: string;
-  port: number;
-  password?: string;
-  tls?: boolean;
-}

@@ -97,12 +97,7 @@ describe("app", () => {
   });
 
   describe("applyOverloadProtection", () => {
-    beforeEach(async () => {
-      process.env.REDIS_KEY = "redis-key";
-    });
-
     afterEach(() => {
-      delete process.env.REDIS_KEY;
       delete process.env.APP_ENV;
     });
 
