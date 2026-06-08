@@ -371,6 +371,16 @@
       "paragraph3": "This will be however you unlock your phone, computer or tablet.",
       "signInAnotherWayLinkText": "Sign in another way"
     },
+    "cannotSignInPasskey": {
+      "title": "We could not sign you in",
+      "radios":  {
+        "header": "What would you like to do?",
+        "retryPasskeyOption": "Try signing in with your passkey again",
+        "signInWithPasswordMfaOption": "Sign in with your password and a security code",
+        "signInWithPasswordOption":  "Sign in with your password",
+        "validationError": "Select what you would like to do"
+      }
+    },
     "enterPassword": {
       "title": "Enter your password",
       "header": "Enter your password",

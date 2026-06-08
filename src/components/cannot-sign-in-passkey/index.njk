@@ -1,0 +1,52 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set pageTitleName = 'We could not sign you in'  %}
+
+{% block content %}
+  {% include "common/errors/errorSummary.njk" %}
+
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
+    {{ 'pages.cannotSignInPasskey.title' | translate }}
+  </h1>
+
+  <form method="post" id="cannotSignInPasskeyForm">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+    {{ govukRadios({
+      name: "cannot-sign-in-passkey-action",
+      attributes: {
+        "id": "cannot-sign-in-passkey-action"
+      },
+      fieldset: {
+        legend: {
+          text: 'pages.cannotSignInPasskey.radios.header' | translate,
+          classes: "govuk-fieldset__legend--m"
+        }
+      },
+      items: [
+        {
+          value: "retry-passkey",
+          text: 'pages.cannotSignInPasskey.radios.retryPasskeyOption' | translate,
+          id: "retry-passkey"
+        },
+        {
+          value: "sign-in-with-password",
+          text: ( 'pages.cannotSignInPasskey.radios.signInWithPasswordMfaOption' if is2FAJourney else 'pages.cannotSignInPasskey.radios.signInWithPasswordOption' ) | translate,
+          id: "sign-in-with-password"
+        }
+      ],
+      errorMessage: {
+        text: errors['cannot-sign-in-passkey-action'].text | translate
+      } if (errors['cannot-sign-in-passkey-action'])
+    }) }}
+
+    {{ govukButton({
+      "text": "general.continue.label" | translate,
+      "type": "Submit",
+      "preventDoubleClick": true
+    }) }}
+  </form>
+{% endblock %}

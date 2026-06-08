@@ -20,36 +20,30 @@ The browser only allows passkey creation from the correct origin, so you must tr
 
 ## Configuration
 
-Edit the variables at the top of `generate_webauthn_script.py`:
+Create a `.env` file in this directory (`scripts/generate_webauthn/.env`) with the following variables:
+
+```env
+ENV_NAME="Local running"
+ENV_URL="localhost"
+USER_PUB_SUB_ID="your-public-subject-id"
+USER_EMAIL="your.email@digital.cabinet-office.gov.uk"
+CHALLENGE="any-base64url-encoded-random-value"
+```
 
 | Variable          | Description                                                    |
 | ----------------- | -------------------------------------------------------------- |
 | `ENV_NAME`        | Display name for the environment (e.g. `"Dev"`)                |
-| `ENV_URL`         | Subdomain prefix (e.g. `"dev"` for `dev.account.gov.uk`)       |
+| `ENV_URL`         | Domain for the environment (e.g. `"dev.account.gov.uk"`)       |
 | `USER_PUB_SUB_ID` | The user's public subject ID, found in the user profile table  |
 | `USER_EMAIL`      | The user's email address                                       |
 | `CHALLENGE`       | A Base64URL-encoded challenge string (can be any random value) |
-
-You can use the following `ENV_URL` for the corresponding environments.
-
-| Env           | Env URL                       |
-| ------------- | ----------------------------- |
-| `local`       | `localhost`                   |
-| `dev`         | `dev.account.gov.uk`          |
-| `authdev1`    | `authdev1.dev.account.gov.uk` |
-| `authdev2`    | `authdev2.dev.account.gov.uk` |
-| `authdev3`    | `authdev3.dev.account.gov.uk` |
-| `build`       | `build.account.gov.uk`        |
-| `staging`     | `staging.account.gov.uk`      |
-| `integration` | `integration.account.gov.uk`  |
-| `production`  | `account.gov.uk`              |
 
 ## Usage
 
 1. **Run the script locally** to generate the JavaScript snippet:
 
    ```bash
-   python generate_webauthn_script.py | pbcopy
+   python3 generate_webauthn_script.py | pbcopy
    ```
 
 2. **Open your browser** to a page on the target domain (e.g. `https://dev.account.gov.uk/sign-in-or-create`).

@@ -147,7 +147,7 @@ describe("sign in with passkey controller", () => {
       );
     });
 
-    it("should throw an error when the finish service returns unsuccessful", async () => {
+    it("should redirect to cannot sign in passkey when the finish service returns unsuccessful", async () => {
       const fakeFinishSignInService = {
         finishPasskeyAssertion: sinon.fake.returns({
           success: false,
@@ -155,16 +155,33 @@ describe("sign in with passkey controller", () => {
         }),
       } as unknown as SignInWithPasskeyInterface;
 
-      await assert.rejects(
-        async () =>
-          signInWithPasskeyPost(fakeFinishSignInService)(
-            req as Request,
-            res as Response
-          ),
-        Error,
-        "FinishPasskeyAssertionError: Session expired"
+      await signInWithPasskeyPost(fakeFinishSignInService)(
+        req as Request,
+        res as Response
       );
-      expect(res.redirect).to.not.have.been.called;
+
+      expect(res.redirect).to.have.been.calledWith(
+        PATH_NAMES.CANNOT_SIGN_IN_PASSKEY
+      );
+    });
+
+    it("should redirect to cannot sign in passkey when authenticationError is present", async () => {
+      req.body.authenticationError = "NotAllowedError";
+
+      const fakeFinishSignInService = {
+        finishPasskeyAssertion: sinon.fake(),
+      } as unknown as SignInWithPasskeyInterface;
+
+      await signInWithPasskeyPost(fakeFinishSignInService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.been.calledWith(
+        PATH_NAMES.CANNOT_SIGN_IN_PASSKEY
+      );
+      expect(fakeFinishSignInService.finishPasskeyAssertion).to.not.have.been
+        .called;
     });
   });
 });

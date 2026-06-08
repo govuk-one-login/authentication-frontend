@@ -77,7 +77,9 @@ const USER_JOURNEY_EVENTS = {
   CREATE_PASSKEY_SKIPPED: "CREATE_PASSKEY_SKIPPED",
   CREATE_PASSKEY_BACK: "CREATE_PASSKEY_BACK",
   PASSKEY_CREATED: "PASSKEY_CREATED",
-  PASSKEY_VALIDATED: "PASSKEY_VALIDATED",
+  PASSKEY_AUTHENTICATION_FAILED: "PASSKEY_AUTHENTICATION_FAILED",
+  PASSKEY_VERIFICATION_SUCCESSFUL: "PASSKEY_VERIFICATION_SUCCESSFUL",
+  PASSKEY_VERIFICATION_FAILED: "PASSKEY_VERIFICATION_FAILED",
   SIGN_IN_WITH_PASSKEY: "SIGN_IN_WITH_PASSKEY",
 };
 
@@ -346,7 +348,17 @@ const authStateMachine = createMachine<AuthStateContext>(
       },
       [PATH_NAMES.SIGN_IN_WITH_PASSKEY]: {
         on: {
-          [USER_JOURNEY_EVENTS.PASSKEY_VALIDATED]: [
+          [USER_JOURNEY_EVENTS.PASSKEY_AUTHENTICATION_FAILED]: [
+            {
+              target: [PATH_NAMES.CANNOT_SIGN_IN_PASSKEY],
+            },
+          ],
+          [USER_JOURNEY_EVENTS.PASSKEY_VERIFICATION_FAILED]: [
+            {
+              target: [PATH_NAMES.CANNOT_SIGN_IN_PASSKEY],
+            },
+          ],
+          [USER_JOURNEY_EVENTS.PASSKEY_VERIFICATION_SUCCESSFUL]: [
             {
               target: [INTERMEDIATE_STATES.SIGN_IN_END],
             },
@@ -355,6 +367,9 @@ const authStateMachine = createMachine<AuthStateContext>(
         meta: {
           optionalPaths: [PATH_NAMES.ENTER_PASSWORD],
         },
+      },
+      [PATH_NAMES.CANNOT_SIGN_IN_PASSKEY]: {
+        type: "final",
       },
       [PATH_NAMES.ENTER_PASSWORD]: {
         on: {

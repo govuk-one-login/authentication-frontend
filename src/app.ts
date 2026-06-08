@@ -117,6 +117,7 @@ import { sessionEndedRouter } from "./components/session-ended/session-ended-rou
 import { passkeyCreatedRouter } from "./components/passkey-created/passkey-created-routes.js";
 import { setGoBackHistoryMiddleware } from "./middleware/set-go-back-history-middleware.js";
 import { accountExistsWithPasskeyRouter } from "./components/account-exists-with-passkey/account-exists-with-passkey-routes.js";
+import { cannotSignInPasskeyRouter } from "./components/cannot-sign-in-passkey/cannot-sign-in-passkey-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -129,7 +130,6 @@ const APP_VIEWS = [
 function registerRoutes(app: express.Application) {
   app.use(landingRouter);
   app.use(signInOrCreateRouter);
-  app.use(signInWithPasskeyRouter);
   app.use(enterEmailRouter);
   app.use(accountNotFoundRouter);
   app.use(enterPasswordRouter);
@@ -189,7 +189,9 @@ function registerRoutes(app: express.Application) {
     app.use(passkeyCreatedRouter);
   }
   if (supportPasskeyUsage()) {
+    app.use(signInWithPasskeyRouter);
     app.use(accountExistsWithPasskeyRouter);
+    app.use(cannotSignInPasskeyRouter);
   }
 
   // Development tools
