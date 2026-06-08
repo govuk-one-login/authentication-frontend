@@ -176,9 +176,9 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-alb"
-        - key: FMSRegionalPolicy
+        - Key: FMSRegionalPolicy
           Value: "false"
-        - key: CustomPolicy
+        - Key: CustomPolicy
           Value: "authenticationfrontend"
 
   # Target Group for Private API
