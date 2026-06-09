@@ -54,7 +54,7 @@ docker compose up
 
 ### Starting the frontend in node locally outside of Docker
 
-In this case supporting services (redis and stubs) run in Docker but the frontend itself runs outside. Development can be quicker and more responsive if done in this way.
+In this case supporting services (stubs) run in Docker but the frontend itself runs outside. Development can be quicker and more responsive if done in this way.
 
 The startup script will do this for you so just run this command:
 
@@ -275,7 +275,7 @@ In both cases frontend must have started successfully with the message 'Server l
 > To run the integration tests
 
 ```shell script
-REDIS_PORT=6379 REDIS_HOST=localhost npm run test:integration
+npm run test:integration
 ```
 
 #### Running integration tests in IntelliJ

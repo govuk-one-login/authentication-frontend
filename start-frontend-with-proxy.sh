@@ -55,8 +55,8 @@ if lsof -ti :$FRONTEND_PORT >/dev/null 2>&1; then
 fi
 
 # Start dependencies with Docker
-echo "Starting dependencies (Redis, stubs)..."
-docker compose -f docker-compose-proxy.yml up --build -d --wait redis di-auth-stub-orchstub service-down-page
+echo "Starting dependencies (stubs)..."
+docker compose -f docker-compose-proxy.yml up --build -d --wait di-auth-stub-orchstub service-down-page
 
 # Install dependencies and start frontend
 echo " Installing dependencies..."
@@ -74,7 +74,6 @@ npm run test:dev-evironment-variables && npm run copy-assets
 echo "Starting frontend on http://localhost:${DOCKER_FRONTEND_PORT:-3000}"
 echo ""
 echo "Dependencies running:"
-echo "  - Redis: localhost:${REDIS_PORT:-6379}"
 echo "  - Orch stub: http://localhost:${DOCKER_STUB_ORCHSTUB_PORT:-3002}"
 echo ""
 

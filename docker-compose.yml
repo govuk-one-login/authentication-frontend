@@ -1,13 +1,6 @@
 x-stub-image-name: &stub-image-name di-authentication-frontend/di-auth-stub-orchstub:latest
 
 services:
-  redis:
-    image: redis:6.0.5-alpine
-    ports:
-      - "${REDIS_PORT:-6379}:6379"
-    networks:
-      - di-net
-
   di-auth-stub-orchstub:
     image: *stub-image-name
     pull_policy: never

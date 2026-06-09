@@ -211,18 +211,6 @@ export function supportSingleFactorAccountDeletion(): boolean {
   return process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION === "1";
 }
 
-export function getSessionDualWriteEnabled(): boolean {
-  return process.env.SESSION_DUAL_WRITE_ENABLED === "1";
-}
-
-export function getSessionDynamoPrimaryEnabled(): boolean {
-  return process.env.SESSION_DYNAMO_PRIMARY_ENABLED === "1";
-}
-
-export function getSessionDynamoExclusiveEnabled(): boolean {
-  return process.env.SESSION_DYNAMO_EXCLUSIVE_ENABLED === "1";
-}
-
 export function getAuthJwksUrl(): string {
   return `${getApiBaseUrl()}/.well-known/auth-jwks.json`;
 }
