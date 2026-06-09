@@ -1,21 +1,19 @@
-import type { Http } from "../../utils/http.js";
+import type { Http } from "../../../utils/http.js";
 import {
   createApiResponse,
   getInternalRequestConfigWithSecurityHeaders,
   http,
-} from "../../utils/http.js";
+} from "../../../utils/http.js";
 import type {
-  SignInWithPasskeyInterface,
+  PasskeyServiceInterface,
   StartPasskeyAssertionResponse,
 } from "./types.js";
-import type { ApiResponseResult, DefaultApiResponse } from "../../types.js";
-import { API_ENDPOINTS } from "../../app.constants.js";
+import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
+import { API_ENDPOINTS } from "../../../app.constants.js";
 import type { Request } from "express";
 import type { AuthenticationResponseJSON } from "@simplewebauthn/browser";
 
-export function signInWithPasskeyService(
-  axios: Http = http
-): SignInWithPasskeyInterface {
+export function passkeyService(axios: Http = http): PasskeyServiceInterface {
   const startPasskeyAssertion = async function (
     sessionId: string,
     clientSessionId: string,
