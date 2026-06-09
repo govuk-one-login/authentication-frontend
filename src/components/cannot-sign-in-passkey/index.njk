@@ -12,8 +12,10 @@
     {{ 'pages.cannotSignInPasskey.title' | translate }}
   </h1>
 
-  <form method="post" id="cannotSignInPasskeyForm">
+  <form method="post" id="cannotSignInPasskeyForm" data-authentication-options="{{ authenticationOptions }}">
     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+    <input type="hidden" name="authenticationResponse" value='"' />
+    <input type="hidden" name="authenticationError" value="JavaScriptNotEnabled" />
 
     {{ govukRadios({
       name: "cannot-sign-in-passkey-action",

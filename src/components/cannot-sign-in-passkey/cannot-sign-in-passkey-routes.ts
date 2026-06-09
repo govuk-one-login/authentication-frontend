@@ -11,7 +11,7 @@ router.get(
   PATH_NAMES.CANNOT_SIGN_IN_PASSKEY,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  cannotSignInPasskeyGet
+  cannotSignInPasskeyGet()
 );
 
 router.post(
