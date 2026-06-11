@@ -369,7 +369,13 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
       },
       [PATH_NAMES.CANNOT_SIGN_IN_PASSKEY]: {
-        type: "final",
+        on: {
+          [USER_JOURNEY_EVENTS.PASSKEY_VERIFICATION_SUCCESSFUL]: [
+            {
+              target: [INTERMEDIATE_STATES.SIGN_IN_END],
+            },
+          ],
+        },
       },
       [PATH_NAMES.ENTER_PASSWORD]: {
         on: {

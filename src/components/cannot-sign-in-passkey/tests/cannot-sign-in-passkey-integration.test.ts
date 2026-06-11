@@ -1,15 +1,18 @@
 import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils.js";
 import request from "supertest";
-import { PATH_NAMES } from "../../../app.constants.js";
+import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 import * as cheerio from "cheerio";
+import nock from "nock";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 
 describe("Integration:: cannot sign in passkey", () => {
   let app: any;
+  let baseApi: string;
 
   before(async () => {
     process.env.SUPPORT_PASSKEY_USAGE = "1";
@@ -24,6 +27,11 @@ describe("Integration:: cannot sign in passkey", () => {
             res: Response,
             next: NextFunction
           ): void {
+            res.locals.sessionId = commonVariables.sessionId;
+            res.locals.clientSessionId = commonVariables.clientSessionId;
+            res.locals.persistentSessionId =
+              commonVariables.diPersistentSessionId;
+
             req.session.user = {
               journey: getPermittedJourneyForPath(
                 PATH_NAMES.CANNOT_SIGN_IN_PASSKEY
@@ -36,7 +44,13 @@ describe("Integration:: cannot sign in passkey", () => {
       }
     );
 
+    baseApi = process.env.FRONTEND_API_BASE_URL as string;
+
     app = await createApp();
+  });
+
+  beforeEach(() => {
+    nock.cleanAll();
   });
 
   after(() => {
@@ -46,40 +60,115 @@ describe("Integration:: cannot sign in passkey", () => {
 
   describe("GET /cannot-sign-in-passkey", () => {
     it("should return the cannot sign in passkey page", async () => {
-      await request(app).get(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY).expect(200);
+      const startPasskeyAssertionResponse = {
+        publicKey: {
+          challenge: "challenge",
+          rpId: "localhost",
+          allowCredentials: [{ type: "public-key", id: "credential-id-123" }],
+          timeout: 60000,
+          userVerification: "preferred",
+        },
+      };
+      nock(baseApi)
+        .post(API_ENDPOINTS.START_PASSKEY_ASSERTION)
+        .once()
+        .reply(200, startPasskeyAssertionResponse);
+
+      const res = await request(app)
+        .get(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
+        .expect(200);
+      const $ = cheerio.load(res.text);
+      const options = $("#cannotSignInPasskeyForm").attr(
+        "data-authentication-options"
+      );
+      expect(options).to.equal(
+        JSON.stringify(startPasskeyAssertionResponse.publicKey)
+      );
     });
   });
 
   describe("POST /cannot-sign-in-passkey", () => {
-    it("should return error when csrf not present", async () => {
-      await request(app)
-        .post(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
-        .type("form")
-        .send({
-          "cannot-sign-in-passkey-action": "retry-passkey",
-        })
-        .expect(403);
+    const SUCCESSFUL_ASSERTION_RESPONSE = JSON.stringify({
+      id: "credential-id",
+      rawId: "credential-id",
+      response: {
+        authenticatorData: "base64data",
+        clientDataJSON: "base64data",
+        signature: "base64sig",
+      },
+      type: "public-key",
+      authenticatorAttachment: "platform",
     });
 
-    it("should return a validation error when no option is selected", async () => {
-      const { token, cookies } = extractCsrfTokenAndCookies(
-        await request(app).get(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
-      );
+    let token: string;
+    let cookies: string;
+    before(async () => {
+      nock(baseApi)
+        .post(API_ENDPOINTS.START_PASSKEY_ASSERTION)
+        .once()
+        .reply(200, { challenge: "test", rpId: "localhost" });
 
-      await request(app)
-        .post(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-        })
-        .expect(function (res) {
-          const $ = cheerio.load(res.text);
-          expect($("#cannot-sign-in-passkey-action-error").text()).to.contains(
-            "Select what you would like to do"
-          );
-        })
-        .expect(400);
+      ({ token, cookies } = extractCsrfTokenAndCookies(
+        await request(app).get(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
+      ));
+    });
+
+    describe("success", () => {
+      it("should redirect to auth-code when passkey successfully retried", async () => {
+        nock(baseApi)
+          .post(API_ENDPOINTS.FINISH_PASSKEY_ASSERTION)
+          .once()
+          .reply(200, { message: "success", code: 0 });
+
+        await request(app)
+          .post(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            authenticationResponse: SUCCESSFUL_ASSERTION_RESPONSE,
+            "cannot-sign-in-passkey-action": "retry-passkey",
+          })
+          .expect(302)
+          .expect("Location", PATH_NAMES.AUTH_CODE);
+      });
+    });
+
+    describe("failure", () => {
+      it("should return error when csrf not present", async () => {
+        nock(baseApi)
+          .post(API_ENDPOINTS.FINISH_PASSKEY_ASSERTION)
+          .once()
+          .reply(200, { message: "success", code: 0 });
+
+        await request(app)
+          .post(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            authenticationResponse: SUCCESSFUL_ASSERTION_RESPONSE,
+            "cannot-sign-in-passkey-action": "retry-passkey",
+          })
+          .expect(403);
+      });
+
+      it("should return a validation error when no option is selected", async () => {
+        await request(app)
+          .post(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            authenticationResponse: SUCCESSFUL_ASSERTION_RESPONSE,
+          })
+          .expect(function (res) {
+            const $ = cheerio.load(res.text);
+            expect(
+              $("#cannot-sign-in-passkey-action-error").text()
+            ).to.contains("Select what you would like to do");
+          })
+          .expect(400);
+      });
     });
   });
 });
