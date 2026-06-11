@@ -6,6 +6,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --ignore-scripts
 
 COPY . .
+RUN chown -R pwuser:pwuser /app
 
 USER pwuser
 
