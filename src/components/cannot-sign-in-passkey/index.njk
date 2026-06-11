@@ -52,3 +52,44 @@
     }) }}
   </form>
 {% endblock %}
+
+{% block scripts %}
+  <script {% if scriptNonce %} nonce="{{ scriptNonce }}"{%  endif %}>
+    const cannotSignInPasskeyForm = document.getElementById("cannotSignInPasskeyForm");
+    let isSubmitting = false
+
+    async function triggerWebAuthnFlow() {
+      try {
+        if (SimpleWebAuthnBrowser.browserSupportsWebAuthn()) {
+          const authenticationResponse = await SimpleWebAuthnBrowser.startAuthentication({ optionsJSON: JSON.parse(cannotSignInPasskeyForm.dataset.authenticationOptions) });
+          cannotSignInPasskeyForm.querySelector("input[name=\"authenticationResponse\"]").value = JSON.stringify(authenticationResponse);
+
+          const authenticationErrorField = cannotSignInPasskeyForm.querySelector("input[name=\"authenticationError\"]");
+          authenticationErrorField.parentNode.removeChild(authenticationErrorField);
+        }
+      } catch (error) {
+        console.error(error.message);
+        cannotSignInPasskeyForm.querySelector("input[name=\"authenticationError\"]").value = `${error.name} - ${error.message}`;
+      }
+    }
+
+    async function handleSubmit(event) {
+      event.preventDefault();
+
+      if (isSubmitting) return
+      isSubmitting = true
+
+      const selectedOption = document.querySelector('input[name="cannot-sign-in-passkey-action"]:checked')?.value;
+
+      if (selectedOption === "retry-passkey") {
+        await triggerWebAuthnFlow();
+      }
+
+      cannotSignInPasskeyForm.submit();
+    }
+
+    cannotSignInPasskeyForm.addEventListener('submit', handleSubmit);
+
+  </script>
+  <script defer type="text/javascript" src="/public/scripts/prevent-double-form-submit.js"></script>
+{% endblock %}
