@@ -27,6 +27,5 @@ services:
     volumes:
       - ./src:/app/src
       - ./test:/app/test
-      - ./test-results:/app/test-results
     command: npx playwright test ${COMMAND:-}
     network_mode: "host"
