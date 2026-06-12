@@ -126,7 +126,7 @@
     "c8": "11.0.0",
     "chai": "6.2.2",
     "cheerio": "1.2.0",
-    "concurrently": "9.2.1",
+    "concurrently": "10.0.3",
     "dotenv": "17.4.1",
     "eslint": "9.39.2",
     "eslint-plugin-no-only-tests": "3.4.0",
