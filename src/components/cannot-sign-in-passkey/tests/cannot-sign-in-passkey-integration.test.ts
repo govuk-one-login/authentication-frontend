@@ -88,18 +88,6 @@ describe("Integration:: cannot sign in passkey", () => {
   });
 
   describe("POST /cannot-sign-in-passkey", () => {
-    const SUCCESSFUL_ASSERTION_RESPONSE = JSON.stringify({
-      id: "credential-id",
-      rawId: "credential-id",
-      response: {
-        authenticatorData: "base64data",
-        clientDataJSON: "base64data",
-        signature: "base64sig",
-      },
-      type: "public-key",
-      authenticatorAttachment: "platform",
-    });
-
     let token: string;
     let cookies: string;
     before(async () => {
@@ -126,7 +114,7 @@ describe("Integration:: cannot sign in passkey", () => {
           .set("Cookie", cookies)
           .send({
             _csrf: token,
-            authenticationResponse: SUCCESSFUL_ASSERTION_RESPONSE,
+            authenticationResponse: commonVariables.passkeyAssertionResponse,
             "cannot-sign-in-passkey-action": "retry-passkey",
           })
           .expect(302)
@@ -146,7 +134,7 @@ describe("Integration:: cannot sign in passkey", () => {
           .type("form")
           .set("Cookie", cookies)
           .send({
-            authenticationResponse: SUCCESSFUL_ASSERTION_RESPONSE,
+            authenticationResponse: commonVariables.passkeyAssertionResponse,
             "cannot-sign-in-passkey-action": "retry-passkey",
           })
           .expect(403);
@@ -159,7 +147,7 @@ describe("Integration:: cannot sign in passkey", () => {
           .set("Cookie", cookies)
           .send({
             _csrf: token,
-            authenticationResponse: SUCCESSFUL_ASSERTION_RESPONSE,
+            authenticationResponse: commonVariables.passkeyAssertionResponse,
           })
           .expect(function (res) {
             const $ = cheerio.load(res.text);

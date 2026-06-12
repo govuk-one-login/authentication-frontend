@@ -10,4 +10,15 @@ export const commonVariables = {
     "R21vLmd3QilNKHJsaGkvTFxhZDZrKF44SStoLFsieG0oSUY3aEhWRVtOMFRNMVw1dyInKzB8OVV5N09hOi8kLmlLcWJjJGQiK1NPUEJPPHBrYWJHP358NDg2ZDVc",
   testPhoneNumber: "0123456789",
   testRedactedPhoneNumber: redactPhoneNumber("0123456789"),
+  passkeyAssertionResponse: JSON.stringify({
+    id: "credential-id",
+    rawId: "credential-id",
+    response: {
+      authenticatorData: "base64data",
+      clientDataJSON: "base64data",
+      signature: "base64sig",
+    },
+    type: "public-key",
+    authenticatorAttachment: "platform",
+  }),
 };
