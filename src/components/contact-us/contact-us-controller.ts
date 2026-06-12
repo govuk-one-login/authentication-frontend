@@ -24,104 +24,11 @@ import {
   getTitleKeyFromTheme,
 } from "./structure/contact-us-structure-utils.js";
 import { CONTACT_FORM_STRUCTURE } from "./structure/contact-us-structure.js";
-const themeToPageTitle = {
-  [CONTACT_US_THEMES.ACCOUNT_NOT_FOUND]:
-    "pages.contactUsQuestions.accountNotFound.title",
-  [CONTACT_US_THEMES.TECHNICAL_ERROR]:
-    "pages.contactUsQuestions.technicalError.title",
-  [CONTACT_US_THEMES.NO_SECURITY_CODE]:
-    "pages.contactUsQuestions.noSecurityCode.title",
-  [CONTACT_US_THEMES.INVALID_SECURITY_CODE]:
-    "pages.contactUsQuestions.invalidSecurityCode.title",
-  [CONTACT_US_THEMES.SIGN_IN_PHONE_NUMBER_ISSUE]:
-    "pages.contactUsQuestions.signInPhoneNumberIssue.title",
-  [CONTACT_US_THEMES.FORGOTTEN_PASSWORD]:
-    "pages.contactUsQuestions.forgottenPassword.title",
-  [CONTACT_US_THEMES.NO_PHONE_NUMBER_ACCESS]:
-    "pages.contactUsQuestions.noPhoneNumberAccess.title",
-  [CONTACT_US_THEMES.LOST_SECURITY_CODE_ACCESS]:
-    "pages.contactUsQuestions.noPhoneNumberAccess.titleMfaReset",
-  [CONTACT_US_THEMES.SUSPECT_UNAUTHORISED_ACCESS]:
-    "pages.contactUsQuestions.suspectUnauthorisedAccess.title",
-  [CONTACT_US_THEMES.SOMETHING_ELSE]:
-    "pages.contactUsQuestions.anotherProblem.title",
-  [CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK]:
-    "pages.contactUsQuestions.suggestionOrFeedback.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY]:
-    "pages.contactUsQuestions.provingIdentity.title",
-  [CONTACT_US_THEMES.AUTHENTICATOR_APP_PROBLEM]:
-    "pages.contactUsQuestions.authenticatorApp.title",
-  [CONTACT_US_THEMES.LINKING_PROBLEM]:
-    "pages.contactUsQuestions.linkingProblem.title",
-  [CONTACT_US_THEMES.ID_CHECK_APP_LINKING_PROBLEM]:
-    "pages.contactUsQuestions.idCheckAppLinkingProblem.title",
-  [CONTACT_US_THEMES.ONE_LOGIN_APP_SIGN_IN_PROBLEM]:
-    "pages.contactUsQuestions.oneLoginAppSignInProblem.title",
-  [CONTACT_US_THEMES.TAKING_PHOTO_OF_ID_PROBLEM]:
-    "pages.contactUsQuestions.takingPhotoOfIdProblem.title",
-  [CONTACT_US_THEMES.FACE_SCANNING_PROBLEM]:
-    "pages.contactUsQuestions.faceScanningProblem.title",
-  [CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
-    "pages.contactUsQuestions.idCheckAppTechnicalProblem.title",
-  [CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_TECHNICAL_ERROR]:
-    "pages.contactUsQuestions.govUKLoginAndIdAppsTechnicalProblem.title",
-  [CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
-    "pages.contactUsQuestions.idCheckAppSomethingElse.title",
-  [CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_SOMETHING_ELSE]:
-    "pages.contactUsQuestions.govUKLoginAndIdAppsSomethingElse.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_ENTERING_DETAILS]:
-    "pages.contactUsQuestions.provingIdentityFaceToFaceDetails.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_LETTER]:
-    "pages.contactUsQuestions.provingIdentityFaceToFaceLetter.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_AT_POST_OFFICE]:
-    "pages.contactUsQuestions.provingIdentityFaceToFacePostOffice.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_FINDING_RESULT]:
-    "pages.contactUsQuestions.provingIdentityFaceToFaceIdResults.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_PROBLEM_CONTINUING]:
-    "pages.contactUsQuestions.provingIdentityFaceToFaceService.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_TECHNICAL_PROBLEM]:
-    "pages.contactUsQuestions.provingIdentityFaceToFaceTechnicalProblem.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_FACE_TO_FACE_ANOTHER_PROBLEM]:
-    "pages.contactUsQuestions.provingIdentityFaceToFaceSomethingElse.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_ANSWERING_SECURITY_QUESTIONS]:
-    "pages.contactUsQuestions.provingIdentityProblemAnsweringSecurityQuestions.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_IDENTITY_DOCUMENT]:
-    "pages.contactUsQuestions.provingIdentityProblemWithIdentityDocument.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_BANK_BUILDING_SOCIETY_DETAILS]:
-    "pages.contactUsQuestions.provingIdentityProblemWithBankBuildingSocietyDetails.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_NEED_TO_UPDATE_PERSONAL_INFORMATION]:
-    "pages.contactUsQuestions.provingIdentityNeedToUpdatePersonalInformation.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_SOMETHING_ELSE]:
-    "pages.contactUsQuestions.provingIdentitySomethingElse.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_NATIONAL_INSURANCE_NUMBER]:
-    "pages.contactUsQuestions.provingIdentityProblemWithNationalInsuranceNumber.title",
-  [CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_ADDRESS]:
-    "pages.contactUsQuestions.provingIdentityProblemEnteringAddress.title",
-  [CONTACT_US_THEMES.WALLET_PROBLEM_OPENING_APP]:
-    "pages.contactUsQuestions.walletProblemOpeningApp.title",
-  [CONTACT_US_THEMES.WALLET_PROBLEM_ADDING_CREDENTIALS_DOCUMENT]:
-    "pages.contactUsQuestions.walletProblemAddingCredentialsDocument.title",
-  [CONTACT_US_THEMES.WALLET_PROBLEM_VIEWING_CREDENTIALS_DOCUMENT]:
-    "pages.contactUsQuestions.walletProblemViewingCredentialsDocument.title",
-  [CONTACT_US_THEMES.WALLET_TECHNICAL_PROBLEM]:
-    "pages.contactUsQuestions.walletTechnicalProblem.title",
-  [CONTACT_US_THEMES.WALLET_SOMETHING_ELSE]:
-    "pages.contactUsQuestions.walletSomethingElse.title",
-};
-
-const somethingElseSubThemeToPageTitle = {
-  [CONTACT_US_THEMES.ACCOUNT_CREATION]:
-    "pages.contactUsQuestions.accountCreation.title",
-  [CONTACT_US_THEMES.SIGNING_IN]: "pages.contactUsQuestions.signingIn.title",
-  [CONTACT_US_THEMES.ID_CHECK_APP_TECHNICAL_ERROR]:
-    "pages.contactUsQuestions.idCheckAppTechnicalProblem.title",
-  [CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_TECHNICAL_ERROR]:
-    "pages.contactUsQuestions.govUKLoginAndIdAppsTechnicalProblem.title",
-  [CONTACT_US_THEMES.ID_CHECK_APP_SOMETHING_ELSE]:
-    "pages.contactUsQuestions.idCheckAppSomethingElse.title",
-  [CONTACT_US_THEMES.GOV_UK_LOGIN_AND_ID_APPS_SOMETHING_ELSE]:
-    "pages.contactUsQuestions.govUKLoginAndIdAppsSomethingElse.title",
-};
+import {
+  themeToPageTitle,
+  somethingElseSubThemeToPageTitle,
+  ga4DataSetterContactUsQuestions,
+} from "../../utils/contentId.js";
 
 const serviceDomain = getServiceDomain();
 
@@ -400,6 +307,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
     radioButtons: getThemeRadioButtonsFromStructure(themeStructure.subThemes),
     title: getTitleKeyFromTheme(themeStructure),
     header: getHeaderKeyFromTheme(themeStructure),
+    contentId: getGA4DataVariablesContactUsQuestions(req).contentId,
     legend: getLegendKeyFromTheme(themeStructure),
   };
 
@@ -457,6 +365,24 @@ export function generatePageTitle(req: Request): string {
   return pageTitle;
 }
 
+export function getGA4DataVariablesContactUsQuestions(req: Request): {
+  contentId: string;
+} {
+  let theme: string;
+  if (!req.query.subtheme) {
+    theme = req.query.theme.toString() as string;
+  } else {
+    theme = (req.query.theme.toString() +
+      req.query.subtheme.toString()) as string;
+  }
+  const contentId =
+    ga4DataSetterContactUsQuestions[theme]?.contentId || "undefined";
+
+  return {
+    contentId,
+  };
+}
+
 export function contactUsQuestionsGet(req: Request, res: Response): void {
   const supportLinkURL = getSupportLinkUrl();
   // TODO - AUT-4118 - Fix this
@@ -481,6 +407,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     }),
     pageTitle: pageTitle,
     pageTitleHeading: pageTitle,
+    contentId: getGA4DataVariablesContactUsQuestions(req).contentId,
     contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
     contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
     appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
