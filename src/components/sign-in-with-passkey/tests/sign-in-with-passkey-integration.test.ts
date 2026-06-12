@@ -8,12 +8,15 @@ import esmock from "esmock";
 import nock from "nock";
 import * as cheerio from "cheerio";
 import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
+import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 
 describe("Integration:: sign in with passkey", () => {
   let app: any;
   let baseApi: string;
 
   before(async () => {
+    process.env.SUPPORT_PASSKEY_USAGE = "1";
+
     const { createApp } = await esmock(
       "../../../app.js",
       {},
@@ -24,9 +27,10 @@ describe("Integration:: sign in with passkey", () => {
             res: Response,
             next: NextFunction
           ): void {
-            res.locals.sessionId = "test-session-id";
-            res.locals.clientSessionId = "test-client-session-id";
-            res.locals.persistentSessionId = "test-persistent-session-id";
+            res.locals.sessionId = commonVariables.sessionId;
+            res.locals.clientSessionId = commonVariables.clientSessionId;
+            res.locals.persistentSessionId =
+              commonVariables.diPersistentSessionId;
 
             req.session.user = {
               journey: getPermittedJourneyForPath(
@@ -83,103 +87,87 @@ describe("Integration:: sign in with passkey", () => {
     });
   });
 
-  describe("POST /sign-in-passkey - success", () => {
-    it("should redirect on successful passkey finish assertion", async () => {
+  describe("POST /sign-in-passkey", () => {
+    let token: string;
+    let cookies: string;
+    before(async () => {
       nock(baseApi)
         .post(API_ENDPOINTS.START_PASSKEY_ASSERTION)
         .once()
         .reply(200, { challenge: "test", rpId: "localhost" });
 
-      const { token, cookies } = extractCsrfTokenAndCookies(
+      ({ token, cookies } = extractCsrfTokenAndCookies(
         await request(app).get(PATH_NAMES.SIGN_IN_WITH_PASSKEY)
-      );
-
-      nock(baseApi)
-        .post(API_ENDPOINTS.FINISH_PASSKEY_ASSERTION)
-        .once()
-        .reply(200, { message: "success", code: 0 });
-
-      await request(app)
-        .post(PATH_NAMES.SIGN_IN_WITH_PASSKEY)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          authenticationResponse: JSON.stringify({
-            id: "credential-id",
-            rawId: "credential-id",
-            response: {
-              authenticatorData: "base64data",
-              clientDataJSON: "base64data",
-              signature: "base64sig",
-            },
-            type: "public-key",
-            authenticatorAttachment: "platform",
-          }),
-        })
-        .expect(302)
-        .expect("Location", PATH_NAMES.AUTH_CODE);
-    });
-  });
-
-  describe("POST /sign-in-passkey - failure", () => {
-    it("should redirect to cannot sign in passkey when authenticationError is present", async () => {
-      nock(baseApi)
-        .post(API_ENDPOINTS.START_PASSKEY_ASSERTION)
-        .once()
-        .reply(200, { challenge: "test", rpId: "localhost" });
-
-      const { token, cookies } = extractCsrfTokenAndCookies(
-        await request(app).get(PATH_NAMES.SIGN_IN_WITH_PASSKEY)
-      );
-
-      await request(app)
-        .post(PATH_NAMES.SIGN_IN_WITH_PASSKEY)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          authenticationError: "NotAllowedError",
-        })
-        .expect(302)
-        .expect("Location", PATH_NAMES.CANNOT_SIGN_IN_PASSKEY);
+      ));
     });
 
-    it("should redirect to cannot sign in passkey when finish assertion fails", async () => {
-      nock(baseApi)
-        .post(API_ENDPOINTS.START_PASSKEY_ASSERTION)
-        .once()
-        .reply(200, { challenge: "test", rpId: "localhost" });
+    describe("success", () => {
+      it("should redirect on successful passkey finish assertion", async () => {
+        nock(baseApi)
+          .post(API_ENDPOINTS.FINISH_PASSKEY_ASSERTION)
+          .once()
+          .reply(200, { message: "success", code: 0 });
 
-      const { token, cookies } = extractCsrfTokenAndCookies(
-        await request(app).get(PATH_NAMES.SIGN_IN_WITH_PASSKEY)
-      );
+        await request(app)
+          .post(PATH_NAMES.SIGN_IN_WITH_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            authenticationResponse: commonVariables.passkeyAssertionResponse,
+          })
+          .expect(302)
+          .expect("Location", PATH_NAMES.AUTH_CODE);
+      });
+    });
 
-      nock(baseApi)
-        .post(API_ENDPOINTS.FINISH_PASSKEY_ASSERTION)
-        .once()
-        .reply(400, { message: "Assertion failed", code: 1000 });
+    describe("failure", () => {
+      it("should return error when csrf not present", async () => {
+        nock(baseApi)
+          .post(API_ENDPOINTS.FINISH_PASSKEY_ASSERTION)
+          .once()
+          .reply(200, { message: "success", code: 0 });
 
-      await request(app)
-        .post(PATH_NAMES.SIGN_IN_WITH_PASSKEY)
-        .type("form")
-        .set("Cookie", cookies)
-        .send({
-          _csrf: token,
-          authenticationResponse: JSON.stringify({
-            id: "credential-id",
-            rawId: "credential-id",
-            response: {
-              authenticatorData: "base64data",
-              clientDataJSON: "base64data",
-              signature: "base64sig",
-            },
-            type: "public-key",
-            authenticatorAttachment: "platform",
-          }),
-        })
-        .expect(302)
-        .expect("Location", PATH_NAMES.CANNOT_SIGN_IN_PASSKEY);
+        await request(app)
+          .post(PATH_NAMES.SIGN_IN_WITH_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            authenticationResponse: commonVariables.passkeyAssertionResponse,
+          })
+          .expect(403);
+      });
+
+      it("should redirect to cannot sign in passkey when authenticationError is present", async () => {
+        await request(app)
+          .post(PATH_NAMES.SIGN_IN_WITH_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            authenticationError: "NotAllowedError",
+          })
+          .expect(302)
+          .expect("Location", PATH_NAMES.CANNOT_SIGN_IN_PASSKEY);
+      });
+
+      it("should redirect to cannot sign in passkey when finish assertion fails", async () => {
+        nock(baseApi)
+          .post(API_ENDPOINTS.FINISH_PASSKEY_ASSERTION)
+          .once()
+          .reply(400, { message: "Assertion failed", code: 1000 });
+
+        await request(app)
+          .post(PATH_NAMES.SIGN_IN_WITH_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            authenticationResponse: commonVariables.passkeyAssertionResponse,
+          })
+          .expect(302)
+          .expect("Location", PATH_NAMES.CANNOT_SIGN_IN_PASSKEY);
+      });
     });
   });
 });

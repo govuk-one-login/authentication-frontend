@@ -1,27 +1,23 @@
 import { describe } from "mocha";
 import { expect } from "chai";
-import { Http } from "../../../utils/http.js";
-import { sinon } from "../../../../test/utils/test-utils.js";
-import {
-  API_ENDPOINTS,
-  HTTP_STATUS_CODES,
-  PATH_NAMES,
-} from "../../../app.constants.js";
+import { Http } from "../../../../utils/http.js";
+import { sinon } from "../../../../../test/utils/test-utils.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../../app.constants.js";
 import type { SinonStub } from "sinon";
-import { signInWithPasskeyService } from "../sign-in-with-passkey-service.js";
-import type { SignInWithPasskeyInterface } from "../types.js";
+import { passkeyService } from "../passkey-service.js";
+import type { PasskeyServiceInterface } from "../types.js";
 import {
   checkApiCallMadeWithExpectedBodyAndHeaders,
   expectedHeadersFromCommonVarsWithSecurityHeaders,
   requestHeadersWithIpAndAuditEncoded,
   resetApiKeyAndBaseUrlEnvVars,
   setupApiKeyAndBaseUrlEnvVars,
-} from "../../../../test/helpers/service-test-helper.js";
-import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
-import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
+} from "../../../../../test/helpers/service-test-helper.js";
+import { createMockRequest } from "../../../../../test/helpers/mock-request-helper.js";
+import { commonVariables } from "../../../../../test/helpers/common-test-variables.js";
 import type { AuthenticationResponseJSON } from "@simplewebauthn/browser";
 
-describe("sign in with passkey service", () => {
+describe("passkey service", () => {
   const httpInstance = new Http();
   let postStub: SinonStub;
 
@@ -36,11 +32,10 @@ describe("sign in with passkey service", () => {
   });
 
   describe("startPasskeyAssertion", () => {
-    const service: SignInWithPasskeyInterface =
-      signInWithPasskeyService(httpInstance);
+    const service: PasskeyServiceInterface = passkeyService(httpInstance);
 
     it("should call the start passkey assertion API endpoint and return successful response", async () => {
-      const req = createMockRequest(PATH_NAMES.SIGN_IN_WITH_PASSKEY, {
+      const req = createMockRequest("/test-path", {
         headers: requestHeadersWithIpAndAuditEncoded,
       });
       const authenticationOptions = {
@@ -79,7 +74,7 @@ describe("sign in with passkey service", () => {
     });
 
     it("should return success false when the API returns non-200", async () => {
-      const req = createMockRequest(PATH_NAMES.SIGN_IN_WITH_PASSKEY, {
+      const req = createMockRequest("/test-path", {
         headers: requestHeadersWithIpAndAuditEncoded,
       });
       const axiosResponse = Promise.resolve({
@@ -114,11 +109,10 @@ describe("sign in with passkey service", () => {
   });
 
   describe("finishPasskeyAssertion", () => {
-    const service: SignInWithPasskeyInterface =
-      signInWithPasskeyService(httpInstance);
+    const service: PasskeyServiceInterface = passkeyService(httpInstance);
 
     it("should call the finish passkey assertion API endpoint and return successful response", async () => {
-      const req = createMockRequest(PATH_NAMES.SIGN_IN_WITH_PASSKEY, {
+      const req = createMockRequest("/test-path", {
         headers: requestHeadersWithIpAndAuditEncoded,
       });
       const startAuthenticationWebauthnResponse = {
@@ -155,7 +149,7 @@ describe("sign in with passkey service", () => {
     });
 
     it("should return success false when the API returns non-200", async () => {
-      const req = createMockRequest(PATH_NAMES.SIGN_IN_WITH_PASSKEY, {
+      const req = createMockRequest("/test-path", {
         headers: requestHeadersWithIpAndAuditEncoded,
       });
       const startAuthenticationWebauthnResponse = {
