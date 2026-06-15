@@ -59,10 +59,6 @@ Parameters:
     Description: The ARN of the permissions boundary to apply when creating IAM roles
     Default: none
 
-  ServiceDownPageRegistry:
-    Type: String
-    Default: 058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l
-
 Conditions:
   DeployServiceDownPage:
     Fn::Equals:
@@ -493,7 +489,7 @@ Mappings:
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: ""
     dev:
-      DeployServiceDownPage: "No"
+      DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       frontendApiBaseUrl: https://tze402cnbk-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/dev/
       frontendAutoScalingMinCount: 1
@@ -522,9 +518,10 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "J3tedNRsfssnsf4STuc2NNIV1C1gdxBB"
+      serviceDownPageRegistry: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-w62weogzsdkb"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
-      DeployServiceDownPage: "No"
+      DeployServiceDownPage: "Yes"
       frontendApiBaseUrl: https://7ecg8e1o73-vpce-042c5d3d97d7438d9.execute-api.eu-west-2.amazonaws.com/build/
       frontendAutoScalingMinCount: 4
       frontendAutoScalingMaxCount: 6
@@ -552,9 +549,10 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "Ykg9fGyY76On4e8tPvFabK5BIl65EkGH"
+      serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
-      DeployServiceDownPage: "No"
+      DeployServiceDownPage: "Yes"
       frontendApiBaseUrl: https://z02rnzbqw8-vpce-07078f5f005fe5efc.execute-api.eu-west-2.amazonaws.com/staging/
       frontendAutoScalingMinCount: 12
       frontendAutoScalingMaxCount: 240
@@ -589,6 +587,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "nsR2wZ7EebJ2VOzE1LUa9iAVadunWQP3,EMGmY82k-92QSakDl_9keKDFmZY" # perf-test client, home client
+      serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -620,6 +619,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       PasskeyPromptClientAllowList: ""
+      serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -654,6 +654,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: ""
+      serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
 
 Globals:
   Function:
@@ -2255,7 +2256,9 @@ Resources:
       Family: !Sub "${Environment}-frontend-service-down-page-ecs-task-definition"
       ContainerDefinitions:
         - Name: "service-down-page"
-          Image: !Sub "${ServiceDownPageRegistry}:GIT-SHA-PLACEHOLDER"
+          Image: !Sub
+            - "${Registry}:GIT-SHA-PLACEHOLDER"
+            - Registry: !FindInMap [ EnvironmentConfiguration, !Ref Environment, serviceDownPageRegistry ]
           PortMappings:
             - ContainerPort: 8080
               HostPort: 8080
