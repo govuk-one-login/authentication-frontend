@@ -2185,7 +2185,7 @@ Resources:
       ServiceName: !Sub "${AWS::StackName}-ServiceDownECSService"
       Cluster: !Ref FrontendECSCluster
       LaunchType: FARGATE
-      DesiredCount: 2
+      DesiredCount: !If [IsNotProduction, 1, 2]
       DeploymentConfiguration:
         MaximumPercent: 200
         MinimumHealthyPercent: 50
