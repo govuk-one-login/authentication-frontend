@@ -1,13 +1,13 @@
 import type { Request, Response } from "express";
-import type { SignInWithPasskeyInterface } from "./types.js";
-import { signInWithPasskeyService } from "./sign-in-with-passkey-service.js";
+import type { PasskeyServiceInterface } from "../common/passkey/types.js";
+import { passkeyService } from "../common/passkey/passkey-service.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import type { AuthenticationResponseJSON } from "@simplewebauthn/browser";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 
 export function signInWithPasskeyGet(
-  service: SignInWithPasskeyInterface = signInWithPasskeyService()
+  service: PasskeyServiceInterface = passkeyService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const startPasskeyAssertionResult = await service.startPasskeyAssertion(
@@ -32,7 +32,7 @@ export function signInWithPasskeyGet(
 }
 
 export function signInWithPasskeyPost(
-  service: SignInWithPasskeyInterface = signInWithPasskeyService()
+  service: PasskeyServiceInterface = passkeyService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const authenticationError = req.body.authenticationError;
