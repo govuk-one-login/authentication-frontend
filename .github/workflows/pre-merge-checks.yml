@@ -66,6 +66,9 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Run snapshot tests
         run: docker compose -f docker-compose.snapshots.yml up --exit-code-from playwright
+      - name: Copy test results from container
+        if: ${{ failure() }}
+        run: docker compose -f docker-compose.snapshots.yml cp playwright:/app/test-results ./test-results || true
       - name: Upload test artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

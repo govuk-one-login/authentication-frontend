@@ -42,6 +42,11 @@ jobs:
         working-directory: playwright-acceptance-tests
         run: docker compose logs > docker-compose-logs.txt 2>&1 || true
 
+      - name: Copy reports from container
+        if: always()
+        working-directory: playwright-acceptance-tests
+        run: docker compose cp test-runner:/app/reports ./reports || true
+
       - name: Tear down
         if: always()
         working-directory: playwright-acceptance-tests
