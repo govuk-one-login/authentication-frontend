@@ -599,6 +599,25 @@ describe("authorize controller", () => {
     )(req as Request, res as Response);
     expect(req.session.user.channel).to.eq("web");
   });
+
+  [true, false].forEach((mfaRequired) => {
+    it(`should set isMfaRequired to ${mfaRequired} in session`, async () => {
+      authServiceResponseData.data.user = {
+        mfaRequired,
+      };
+      fakeAuthorizeService = mockAuthService(authServiceResponseData);
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+
+      expect(req.session.user.isMfaRequired).to.eq(mfaRequired);
+    });
+  });
+
   function mockAuthService(authResponseData: any): AuthorizeServiceInterface {
     return {
       start: sinon.fake.returns({
