@@ -27,6 +27,7 @@ export function cannotSignInPasskeyGet(
 
     res.render("cannot-sign-in-passkey/index.njk", {
       authenticationOptions: JSON.stringify(authenticationOptions.publicKey),
+      is2FAJourney: req.session.user.isMfaRequired,
     });
   };
 }

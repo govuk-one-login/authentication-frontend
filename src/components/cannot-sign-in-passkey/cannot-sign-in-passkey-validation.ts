@@ -1,6 +1,7 @@
 import type { ValidationChainFunc } from "../../types.js";
 import { body } from "express-validator";
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
+import type { Request } from "express";
 
 export function validateCannotSignInPasskeyRequest(): ValidationChainFunc {
   return [
@@ -11,6 +12,17 @@ export function validateCannotSignInPasskeyRequest(): ValidationChainFunc {
           value,
         });
       }),
-    validateBodyMiddleware("cannot-sign-in-passkey/index.njk"),
+    validateBodyMiddleware(
+      "cannot-sign-in-passkey/index.njk",
+      postValidationLocals
+    ),
   ];
 }
+
+const postValidationLocals = function locals(
+  req: Request
+): Record<string, unknown> {
+  return {
+    is2FAJourney: req.session.user.isMfaRequired,
+  };
+};
