@@ -86,7 +86,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
         redactedPhoneNumber: "1234",
         latestTermsAndConditionsAccepted: true,
         mfaMethodVerified: verified,
-        mfaRequired: true,
         passwordChangeRequired: passwordChangeRequired,
       };
       const data = mfaMethodType ? { ...baseData, mfaMethodType } : baseData;
