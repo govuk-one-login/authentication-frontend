@@ -173,17 +173,10 @@ export function enterPasswordPost(
 
     const isPasswordChangeRequired = userLogin.data.passwordChangeRequired;
 
-    if (req.session.user.isMfaRequired !== userLogin.data.mfaRequired) {
-      req.log.info(
-        `isMfaRequired is ${req.session.user.isMfaRequired} but mfaRequired from /login is ${userLogin.data.mfaRequired}`
-      );
-    }
-
     req.session.user.mfaMethods = userLogin.data.mfaMethods;
     req.session.user.activeMfaMethodId = userLogin.data.mfaMethods.find(
       (method: MfaMethod) => method.priority === MfaMethodPriority.DEFAULT
     )?.id;
-    req.session.user.isMfaRequired = userLogin.data.mfaRequired;
     req.session.user.isAccountPartCreated = !userLogin.data.mfaMethodVerified;
     req.session.user.isLatestTermsAndConditionsAccepted =
       userLogin.data.latestTermsAndConditionsAccepted;
@@ -207,7 +200,7 @@ export function enterPasswordPost(
     req.session.user.isSignInJourney = true;
 
     if (
-      userLogin.data.mfaRequired &&
+      req.session.user.isMfaRequired &&
       userLogin.data.mfaMethodVerified &&
       userLogin.data.mfaMethodType === MFA_METHOD_TYPE.SMS &&
       !isPasswordChangeRequired

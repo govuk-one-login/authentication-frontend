@@ -39,7 +39,7 @@ describe("enter password controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.ENTER_PASSWORD);
     res = mockResponse();
-    req.session.user = { email };
+    req.session.user = { email, isMfaRequired: true };
     process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
   });
 
@@ -67,7 +67,6 @@ describe("enter password controller", () => {
           loginUser: sinon.fake.returns({
             data: {
               redactedPhoneNumber: "3456",
-              mfaRequired: true,
               latestTermsAndConditionsAccepted: true,
               mfaMethodVerified: true,
               mfaMethodType: "SMS",
@@ -101,7 +100,6 @@ describe("enter password controller", () => {
           loginUser: sinon.fake.returns({
             data: {
               redactedPhoneNumber: "3456",
-              mfaRequired: true,
               latestTermsAndConditionsAccepted: true,
               mfaMethodVerified: true,
               mfaMethodType: "SMS",
@@ -125,7 +123,7 @@ describe("enter password controller", () => {
           journey.getJourneyTypeFromUserSession
         );
 
-        req.session.user = { email, reauthenticate: "test_data" };
+        req.session.user = { ...req.session.user, reauthenticate: "test_data" };
 
         const { enterPasswordPost: mockEnterPasswordPost } = await esmock(
           "../enter-password-controller.js",
@@ -252,7 +250,6 @@ describe("enter password controller", () => {
         loginUser: sinon.fake.returns({
           data: {
             redactedPhoneNumber: "3456",
-            mfaRequired: true,
             latestTermsAndConditionsAccepted: true,
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
@@ -325,7 +322,6 @@ describe("enter password controller", () => {
         loginUser: sinon.fake.returns({
           data: {
             redactedPhoneNumber: "3456",
-            mfaRequired: true,
             latestTermsAndConditionsAccepted: true,
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
@@ -366,7 +362,6 @@ describe("enter password controller", () => {
           loginUser: sinon.fake.returns({
             data: {
               redactedPhoneNumber: "3456",
-              mfaRequired: true,
               latestTermsAndConditionsAccepted: true,
               mfaMethodVerified: true,
               mfaMethodType: "SMS",
@@ -421,7 +416,6 @@ describe("enter password controller", () => {
           loginUser: sinon.fake.returns({
             data: {
               redactedPhoneNumber: "3456",
-              mfaRequired: true,
               latestTermsAndConditionsAccepted: true,
               mfaMethodVerified: true,
               mfaMethodType: "SMS",
@@ -485,12 +479,12 @@ describe("enter password controller", () => {
     });
 
     it("should redirect to auth code when mfa is not required", async () => {
+      req.session.user.isMfaRequired = false;
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sinon.fake.returns({
           success: true,
           data: {
             redactedPhoneNumber: "3456",
-            mfaRequired: false,
             mfaMethodVerified: true,
             mfaMethodType: "SMS",
             mfaMethods: buildMfaMethods({
@@ -536,6 +530,7 @@ describe("enter password controller", () => {
     });
 
     it("should redirect to updated terms when terms and conditions not accepted", async () => {
+      req.session.user.isMfaRequired = false;
       const fakeService: EnterPasswordServiceInterface = {
         loginUser: sinon.fake.returns({
           data: {
@@ -591,7 +586,6 @@ describe("enter password controller", () => {
         loginUser: sinon.fake.returns({
           data: {
             redactedPhoneNumber: "3456",
-            mfaRequired: true,
             latestTermsAndConditionsAccepted: true,
             mfaMethodVerified: true,
             mfaMethodType: "SMS",

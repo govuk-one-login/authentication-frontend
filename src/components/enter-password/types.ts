@@ -8,7 +8,6 @@ import type { Request } from "express";
 
 export interface UserLoginResponse extends DefaultApiResponse {
   redactedPhoneNumber?: string;
-  mfaRequired?: boolean;
   latestTermsAndConditionsAccepted?: boolean;
   mfaMethodType?: MFA_METHOD_TYPE;
   mfaMethodVerified?: boolean;
