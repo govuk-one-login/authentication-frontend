@@ -40,6 +40,7 @@ export interface UserSessionInfo {
   gaCrossDomainTrackingId?: string;
   mfaMethodType?: MFA_METHOD_TYPE;
   isBlockedForReauth: boolean;
+  mfaRequired?: boolean;
 }
 
 export interface AuthorizeServiceInterface {

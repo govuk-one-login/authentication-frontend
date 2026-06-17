@@ -260,6 +260,7 @@ function setSessionDataFromAuthResponse(
   if (startAuthResponse.data.featureFlags) {
     req.session.user.featureFlags = startAuthResponse.data.featureFlags;
   }
+  req.session.user.isMfaRequired = startAuthResponse.data.user.mfaRequired;
 }
 
 function validateQueryParams(clientId: string, responseType: string) {
