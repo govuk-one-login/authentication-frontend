@@ -61,14 +61,26 @@ Parameters:
 
 Conditions:
   DeployServiceDownPage:
-    Fn::Equals:
-      - !FindInMap [
-          EnvironmentConfiguration,
-          !Ref Environment,
-          DeployServiceDownPage,
-          DefaultValue: "No",
-        ]
-      - "Yes"
+    Fn::And:
+      - Fn::Equals:
+          - !FindInMap [
+              EnvironmentConfiguration,
+              !Ref Environment,
+              DeployServiceDownPage,
+              DefaultValue: "No",
+            ]
+          - "Yes"
+      - Fn::Not:
+          - Fn::Or:
+              - Fn::Equals:
+                  - !Ref SubEnvironment
+                  - "authdev1"
+              - Fn::Equals:
+                  - !Ref SubEnvironment
+                  - "authdev2"
+              - Fn::Equals:
+                  - !Ref SubEnvironment
+                  - "authdev3"
 
   UseCodeSigning:
     Fn::Not:
@@ -2328,7 +2340,10 @@ Resources:
     Condition: DeployServiceDownPage
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Name: !Sub "${Environment}-fe-service-down"
+      Name: !If
+        - UseSubEnvironment
+        - !Sub "${SubEnvironment}-fe-service-down"
+        - !Sub "${Environment}-fe-service-down"
       HealthCheckIntervalSeconds: 30
       HealthCheckTimeoutSeconds: 3
       HealthCheckPath: /healthcheck/
