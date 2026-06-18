@@ -437,7 +437,11 @@ Conditions:
               ]
               - "Yes"
 
-
+  HasAcceptanceTests:
+    Fn::Or:
+      - Fn::Equals: [!Ref Environment, dev]
+      - Fn::Equals: [!Ref Environment, build]
+      - Fn::Equals: [!Ref Environment, staging]
 
 Mappings:
 
@@ -667,6 +671,24 @@ Mappings:
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
+
+  # /acceptance-tests/{env}}/CUCUMBER_FILTER_TAGS
+  AcceptanceTestTags:
+    dev:
+      tags: >-
+        @UI and not (@AccountInterventions or @Reauth or @old-mfa-without-ipv or
+        @AccountRecovery or @InternationalSmsSendingDisabled or @PasskeyUsageEnabled)
+        and not (@InternationalNumbersIndefiniteLockout and @under-development)
+    build:
+      tags: >-
+        @UI and not (@under-development or @AccountInterventions or @Reauth or
+        @old-mfa-without-ipv or @AcceptInternationalNumbers or @InternationalSmsSendingDisabled
+        or @PasskeysEnabled or @PasskeyUsageEnabled)
+    staging:
+      tags: >-
+        @UI and not (@under-development or @AccountInterventions or @new-mfa-reset-with-ipv or
+        @old-mfa-without-ipv or @AcceptInternationalNumbers or @InternationalSmsSendingDisabled
+        or @PasskeyUsageEnabled or @EnvironmentWithAMCStubDeployed)
 
 Globals:
   Function:
@@ -2612,3 +2634,15 @@ Resources:
           Value: "auth-frontend"
         - Key: Source
           Value: govuk-one-login/authentication-frontend/cloudformation/deploy/template.yaml
+
+  AcceptanceTestCucumberFilterTags:
+    Type: AWS::SSM::Parameter
+    Condition: HasAcceptanceTests
+    Properties:
+      Name: !Sub /acceptance-tests/${Environment}/CUCUMBER_FILTER_TAGS
+      Type: String
+      Value: !FindInMap
+        - AcceptanceTestTags
+        - !Ref Environment
+        - tags
+        - DefaultValue: "unused"
