@@ -81,6 +81,7 @@ const USER_JOURNEY_EVENTS = {
   PASSKEY_VERIFICATION_SUCCESSFUL: "PASSKEY_VERIFICATION_SUCCESSFUL",
   PASSKEY_VERIFICATION_FAILED: "PASSKEY_VERIFICATION_FAILED",
   SIGN_IN_WITH_PASSKEY: "SIGN_IN_WITH_PASSKEY",
+  SIGN_IN_WITHOUT_PASSKEY: "SIGN_IN_WITHOUT_PASSKEY",
 };
 
 export interface AuthStateContext {
@@ -373,6 +374,12 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.PASSKEY_VERIFICATION_SUCCESSFUL]: [
             {
               target: [INTERMEDIATE_STATES.SIGN_IN_END],
+            },
+          ],
+          [USER_JOURNEY_EVENTS.SIGN_IN_WITHOUT_PASSKEY]: [
+            {
+              target: [PATH_NAMES.ENTER_PASSWORD],
+              meta: { reversible: true },
             },
           ],
         },

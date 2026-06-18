@@ -7,6 +7,7 @@ import {
   cannotSignInPasskeyPost,
 } from "./cannot-sign-in-passkey-controller.js";
 import { validateCannotSignInPasskeyRequest } from "./cannot-sign-in-passkey-validation.js";
+import { goBackMiddleware } from "../../middleware/go-back-middleware.js";
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ router.get(
   PATH_NAMES.CANNOT_SIGN_IN_PASSKEY,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  goBackMiddleware,
   cannotSignInPasskeyGet()
 );
 
