@@ -9,6 +9,7 @@ import esmock from "esmock";
 import * as cheerio from "cheerio";
 import nock from "nock";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
+import { CANNOT_SIGN_IN_PASSKEY_ACTION } from "../types.js";
 
 describe("Integration:: cannot sign in passkey", () => {
   let app: any;
@@ -16,6 +17,7 @@ describe("Integration:: cannot sign in passkey", () => {
 
   before(async () => {
     process.env.SUPPORT_PASSKEY_USAGE = "1";
+    process.env.SUPPORT_PASSKEY_REGISTRATION = "1"
 
     const { createApp } = await esmock(
       "../../../app.js",
@@ -138,6 +140,25 @@ describe("Integration:: cannot sign in passkey", () => {
             "cannot-sign-in-passkey-action": "retry-passkey",
           })
           .expect(403);
+      });
+
+      it("should redirect to cannot-sign-in-passkey when finishPasskeyAssertion fails", async () => {
+        nock(baseApi)
+          .post(API_ENDPOINTS.FINISH_PASSKEY_ASSERTION)
+          .once()
+          .reply(400, { success: false, code: 0 });
+
+        await request(app)
+          .post(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            authenticationResponse: commonVariables.passkeyAssertionResponse,
+            "cannot-sign-in-passkey-action": CANNOT_SIGN_IN_PASSKEY_ACTION.RETRY_PASSKEY,
+          })
+          .expect(302)
+          .expect("Location", PATH_NAMES.CANNOT_SIGN_IN_PASSKEY);
       });
 
       it("should return a validation error when no option is selected", async () => {

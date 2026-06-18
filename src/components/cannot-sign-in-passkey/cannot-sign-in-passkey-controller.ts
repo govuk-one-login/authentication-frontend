@@ -5,6 +5,7 @@ import { passkeyService } from "../common/passkey/passkey-service.js";
 import type { AuthenticationResponseJSON } from "@simplewebauthn/browser";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { PATH_NAMES } from "../../app.constants.js";
 
 export function cannotSignInPasskeyGet(
   service: PasskeyServiceInterface = passkeyService()
@@ -47,10 +48,10 @@ export function cannotSignInPasskeyPost(
     );
 
     if (!finishPasskeyAssertionResult.success) {
-      // TODO - AUT-5000 - Handle error case
-      throw new Error(
-        `FinishPasskeyAssertionError: ${finishPasskeyAssertionResult.data.message}`
+      req.log.info(
+        `Failed to retry sign in with passkey due to FinishPasskeyAssertionError: ${finishPasskeyAssertionResult.data.message}`
       );
+      return res.redirect(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY);
     }
 
     return res.redirect(
