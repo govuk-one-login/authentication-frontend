@@ -47,6 +47,10 @@ describe("Integration::enter password", () => {
               redirectUri: REDIRECT_URI,
             };
 
+            if (process.env.TEST_MFA_JOURNEY === "1") {
+              req.session.user.isMfaRequired = true;
+            }
+
             next();
           }),
         },
@@ -69,6 +73,7 @@ describe("Integration::enter password", () => {
   });
 
   beforeEach(() => {
+    process.env.TEST_MFA_JOURNEY = "0";
     nock.cleanAll();
   });
 
@@ -127,7 +132,6 @@ describe("Integration::enter password", () => {
       .post(API_ENDPOINTS.LOG_IN_USER)
       .once()
       .reply(200, {
-        mfaRequired: false,
         mfaMethodType: "SMS",
         mfaMethods: buildMfaMethods({
           id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",
@@ -151,11 +155,11 @@ describe("Integration::enter password", () => {
   });
 
   it("should redirect to /enter-code when password is correct (VTR Cl.Cm)", async () => {
+    process.env.TEST_MFA_JOURNEY = "1";
     nock(baseApi)
       .post(API_ENDPOINTS.LOG_IN_USER)
       .once()
       .reply(200, {
-        mfaRequired: true,
         mfaMethodType: "SMS",
         mfaMethods: buildMfaMethods({
           id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",

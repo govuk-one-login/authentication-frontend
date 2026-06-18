@@ -268,7 +268,6 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
       .post("/login")
       .once()
       .reply(200, {
-        mfaRequired: true,
         mfaMethodType: "SMS",
         mfaMethods: buildMfaMethods({
           id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",

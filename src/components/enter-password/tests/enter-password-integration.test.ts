@@ -52,6 +52,10 @@ describe("Integration::enter password", () => {
               req.session.user.journey.nextPath = PATH_NAMES.ENTER_PASSWORD;
             }
 
+            if (process.env.TEST_MFA_JOURNEY === "1") {
+              req.session.user.isMfaRequired = true;
+            }
+
             capturedSession = req.session;
 
             next();
@@ -75,6 +79,7 @@ describe("Integration::enter password", () => {
   });
 
   beforeEach(() => {
+    process.env.TEST_MFA_JOURNEY = "0";
     nock.cleanAll();
   });
 
@@ -133,7 +138,6 @@ describe("Integration::enter password", () => {
       .post(API_ENDPOINTS.LOG_IN_USER)
       .once()
       .reply(200, {
-        mfaRequired: false,
         mfaMethodType: "SMS",
         mfaMethods: buildMfaMethods({
           id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",
@@ -157,11 +161,11 @@ describe("Integration::enter password", () => {
   });
 
   it("should redirect to /enter-code when password is correct (VTR Cl.Cm)", async () => {
+    process.env.TEST_MFA_JOURNEY = "1";
     nock(baseApi)
       .post(API_ENDPOINTS.LOG_IN_USER)
       .once()
       .reply(200, {
-        mfaRequired: true,
         mfaMethodType: "SMS",
         mfaMethods: buildMfaMethods({
           id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",
@@ -190,7 +194,6 @@ describe("Integration::enter password", () => {
       .post(API_ENDPOINTS.LOG_IN_USER)
       .once()
       .reply(200, {
-        mfaRequired: false,
         mfaMethodType: "SMS",
         mfaMethods: buildMfaMethods({
           id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",
@@ -216,11 +219,11 @@ describe("Integration::enter password", () => {
   });
 
   it("should redirect to /reset-password-2fa-sms when password is correct and user's MFA is set to SMS when 2FA is required", async () => {
+    process.env.TEST_MFA_JOURNEY = "1";
     nock(baseApi)
       .post(API_ENDPOINTS.LOG_IN_USER)
       .once()
       .reply(200, {
-        mfaRequired: true,
         mfaMethodType: "SMS",
         mfaMethods: buildMfaMethods({
           id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7a3a03d7",
@@ -263,12 +266,12 @@ describe("Integration::enter password", () => {
   });
 
   it("should redirect to cannot-use-security-code page when mfa returns indefinite international SMS block error", async () => {
+    process.env.TEST_MFA_JOURNEY = "1";
     nock(baseApi)
       .post(API_ENDPOINTS.LOG_IN_USER)
       .once()
       .reply(200, {
         success: true,
-        mfaRequired: true,
         mfaMethodVerified: true,
         mfaMethodType: "SMS",
         mfaMethods: buildMfaMethods({ redactedPhoneNumber: "1234" }),
