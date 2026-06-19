@@ -134,6 +134,8 @@ Resources:
             Encrypted: true
       Monitoring: true
       EbsOptimized: true
+      MetadataOptions:
+        HttpTokens: required
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -237,6 +239,8 @@ Resources:
             Encrypted: true
       Monitoring: true
       EbsOptimized: true
+      MetadataOptions:
+        HttpTokens: required
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -340,6 +344,8 @@ Resources:
             Encrypted: true
       Monitoring: true
       EbsOptimized: true
+      MetadataOptions:
+        HttpTokens: required
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
