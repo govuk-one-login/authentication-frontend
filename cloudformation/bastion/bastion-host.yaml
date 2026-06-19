@@ -121,13 +121,21 @@ Resources:
   BastionInstanceAuthdev1:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: ami-0a3a2f225ee59368f # Amazon Linux 2023 ARM64
+      ImageId: ami-0ab33fafe62fa3f9a # Amazon Linux 2023 ARM64
       InstanceType: !Ref InstanceType
       SubnetId:
         Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdA"
       SecurityGroupIds:
         - !Ref BastionSecurityGroup
       IamInstanceProfile: !Ref SSMInstanceProfileAuthdev1
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            Encrypted: true
+      Monitoring: true
+      EbsOptimized: true
+      MetadataOptions:
+        HttpTokens: required
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -218,13 +226,21 @@ Resources:
   BastionInstanceAuthdev2:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: ami-0a3a2f225ee59368f # Amazon Linux 2023 ARM64
+      ImageId: ami-0ab33fafe62fa3f9a # Amazon Linux 2023 ARM64
       InstanceType: !Ref InstanceType
       SubnetId:
         Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdA"
       SecurityGroupIds:
         - !Ref BastionSecurityGroup
       IamInstanceProfile: !Ref SSMInstanceProfileAuthdev2
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            Encrypted: true
+      Monitoring: true
+      EbsOptimized: true
+      MetadataOptions:
+        HttpTokens: required
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -315,13 +331,21 @@ Resources:
   BastionInstanceDev:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: ami-0a3a2f225ee59368f # Amazon Linux 2023 ARM64
+      ImageId: ami-0ab33fafe62fa3f9a # Amazon Linux 2023 ARM64
       InstanceType: !Ref InstanceType
       SubnetId:
         Fn::ImportValue: !Sub "${VpcStackName}-PrivateSubnetIdA"
       SecurityGroupIds:
         - !Ref BastionSecurityGroup
       IamInstanceProfile: !Ref SSMInstanceProfileDev
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            Encrypted: true
+      Monitoring: true
+      EbsOptimized: true
+      MetadataOptions:
+        HttpTokens: required
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
