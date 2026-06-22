@@ -2299,7 +2299,17 @@
         }
       },
       "signingInProblemWithAPasskey": {
-        "title": "There was a problem with a passkey"
+        "title": "There was a problem with a passkey",
+        "header": "There was a problem with a passkey",
+        "description": "Passkeys let you sign in the same way you unlock your phone, computer or tablet. For example with your face, fingerprint, PIN or passcode.",
+        "section1": {
+          "header": "What were you trying to do?",
+          "options": {
+            "set_up_a_new_passkey": "Set up a new passkey",
+            "sign_in_using_your_passkey": "Sign in using your passkey",
+            "something_else": "Something else"
+          }
+        }
       },
       "noPhoneNumberAccess": {
         "titleMfaReset": "You’ve lost access to the way you get a security code",

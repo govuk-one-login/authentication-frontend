@@ -2299,7 +2299,17 @@
         }
       },
       "signingInProblemWithAPasskey": {
-        "title": "Roedd problem gyda allwedd mynediad"
+        "title": "Roedd problem gyda allwedd mynediad",
+        "header": "Roedd problem gyda allwedd mynediad",
+        "description": "Mae allweddi mynediad yn gadael i chi fewngofnodi yn yr un ffordd ag y byddwch yn datgloi’ch ffôn, cyfrifiadur neu dabled. Er enghraifft gyda’ch wyneb, olion bysedd, PIN neu god mynediad.",
+        "section1": {
+          "header": "Beth oeddech chi’n ceisio ei wneud?",
+          "options": {
+            "set_up_a_new_passkey": "Sefydlu allwedd mynediad newydd",
+            "sign_in_using_your_passkey": "Mewngofnodi gan ddefnyddio’ch allwedd mynediad",
+            "something_else": "Rhywbeth arall"
+          }
+        }
       },
       "noPhoneNumberAccess": {
         "titleMfaReset": "Rydych chi wedi colli mynediad i’r ffordd rydych chi’n cael cod diogelwch",
