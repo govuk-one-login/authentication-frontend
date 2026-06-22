@@ -1,30 +1,30 @@
 {
-  "$schema": "https://raw.githubusercontent.com/govuk-one-login/quality-gates/refs/tags/v0.2.0/schemas/schema.json",
+  "$schema": "https://raw.githubusercontent.com/govuk-one-login/quality-gates/refs/tags/v0.11.0/schemas/schema.json",
   "services": [
     {
-      "service-tag": "auth",
-      "quality-gates": [
+      "serviceTag": "auth",
+      "promotionType": "securePipelines",
+      "checks": [
         {
-          "check-types": ["code style and linting"],
-          "provider": "GitHub",
+          "checkTypes": ["code style and linting"],
           "phase": "pre-merge",
+          "provider": "GitHub",
           "config": {
             "file": ".github/workflows/pre-commit.yml",
-            "path": "jobs.pre-commit",
-            "name": "Run pre-commit"
+            "path": "$.jobs.pre-commit"
           }
         },
         {
-          "check-types": ["vulnerability detection"],
-          "provider": "GitHub",
+          "checkTypes": ["vulnerability detection"],
           "phase": "pre-merge",
+          "provider": "GitHub",
           "config": {
             "file": ".github/workflows/dependency-review.yml",
-            "path": "jobs.dependency-review"
+            "path": "$.jobs.dependency-review"
           }
         },
         {
-          "check-types": [
+          "checkTypes": [
             "unit",
             "new feature",
             "integration",
@@ -33,56 +33,56 @@
             "code quality",
             "unit test coverage"
           ],
-          "provider": "GitHub",
           "phase": "pre-merge",
+          "provider": "GitHub",
           "config": {
             "file": ".github/workflows/pre-merge-checks.yml",
-            "path": "jobs.run-tests"
+            "path": "$.jobs.run-tests"
           }
         },
         {
-          "check-types": ["visual regression"],
-          "provider": "GitHub",
+          "checkTypes": ["visual regression"],
           "phase": "pre-merge",
+          "provider": "GitHub",
           "config": {
             "file": ".github/workflows/pre-merge-checks.yml",
-            "path": "jobs.snapshot-tests"
+            "path": "$.jobs.snapshot-tests"
           }
         },
         {
-          "check-types": ["code style and linting", "code quality"],
-          "provider": "GitHub",
+          "checkTypes": ["code style and linting", "code quality"],
           "phase": "pre-merge",
+          "provider": "GitHub",
           "config": {
             "file": ".github/workflows/checkov.yml",
-            "path": "jobs.scan"
+            "path": "$.jobs.scan"
           }
         },
         {
-          "check-types": ["code style and linting"],
-          "provider": "GitHub",
+          "checkTypes": ["code style and linting"],
           "phase": "pre-merge",
+          "provider": "GitHub",
           "config": {
             "file": ".github/workflows/dependabot-validate.yml",
-            "path": "jobs.validate"
+            "path": "$.jobs.validate"
           }
         },
         {
-          "check-types": ["code style and linting", "code quality"],
-          "provider": "GitHub",
+          "checkTypes": ["code style and linting", "code quality"],
           "phase": "pre-merge",
+          "provider": "GitHub",
           "config": {
             "file": ".github/workflows/pre-merge-checks-shellscript.yaml",
-            "path": "jobs.shellcheck"
+            "path": "$.jobs.shellcheck"
           }
         },
         {
-          "check-types": ["code style and linting", "code quality"],
-          "provider": "GitHub",
+          "checkTypes": ["code style and linting", "code quality"],
           "phase": "pre-merge",
+          "provider": "GitHub",
           "config": {
             "file": ".github/workflows/require-pinned-github-actions.yml",
-            "path": "jobs.check-actions-sha"
+            "path": "$.jobs.check-actions-sha"
           }
         }
       ]
