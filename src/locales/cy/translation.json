@@ -2298,6 +2298,9 @@
           "paragraph1": "Er enghraifft, os ydych eisiau ychwanegu mwy o fanylion neu roi adborth i ni"
         }
       },
+      "signingInProblemWithAPasskey": {
+        "title": "Roedd problem gyda allwedd mynediad"
+      },
       "noPhoneNumberAccess": {
         "titleMfaReset": "Rydych chi wedi colli mynediad i’r ffordd rydych chi’n cael cod diogelwch",
         "headerMfaReset": "Rydych chi wedi colli mynediad i’r ffordd rydych chi’n cael cod diogelwch",

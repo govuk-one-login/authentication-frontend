@@ -37,6 +37,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.signInPhoneNumberIssue.title",
   [CONTACT_US_THEMES.FORGOTTEN_PASSWORD]:
     "pages.contactUsQuestions.forgottenPassword.title",
+  [CONTACT_US_THEMES.SIGNING_IN_PROBLEM_WITH_A_PASSKEY]:
+    "pages.contactUsQuestions.signingInProblemWithAPasskey.title",
   [CONTACT_US_THEMES.NO_PHONE_NUMBER_ACCESS]:
     "pages.contactUsQuestions.noPhoneNumberAccess.title",
   [CONTACT_US_THEMES.LOST_SECURITY_CODE_ACCESS]:

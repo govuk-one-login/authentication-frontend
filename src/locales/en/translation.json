@@ -2298,6 +2298,9 @@
           "paragraph1": "For example, if you want to add more detail or give us feedback"
         }
       },
+      "signingInProblemWithAPasskey": {
+        "title": "There was a problem with a passkey"
+      },
       "noPhoneNumberAccess": {
         "titleMfaReset": "You’ve lost access to the way you get a security code",
         "headerMfaReset": "You’ve lost access to the way you get a security code",
