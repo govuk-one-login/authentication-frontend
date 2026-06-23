@@ -57,8 +57,36 @@ describe("cannot sign in passkey controller", () => {
 
       expect(res.render).to.have.been.calledWith(
         "cannot-sign-in-passkey/index.njk",
-        { authenticationOptions: JSON.stringify(mockData.publicKey) }
+        {
+          authenticationOptions: JSON.stringify(mockData.publicKey),
+          is2FAJourney: undefined,
+        }
       );
+    });
+
+    [true, false].forEach((isMfaRequired) => {
+      it(`should pass is2FAJourney as ${isMfaRequired} when session isMfaRequired is ${isMfaRequired}`, async () => {
+        req.session.user.isMfaRequired = isMfaRequired;
+
+        const fakePasskeyService = {
+          startPasskeyAssertion: sinon.fake.returns({
+            success: true,
+            data: {
+              publicKey: { challenge: "dGVzdA" },
+            },
+          }),
+        } as unknown as PasskeyServiceInterface;
+
+        await cannotSignInPasskeyGet(fakePasskeyService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(res.render).to.have.been.calledWith(
+          "cannot-sign-in-passkey/index.njk",
+          sinon.match({ is2FAJourney: isMfaRequired })
+        );
+      });
     });
 
     it("should pass the correct session IDs to the passkey service", async () => {
