@@ -86,8 +86,6 @@ services:
       A11Y_CHECK: "false"
       SECURITY_CHECK: "false"
       CUCUMBER_FILTER_TAGS: "@Frontend"
-    volumes:
-      - ./reports:/app/reports
     networks:
       - test-net
     depends_on:
