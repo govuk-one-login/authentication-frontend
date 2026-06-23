@@ -15,6 +15,16 @@ describe("passkeys helper", () => {
         hasSkippedPasskeyRegistration: false,
         supportPasskeyRegistration: true,
         rpClientId: "valid-rp-client-id",
+        backendIndicatesPasskeyPromptShouldBeSkipped: false,
+        expected: true,
+      },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: false,
+        hasSkippedPasskeyRegistration: false,
+        supportPasskeyRegistration: true,
+        rpClientId: "valid-rp-client-id",
+        backendIndicatesPasskeyPromptShouldBeSkipped: null,
         expected: true,
       },
       {
@@ -23,6 +33,7 @@ describe("passkeys helper", () => {
         hasSkippedPasskeyRegistration: false,
         supportPasskeyRegistration: true,
         rpClientId: "invalid-rp-client-id",
+        backendIndicatesPasskeyPromptShouldBeSkipped: false,
         expected: false,
       },
       {
@@ -31,6 +42,7 @@ describe("passkeys helper", () => {
         hasSkippedPasskeyRegistration: false,
         supportPasskeyRegistration: true,
         rpClientId: "invalid-rp-client-id",
+        backendIndicatesPasskeyPromptShouldBeSkipped: false,
         expected: false,
       },
       {
@@ -39,6 +51,7 @@ describe("passkeys helper", () => {
         hasSkippedPasskeyRegistration: true,
         supportPasskeyRegistration: true,
         rpClientId: "invalid-rp-client-id",
+        backendIndicatesPasskeyPromptShouldBeSkipped: false,
         expected: false,
       },
       {
@@ -47,6 +60,7 @@ describe("passkeys helper", () => {
         hasSkippedPasskeyRegistration: false,
         supportPasskeyRegistration: false,
         rpClientId: "invalid-rp-client-id",
+        backendIndicatesPasskeyPromptShouldBeSkipped: false,
         expected: false,
       },
       {
@@ -56,6 +70,7 @@ describe("passkeys helper", () => {
         supportPasskeyRegistration: true,
         reauthenticate: "12345",
         rpClientId: "invalid-rp-client-id",
+        backendIndicatesPasskeyPromptShouldBeSkipped: false,
         expected: false,
       },
       {
@@ -64,6 +79,7 @@ describe("passkeys helper", () => {
         hasSkippedPasskeyRegistration: false,
         supportPasskeyRegistration: true,
         rpClientId: "invalid-rp-client-id",
+        backendIndicatesPasskeyPromptShouldBeSkipped: false,
         expected: false,
       },
       {
@@ -72,6 +88,16 @@ describe("passkeys helper", () => {
         hasSkippedPasskeyRegistration: false,
         supportPasskeyRegistration: true,
         rpClientId: "valid-rp-client-id",
+        backendIndicatesPasskeyPromptShouldBeSkipped: false,
+        expected: false,
+      },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: false,
+        hasSkippedPasskeyRegistration: false,
+        supportPasskeyRegistration: true,
+        rpClientId: "valid-rp-client-id",
+        backendIndicatesPasskeyPromptShouldBeSkipped: true,
         expected: false,
       },
     ];
@@ -84,6 +110,7 @@ describe("passkeys helper", () => {
         supportPasskeyRegistration,
         reauthenticate,
         rpClientId,
+        backendIndicatesPasskeyPromptShouldBeSkipped,
         expected,
       }) => {
         it(`should return ${expected} when browserSupportsWebAuthn=${browserSupportsWebAuthn}, hasActivePasskey=${hasActivePasskey}, hasSkippedPasskeyRegistration=${hasSkippedPasskeyRegistration}, supportPasskeyRegistration=${supportPasskeyRegistration}, reauthenticate=${reauthenticate}, rpClientId=${rpClientId}`, () => {
@@ -96,6 +123,7 @@ describe("passkeys helper", () => {
                 hasActivePasskey,
                 hasSkippedPasskeyRegistration,
                 reauthenticate,
+                backendIndicatesPasskeyPromptShouldBeSkipped,
               },
               client: {
                 rpClientId: rpClientId,

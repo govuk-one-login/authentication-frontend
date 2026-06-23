@@ -9,6 +9,7 @@ export function shouldPromptToRegisterPasskey(
     req.session.user?.browserSupportsWebAuthn === true &&
     req.session.user?.hasActivePasskey === false &&
     req.session.user?.hasSkippedPasskeyRegistration !== true &&
+    req.session.user?.backendIndicatesPasskeyPromptShouldBeSkipped !== true &&
     !req.session.user?.reauthenticate &&
     isPromptableRPClientID(req.session.client.rpClientId) &&
     res.locals.supportPasskeyRegistration === true
