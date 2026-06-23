@@ -22,7 +22,7 @@ export class BasePage {
   }
 
   async goto(url: string): Promise<void> {
-    await this.page.goto(url, { waitUntil: "networkidle" });
+    await this.page.goto(url, { waitUntil: "domcontentloaded" });
   }
 
   async assertBasicSecurity(): Promise<void> {

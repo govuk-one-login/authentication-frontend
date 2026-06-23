@@ -4,7 +4,20 @@ import type { PlaywrightWorld } from "./world";
 import fs from "node:fs";
 import path from "node:path";
 
+const IMPOSTER_BASE_URL = process.env.IMPOSTER_URL || "http://api-stub:8080";
+const STORE_NAMES = [
+  "loginAttempts",
+  "accountLocked",
+  "verifyCodeAttempts",
+  "mfaResendCount",
+  "verifyMfaAttempts",
+  "smsCodeLocked",
+  "smsResendLocked",
+  "authAppLocked",
+];
+
 Before(async function (this: PlaywrightWorld) {
+  await resetImposterStores();
   await this.openBrowser();
 });
 
@@ -23,3 +36,15 @@ After(async function (this: PlaywrightWorld, scenario: ITestCaseHookParameter) {
 
   await this.closeBrowser();
 });
+
+async function resetImposterStores(): Promise<void> {
+  for (const storeName of STORE_NAMES) {
+    try {
+      await fetch(`${IMPOSTER_BASE_URL}/system/store/${storeName}`, {
+        method: "DELETE",
+      });
+    } catch {
+      // Imposter may not be reachable in local dev - ignore
+    }
+  }
+}
