@@ -7,15 +7,19 @@ import { getPermittedJourneyForPath } from "../../../../test/helpers/session-hel
 import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
 import * as cheerio from "cheerio";
+import type { UserSession } from "../../../types.js";
 import nock from "nock";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
+import { CANNOT_SIGN_IN_PASSKEY_ACTION } from "../types.js";
 
 describe("Integration:: cannot sign in passkey", () => {
   let app: any;
   let baseApi: string;
+  let capturedSession: UserSession;
 
   before(async () => {
     process.env.SUPPORT_PASSKEY_USAGE = "1";
+    process.env.SUPPORT_PASSKEY_REGISTRATION = "1";
 
     const { createApp } = await esmock(
       "../../../app.js",
@@ -37,6 +41,8 @@ describe("Integration:: cannot sign in passkey", () => {
                 PATH_NAMES.CANNOT_SIGN_IN_PASSKEY
               ),
             };
+
+            capturedSession = req.session.user;
 
             next();
           }),
@@ -115,10 +121,30 @@ describe("Integration:: cannot sign in passkey", () => {
           .send({
             _csrf: token,
             authenticationResponse: commonVariables.passkeyAssertionResponse,
-            "cannot-sign-in-passkey-action": "retry-passkey",
+            "cannot-sign-in-passkey-action":
+              CANNOT_SIGN_IN_PASSKEY_ACTION.RETRY_PASSKEY,
           })
           .expect(302)
           .expect("Location", PATH_NAMES.AUTH_CODE);
+      });
+
+      it("should redirect to enter-password and save cannot-sign-in-passkey in goBackHistory when user selects sign in without passkey option", async () => {
+        await request(app)
+          .post(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            authenticationResponse: commonVariables.passkeyAssertionResponse,
+            "cannot-sign-in-passkey-action":
+              CANNOT_SIGN_IN_PASSKEY_ACTION.SIGN_IN_WITHOUT_PASSKEY,
+          })
+          .expect(302)
+          .expect("Location", PATH_NAMES.ENTER_PASSWORD);
+
+        expect(capturedSession.journey.goBackHistory).to.deep.equal([
+          PATH_NAMES.CANNOT_SIGN_IN_PASSKEY,
+        ]);
       });
     });
 
@@ -135,9 +161,30 @@ describe("Integration:: cannot sign in passkey", () => {
           .set("Cookie", cookies)
           .send({
             authenticationResponse: commonVariables.passkeyAssertionResponse,
-            "cannot-sign-in-passkey-action": "retry-passkey",
+            "cannot-sign-in-passkey-action":
+              CANNOT_SIGN_IN_PASSKEY_ACTION.RETRY_PASSKEY,
           })
           .expect(403);
+      });
+
+      it("should redirect to cannot-sign-in-passkey when finishPasskeyAssertion fails", async () => {
+        nock(baseApi)
+          .post(API_ENDPOINTS.FINISH_PASSKEY_ASSERTION)
+          .once()
+          .reply(400, { success: false, code: 0 });
+
+        await request(app)
+          .post(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            authenticationResponse: commonVariables.passkeyAssertionResponse,
+            "cannot-sign-in-passkey-action":
+              CANNOT_SIGN_IN_PASSKEY_ACTION.RETRY_PASSKEY,
+          })
+          .expect(302)
+          .expect("Location", PATH_NAMES.CANNOT_SIGN_IN_PASSKEY);
       });
 
       it("should return a validation error when no option is selected", async () => {

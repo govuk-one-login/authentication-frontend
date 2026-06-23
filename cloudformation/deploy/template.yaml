@@ -677,7 +677,7 @@ Mappings:
     dev:
       tags: >-
         @UI and not (@AccountInterventions or @Reauth or @old-mfa-without-ipv or
-        @AccountRecovery or @InternationalSmsSendingDisabled or @PasskeyUsageEnabled)
+        @AccountRecovery or @InternationalSmsSendingDisabled)
         and not (@InternationalNumbersIndefiniteLockout and @under-development)
     build:
       tags: >-

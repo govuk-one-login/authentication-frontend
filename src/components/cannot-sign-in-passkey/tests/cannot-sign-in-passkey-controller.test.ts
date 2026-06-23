@@ -13,6 +13,7 @@ import {
 import { sinon } from "../../../../test/utils/test-utils.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import type { PasskeyServiceInterface } from "../../common/passkey/types.js";
+import { CANNOT_SIGN_IN_PASSKEY_ACTION } from "../types.js";
 
 describe("cannot sign in passkey controller", () => {
   let req: RequestOutput;
@@ -118,6 +119,26 @@ describe("cannot sign in passkey controller", () => {
         expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
       });
 
+      it("should redirect to enter-password when user selects sign in without passkey option", async () => {
+        req.body["cannot-sign-in-passkey-action"] =
+          CANNOT_SIGN_IN_PASSKEY_ACTION.SIGN_IN_WITHOUT_PASSKEY;
+
+        const fakePasskeyService = {
+          finishPasskeyAssertion: sinon.fake.returns({
+            success: true,
+          }),
+        } as unknown as PasskeyServiceInterface;
+
+        await cannotSignInPasskeyPost(fakePasskeyService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(fakePasskeyService.finishPasskeyAssertion).to.not.have.been
+          .called;
+        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ENTER_PASSWORD);
+      });
+
       it("should pass the authenticationResponse from the request body to finishPasskeyAssertion", async () => {
         const authenticationResponse = {
           signedChallenge: "challenge",
@@ -145,7 +166,7 @@ describe("cannot sign in passkey controller", () => {
         );
       });
 
-      it("should throw an error when finishPasskeyAssertion returns unsuccessful", async () => {
+      it("should redirect back to cannot-sign-in-passkey when finishPasskeyAssertion returns unsuccessful", async () => {
         const fakePasskeyService = {
           finishPasskeyAssertion: sinon.fake.returns({
             success: false,
@@ -153,16 +174,14 @@ describe("cannot sign in passkey controller", () => {
           }),
         } as unknown as PasskeyServiceInterface;
 
-        await assert.rejects(
-          async () =>
-            cannotSignInPasskeyPost(fakePasskeyService)(
-              req as Request,
-              res as Response
-            ),
-          Error,
-          "FinishPasskeyAssertionError: Session expired"
+        await cannotSignInPasskeyPost(fakePasskeyService)(
+          req as Request,
+          res as Response
         );
-        expect(res.redirect).to.not.have.been.called;
+
+        expect(res.redirect).to.have.been.calledWith(
+          PATH_NAMES.CANNOT_SIGN_IN_PASSKEY
+        );
       });
     });
   });
