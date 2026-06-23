@@ -3,7 +3,6 @@ import { expect } from "../support/expect";
 import type { PlaywrightWorld } from "../support/world";
 
 import { CreateOrSignInPage } from "../pages/CreateOrSignInPage";
-import { EnterEmailPage } from "../pages/EnterEmailPage";
 import { EnterPasswordPage } from "../pages/EnterPasswordPage";
 import { CheckYourPhonePage } from "../pages/CheckYourPhonePage";
 import { EnterAuthAppCodePage } from "../pages/EnterAuthAppCodePage";
@@ -35,10 +34,9 @@ When(
   "I enter email {string}",
   async function (this: PlaywrightWorld, email: string): Promise<void> {
     const page = getPage(this);
-    await page.getByRole("textbox").waitFor({ state: "visible" });
-    const emailPage = new EnterEmailPage(page);
-    await emailPage.enterEmail(email);
-    await emailPage.clickContinue();
+    await expect(page.getByRole("textbox")).toBeVisible();
+    await page.getByRole("textbox").fill(email);
+    await page.getByRole("button", { name: /continue/i }).click();
   }
 );
 
