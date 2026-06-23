@@ -47,7 +47,6 @@ services:
 
   orch-stub-start:
     image: ${ORCH_STUB_IMAGE}
-    pull_policy: never
     environment:
       AUTHENTICATION_FRONTEND_URL: http://proxy/
       AUTHENTICATION_BACKEND_URL: http://api-stub:8080/
