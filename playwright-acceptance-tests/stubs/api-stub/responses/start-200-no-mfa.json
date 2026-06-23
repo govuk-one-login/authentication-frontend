@@ -6,7 +6,7 @@
     "authenticated": false,
     "mfaMethodType": "SMS",
     "isBlockedForReauth": false,
-    "mfaRequired": true
+    "mfaRequired": false
   },
   "featureFlags": {}
 }

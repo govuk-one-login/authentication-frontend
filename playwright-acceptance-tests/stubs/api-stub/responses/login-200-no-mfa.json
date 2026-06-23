@@ -1,0 +1,8 @@
+{
+  "mfaMethodType": "SMS",
+  "latestTermsAndConditionsAccepted": true,
+  "mfaRequired": false,
+  "mfaMethodVerified": true,
+  "passwordChangeRequired": false,
+  "mfaMethods": []
+}

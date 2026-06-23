@@ -41,22 +41,19 @@ resources:
     method: POST
     contentType: "application/json"
     response:
-      statusCode: 200
-      file: responses/start-200.json
+      scriptFile: start-handler.js
 
   - path: "/user-exists"
     method: POST
     contentType: "application/json"
     response:
-      statusCode: 200
-      file: responses/user-exists-200.json
+      scriptFile: user-exists-handler.js
 
   - path: "/login"
     method: POST
     contentType: "application/json"
     response:
-      statusCode: 200
-      file: responses/login-200.json
+      scriptFile: login-handler.js
 
   - path: "/signup"
     method: POST
@@ -69,19 +66,19 @@ resources:
     method: POST
     contentType: "application/json"
     response:
-      statusCode: 204
+      scriptFile: mfa-handler.js
 
   - path: "/verify-code"
     method: POST
     contentType: "application/json"
     response:
-      statusCode: 204
+      scriptFile: verify-code-handler.js
 
   - path: "/verify-mfa-code"
     method: POST
     contentType: "application/json"
     response:
-      statusCode: 204
+      scriptFile: verify-mfa-handler.js
 
   - path: "/send-notification"
     method: POST
