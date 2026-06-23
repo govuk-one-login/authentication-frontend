@@ -106,6 +106,8 @@ async function getExistingUserAndPopulateSessionData(
     { redactedPhoneNumber: result.data.phoneNumberLastThree }
   );
   req.session.user.hasActivePasskey = result.data.hasActivePasskey;
+  req.session.user.backendIndicatesPasskeyPromptShouldBeSkipped =
+    result.data.shouldSuppressPasskeyRegistrationPrompt;
   req.session.user.isAccountCreationJourney = !result.data.doesUserExist;
   req.session.user.needsForcedMFAReset =
     result.data.needsForcedMFAResetAfterMFACheck;
