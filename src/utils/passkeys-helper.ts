@@ -12,7 +12,7 @@ export function shouldPromptToRegisterPasskey(
   if (userHasActivePasskeyOrUnknown) return false;
   if (user.hasSkippedPasskeyRegistration) return false;
   if (user.reauthenticate) return false;
-  if (!user?.backendIndicatesPasskeyPromptShouldBeSkipped) return false;
+  if (user?.backendIndicatesPasskeyPromptShouldBeSkipped) return false;
   if (!isPromptableRPClientID(req.session.client.rpClientId)) return false;
   if (!res.locals.supportPasskeyRegistration) return false;
 
