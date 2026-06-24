@@ -35,6 +35,7 @@ export interface Transition {
   event?: string;
   condition?: string;
   optional?: boolean;
+  reversible?: boolean;
 }
 
 const DOUBLE_CLICK_WINDOW_MILLIS = 1000;
