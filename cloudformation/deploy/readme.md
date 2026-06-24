@@ -83,13 +83,13 @@ Authentication Frontend uses the [sub-environment feature](https://govukverify.a
 
 EnvironmentConfiguration maintains a **flat** mapping, authdev environments configuration are treated at the same level as environments, and **not nested**.
 
-**Example**: Now to enable MFA reset
+**Example**:
 
 Setting a condition
 
 ```Yaml
 Conditions:
-  UseMfaResetWithIpv:
+  UseMyFeatureFlag:
     Fn::Or:
       - Fn::And:
           - !Condition UseSubEnvironment
@@ -97,7 +97,7 @@ Conditions:
               - !FindInMap [
                   EnvironmentConfiguration,
                   !Ref SubEnvironment,
-                  UseMfaResetWithIpv,
+                  UseMyFeatureFlag,
                   DefaultValue: "No",
                 ]
               - "Yes"
@@ -107,7 +107,7 @@ Conditions:
               - !FindInMap [
                   EnvironmentConfiguration,
                   !Ref Environment,
-                  UseMfaResetWithIpv,
+                  UseMyFeatureFlag,
                   DefaultValue: "No",
                 ]
               - "Yes"
@@ -119,13 +119,13 @@ Configure at environment and sub-environment level
 Mappings:
   EnvironmentConfiguration:
     authdev1:
-      UseMfaResetWithIpv: "Yes"
+      UseMyFeatureFlag: "Yes"
     authdev2:
-      UseMfaResetWithIpv: "No"
+      UseMyFeatureFlag: "No"
     dev:
-      UseMfaResetWithIpv: "No"
+      UseMyFeatureFlag: "No"
     build:
-      UseMfaResetWithIpv: "No"
+      UseMyFeatureFlag: "No"
     staging:
-      UseMfaResetWithIpv: "Yes"
+      UseMyFeatureFlag: "Yes"
 ```

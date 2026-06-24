@@ -125,52 +125,6 @@ Conditions:
                     ]
                   - "Yes"
 
-  UseMfaResetWithIpv:
-    Fn::Or:
-      - Fn::And:
-          - !Condition UseSubEnvironment
-          - Fn::Equals:
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref SubEnvironment,
-                  UseMfaResetWithIpv,
-                  DefaultValue: "No",
-                ]
-              - "Yes"
-      - Fn::And:
-          - !Condition NotSubEnvironment
-          - Fn::Equals:
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref Environment,
-                  UseMfaResetWithIpv,
-                  DefaultValue: "No",
-                ]
-              - "Yes"
-
-  UseRouteUsersToNewIpvJourney:
-    Fn::Or:
-      - Fn::And:
-          - !Condition UseSubEnvironment
-          - Fn::Equals:
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref SubEnvironment,
-                  UseRouteUsersToNewIpvJourney,
-                  DefaultValue: "No",
-                ]
-              - "Yes"
-      - Fn::And:
-          - !Condition NotSubEnvironment
-          - Fn::Equals:
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref Environment,
-                  UseRouteUsersToNewIpvJourney,
-                  DefaultValue: "No",
-                ]
-              - "Yes"
-
   UseSubEnvironment:
     Fn::And:
       - Fn::Equals:
@@ -455,8 +409,6 @@ Mappings:
         XK7CAYMcVvy1pP5yV4O2mnDjYmvjZpvio2ctgOPxDuBb38QP1HD9WAOR2w==
         -----END PUBLIC KEY-----
       migratedDomain: signin.authdev1.dev.account.gov.uk
-      UseMfaResetWithIpv: "Yes"
-      UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.authdev1.dev.account.gov.uk"
@@ -476,8 +428,6 @@ Mappings:
         tJwzOYNWUmK/+GxooRp+j9i9KWQ0WlV4gVI0iQkHY3ZKq+RWk94tSDHbyQ==
         -----END PUBLIC KEY-----
       migratedDomain: signin.authdev2.dev.account.gov.uk
-      UseMfaResetWithIpv: "Yes"
-      UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.authdev2.dev.account.gov.uk"
@@ -492,8 +442,6 @@ Mappings:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: https://y3s69ubaz5-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev3/
       migratedDomain: signin.authdev3.dev.account.gov.uk
-      UseMfaResetWithIpv: "Yes"
-      UseRouteUsersToNewIpvJourney: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.authdev3.dev.account.gov.uk"
@@ -521,8 +469,6 @@ Mappings:
       IsSplunkEnabled: "No"
       SupportHTTPKeepAlive: "No"
       migratedDomain: signin.dev.account.gov.uk
-      UseMfaResetWithIpv: "Yes"
-      UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
@@ -552,8 +498,6 @@ Mappings:
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
       migratedDomain: signin.build.account.gov.uk
-      UseMfaResetWithIpv: "Yes"
-      UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
@@ -589,8 +533,6 @@ Mappings:
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "Yes"
       migratedDomain: signin.staging.account.gov.uk
-      UseMfaResetWithIpv: "Yes"
-      UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       UseAlarmActions: "Yes"
@@ -621,8 +563,6 @@ Mappings:
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
       migratedDomain: signin.integration.account.gov.uk
-      UseMfaResetWithIpv: "Yes"
-      UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       orchStubToAuth: ""
@@ -655,8 +595,6 @@ Mappings:
       IsSplunkEnabled: "Yes"
       SupportHTTPKeepAlive: "No"
       migratedDomain: signin.account.gov.uk
-      UseMfaResetWithIpv: "Yes"
-      UseRouteUsersToNewIpvJourney: "Yes"
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
       orchStubToAuth: ""
@@ -1197,10 +1135,6 @@ Resources:
               Value: !If [Enableipvspinner, "1", "0"]
             - Name: SUPPORT_HTTP_KEEP_ALIVE
               Value: !If [SupportHTTPKeepAlive, "1", "0"]
-            - Name: SUPPORT_MFA_RESET_WITH_IPV
-              Value: !If [UseMfaResetWithIpv, "1", "0"]
-            - Name: ROUTE_USERS_TO_NEW_IPV_JOURNEY
-              Value: !If [UseRouteUsersToNewIpvJourney, "1", "0"]
             - Name: PRIVACY_NOTICE_REDIRECT_ENABLED
               Value: !If [PrivacyNoticeRedirectEnabled, "1", "0"]
             - Name: USE_REBRAND
