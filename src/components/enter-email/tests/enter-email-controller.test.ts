@@ -501,6 +501,27 @@ describe("enter email controller", () => {
         );
       });
     });
+
+    const booleans = [true, false];
+    booleans.forEach((value) => {
+      it(`should store whether the backend indicates we should suppress the passkey registration prompt in the session when field in response is ${value}`, async () => {
+        const fakeService: EnterEmailServiceInterface = {
+          userExists: sinon.fake.returns({
+            success: true,
+            data: {
+              doesUserExist: true,
+              shouldSuppressPasskeyRegistrationPrompt: value,
+            },
+          }),
+        } as unknown as EnterEmailServiceInterface;
+
+        await enterEmailPost(fakeService)(req as Request, res as Response);
+
+        expect(
+          req.session.user.backendIndicatesPasskeyPromptShouldBeSkipped
+        ).to.eq(value);
+      });
+    });
   });
 
   describe("enterEmailCreatePost", () => {

@@ -10,6 +10,7 @@ export interface UserExists extends DefaultApiResponse {
   lockoutInformation?: LockoutInformation[];
   hasActivePasskey: boolean | null;
   needsForcedMFAResetAfterMFACheck: boolean;
+  shouldSuppressPasskeyRegistrationPrompt: boolean;
 }
 export interface LockoutInformation {
   lockType: string;
