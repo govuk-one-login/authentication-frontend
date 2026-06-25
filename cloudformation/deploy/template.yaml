@@ -410,6 +410,7 @@ Mappings:
         -----END PUBLIC KEY-----
       migratedDomain: signin.authdev1.dev.account.gov.uk
       Enableipvspinner: "No"
+      SupportHTTPKeepAlive: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.authdev1.dev.account.gov.uk"
       UseRebrand: "Yes"
@@ -429,6 +430,7 @@ Mappings:
         -----END PUBLIC KEY-----
       migratedDomain: signin.authdev2.dev.account.gov.uk
       Enableipvspinner: "No"
+      SupportHTTPKeepAlive: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.authdev2.dev.account.gov.uk"
       UseRebrand: "Yes"
@@ -442,6 +444,7 @@ Mappings:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: https://y3s69ubaz5-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev3/
       migratedDomain: signin.authdev3.dev.account.gov.uk
+      SupportHTTPKeepAlive: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.authdev3.dev.account.gov.uk"
@@ -467,7 +470,7 @@ Mappings:
         kRaZYTpLsfCpC79ZgKSYEBcguuOUP4DvJpyHomBEnxeUs7s5KRgyMQjY4g==
         -----END PUBLIC KEY-----
       IsSplunkEnabled: "No"
-      SupportHTTPKeepAlive: "No"
+      SupportHTTPKeepAlive: "Yes"
       migratedDomain: signin.dev.account.gov.uk
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
@@ -496,7 +499,7 @@ Mappings:
         WwuA51+3Ak+stF2dddC60WXEKhrFumKBUnE5GhJNg4v0iN948Mwl+vz5Xw==
         -----END PUBLIC KEY-----
       IsSplunkEnabled: "Yes"
-      SupportHTTPKeepAlive: "No"
+      SupportHTTPKeepAlive: "Yes"
       migratedDomain: signin.build.account.gov.uk
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
@@ -561,7 +564,7 @@ Mappings:
       passwordResetCodeEnteredWrongBlockedMinutes: 120
       reducedCodeBlockDurationMinutes: 15
       IsSplunkEnabled: "Yes"
-      SupportHTTPKeepAlive: "No"
+      SupportHTTPKeepAlive: "Yes"
       migratedDomain: signin.integration.account.gov.uk
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
@@ -593,7 +596,7 @@ Mappings:
       GA4Enabled: "true"
       googleAnalytics4GTMContainerId: "GTM-K4PBJH3"
       IsSplunkEnabled: "Yes"
-      SupportHTTPKeepAlive: "No"
+      SupportHTTPKeepAlive: "Yes"
       migratedDomain: signin.account.gov.uk
       ECSServiceCanaryPhasedDeploy: "Yes"
       Enableipvspinner: "No"
