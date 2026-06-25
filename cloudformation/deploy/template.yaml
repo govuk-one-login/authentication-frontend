@@ -2580,6 +2580,6 @@ Resources:
       Type: String
       Value: !FindInMap
         - AcceptanceTestTags
-        - !Ref Environment
+        - !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
         - tags
         - DefaultValue: "unused"
