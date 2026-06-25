@@ -17,6 +17,7 @@ import { logger } from "../../utils/logger.js";
 import { getServiceDomain, getSupportLinkUrl } from "../../config.js";
 import { getContactUsService } from "./contact-us-service.js";
 import { supportTypeIsGovService } from "../../utils/request.js";
+import { ga4DataSetterContactUsQuestions } from "../../utils/contentId.js";
 import {
   getHeaderKeyFromTheme,
   getLegendKeyFromTheme,
@@ -400,6 +401,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
     radioButtons: getThemeRadioButtonsFromStructure(themeStructure.subThemes),
     title: getTitleKeyFromTheme(themeStructure),
     header: getHeaderKeyFromTheme(themeStructure),
+    contentId: getGA4DataVariablesContactUsQuestions(req).contentId,
     legend: getLegendKeyFromTheme(themeStructure),
   };
 
@@ -457,6 +459,24 @@ export function generatePageTitle(req: Request): string {
   return pageTitle;
 }
 
+export function getGA4DataVariablesContactUsQuestions(req: Request): {
+  contentId: string;
+} {
+  let theme: string;
+  if (!req.query.subtheme) {
+    theme = req.query.theme.toString() as string;
+  } else {
+    theme = (req.query.theme.toString() +
+      req.query.subtheme.toString()) as string;
+  }
+  const contentId =
+    ga4DataSetterContactUsQuestions[theme]?.contentId || "undefined";
+
+  return {
+    contentId,
+  };
+}
+
 export function contactUsQuestionsGet(req: Request, res: Response): void {
   const supportLinkURL = getSupportLinkUrl();
   // TODO - AUT-4118 - Fix this
@@ -481,6 +501,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     }),
     pageTitle: pageTitle,
     pageTitleHeading: pageTitle,
+    contentId: getGA4DataVariablesContactUsQuestions(req).contentId,
     contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
     contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
     appErrorCode: getAppErrorCode(req.query.appErrorCode as string),
