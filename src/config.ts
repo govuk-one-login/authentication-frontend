@@ -230,3 +230,11 @@ export function getPasskeyPromptClientAllowList(): string[] {
 export function getPasskeyRolloutPercentage(): number {
   return Number(process.env.PASSKEY_ROLLOUT_PERCENTAGE) || 0;
 }
+
+export function getPasskeyPromptClientDenyList(): string[] {
+  const rawList = process.env.PASSKEY_PROMPT_CLIENT_DENY_LIST;
+  if (rawList) {
+    return rawList.split(",").map((id) => id.trim());
+  }
+  return [];
+}

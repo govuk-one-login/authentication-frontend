@@ -18,6 +18,7 @@ import {
   showTestBanner,
   getAccountDomain,
   getPasskeyPromptClientAllowList,
+  getPasskeyPromptClientDenyList,
   getPasskeyRolloutPercentage,
 } from "../../src/config.js";
 import { CHANNEL } from "../../src/app.constants.js";
@@ -42,6 +43,7 @@ describe("config", () => {
     delete process.env.APP_ENV;
     delete process.env.SERVICE_DOMAIN;
     delete process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST;
+    delete process.env.PASSKEY_PROMPT_CLIENT_DENY_LIST;
   });
 
   describe("boolean flag methods", () => {
@@ -239,6 +241,30 @@ describe("config", () => {
         process.env.PASSKEY_ROLLOUT_PERCENTAGE = passkeyRolloutPercentage;
         expect(getPasskeyRolloutPercentage()).to.equal(expected);
       });
+    });
+  });
+
+  describe("getPasskeyPromptClientDenyList", () => {
+    [
+      {
+        input: "client1,client2,client3",
+        expected: ["client1", "client2", "client3"],
+      },
+      {
+        input: "client1 , client2 , client3",
+        expected: ["client1", "client2", "client3"],
+      },
+      { input: "single-client", expected: ["single-client"] },
+    ].forEach(({ input, expected }) => {
+      it(`should return ${JSON.stringify(expected)} when set to '${input}'`, () => {
+        process.env.PASSKEY_PROMPT_CLIENT_DENY_LIST = input;
+        expect(getPasskeyPromptClientDenyList()).to.deep.equal(expected);
+      });
+    });
+
+    it("should return empty array when not set", () => {
+      delete process.env.PASSKEY_PROMPT_CLIENT_DENY_LIST;
+      expect(getPasskeyPromptClientDenyList()).to.deep.equal([]);
     });
   });
 });
