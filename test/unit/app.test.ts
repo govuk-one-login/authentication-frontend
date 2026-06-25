@@ -101,8 +101,8 @@ describe("app", () => {
       delete process.env.APP_ENV;
     });
 
-    it("should not call applyOverloadProtection when the environment isn't staging", async () => {
-      process.env.APP_ENV = "production";
+    it("should not call applyOverloadProtection when the environment is dev", async () => {
+      process.env.APP_ENV = "dev";
 
       const fakeApplyOverloadProtection = sinon.fake();
       const { createApp } = await esmock("../../src/app.js", {
@@ -116,8 +116,8 @@ describe("app", () => {
       expect(fakeApplyOverloadProtection).to.not.have.been.called;
     });
 
-    it("should applyOverloadProtection when the environment is staging", async () => {
-      process.env.APP_ENV = "staging";
+    it("should applyOverloadProtection when the environment is production", async () => {
+      process.env.APP_ENV = "production";
 
       const fakeApplyOverloadProtection = sinon.fake.returns(() => {});
       const { createApp } = await esmock("../../src/app.js", {
