@@ -17,6 +17,7 @@ import { logger } from "../../utils/logger.js";
 import { getServiceDomain, getSupportLinkUrl } from "../../config.js";
 import { getContactUsService } from "./contact-us-service.js";
 import { supportTypeIsGovService } from "../../utils/request.js";
+import { ga4DataSetterContactUsQuestions } from "../../utils/contentId.js";
 import {
   getHeaderKeyFromTheme,
   getLegendKeyFromTheme,
@@ -400,6 +401,7 @@ export function furtherInformationGet(req: Request, res: Response): void {
     radioButtons: getThemeRadioButtonsFromStructure(themeStructure.subThemes),
     title: getTitleKeyFromTheme(themeStructure),
     header: getHeaderKeyFromTheme(themeStructure),
+    contentId: getGA4DataVariablesContactUsQuestions(req).contentId,
     legend: getLegendKeyFromTheme(themeStructure),
   };
 
@@ -416,6 +418,27 @@ export function furtherInformationGet(req: Request, res: Response): void {
     "contact-us/further-information/index.njk",
     templateOptions
   );
+}
+
+export function getGA4DataVariablesContactUsQuestions(req: Request): {
+  contentId: string;
+} {
+  if (!req.query.theme) {
+    return { contentId: "" };
+  }
+
+  let theme: string;
+  if (!req.query.subtheme) {
+    theme = req.query.theme.toString();
+  } else {
+    theme = req.query.theme.toString() + req.query.subtheme.toString();
+  }
+  const contentId =
+    ga4DataSetterContactUsQuestions[theme]?.contentId || "undefined";
+
+  return {
+    contentId,
+  };
 }
 
 export function furtherInformationPost(req: Request, res: Response): void {
@@ -481,6 +504,7 @@ export function contactUsQuestionsGet(req: Request, res: Response): void {
     }),
     pageTitle: pageTitle,
     pageTitleHeading: pageTitle,
+    contentId: getGA4DataVariablesContactUsQuestions(req).contentId,
     contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
     contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
     appErrorCode: getAppErrorCode(req.query.appErrorCode as string),

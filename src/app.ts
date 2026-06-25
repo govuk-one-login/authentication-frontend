@@ -204,9 +204,16 @@ async function createApp(): Promise<express.Application> {
 
   app.use(loggerMiddleware);
   app.use(healthcheckRouter);
-  if (getAppEnv() === APP_ENV_NAME.STAGING) {
-    const protect = applyOverloadProtection(isProduction);
-    app.use(protect);
+  if (
+    [
+      APP_ENV_NAME.BUILD,
+      APP_ENV_NAME.STAGING,
+      APP_ENV_NAME.INT,
+      APP_ENV_NAME.PROD,
+    ].includes(getAppEnv())
+  ) {
+    logger.info(`applyOverloadProtection`);
+    app.use(applyOverloadProtection(isProduction));
   }
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
