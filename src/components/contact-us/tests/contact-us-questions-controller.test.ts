@@ -6,6 +6,7 @@ import type { Request, Response } from "express";
 import {
   contactUsQuestionsFormPostToSmartAgent,
   contactUsQuestionsGet,
+  getGA4DataVariablesContactUsQuestions,
 } from "../contact-us-controller.js";
 import {
   CONTACT_US_THEMES,
@@ -81,6 +82,7 @@ describe("contact us questions controller", () => {
               referer: encodeURIComponent(REFERER),
               pageTitle: `pages.contactUsQuestions.${translationKey}.title`,
               pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+              contentId: getGA4DataVariablesContactUsQuestions(req).contentId,
               contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
               contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
               appErrorCode: "",
@@ -149,6 +151,7 @@ describe("contact us questions controller", () => {
               referer: encodeURIComponent(REFERER),
               pageTitle: `pages.contactUsQuestions.${translationKey}.title`,
               pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+              contentId: getGA4DataVariablesContactUsQuestions(req).contentId,
               contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
               contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
               appErrorCode: "",
@@ -215,6 +218,7 @@ describe("contact us questions controller", () => {
               referer: encodeURIComponent(REFERER),
               pageTitle: `pages.contactUsQuestions.${translationKey}.title`,
               pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+              contentId: getGA4DataVariablesContactUsQuestions(req).contentId,
               contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
               contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
               appErrorCode: "",
@@ -251,6 +255,7 @@ describe("contact us questions controller", () => {
               referer: encodeURIComponent(REFERER),
               pageTitle: `pages.contactUsQuestions.${translationKey}.title`,
               pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+              contentId: getGA4DataVariablesContactUsQuestions(req).contentId,
               contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
               contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
               appErrorCode: "",
@@ -312,6 +317,7 @@ describe("contact us questions controller", () => {
               referer: encodeURIComponent(REFERER),
               pageTitle: `pages.contactUsQuestions.${translationKey}.title`,
               pageTitleHeading: `pages.contactUsQuestions.${translationKey}.title`,
+              contentId: getGA4DataVariablesContactUsQuestions(req).contentId,
               contactUsFieldMaxLength: CONTACT_US_FIELD_MAX_LENGTH,
               contactCountryMaxLength: CONTACT_US_COUNTRY_MAX_LENGTH,
               appErrorCode: "",
