@@ -420,6 +420,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "skwdHH2y6ERjJWTPSoAFbSt8lX04OgtI"
+      PasskeyPromptClientDenyList: ""
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       frontendApiBaseUrl: https://nw0dah7bxk-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev2/
@@ -440,6 +441,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "rPEUe0hRrHqf0i0es1gYjKxE5ceGN7VK"
+      PasskeyPromptClientDenyList: ""
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: https://y3s69ubaz5-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev3/
@@ -455,6 +457,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: ""
+      PasskeyPromptClientDenyList: ""
     dev:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -483,6 +486,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "J3tedNRsfssnsf4STuc2NNIV1C1gdxBB"
+      PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-w62weogzsdkb"
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -512,6 +516,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "Ykg9fGyY76On4e8tPvFabK5BIl65EkGH"
+      PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -548,6 +553,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "nsR2wZ7EebJ2VOzE1LUa9iAVadunWQP3,EMGmY82k-92QSakDl_9keKDFmZY" # perf-test client, home client
+      PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
     integration:
       DeployServiceDownPage: "Yes"
@@ -578,6 +584,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       PasskeyPromptClientAllowList: ""
+      PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
     production:
       DeployServiceDownPage: "Yes"
@@ -611,6 +618,7 @@ Mappings:
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: ""
+      PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
 
   # /acceptance-tests/{env}}/CUCUMBER_FILTER_TAGS
@@ -1154,6 +1162,14 @@ Resources:
                   - !Ref SubEnvironment
                   - !Ref Environment
                 - PasskeyPromptClientAllowList
+            - Name: PASSKEY_PROMPT_CLIENT_DENY_LIST
+              Value: !FindInMap
+                - EnvironmentConfiguration
+                - !If
+                  - UseSubEnvironment
+                  - !Ref SubEnvironment
+                  - !Ref Environment
+                - PasskeyPromptClientDenyList
             - Name: ENABLE_DWP_KBV_CONTACT_FORM_CHANGES
               Value: !If [EnableDwpKbvContactFormChanges, "1", "0"]
             - Name: SUPPORT_NEW_INTERNATIONAL_SMS

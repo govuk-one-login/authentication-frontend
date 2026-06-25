@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { getPasskeyPromptClientAllowList } from "../config.js";
+import { getPasskeyPromptClientAllowList, getPasskeyPromptClientDenyList } from "../config.js";
 
 export function shouldPromptToRegisterPasskey(
   req: Request,
@@ -28,5 +28,8 @@ export function shouldPromptToSignInWithPasskey(
 }
 
 function isPromptableRPClientID(rpClientId: string) {
-  return getPasskeyPromptClientAllowList().includes(rpClientId);
+  return (
+    getPasskeyPromptClientAllowList().includes(rpClientId) &&
+    !getPasskeyPromptClientDenyList().includes(rpClientId)
+  );
 }
