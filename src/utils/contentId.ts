@@ -146,6 +146,12 @@ const CONTENT_IDS: {
     "c45fdcf0-78fa-4f5d-be5e-7823bb4d6973",
   [PATH_NAMES.CANNOT_USE_EMAIL_ADDRESS]: () =>
     "9fd51f56-0ca9-4591-93fc-5b2896553b9f",
+  [PATH_NAMES.CREATE_PASSKEY]: () => "81ec1e85-4e3d-4927-bc36-c1134c6d16b1",
+  [PATH_NAMES.PASSKEY_CREATED]: () => "1dab3b06-a0fb-4db6-a60c-a177f1fcf943",
+  [PATH_NAMES.SIGN_IN_WITH_PASSKEY]: () =>
+    "8ed8f4c8-98eb-4cc2-828c-da7277c33ddc",
+  [PATH_NAMES.CANNOT_SIGN_IN_PASSKEY]: () =>
+    "5724bf0c-5456-4462-be64-7208af8bd836",
 };
 
 export const ga4DataSetterContactUsQuestions: {
