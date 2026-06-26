@@ -211,7 +211,7 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
   });
 
   it("should set the relevant validation status function", () => {
-    const validStatus = HTTP_STATUS_CODES.OK;
+    const validStatus = HTTP_STATUS_CODES.UNAUTHORIZED;
 
     const actualConfig = getInternalRequestConfigWithSecurityHeaders(
       {
@@ -223,6 +223,10 @@ describe("getInternalRequestConfigWithSecurityHeaders", () => {
 
     expect(actualConfig.validateStatus(validStatus)).to.eq(true);
     expect(actualConfig.validateStatus(HTTP_STATUS_CODES.BAD_REQUEST)).to.eq(
+      true
+    );
+    expect(actualConfig.validateStatus(HTTP_STATUS_CODES.OK)).to.eq(true);
+    expect(actualConfig.validateStatus(HTTP_STATUS_CODES.FORBIDDEN)).to.eq(
       false
     );
   });
