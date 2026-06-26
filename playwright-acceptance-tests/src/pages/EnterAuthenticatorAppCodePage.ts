@@ -1,8 +1,9 @@
 import type { Page } from "playwright";
 import { BasePage } from "./BasePage";
 
-export class CheckYourPhonePage extends BasePage {
-  readonly pageHeading = /check your phone/i;
+export class EnterAuthenticatorAppCodePage extends BasePage {
+  readonly pageHeading =
+    /enter the 6 digit security code shown in your authenticator app/i;
 
   constructor(page: Page) {
     super(page);
@@ -12,12 +13,8 @@ export class CheckYourPhonePage extends BasePage {
     await super.assertLoaded(this.pageHeading);
   }
 
-  async enterSecurityCode(code: string): Promise<void> {
-    await this.page.locator("#code").fill(code);
-  }
-
   async enterCodeAndContinue(code: string): Promise<void> {
-    await this.enterSecurityCode(code);
+    await this.page.locator("#code").fill(code);
     await this.clickContinue();
   }
 

@@ -40,6 +40,10 @@ export class BasePage {
     await this.page.goto(url, { waitUntil: "domcontentloaded" });
   }
 
+  async assertInlineError(text: string | RegExp): Promise<void> {
+    await expect(this.page.getByText(text).first()).toBeVisible();
+  }
+
   async runAccessibilityCheck(): Promise<void> {
     if ((process.env.A11Y_CHECK || "true").toLowerCase() !== "true") {
       return;

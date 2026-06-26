@@ -7,6 +7,8 @@ import { EnterEmailPage } from "../pages/EnterEmailPage";
 import { EnterPasswordPage } from "../pages/EnterPasswordPage";
 import { CheckYourPhonePage } from "../pages/CheckYourPhonePage";
 import { YouHaveOneLoginPage } from "../pages/YouHaveOneLoginPage";
+import { EnterAuthenticatorAppCodePage } from "../pages/EnterAuthenticatorAppCodePage";
+import { LockoutPage } from "../pages/LockoutPage";
 import { TEST_EMAIL, VALID_PASSWORD } from "../support/constants";
 
 function requirePage(world: PlaywrightWorld) {
@@ -32,6 +34,14 @@ Given(
   async function (this: PlaywrightWorld): Promise<void> {
     // Sets email context to passkey user for subsequent steps
     this.testUserType = TestUserType.PASSKEY;
+  }
+);
+
+Given(
+  "a user with App MFA exists",
+  async function (this: PlaywrightWorld): Promise<void> {
+    // Sets email context to auth app user for subsequent steps
+    this.testUserType = TestUserType.AUTH_APP;
   }
 );
 
@@ -161,6 +171,9 @@ Then(
       case "you have a gov.uk one login":
         await new YouHaveOneLoginPage(page).assertLoaded();
         break;
+      case "enter the 6 digit security code shown in your authenticator app":
+        await new EnterAuthenticatorAppCodePage(page).assertLoaded();
+        break;
       default:
         await expectHeading(page, pageName);
     }
@@ -172,10 +185,13 @@ Then(
 When(
   "the user enters their email address",
   async function (this: PlaywrightWorld): Promise<void> {
-    const email =
-      this.testUserType === TestUserType.PASSKEY
-        ? TEST_EMAIL.PASSKEY_USER
-        : TEST_EMAIL.SMS_USER;
+    const emailByTestUserType: Record<TestUserType, string> = {
+      [TestUserType.NEW_USER]: TEST_EMAIL.NEW_USER,
+      [TestUserType.PASSKEY]: TEST_EMAIL.PASSKEY_USER,
+      [TestUserType.AUTH_APP]: TEST_EMAIL.AUTH_APP_USER,
+      [TestUserType.SMS]: TEST_EMAIL.SMS_USER,
+    };
+    const email = emailByTestUserType[this.testUserType];
     const page = new EnterEmailPage(requirePage(this));
     await page.enterEmail(email);
     if (this.testUserType === TestUserType.PASSKEY) {
@@ -211,6 +227,99 @@ Then(
     await expect(requirePage(this).getByText(/session id/i)).toBeVisible({
       timeout: 15_000,
     });
+  }
+);
+
+/* ---- Lockout retry loops ---- */
+
+When(
+  "the user enters an incorrect password {int} times",
+  async function (this: PlaywrightWorld, count: number): Promise<void> {
+    const page = new EnterPasswordPage(requirePage(this));
+    const isLastAttempt = (i: number) => i === count - 1;
+    for (let i = 0; i < count; i++) {
+      await page.enterPasswordAndContinue("wrong-password");
+      if (!isLastAttempt(i)) {
+        await page.assertLoaded();
+        await page.assertInlineError();
+      }
+    }
+  }
+);
+
+When(
+  "the user enters an incorrect phone security code {int} times",
+  async function (this: PlaywrightWorld, count: number): Promise<void> {
+    const page = new CheckYourPhonePage(requirePage(this));
+    const isLastAttempt = (i: number) => i === count - 1;
+    for (let i = 0; i < count; i++) {
+      await page.enterCodeAndContinue("000000");
+      if (!isLastAttempt(i)) {
+        await page.assertLoaded();
+        await page.assertInlineError();
+      }
+    }
+  }
+);
+
+When(
+  "the user enters an incorrect auth app security code {int} times",
+  async function (this: PlaywrightWorld, count: number): Promise<void> {
+    const page = new EnterAuthenticatorAppCodePage(requirePage(this));
+    const isLastAttempt = (i: number) => i === count - 1;
+    for (let i = 0; i < count; i++) {
+      await page.enterCodeAndContinue("000000");
+      if (!isLastAttempt(i)) {
+        await page.assertLoaded();
+        await page.assertInlineError();
+      }
+    }
+  }
+);
+
+When(
+  "the user requests the phone otp code a further {int} times",
+  async function (this: PlaywrightWorld, count: number): Promise<void> {
+    const page = requirePage(this);
+    const isLastAttempt = (i: number) => i === count - 1;
+    for (let i = 0; i < count; i++) {
+      await page.getByText(/problems with the code/i).click();
+      await page.getByRole("link", { name: /send the code again/i }).click();
+      await page.getByRole("button", { name: /get security code/i }).click();
+      if (!isLastAttempt(i)) {
+        await new CheckYourPhonePage(page).assertLoaded();
+      }
+    }
+  }
+);
+
+/* ---- Lockout assertions ---- */
+
+Then(
+  "the {string} lockout screen is displayed",
+  async function (this: PlaywrightWorld, heading: string): Promise<void> {
+    await new LockoutPage(requirePage(this)).assertHeading(heading);
+  }
+);
+
+Then(
+  "the lockout duration is {int} hours",
+  async function (this: PlaywrightWorld, hours: number): Promise<void> {
+    await new LockoutPage(requirePage(this)).assertDuration(`${hours} hours`);
+  }
+);
+
+Then(
+  "the lockout reason is {string}",
+  async function (this: PlaywrightWorld, reason: string): Promise<void> {
+    await new LockoutPage(requirePage(this)).assertReason(reason);
+  }
+);
+
+Given(
+  "the lockout has not yet expired",
+  async function (this: PlaywrightWorld): Promise<void> {
+    // No-op — lockout state persists in API stub across browser sessions
   }
 );
 
