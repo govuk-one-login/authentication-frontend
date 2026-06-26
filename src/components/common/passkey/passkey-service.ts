@@ -9,7 +9,7 @@ import type {
   StartPasskeyAssertionResponse,
 } from "./types.js";
 import type { ApiResponseResult, DefaultApiResponse } from "../../../types.js";
-import { API_ENDPOINTS } from "../../../app.constants.js";
+import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants.js";
 import type { Request } from "express";
 import type { AuthenticationResponseJSON } from "@simplewebauthn/browser";
 
@@ -52,6 +52,11 @@ export function passkeyService(axios: Http = http): PasskeyServiceInterface {
           sessionId: sessionId,
           clientSessionId: clientSessionId,
           persistentSessionId: persistentSessionId,
+          validationStatuses: [
+            HTTP_STATUS_CODES.UNAUTHORIZED,
+            HTTP_STATUS_CODES.OK,
+            HTTP_STATUS_CODES.BAD_REQUEST,
+          ],
         },
         req,
         API_ENDPOINTS.FINISH_PASSKEY_ASSERTION
