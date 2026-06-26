@@ -6,6 +6,8 @@ import { TestUserType } from "../support/world";
 import { EnterEmailPage } from "../pages/EnterEmailPage";
 import { EnterPasswordPage } from "../pages/EnterPasswordPage";
 import { CheckYourPhonePage } from "../pages/CheckYourPhonePage";
+import { CheckYourEmailPage } from "../pages/CheckYourEmailPage";
+import { CreatePasswordPage } from "../pages/CreatePasswordPage";
 import { YouHaveOneLoginPage } from "../pages/YouHaveOneLoginPage";
 import { EnterAuthenticatorAppCodePage } from "../pages/EnterAuthenticatorAppCodePage";
 import { LockoutPage } from "../pages/LockoutPage";
@@ -42,6 +44,14 @@ Given(
   async function (this: PlaywrightWorld): Promise<void> {
     // Sets email context to auth app user for subsequent steps
     this.testUserType = TestUserType.AUTH_APP;
+  }
+);
+
+Given(
+  "a user does not yet exist",
+  async function (this: PlaywrightWorld): Promise<void> {
+    // Use new user email so user-exists returns doesUserExist: false
+    this.testUserType = TestUserType.NEW_USER;
   }
 );
 
@@ -221,12 +231,66 @@ When(
   }
 );
 
+When(
+  "the user enters the security code from the auth app",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await new EnterAuthenticatorAppCodePage(
+      requirePage(this)
+    ).enterCodeAndContinue("123456");
+  }
+);
+
 Then(
   "the user is returned to the service",
   async function (this: PlaywrightWorld): Promise<void> {
     await expect(requirePage(this).getByText(/session id/i)).toBeVisible({
       timeout: 15_000,
     });
+  }
+);
+
+/* ---- Registration steps ---- */
+
+When(
+  "the user enters the six digit security code from their email",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await new CheckYourEmailPage(requirePage(this)).enterCodeAndContinue(
+      "123456"
+    );
+  }
+);
+
+When(
+  "the user creates a password",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await new CreatePasswordPage(requirePage(this)).createPasswordAndContinue(
+      "ValidPassword1!"
+    );
+  }
+);
+
+When(
+  "the user chooses auth app to get security codes",
+  async function (this: PlaywrightWorld): Promise<void> {
+    const page = requirePage(this);
+    await page.getByRole("radio", { name: /authenticator app/i }).click();
+    await page.getByRole("button", { name: /continue/i }).click();
+  }
+);
+
+When(
+  "the user adds the secret key on the screen to their auth app",
+  async function (this: PlaywrightWorld): Promise<void> {
+    // No-op: we don't need to actually scan a QR code — we just
+    // enter the valid code in the next step
+  }
+);
+
+Then(
+  "the user is not shown any error messages",
+  async function (this: PlaywrightWorld): Promise<void> {
+    const page = requirePage(this);
+    await expect(page.locator(".govuk-error-summary")).not.toBeVisible();
   }
 );
 
