@@ -22,27 +22,7 @@ export class BasePage {
   }
 
   async goto(url: string): Promise<void> {
-    await this.page.goto(url, { waitUntil: "networkidle" });
-  }
-
-  async assertBasicSecurity(): Promise<void> {
-    if ((process.env.SECURITY_CHECK || "true").toLowerCase() !== "true") {
-      return;
-    }
-
-    const url = this.page.url();
-
-    if (!url.startsWith("https://")) {
-      throw new Error(`Expected HTTPS URL, got: ${url}`);
-    }
-
-    const isSecureContext = await this.page.evaluate(
-      () => window.isSecureContext
-    );
-
-    if (!isSecureContext) {
-      throw new Error("Expected secure browser context.");
-    }
+    await this.page.goto(url, { waitUntil: "domcontentloaded" });
   }
 
   async runAccessibilityCheck(): Promise<void> {

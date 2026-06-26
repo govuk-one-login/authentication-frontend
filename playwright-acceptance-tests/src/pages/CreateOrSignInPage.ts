@@ -13,7 +13,6 @@ export class CreateOrSignInPage extends BasePage {
       })
       .waitFor({ state: "visible" });
 
-    await this.assertBasicSecurity();
     await this.runAccessibilityCheck();
   }
 

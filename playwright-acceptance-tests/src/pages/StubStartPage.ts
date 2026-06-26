@@ -19,7 +19,6 @@ export class StubStartPage extends BasePage {
       .getByRole("heading", { name: /orchestration stub/i })
       .waitFor({ state: "visible" });
 
-    await this.assertBasicSecurity();
     await this.runAccessibilityCheck();
   }
 

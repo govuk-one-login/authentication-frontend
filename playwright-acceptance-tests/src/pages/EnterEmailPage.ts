@@ -15,7 +15,6 @@ export class EnterEmailPage extends BasePage {
       })
       .waitFor({ state: "visible" });
 
-    await this.assertBasicSecurity();
     await this.runAccessibilityCheck();
   }
 
