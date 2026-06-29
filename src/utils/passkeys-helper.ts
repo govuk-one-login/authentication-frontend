@@ -11,6 +11,7 @@ export function shouldPromptToRegisterPasskey(
     req.session.user?.hasSkippedPasskeyRegistration !== true &&
     req.session.user?.backendIndicatesPasskeyPromptShouldBeSkipped !== true &&
     !req.session.user?.reauthenticate &&
+    !req.session.user?.isPasswordResetJourney &&
     isPromptableRPClientID(req.session.client.rpClientId) &&
     res.locals.supportPasskeyRegistration === true
   );
