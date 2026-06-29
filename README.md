@@ -324,8 +324,18 @@ All snapshot test files are suffixed `.snapshot.test.ts`
 
 This will run the tests in the same way as in the build pipeline. From the root of the project
 
-- Build the docker containers `docker compose -f docker-compose.snapshots.yml build`
-- Run the tests `docker compose -f docker-compose.snapshots.yml up --exit-code-from playwright`
+- Build the docker containers
+
+```bash
+docker compose -f docker-compose.snapshots.yml build
+```
+
+- Run the tests
+
+```bash
+docker compose -f docker-compose.snapshots.yml up --exit-code-from playwright
+```
+
 - **NOTE**: Do not run the Playwright tests outside of Docker. There are subtle differences between running them in the container
   and locally and because of the pipeline we want to make sure we only run them in Docker.
 
@@ -339,8 +349,13 @@ This will run the tests in the same way as in the build pipeline. From the root 
 
 If you make a change that affects the appearance of a page then you will need to update the saved snapshot file.
 
-- `docker compose -f docker-compose.snapshots.yml build`
-- `COMMAND=--update-snapshots docker compose -f docker-compose.snapshots.yml up --exit-code-from playwright`
+```bash
+docker compose -f docker-compose.snapshots.yml build
+```
+
+```bash
+COMMAND=--update-snapshots docker compose -f docker-compose.snapshots.yml up --exit-code-from playwright
+```
 
 ## Making changes to environment variables
 
