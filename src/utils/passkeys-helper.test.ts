@@ -17,6 +17,7 @@ describe("passkeys helper", () => {
         rpClientId: "valid-rp-client-id",
         backendIndicatesPasskeyPromptShouldBeSkipped: false,
         isPasswordResetJourney: false,
+        withinForcedPasswordResetJourney: false,
         expected: true,
       },
       {
@@ -27,6 +28,7 @@ describe("passkeys helper", () => {
         rpClientId: "valid-rp-client-id",
         backendIndicatesPasskeyPromptShouldBeSkipped: null,
         isPasswordResetJourney: false,
+        withinForcedPasswordResetJourney: false,
         expected: true,
       },
       {
@@ -37,6 +39,7 @@ describe("passkeys helper", () => {
         rpClientId: "invalid-rp-client-id",
         backendIndicatesPasskeyPromptShouldBeSkipped: false,
         isPasswordResetJourney: false,
+        withinForcedPasswordResetJourney: false,
         expected: false,
       },
       {
@@ -47,6 +50,7 @@ describe("passkeys helper", () => {
         rpClientId: "invalid-rp-client-id",
         backendIndicatesPasskeyPromptShouldBeSkipped: false,
         isPasswordResetJourney: false,
+        withinForcedPasswordResetJourney: false,
         expected: false,
       },
       {
@@ -57,6 +61,7 @@ describe("passkeys helper", () => {
         rpClientId: "invalid-rp-client-id",
         backendIndicatesPasskeyPromptShouldBeSkipped: false,
         isPasswordResetJourney: false,
+        withinForcedPasswordResetJourney: false,
         expected: false,
       },
       {
@@ -67,6 +72,7 @@ describe("passkeys helper", () => {
         rpClientId: "invalid-rp-client-id",
         backendIndicatesPasskeyPromptShouldBeSkipped: false,
         isPasswordResetJourney: false,
+        withinForcedPasswordResetJourney: false,
         expected: false,
       },
       {
@@ -78,6 +84,7 @@ describe("passkeys helper", () => {
         rpClientId: "invalid-rp-client-id",
         backendIndicatesPasskeyPromptShouldBeSkipped: false,
         isPasswordResetJourney: false,
+        withinForcedPasswordResetJourney: false,
         expected: false,
       },
       {
@@ -88,6 +95,7 @@ describe("passkeys helper", () => {
         rpClientId: "invalid-rp-client-id",
         backendIndicatesPasskeyPromptShouldBeSkipped: false,
         isPasswordResetJourney: false,
+        withinForcedPasswordResetJourney: false,
         expected: false,
       },
       {
@@ -98,6 +106,7 @@ describe("passkeys helper", () => {
         rpClientId: "valid-rp-client-id",
         backendIndicatesPasskeyPromptShouldBeSkipped: false,
         isPasswordResetJourney: false,
+        withinForcedPasswordResetJourney: false,
         expected: false,
       },
       {
@@ -108,6 +117,7 @@ describe("passkeys helper", () => {
         rpClientId: "valid-rp-client-id",
         backendIndicatesPasskeyPromptShouldBeSkipped: true,
         isPasswordResetJourney: false,
+        withinForcedPasswordResetJourney: false,
         expected: false,
       },
       {
@@ -118,6 +128,18 @@ describe("passkeys helper", () => {
         rpClientId: "valid-rp-client-id",
         backendIndicatesPasskeyPromptShouldBeSkipped: false,
         isPasswordResetJourney: true,
+        withinForcedPasswordResetJourney: false,
+        expected: false,
+      },
+      {
+        browserSupportsWebAuthn: true,
+        hasActivePasskey: false,
+        hasSkippedPasskeyRegistration: false,
+        supportPasskeyRegistration: true,
+        rpClientId: "valid-rp-client-id",
+        backendIndicatesPasskeyPromptShouldBeSkipped: false,
+        isPasswordResetJourney: false,
+        withinForcedPasswordResetJourney: true,
         expected: false,
       },
     ];
@@ -132,9 +154,10 @@ describe("passkeys helper", () => {
         rpClientId,
         backendIndicatesPasskeyPromptShouldBeSkipped,
         isPasswordResetJourney,
+        withinForcedPasswordResetJourney,
         expected,
       }) => {
-        it(`should return ${expected} when browserSupportsWebAuthn=${browserSupportsWebAuthn}, hasActivePasskey=${hasActivePasskey}, hasSkippedPasskeyRegistration=${hasSkippedPasskeyRegistration}, supportPasskeyRegistration=${supportPasskeyRegistration}, reauthenticate=${reauthenticate}, rpClientId=${rpClientId}, backendIndicatesPasskeyPromptShouldBeSkipped=${backendIndicatesPasskeyPromptShouldBeSkipped}, passwordResetJourney=${isPasswordResetJourney}`, () => {
+        it(`should return ${expected} when browserSupportsWebAuthn=${browserSupportsWebAuthn}, hasActivePasskey=${hasActivePasskey}, hasSkippedPasskeyRegistration=${hasSkippedPasskeyRegistration}, supportPasskeyRegistration=${supportPasskeyRegistration}, reauthenticate=${reauthenticate}, rpClientId=${rpClientId}, backendIndicatesPasskeyPromptShouldBeSkipped=${backendIndicatesPasskeyPromptShouldBeSkipped}, passwordResetJourney=${isPasswordResetJourney}, withinForcedPasswordResetJourney=${withinForcedPasswordResetJourney}`, () => {
           process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
 
           const req = {
@@ -146,6 +169,7 @@ describe("passkeys helper", () => {
                 reauthenticate,
                 backendIndicatesPasskeyPromptShouldBeSkipped,
                 isPasswordResetJourney,
+                withinForcedPasswordResetJourney,
               },
               client: {
                 rpClientId: rpClientId,
