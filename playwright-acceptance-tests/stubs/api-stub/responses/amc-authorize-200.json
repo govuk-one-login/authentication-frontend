@@ -1,4 +1,0 @@
-{
-  "authorizeUrl": "http://localhost:3000/amc-authorize-redirect",
-  "cookie": "stub-amc-cookie"
-}

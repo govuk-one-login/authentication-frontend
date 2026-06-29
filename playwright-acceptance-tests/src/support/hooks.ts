@@ -12,29 +12,12 @@ Before(async function (this: PlaywrightWorld) {
     await this.context.tracing.start({ screenshots: true, snapshots: true });
   }
 
-  // Reset Imposter stores to prevent state leaking between scenarios
-  const imposterUrl = process.env.IMPOSTER_URL || "http://api-stub:8080";
-  const storeNames = [
-    "loginAttempts",
-    "lockedOutPassword",
-    "lockedOutMfa",
-    "mfaResendCount",
-    "verifyMfaAttempts",
-    "verifyCodeAttempts",
-    "authenticated",
-    "authenticatedCredentialStrength",
-    "credentialStrength",
-    "userMfaMethodType",
-    "registered",
-  ];
+  // Reset API stub state to prevent state leaking between scenarios
+  const stubUrl = process.env.API_STUB_URL || "http://api-stub:8080";
   try {
-    await Promise.all(
-      storeNames.map((s) =>
-        fetch(`${imposterUrl}/system/store/${s}`, { method: "DELETE" })
-      )
-    );
+    await fetch(`${stubUrl}/test/state`, { method: "DELETE" });
   } catch {
-    // Imposter may not be reachable in non-docker environments
+    // Stub may not be reachable in non-docker environments
   }
 });
 

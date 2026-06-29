@@ -1,3 +1,0 @@
-{
-  "location": "http://proxy/orchestration-redirect?code=auth-code-123&state=${context.request.body:$.state}"
-}

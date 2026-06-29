@@ -42,9 +42,7 @@ services:
       - test-net
 
   api-stub:
-    image: outofcoffee/imposter:4.9.1
-    volumes:
-      - ./stubs/api-stub:/opt/imposter/config
+    build: ./stubs/api-stub
     networks:
       - test-net
 
@@ -94,7 +92,7 @@ services:
       dockerfile: Dockerfile
     environment:
       BASE_URL: http://proxy/
-      IMPOSTER_URL: http://api-stub:8080
+      API_STUB_URL: http://api-stub:8080
       BROWSER: chromium
       HEADLESS: "true"
       A11Y_CHECK: "false"
