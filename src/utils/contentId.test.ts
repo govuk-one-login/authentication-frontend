@@ -1,3 +1,4 @@
+import { describe } from "mocha";
 import { getContentId } from "./contentId.js";
 import type { Request } from "express";
 import type { ContentIdFunction } from "../types.js";
