@@ -585,6 +585,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
             }
           : undefined,
       answeringQuestionsAbout: getReasonForAnsweringQuestionsAbout(req),
+      whatWereYouTryingToDo: req.body.whatWereYouTryingToDo,
     });
 
     req.log.info(
@@ -759,6 +760,15 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.signignInProblem.section1.header",
         { lng: "en" }
       ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
+    signingInProblemWithAPasskey: {
+      issueDescription: req.t("pages.contactUsQuestions.whatHappened.header", {
+        lng: "en",
+      }),
       serviceTryingToUse: req.t(
         "pages.contactUsQuestions.serviceTryingToUse.header",
         { lng: "en" }
@@ -1102,6 +1112,10 @@ function getQuestionFromThemes(
     ),
     something_else: req.t(
       "pages.contactUsFurtherInformation.signingIn.section1.radio7",
+      { lng: "en" }
+    ),
+    signing_in_problem_with_a_passkey: req.t(
+      "pages.contactUsFurtherInformation.signingIn.section1.radio8",
       { lng: "en" }
     ),
   };
