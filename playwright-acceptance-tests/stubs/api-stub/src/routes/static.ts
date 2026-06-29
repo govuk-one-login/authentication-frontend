@@ -64,53 +64,6 @@ export function registerStaticRoutes(app: Express): void {
     res.json({ success: true })
   );
 
-  app.post("/start", (_, res) =>
-    res.json({
-      sessionId: "session-123",
-      user: {
-        upliftRequired: false,
-        identityRequired: false,
-        authenticated: false,
-        mfaMethodType: "SMS",
-        mfaRequired: true,
-        isBlockedForReauth: false,
-      },
-      featureFlags: {},
-    })
-  );
-  app.post("/user-exists", (_, res) =>
-    res.json({ email: "test@example.com", doesUserExist: true })
-  );
-  app.post("/login", (_, res) =>
-    res.json({
-      redactedPhoneNumber: "****7890",
-      mfaMethodType: "SMS",
-      latestTermsAndConditionsAccepted: true,
-      mfaRequired: true,
-      mfaMethodVerified: true,
-      passwordChangeRequired: false,
-      mfaMethods: [
-        {
-          id: "stub-mfa-method-id",
-          type: "SMS",
-          priority: "DEFAULT",
-          redactedPhoneNumber: "****7890",
-        },
-      ],
-    })
-  );
-  app.post("/signup", (_, res) =>
-    res.json({ email: "test@example.com", consentRequired: false })
-  );
-  app.post("/mfa", (_, res) => res.sendStatus(204));
-  app.post("/verify-code", (_, res) => res.sendStatus(204));
-  app.post("/verify-mfa-code", (_, res) => res.sendStatus(204));
-  app.post("/orch-auth-code", (req, res) =>
-    res.json({
-      location: `http://proxy/orchestration-redirect?code=auth-code-123&state=${req.body?.state || ""}`,
-    })
-  );
-
   app.post("/token", (_, res) =>
     res.json({
       access_token: "740e5834-3a29-46b4-9a6f-16142fde533a",

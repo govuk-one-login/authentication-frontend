@@ -1,5 +1,6 @@
 import type { Page } from "playwright";
 import AxeBuilder from "@axe-core/playwright";
+import { expect } from "../support/expect";
 
 type AxeNodeLite = {
   target?: string[];
@@ -19,6 +20,20 @@ export class BasePage {
 
   constructor(page: Page) {
     this.page = page;
+  }
+
+  async assertLoaded(pageName: string | RegExp): Promise<void> {
+    await expect(
+      this.page.getByRole("heading", {
+        name: pageName,
+      })
+    ).toBeVisible();
+
+    await this.runAccessibilityCheck();
+  }
+
+  async clickContinue(): Promise<void> {
+    await this.page.getByRole("button", { name: /continue/i }).click();
   }
 
   async goto(url: string): Promise<void> {

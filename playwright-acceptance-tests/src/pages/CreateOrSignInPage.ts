@@ -2,18 +2,14 @@ import type { Page } from "playwright";
 import { BasePage } from "./BasePage";
 
 export class CreateOrSignInPage extends BasePage {
+  readonly pageHeading = /create your gov\.uk one login or sign in/i;
+
   constructor(page: Page) {
     super(page);
   }
 
   async assertLoaded(): Promise<void> {
-    await this.page
-      .getByRole("heading", {
-        name: /create your gov\.uk one login or sign in/i,
-      })
-      .waitFor({ state: "visible" });
-
-    await this.runAccessibilityCheck();
+    await super.assertLoaded(this.pageHeading);
   }
 
   async clickCreateAccount(): Promise<void> {
