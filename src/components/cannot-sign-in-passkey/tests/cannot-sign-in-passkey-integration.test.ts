@@ -167,11 +167,31 @@ describe("Integration:: cannot sign in passkey", () => {
           .expect(403);
       });
 
-      it("should redirect to cannot-sign-in-passkey when finishPasskeyAssertion fails", async () => {
+      it("should redirect to cannot-sign-in-passkey when parsing pkc error", async () => {
         nock(baseApi)
           .post(API_ENDPOINTS.FINISH_PASSKEY_ASSERTION)
           .once()
           .reply(400, { success: false, code: 0 });
+
+        await request(app)
+          .post(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            authenticationResponse: commonVariables.passkeyAssertionResponse,
+            "cannot-sign-in-passkey-action":
+              CANNOT_SIGN_IN_PASSKEY_ACTION.RETRY_PASSKEY,
+          })
+          .expect(302)
+          .expect("Location", PATH_NAMES.CANNOT_SIGN_IN_PASSKEY);
+      });
+
+      it("should redirect to cannot-sign-in-passkey when finish assertion fails", async () => {
+        nock(baseApi)
+          .post(API_ENDPOINTS.FINISH_PASSKEY_ASSERTION)
+          .once()
+          .reply(401, { success: false, code: 0 });
 
         await request(app)
           .post(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)

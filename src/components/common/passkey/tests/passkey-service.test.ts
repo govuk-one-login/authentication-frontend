@@ -139,6 +139,7 @@ describe("passkey service", () => {
         expectedPath: API_ENDPOINTS.FINISH_PASSKEY_ASSERTION,
         expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
         expectedBody: { pkc: startAuthenticationWebauthnResponse },
+        validateStatus: true,
       };
       checkApiCallMadeWithExpectedBodyAndHeaders(
         result,
@@ -176,6 +177,7 @@ describe("passkey service", () => {
         expectedPath: API_ENDPOINTS.FINISH_PASSKEY_ASSERTION,
         expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
         expectedBody: { pkc: startAuthenticationWebauthnResponse },
+        validateStatus: true,
       };
       checkApiCallMadeWithExpectedBodyAndHeaders(
         result,
