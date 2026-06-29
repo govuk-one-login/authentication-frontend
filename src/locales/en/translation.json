@@ -1997,6 +1997,8 @@
           "radio5": "You’ve been told your GOV.UK One Login ‘cannot be found’",
           "radio6": "There was a technical problem (for example, the service was unavailable)",
           "radio7": "Something else",
+          "radio8": "There was a problem with a passkey",
+          "radio8Hint": "Passkeys let you sign in using your face, fingerprint, PIN or passcode",
           "errorMessage": "Select the problem you had when signing in to your GOV.UK One Login"
         }
       },

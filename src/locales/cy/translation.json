@@ -1997,6 +1997,8 @@
           "radio5": "Dywedwyd wrthych ’na ellir dod o hyd’ i’ch GOV.UK One Login",
           "radio6": "Roedd problem dechnegol (er enghraifft, nid oedd y gwasanaeth ar gael)",
           "radio7": "Rhywbeth arall",
+          "radio8": "Roedd problem gyda allwedd mynediad",
+          "radio8Hint": "Mae allweddi mynediad yn gadael i chi fewngofnodi drwy ddefnyddio’ch wyneb, olion bysedd, PIN neu god mynediad",
           "errorMessage": "Dewiswch y broblem oedd gennych wrth fewngofnodi i ’ch GOV.UK One Login"
         }
       },
