@@ -2304,11 +2304,16 @@
         "description": "Passkeys let you sign in the same way you unlock your phone, computer or tablet. For example with your face, fingerprint, PIN or passcode.",
         "section1": {
           "header": "What were you trying to do?",
+          "errorMessage": "Select what you were trying to do",
           "options": {
             "set_up_a_new_passkey": "Set up a new passkey",
             "sign_in_using_your_passkey": "Sign in using your passkey",
             "something_else": "Something else"
           }
+        },
+        "whatHappened": {
+          "errorMessage": "Enter what happened",
+          "entryTooLongMessage": "What happened must be [maximumCharacters] characters or less"
         }
       },
       "noPhoneNumberAccess": {

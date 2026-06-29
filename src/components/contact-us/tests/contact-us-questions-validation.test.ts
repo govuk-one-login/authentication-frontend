@@ -125,6 +125,11 @@ const ERROR_MESSAGE_SIGNING_IN_ISSUE_TEST_CASES = [
     expectedString:
       "pages.contactUsQuestions.signignInProblem.section1.errorMessage",
   },
+  {
+    subtheme: CONTACT_US_THEMES.SIGNING_IN_PROBLEM_WITH_A_PASSKEY,
+    expectedString:
+      "pages.contactUsQuestions.signingInProblemWithAPasskey.whatHappened.errorMessage",
+  },
 ];
 
 const ERROR_MESSAGE_ID_CHECK_APP_ISSUE_TEST_CASES: TestCase[] = [
@@ -329,6 +334,11 @@ const LENGTH_EXCEEDED_SIGNING_IN_ISSUE_TEST_CASES: TestCase[] = [
     subtheme: CONTACT_US_THEMES.SOMETHING_ELSE,
     expectedString:
       "pages.contactUsQuestions.issueDescriptionErrorMessage.anythingElseTooLongMessage",
+  },
+  {
+    subtheme: CONTACT_US_THEMES.SIGNING_IN_PROBLEM_WITH_A_PASSKEY,
+    expectedString:
+      "pages.contactUsQuestions.signingInProblemWithAPasskey.whatHappened.entryTooLongMessage",
   },
 ];
 
