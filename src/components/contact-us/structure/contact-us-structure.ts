@@ -135,22 +135,22 @@ export const CONTACT_FORM_STRUCTURE: ContactFormStructure = new Map([
           },
         ],
         [
-          CONTACT_US_THEMES.ACCOUNT_NOT_FOUND,
-          {
-            nextPageContent: "pages.contactUsQuestions.accountNotFound",
-            radio: {
-              mainTextKey:
-                "pages.contactUsFurtherInformation.signingIn.section1.radio5",
-            },
-          },
-        ],
-        [
           CONTACT_US_THEMES.TECHNICAL_ERROR,
           {
             nextPageContent: "pages.contactUsQuestions.technicalError",
             radio: {
               mainTextKey:
                 "pages.contactUsFurtherInformation.signingIn.section1.radio6",
+            },
+          },
+        ],
+        [
+          CONTACT_US_THEMES.ACCOUNT_NOT_FOUND,
+          {
+            nextPageContent: "pages.contactUsQuestions.accountNotFound",
+            radio: {
+              mainTextKey:
+                "pages.contactUsFurtherInformation.signingIn.section1.radio5",
             },
           },
         ],
