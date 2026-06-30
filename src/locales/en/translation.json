@@ -1992,7 +1992,7 @@
           "radio1": "You did not get a security code",
           "radio2": "The security code did not work",
           "radio3MfaReset": "You’ve lost access to the way you get a security code for GOV.UK One Login",
-          "radio3MfaResetHint": "You cannot use the phone number or the authenticator app you set up to sign in",
+          "radio3MfaResetHint": "You cannot use your phone number or  authenticator app to sign in",
           "radio4": "You’ve forgotten your password",
           "radio5": "You’ve been told your GOV.UK One Login ‘cannot be found’",
           "radio6": "There was a technical problem (for example, the service was unavailable)",
