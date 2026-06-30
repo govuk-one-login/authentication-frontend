@@ -181,6 +181,7 @@ export function enterPasswordPost(
     req.session.user.isLatestTermsAndConditionsAccepted =
       userLogin.data.latestTermsAndConditionsAccepted;
     req.session.user.isPasswordChangeRequired = isPasswordChangeRequired;
+    req.session.user.isCommonPasswordResetJourney = isPasswordChangeRequired;
     req.session.user.mfaMethodType = userLogin.data.mfaMethodType;
 
     const interventionRedirect = await handleAccountInterventions(

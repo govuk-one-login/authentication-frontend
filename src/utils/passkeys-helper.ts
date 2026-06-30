@@ -35,6 +35,7 @@ function isPromptableRPClientID(rpClientId: string) {
 function userHasBeenOnPasswordResetJourney(req: Request) {
   return (
     req.session.user?.isPasswordResetJourney ||
-    req.session.user?.withinForcedPasswordResetJourney
+    req.session.user?.withinForcedPasswordResetJourney ||
+    req.session.user?.isCommonPasswordResetJourney
   );
 }
