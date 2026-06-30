@@ -93,6 +93,18 @@ export const CONTACT_FORM_STRUCTURE: ContactFormStructure = new Map([
       },
       subThemes: new Map([
         [
+          CONTACT_US_THEMES.LOST_SECURITY_CODE_ACCESS,
+          {
+            nextPageContent: "pages.contactUsQuestions.noPhoneNumberAccess",
+            radio: {
+              mainTextKey:
+                "pages.contactUsFurtherInformation.signingIn.section1.radio3MfaReset",
+              hintTextKey:
+                "pages.contactUsFurtherInformation.signingIn.section1.radio3MfaResetHint",
+            },
+          },
+        ],
+        [
           CONTACT_US_THEMES.NO_SECURITY_CODE,
           {
             nextPageContent: "pages.contactUsQuestions.noSecurityCode",
@@ -119,18 +131,6 @@ export const CONTACT_FORM_STRUCTURE: ContactFormStructure = new Map([
             radio: {
               mainTextKey:
                 "pages.contactUsFurtherInformation.signingIn.section1.radio4",
-            },
-          },
-        ],
-        [
-          CONTACT_US_THEMES.LOST_SECURITY_CODE_ACCESS,
-          {
-            nextPageContent: "pages.contactUsQuestions.noPhoneNumberAccess",
-            radio: {
-              mainTextKey:
-                "pages.contactUsFurtherInformation.signingIn.section1.radio3MfaReset",
-              hintTextKey:
-                "pages.contactUsFurtherInformation.signingIn.section1.radio3MfaResetHint",
             },
           },
         ],
