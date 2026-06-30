@@ -82,9 +82,10 @@ export interface UserSession {
   isAccountRecoveryJourney?: boolean;
   accountRecoveryVerifiedMfaType?: string;
   reauthenticate?: string;
-  withinForcedPasswordResetJourney?: boolean;
+  withinForcedPasswordResetJourney?: boolean; // for account interventions
+  isCommonPasswordResetJourney?: boolean; // for common passwords
+  isPasswordResetJourney?: boolean; // for user triggered password reset
   passwordResetTime?: number;
-  isPasswordResetJourney?: boolean;
   isSignInJourney?: boolean;
   isVerifyEmailCodeResendRequired?: boolean;
   channel?: string;
