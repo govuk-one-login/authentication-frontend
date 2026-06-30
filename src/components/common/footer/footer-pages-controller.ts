@@ -1,14 +1,9 @@
 import type { Request, Response } from "express";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { supportTypeIsGovService } from "../../../utils/request.js";
-import { getPrivacyNoticeRedirectEnabled } from "../../../config.js";
 
 export function privacyStatementGet(req: Request, res: Response): void {
-  if (getPrivacyNoticeRedirectEnabled()) {
-    redirectToExternalPrivacyNotice(req, res);
-  } else {
-    res.render("common/footer/privacy-statement.njk");
-  }
+  redirectToExternalPrivacyNotice(req, res);
 }
 
 export function termsConditionsGet(req: Request, res: Response): void {
