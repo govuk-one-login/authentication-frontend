@@ -549,7 +549,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnableDwpKbvContactFormChanges: "Yes"
       SupportSingleFactorAccountDeletion: "No"
-      PasskeyPromptClientAllowList: "EB2EC91OpyzuhI7C2nw1aiEK2q8,3NKFv679oYlMdyrhKErrTGbzBy2h8rrd,nsR2wZ7EebJ2VOzE1LUa9iAVadunWQP3,EMGmY82k-92QSakDl_9keKDFmZY" # mobile sts, rp-stub, perf-test client, home client
+      PasskeyPromptClientAllowList: "nsR2wZ7EebJ2VOzE1LUa9iAVadunWQP3,EMGmY82k-92QSakDl_9keKDFmZY" # perf-test client, home client
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
     integration:
       DeployServiceDownPage: "Yes"
