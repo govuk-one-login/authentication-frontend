@@ -11,6 +11,7 @@ export function shouldPromptToRegisterPasskey(
     req.session.user?.hasSkippedPasskeyRegistration !== true &&
     req.session.user?.backendIndicatesPasskeyPromptShouldBeSkipped !== true &&
     !req.session.user?.reauthenticate &&
+    !userHasBeenOnPasswordResetJourney(req) &&
     isPromptableRPClientID(req.session.client.rpClientId) &&
     res.locals.supportPasskeyRegistration === true
   );
@@ -29,4 +30,12 @@ export function shouldPromptToSignInWithPasskey(
 
 function isPromptableRPClientID(rpClientId: string) {
   return getPasskeyPromptClientAllowList().includes(rpClientId);
+}
+
+function userHasBeenOnPasswordResetJourney(req: Request) {
+  return (
+    req.session.user?.isPasswordResetJourney ||
+    req.session.user?.withinForcedPasswordResetJourney ||
+    req.session.user?.isCommonPasswordResetJourney
+  );
 }
