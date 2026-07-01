@@ -127,7 +127,8 @@ describe("passkeys helper", () => {
                 isPasswordResetJourney: false,
                 withinForcedPasswordResetJourney: false,
                 isCommonPasswordResetJourney: false,
-                isMfaRequired: true
+                isMfaRequired: true,
+                isUpliftRequired: false,
               },
               client: {
                 rpClientId: rpClientId,
@@ -195,6 +196,7 @@ describe("passkeys helper", () => {
                 reauthenticate: false,
                 backendIndicatesPasskeyPromptShouldBeSkipped: false,
                 isMfaRequired: true,
+                isUpliftRequired: false,
                 isPasswordResetJourney,
                 withinForcedPasswordResetJourney,
                 isCommonPasswordResetJourney,
@@ -212,53 +214,60 @@ describe("passkeys helper", () => {
             expectedShouldPromptToRegister
           );
         });
-      });
+      }
+    );
 
-      const mfaVariantTestCases = [
-        {
-          isMfaRequired: true,
-          expectedShouldPromptToRegister: true,
-        },
-        {
-          isMfaRequired: false,
-          expectedShouldPromptToRegister: false
-        }
-      ]
+    const mfaVariantTestCases = [
+      {
+        isMfaRequired: true,
+        isUpliftRequired: false,
+        expectedShouldPromptToRegister: true,
+      },
+      {
+        isMfaRequired: false,
+        isUpliftRequired: false,
+        expectedShouldPromptToRegister: false,
+      },
+      {
+        isMfaRequired: true,
+        isUpliftRequired: true,
+        expectedShouldPromptToRegister: false,
+      },
+    ];
     mfaVariantTestCases.forEach(
-      ({
-         isMfaRequired,
-         expectedShouldPromptToRegister,
-       }) => {
-      it(`should return ${expectedShouldPromptToRegister} when isMfaRequired=${isMfaRequired}`, () => {
-        process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
+      ({ isMfaRequired, isUpliftRequired, expectedShouldPromptToRegister }) => {
+        it(`should return ${expectedShouldPromptToRegister} when isMfaRequired=${isMfaRequired} and isUpliftRequired=${isUpliftRequired}`, () => {
+          process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
 
-        const req = {
-          session: {
-            user: {
-              isMfaRequired: isMfaRequired,
-              browserSupportsWebAuthn: true,
-              hasActivePasskey: false,
-              hasSkippedPasskeyRegistration: false,
-              reauthenticate: false,
-              backendIndicatesPasskeyPromptShouldBeSkipped: false,
-              isPasswordResetJourney: false,
-              withinForcedPasswordResetJourney: false,
-              isCommonPasswordResetJourney: false,
+          const req = {
+            session: {
+              user: {
+                isMfaRequired: isMfaRequired,
+                isUpliftRequired: isUpliftRequired,
+                browserSupportsWebAuthn: true,
+                hasActivePasskey: false,
+                hasSkippedPasskeyRegistration: false,
+                reauthenticate: false,
+                backendIndicatesPasskeyPromptShouldBeSkipped: false,
+                isPasswordResetJourney: false,
+                withinForcedPasswordResetJourney: false,
+                isCommonPasswordResetJourney: false,
+              },
+              client: {
+                rpClientId: "valid-rp-client-id",
+              },
             },
-            client: {
-              rpClientId: "valid-rp-client-id",
-            },
-          },
-        } as any as Request;
-        const res = {
-          locals: { supportPasskeyRegistration: true },
-        } as any as Response;
+          } as any as Request;
+          const res = {
+            locals: { supportPasskeyRegistration: true },
+          } as any as Response;
 
-        expect(shouldPromptToRegisterPasskey(req, res)).to.eq(
-          expectedShouldPromptToRegister
-        );
-      });
-    });
+          expect(shouldPromptToRegisterPasskey(req, res)).to.eq(
+            expectedShouldPromptToRegister
+          );
+        });
+      }
+    );
   });
 
   describe("shouldPromptToSignInWithPasskey", () => {
