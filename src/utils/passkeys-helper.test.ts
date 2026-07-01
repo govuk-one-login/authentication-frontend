@@ -128,6 +128,7 @@ describe("passkeys helper", () => {
                 withinForcedPasswordResetJourney: false,
                 isCommonPasswordResetJourney: false,
                 isMfaRequired: true,
+                isUpliftRequired: false,
               },
               client: {
                 rpClientId: rpClientId,
@@ -195,6 +196,7 @@ describe("passkeys helper", () => {
                 reauthenticate: false,
                 backendIndicatesPasskeyPromptShouldBeSkipped: false,
                 isMfaRequired: true,
+                isUpliftRequired: false,
                 isPasswordResetJourney,
                 withinForcedPasswordResetJourney,
                 isCommonPasswordResetJourney,
@@ -218,22 +220,30 @@ describe("passkeys helper", () => {
     const mfaVariantTestCases = [
       {
         isMfaRequired: true,
+        isUpliftRequired: false,
         expectedShouldPromptToRegister: true,
       },
       {
         isMfaRequired: false,
+        isUpliftRequired: false,
+        expectedShouldPromptToRegister: false,
+      },
+      {
+        isMfaRequired: true,
+        isUpliftRequired: true,
         expectedShouldPromptToRegister: false,
       },
     ];
     mfaVariantTestCases.forEach(
-      ({ isMfaRequired, expectedShouldPromptToRegister }) => {
-        it(`should return ${expectedShouldPromptToRegister} when isMfaRequired=${isMfaRequired}`, () => {
+      ({ isMfaRequired, isUpliftRequired, expectedShouldPromptToRegister }) => {
+        it(`should return ${expectedShouldPromptToRegister} when isMfaRequired=${isMfaRequired} and isUpliftRequired=${isUpliftRequired}`, () => {
           process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
 
           const req = {
             session: {
               user: {
                 isMfaRequired: isMfaRequired,
+                isUpliftRequired: isUpliftRequired,
                 browserSupportsWebAuthn: true,
                 hasActivePasskey: false,
                 hasSkippedPasskeyRegistration: false,
