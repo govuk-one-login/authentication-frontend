@@ -127,6 +127,7 @@ describe("passkeys helper", () => {
                 isPasswordResetJourney: false,
                 withinForcedPasswordResetJourney: false,
                 isCommonPasswordResetJourney: false,
+                isMfaRequired: true
               },
               client: {
                 rpClientId: rpClientId,
@@ -193,6 +194,7 @@ describe("passkeys helper", () => {
                 hasSkippedPasskeyRegistration: false,
                 reauthenticate: false,
                 backendIndicatesPasskeyPromptShouldBeSkipped: false,
+                isMfaRequired: true,
                 isPasswordResetJourney,
                 withinForcedPasswordResetJourney,
                 isCommonPasswordResetJourney,
@@ -210,8 +212,53 @@ describe("passkeys helper", () => {
             expectedShouldPromptToRegister
           );
         });
-      }
-    );
+      });
+
+      const mfaVariantTestCases = [
+        {
+          isMfaRequired: true,
+          expectedShouldPromptToRegister: true,
+        },
+        {
+          isMfaRequired: false,
+          expectedShouldPromptToRegister: false
+        }
+      ]
+    mfaVariantTestCases.forEach(
+      ({
+         isMfaRequired,
+         expectedShouldPromptToRegister,
+       }) => {
+      it(`should return ${expectedShouldPromptToRegister} when isMfaRequired=${isMfaRequired}`, () => {
+        process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
+
+        const req = {
+          session: {
+            user: {
+              isMfaRequired: isMfaRequired,
+              browserSupportsWebAuthn: true,
+              hasActivePasskey: false,
+              hasSkippedPasskeyRegistration: false,
+              reauthenticate: false,
+              backendIndicatesPasskeyPromptShouldBeSkipped: false,
+              isPasswordResetJourney: false,
+              withinForcedPasswordResetJourney: false,
+              isCommonPasswordResetJourney: false,
+            },
+            client: {
+              rpClientId: "valid-rp-client-id",
+            },
+          },
+        } as any as Request;
+        const res = {
+          locals: { supportPasskeyRegistration: true },
+        } as any as Response;
+
+        expect(shouldPromptToRegisterPasskey(req, res)).to.eq(
+          expectedShouldPromptToRegister
+        );
+      });
+    });
   });
 
   describe("shouldPromptToSignInWithPasskey", () => {
