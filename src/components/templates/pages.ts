@@ -593,12 +593,6 @@ export const pages: Record<string, Page | PageVariant[]> = {
   },
 
   // Footer pages
-  [PATH_NAMES.PRIVACY_POLICY]: {
-    template: "common/footer/privacy-statement.njk",
-  },
-  [PATH_NAMES.PRIVACY_POLICY_NEW]: {
-    template: "common/footer/privacy-statement.njk",
-  },
   [PATH_NAMES.TERMS_AND_CONDITIONS]: {
     template: "common/footer/terms-conditions.njk",
   },

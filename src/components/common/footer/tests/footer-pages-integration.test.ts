@@ -5,20 +5,8 @@ import { expect } from "chai";
 import request from "supertest";
 
 describe("Integration:: privacy notice link", () => {
-  it("should render the privacy notice when the feature flag is disabled", async () => {
-    process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "0";
-    const app = await createApp();
-    await request(app)
-      .get(PATH_NAMES.PRIVACY_POLICY)
-      .expect(200)
-      .then((res) => {
-        expect(res.text).to.contain("GOV.UK One Login privacy notice");
-      });
-  });
-
   [PATH_NAMES.PRIVACY_POLICY, PATH_NAMES.PRIVACY_POLICY_NEW].forEach((path) => {
-    it(`should redirect to the privacy notice when the feature flag is enabled for ${path}`, async () => {
-      process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "1";
+    it(`should redirect to the privacy notice for ${path}`, async () => {
       const app = await createApp();
       await request(app)
         .get(path)
@@ -33,7 +21,6 @@ describe("Integration:: privacy notice link", () => {
 
   [PATH_NAMES.PRIVACY_POLICY, PATH_NAMES.PRIVACY_POLICY_NEW].forEach((path) => {
     it(`should redirect to the welsh privacy notice when the lng cookie is cy for ${path}`, async () => {
-      process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "1";
       const app = await createApp();
       await request(app)
         .get(path)
@@ -49,7 +36,6 @@ describe("Integration:: privacy notice link", () => {
 
   [PATH_NAMES.PRIVACY_POLICY, PATH_NAMES.PRIVACY_POLICY_NEW].forEach((path) => {
     it(`should redirect to the welsh privacy notice when the lng query param is cy for ${path}`, async () => {
-      process.env.PRIVACY_NOTICE_REDIRECT_ENABLED = "1";
       const app = await createApp();
       await request(app)
         .get(path + "?lng=cy")
