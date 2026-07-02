@@ -1,4 +1,4 @@
-@Frontend
+@UI
 
 Feature: Start authentication journey via orchestration stub
 

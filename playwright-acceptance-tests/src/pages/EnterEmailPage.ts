@@ -2,21 +2,15 @@ import type { Page } from "playwright";
 import { BasePage } from "./BasePage";
 
 export class EnterEmailPage extends BasePage {
+  readonly pageHeading =
+    /enter your email address to sign in to your gov\.uk one login/i;
+
   constructor(page: Page) {
     super(page);
   }
 
   async assertLoaded(): Promise<void> {
-    // Based on your screenshot:
-    // "Enter your email address to sign in to your GOV.UK One Login"
-    await this.page
-      .getByRole("heading", {
-        name: /enter your email address to sign in to your gov\.uk one login/i,
-      })
-      .waitFor({ state: "visible" });
-
-    await this.assertBasicSecurity();
-    await this.runAccessibilityCheck();
+    await super.assertLoaded(this.pageHeading);
   }
 
   async enterEmail(email: string): Promise<void> {
@@ -24,6 +18,6 @@ export class EnterEmailPage extends BasePage {
   }
 
   async clickContinue(): Promise<void> {
-    await this.page.getByRole("button", { name: /continue/i }).click();
+    await super.clickContinue();
   }
 }

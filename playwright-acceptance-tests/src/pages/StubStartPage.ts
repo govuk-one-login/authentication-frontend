@@ -2,6 +2,8 @@ import type { Page } from "playwright";
 import { BasePage } from "./BasePage";
 
 export class StubStartPage extends BasePage {
+  readonly pageHeading = /orchestration stub/i;
+
   constructor(page: Page) {
     super(page);
   }
@@ -14,19 +16,9 @@ export class StubStartPage extends BasePage {
 
     await this.goto(url);
 
-    // The Orchestration Stub main heading
-    await this.page
-      .getByRole("heading", { name: /orchestration stub/i })
-      .waitFor({ state: "visible" });
-
-    await this.assertBasicSecurity();
-    await this.runAccessibilityCheck();
+    await this.assertLoaded(this.pageHeading);
   }
 
-  /**
-   * Your stub page already loads with defaults selected.
-   * This method exists for BDD readability and future expansion.
-   */
   async selectDefaultOptions(): Promise<void> {
     return;
   }

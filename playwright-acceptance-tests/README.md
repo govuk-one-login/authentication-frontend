@@ -1,206 +1,66 @@
-# Playwright Acceptance Tests – GOV.UK One Login
+# Playwright Acceptance Tests
 
-This repository contains the Playwright + TypeScript + Cucumber.js acceptance-test suite for
-validating core authentication journeys within GOV.UK One Login.
+Playwright + Cucumber.js acceptance tests for GOV.UK One Login authentication-frontend.
 
-The project is designed to be scalable, CI-friendly, and aligned with GOV.UK engineering practices,
-with built-in support for reporting, flaky-test analysis, environment configuration, and browser selection.
+Tests run entirely in Docker against a stubbed backend, exercising real user journeys through the frontend without any AWS dependencies.
 
-### Table of Contents
-
-- Overview
-- Environment Variables
-- Installation
-- Running Tests
-- Tags & Filtering
-- Reporting
-- Development Standards
-- Troubleshooting
-- Roadmap
-
-### Overview
-
-This project provides automated acceptance coverage for user journeys in GOV.UK One Login, specifically focusing on:
-
-- Create or sign-in journeys
-- Journeys for isolated FE testing
-- Browser-based flow validation
-- Error-state and negative-path handling
-- Optional accessibility checks
-- Optional security-header checks
-
-The suite is intentionally lightweight and modular, supporting migration from Selenium-Java to Playwright-TypeScript.
-
-Tests will run locally or in CI (GitHub Actions / AWS CodeBuild), using environment variables to configure runtime behaviour.
-
-### Environment Variables
-
-All runtime behaviour is controlled via .env:
+## Architecture
 
 ```
-BASE_URL=https://orchstub.signin.dev.account.gov.uk/
-BROWSER=chromium
-HEADLESS=true
-
-A11Y_CHECK=false
-SECURITY_CHECK=true
-
-CUCUMBER_FILTER_TAGS=""
+┌─────────────┐       ┌────────────────────────────────┐
+│ test-runner │──────▶│           nginx (proxy)        │
+│ (Playwright)│       │  / ──▶ orch-stub               │
+│             │       │  /* ──▶ authentication-frontend│
+└─────────────┘       └────────────────────────────────┘
+                                     │
+                              ┌──────┴──────┐
+                              │  api-stub   │
+                              │  (Express)  │
+                              └─────────────┘
 ```
 
-**Supported variables**
+- **nginx** routes traffic: the root path and `/orchestration-redirect` go to the orch-stub; everything else goes to authentication-frontend.
+- **api-stub** is a stateful Express app that simulates the backend API (login, MFA, lockouts, etc.). State is reset between scenarios via `DELETE /test/state`.
+- **orch-stub** is the orchestration stub from the [authentication-stubs](https://github.com/govuk-one-login/authentication-stubs) repo. It initiates OIDC flows and redirects into the frontend.
+- **test-runner** is a Playwright container that executes Cucumber scenarios against the proxy.
 
-```
-Variable	Description
-BASE_URL	Entry point for authentication journeys (stub or real environment).
-BROWSER	chromium, firefox, webkit
-HEADLESS	true/false
-A11Y_CHECK	Enables axe-core accessibility scanning
-SECURITY_CHECK	Enables lightweight security header checks
-CUCUMBER_FILTER_TAGS = Tag expression (e.g. @UI and not @wip)
+## Prerequisites
 
-.env is auto-loaded via cucumber.js.
-```
+- Docker
+- The [authentication-stubs](https://github.com/govuk-one-login/authentication-stubs) repo cloned as a sibling directory (i.e. `../authentication-stubs/` relative to `authentication-frontend`)
 
-### Installation
+## Running the tests
 
-Install Node dependencies
+### In CI (GitHub Actions)
 
-```
-npm install
-```
+Tests run automatically on every pull request via the `playwright-acceptance-tests.yml` workflow. It pulls the orch-stub image from ECR rather than building it from source, then runs the same Docker Compose stack. Reports and Docker Compose logs are uploaded as workflow artifacts on every run (including failures).
 
-Install Playwright browsers
+### Locally
 
-```
-npx playwright install
+From this directory:
+
+```sh
+./scripts/run-local.sh
 ```
 
-### Running Tests
+This builds the orch-stub image from the sibling `authentication-stubs` repo, then runs the full Docker Compose stack including the test-runner. Test output appears in the terminal. Local report extraction is not yet supported.
 
-Run full suite with HTML report:
+## Test tagging
 
-```
-npm run test
-OR
-npm test
-```
+All scenarios are tagged `@UI` for parity with the existing authentication-acceptance-tests suite.
 
-This triggers:
+## Reports and debugging
 
-- Cleaning previous reports
-- Executing cucumber.js
-- Generating JSON + HTML reports
-- Storing flaky test history
+On failure, each scenario produces:
 
-**Run Cucumber directly (no HTML report):**
+- A **screenshot** in `reports/screenshots/`
+- A **Playwright trace** in `reports/traces/` (open with `npx playwright show-trace <file>.zip`)
 
-```
-npm run bdd
-```
+An HTML report is generated into `reports/html/`. In CI, all reports and Docker Compose logs are uploaded as workflow artifacts.
 
-Run with tag filter:
+## Developing tests
 
-```
-CUCUMBER_FILTER_TAGS="@UI" npm run bdd
-```
-
-### Tags & Filtering
-
-Examples:
-
-```
-Command	Meaning
-CUCUMBER_FILTER_TAGS="@UI"	Run only UI-tagged scenarios
-CUCUMBER_FILTER_TAGS="not @wip"	Exclude work-in-progress
-CUCUMBER_FILTER_TAGS="@Frontend or @API"	Run either tag
-CUCUMBER_FILTER_TAGS="@Frontend and @UI"	Run scenarios with both tags
-
-The value is passed through cucumber.js → config.tags.
-```
-
-### Reporting
-
-**JSON output**
-Location:
-
-```
-reports/json/cucumber-report.json
-```
-
-**HTML report (timestamped)**
-Generated into:
-
-```
-reports/html/<timestamp>/
-```
-
-**Screenshots**
-Only on failure:
-
-```
-reports/screenshots/<scenario>.png
-```
-
-**Flaky-test analysis**
-Persistent history file:
-
-```
-reports/flaky-history.json
-```
-
-**The reporter displays:**
-
-```
-Total duration
-Flaky scenarios ever seen
-Flaky scenarios this run
-Overall pass/failure metrics
-
-Handled by: run-test-with-report.js
-```
-
-### Development Standards
-
-Developers should consider the following when working on these tests:
-
-- Code quality
-- ESLint must pass
-- Prettier formatting required
-- Keep steps declarative
-- Avoid long complex steps
-
-Run the following to format staged files:
-
-```
-cd playwright-acceptance-tests
-npx lint-staged
-```
-
-**Accessibility**
-
-- Axe-core scans only when A11Y_CHECK=true
-
-**Security**
-
-- Header checks only when SECURITY_CHECK=true
-
-### Troubleshooting
-
-```
-Issue	Fix
-
-Tags not filtering	Ensure no spaces around equals in .env (CUCUMBER_FILTER_TAGS="@UI")
-Screenshots not saved	Ensure reports/screenshots/ exists or can be created
-Browser fails to launch	Run npx playwright install
-.env not loading	Ensure .env file exists and cucumber.js can load it
-```
-
-### Roadmap
-
-- Add additional authentication flows
-- Add OTP stub flows when available
-- Add full accessibility suite (WCAG 2.1 AA)
-- Add GitHub Actions workflow
-- Add AWS CodeBuild support
-- Migrate/ create new remaining Selenium acceptance tests journeys
+1. Add or edit a `.feature` file in `features/`.
+2. Implement step definitions in `src/steps/`.
+3. Use page objects from `src/pages/` (extend `BasePage`).
+4. The API stub resets between scenarios automatically — if you need new stub behaviour, add routes to `stubs/api-stub/src/`.

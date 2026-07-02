@@ -1,5 +1,6 @@
 import type { Page } from "playwright";
 import AxeBuilder from "@axe-core/playwright";
+import { expect } from "../support/expect";
 
 type AxeNodeLite = {
   target?: string[];
@@ -21,28 +22,26 @@ export class BasePage {
     this.page = page;
   }
 
-  async goto(url: string): Promise<void> {
-    await this.page.goto(url, { waitUntil: "networkidle" });
+  async assertLoaded(pageName: string | RegExp): Promise<void> {
+    await expect(
+      this.page.getByRole("heading", {
+        name: pageName,
+      })
+    ).toBeVisible();
+
+    await this.runAccessibilityCheck();
   }
 
-  async assertBasicSecurity(): Promise<void> {
-    if ((process.env.SECURITY_CHECK || "true").toLowerCase() !== "true") {
-      return;
-    }
+  async clickContinue(): Promise<void> {
+    await this.page.getByRole("button", { name: /continue/i }).click();
+  }
 
-    const url = this.page.url();
+  async goto(url: string): Promise<void> {
+    await this.page.goto(url, { waitUntil: "domcontentloaded" });
+  }
 
-    if (!url.startsWith("https://")) {
-      throw new Error(`Expected HTTPS URL, got: ${url}`);
-    }
-
-    const isSecureContext = await this.page.evaluate(
-      () => window.isSecureContext
-    );
-
-    if (!isSecureContext) {
-      throw new Error("Expected secure browser context.");
-    }
+  async assertInlineError(text: string | RegExp): Promise<void> {
+    await expect(this.page.getByText(text).first()).toBeVisible();
   }
 
   async runAccessibilityCheck(): Promise<void> {
