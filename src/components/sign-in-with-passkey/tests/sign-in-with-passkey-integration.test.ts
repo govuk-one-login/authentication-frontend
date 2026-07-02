@@ -81,6 +81,9 @@ describe("Integration:: sign in with passkey", () => {
       const options = $("#signInWithPasskeyForm").attr(
         "data-authentication-options"
       );
+      expect(
+        $('a[href="/journey/sign-in-passkey/SIGN_IN_WITHOUT_PASSKEY"]').length
+      ).to.equal(1);
       expect(options).to.equal(
         JSON.stringify(startPasskeyAssertionResponse.publicKey)
       );
