@@ -12,7 +12,6 @@ describe("Integration::journey controller", () => {
   let capturedSession: UserSession;
 
   before(async () => {
-
     const { createApp } = await esmock(
       "../../../app.js",
       {},
