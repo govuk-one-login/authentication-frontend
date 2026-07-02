@@ -66,4 +66,13 @@ describe("Integration::journey controller", () => {
       ]);
     });
   });
+
+  describe("validation failure", () => {
+    it("should redirect to session nextPath when page in route params does not match session", async () => {
+      await request(app)
+        .get("/journey/some-other-page/A_VALID_EVENT")
+        .expect("Location", PATH_NAMES.SIGN_IN_WITH_PASSKEY)
+        .expect(302);
+    });
+  });
 });
