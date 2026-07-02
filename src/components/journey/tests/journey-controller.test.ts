@@ -43,6 +43,35 @@ describe("journey controller", () => {
         expect(res.redirect).to.have.been.calledWith(expectedNextPath);
       });
     });
+
+    describe("validation", () => {
+      [
+        { page: undefined, event: "SOME_EVENT", description: "page is missing" },
+        { page: "next-page", event: undefined, description: "event is missing" },
+        { page: undefined, event: undefined, description: "both page and event are missing" },
+      ].forEach(({ page, event, description }) => {
+        it(`should redirect to previous page when ${description}`, async () => {
+          const previousPageInSession = "/next-page";
+          const expectedNextPath = "/next-page";
+
+          req.params = { event, page };
+          req.session.user = {
+            journey: { nextPath: previousPageInSession, optionalPaths: [] },
+          };
+
+          const { journeyGet, fakeGetNextPathAndUpdateJourney } =
+            await setupStateMachineMock(
+              previousPageInSession,
+              expectedNextPath,
+              event
+            );
+
+          await journeyGet(req as Request, res as Response);
+
+          expect(fakeGetNextPathAndUpdateJourney).not.have.been.called;
+          expect(res.redirect).to.have.been.calledWith(previousPageInSession);
+        })})
+    })
   });
 
   const setupStateMachineMock = async (
