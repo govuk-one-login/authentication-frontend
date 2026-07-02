@@ -84,6 +84,7 @@ export const PATH_NAMES = {
   SESSION_ENDED: "/session-ended",
   PASSKEY_CREATED: "/passkey-created",
   ACCOUNT_EXISTS_WITH_PASSKEY: "/account-exists",
+  JOURNEY: "/journey/:page/:event",
 };
 
 export const HREF_BACK = {
