@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import { authStateMachine } from "../common/state-machine/state-machine.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 
 export async function journeyGet(req: Request, res: Response): Promise<void> {
@@ -16,6 +17,12 @@ export async function journeyGet(req: Request, res: Response): Promise<void> {
     req.log.warn(
       `Cannot use /journey route. Previous page in session ${previousPageFromSession} not previous page in params ${previousPageFromRouteParams}`
     );
+    return res.redirect(previousPageFromSession);
+  }
+
+  const allowedEventsFromJourneyForPath = authStateMachine.states[previousPageFromSession].meta?.allowedEventsFromJourney;
+  if (allowedEventsFromJourneyForPath?.length === 0 || !allowedEventsFromJourneyForPath?.includes(event)) {
+    req.log.error(`Event ${event} not allowed via /journey path`);
     return res.redirect(previousPageFromSession);
   }
 

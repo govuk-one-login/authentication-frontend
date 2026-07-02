@@ -76,6 +76,64 @@ describe("journey controller", () => {
         expect(res.redirect).to.have.been.calledWith(previousPageInSession);
       });
 
+      it("should not allow the use of /journey if the event is not included in allowedEventsFromJourney", async () => {
+        const previousPageInSession = "/next-page";
+        const previousPageInRouteParams = "next-page";
+        const eventInRouteParams = "EVENT_TO_GO_NEXT_PAGE";
+        const expectedNextPath = "/next-page";
+
+        req.params = {
+          event: eventInRouteParams,
+          page: previousPageInRouteParams,
+        };
+        req.session.user = {
+          journey: { nextPath: previousPageInSession, optionalPaths: [] },
+        };
+
+        const { journeyGet, fakeGetNextPathAndUpdateJourney } =
+          await setupStateMachineMock(
+            previousPageInSession,
+            expectedNextPath,
+            undefined
+          );
+
+        await journeyGet(req as Request, res as Response);
+
+        expect(fakeGetNextPathAndUpdateJourney).not.have.been.called;
+        expect(res.redirect).to.have.been.calledWith(previousPageInSession);
+      });
+
+      it("should not allow the use of /journey if the state has no allowedEventsFromJourney defined", async () => {
+        const previousPageInSession = "/next-page";
+        const event = "SOME_EVENT";
+        const expectedNextPath = "/next-page";
+        const fakeGetNextPathAndUpdateJourney =
+          sinon.fake.resolves(expectedNextPath);
+
+        const { journeyGet } = await esmock("../journey-controller.js", {
+          "../../common/state-machine/state-machine-executor.js": {
+            getNextPathAndUpdateJourney: fakeGetNextPathAndUpdateJourney,
+          },
+          "../../common/state-machine/state-machine.js": {
+            authStateMachine: {
+              states: {
+                [previousPageInSession]: {},
+              },
+            },
+          },
+        });
+
+        req.params = { event, page: "next-page" };
+        req.session.user = {
+          journey: { nextPath: previousPageInSession, optionalPaths: [] },
+        };
+
+        await journeyGet(req as Request, res as Response);
+
+        expect(fakeGetNextPathAndUpdateJourney).not.have.been.called;
+        expect(res.redirect).to.have.been.calledWith(previousPageInSession);
+      });
+
       [
         {
           page: undefined,
