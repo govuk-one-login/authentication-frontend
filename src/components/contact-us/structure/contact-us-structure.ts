@@ -1,4 +1,5 @@
 import { CONTACT_US_THEMES } from "../../../app.constants.js";
+import { enablePasskeyContactForm } from "../../../config.js";
 
 export type ContactFormStructure = Map<string, Theme>;
 
@@ -132,6 +133,20 @@ export const CONTACT_FORM_STRUCTURE: ContactFormStructure = new Map([
               mainTextKey:
                 "pages.contactUsFurtherInformation.signingIn.section1.radio4",
             },
+          },
+        ],
+        [
+          CONTACT_US_THEMES.SIGNING_IN_PROBLEM_WITH_A_PASSKEY,
+          {
+            nextPageContent:
+              "pages.contactUsQuestions.signingInProblemWithAPasskey",
+            radio: {
+              mainTextKey:
+                "pages.contactUsFurtherInformation.signingIn.section1.radio8",
+              hintTextKey:
+                "pages.contactUsFurtherInformation.signingIn.section1.radio8Hint",
+            },
+            isHidden: !enablePasskeyContactForm(),
           },
         ],
         [

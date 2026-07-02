@@ -187,6 +187,9 @@ export function getContactUsService(
     customAttributes["sa-tag-answering-questions-about"] =
       contactForm.answeringQuestionsAbout;
 
+    customAttributes["sa-tag-what-were-you-trying-to-do"] =
+      contactForm.whatWereYouTryingToDo;
+
     customAttributes["sa-tag-primary-intent-user-selection"] =
       contactForm.themeQuestions.themeQuestion;
 

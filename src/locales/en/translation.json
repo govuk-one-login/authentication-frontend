@@ -1485,6 +1485,8 @@
           "radio5": "You’ve been told your GOV.UK One Login ‘cannot be found’",
           "radio6": "There was a technical problem (for example, the service was unavailable)",
           "radio7": "Something else",
+          "radio8": "There was a problem with a passkey",
+          "radio8Hint": "Passkeys let you sign in using your face, fingerprint, PIN or passcode",
           "errorMessage": "Select the problem you had when signing in to your GOV.UK One Login"
         }
       },
@@ -1782,6 +1784,24 @@
         "section1": {
           "header": "Anything else you want to tell us",
           "paragraph1": "For example, if you want to add more detail or give us feedback"
+        }
+      },
+      "signingInProblemWithAPasskey": {
+        "title": "There was a problem with a passkey",
+        "header": "There was a problem with a passkey",
+        "description": "Passkeys let you sign in the same way you unlock your phone, computer or tablet. For example with your face, fingerprint, PIN or passcode.",
+        "section1": {
+          "header": "What were you trying to do?",
+          "errorMessage": "Select what you were trying to do",
+          "options": {
+            "set_up_a_new_passkey": "Set up a new passkey",
+            "sign_in_using_your_passkey": "Sign in using your passkey",
+            "something_else": "Something else"
+          }
+        },
+        "whatHappened": {
+          "errorMessage": "Enter what happened",
+          "entryTooLongMessage": "What happened must be [maximumCharacters] characters or less"
         }
       },
       "noPhoneNumberAccess": {
