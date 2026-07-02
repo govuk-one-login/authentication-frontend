@@ -364,9 +364,18 @@ const authStateMachine = createMachine<AuthStateContext>(
               target: [INTERMEDIATE_STATES.SIGN_IN_END],
             },
           ],
+          [USER_JOURNEY_EVENTS.SIGN_IN_WITHOUT_PASSKEY]: [
+            {
+              target: [PATH_NAMES.ENTER_PASSWORD],
+              meta: { reversible: true },
+            },
+          ],
         },
         meta: {
           optionalPaths: [PATH_NAMES.ENTER_PASSWORD],
+          permittedJourneyRouteEvents: [
+            USER_JOURNEY_EVENTS.SIGN_IN_WITHOUT_PASSKEY,
+          ],
         },
       },
       [PATH_NAMES.CANNOT_SIGN_IN_PASSKEY]: {
