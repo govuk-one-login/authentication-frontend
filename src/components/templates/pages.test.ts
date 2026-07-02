@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { pages } from "./pages";
-import { PATH_NAMES } from "../../app.constants";
+import { pages } from "./pages.js";
+import { PATH_NAMES } from "../../app.constants.js";
 
 // Pages that do not render a template
 // Add paths here to exclude them from being checked on the template list
@@ -26,6 +26,7 @@ const NON_TEMPLATE_PATHS = [
   PATH_NAMES.CREATE_PASSKEY_CALLBACK,
   PATH_NAMES.PRIVACY_POLICY,
   PATH_NAMES.PRIVACY_POLICY_NEW,
+  PATH_NAMES.JOURNEY,
 ];
 
 describe("template page listing", () => {
