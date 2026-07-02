@@ -13,6 +13,7 @@ export function shouldPromptToRegisterPasskey(
     !req.session.user?.reauthenticate &&
     !userHasBeenOnPasswordResetJourney(req) &&
     isPromptableRPClientID(req.session.client.rpClientId) &&
+    userHasLoggedInWithPasswordAnd2Fa(req) &&
     res.locals.supportPasskeyRegistration === true
   );
 }
@@ -38,4 +39,8 @@ function userHasBeenOnPasswordResetJourney(req: Request) {
     req.session.user?.withinForcedPasswordResetJourney ||
     req.session.user?.isCommonPasswordResetJourney
   );
+}
+
+function userHasLoggedInWithPasswordAnd2Fa(req: Request) {
+  return req.session.user?.isMfaRequired && !req.session.user?.isUpliftRequired;
 }
