@@ -21,7 +21,8 @@ export interface CreatePasskeyResultSuccessResponse {
 
 export interface AMCAction {
   action: AMC_SCOPE;
-  timestamp: number;
+  startedAt: number;
+  completedAt: number;
   success: boolean;
   details: AMCActionErrorDetails;
 }
