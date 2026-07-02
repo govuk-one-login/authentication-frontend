@@ -80,7 +80,7 @@
     "express": "5.2.1",
     "express-session": "1.19.0",
     "express-validator": "7.3.2",
-    "govuk-frontend": "5.11.2",
+    "govuk-frontend": "6.3.0",
     "helmet": "8.2.0",
     "i18next": "26.2.0",
     "i18next-fs-backend": "2.6.6",
