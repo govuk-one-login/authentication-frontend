@@ -1,0 +1,16 @@
+services:
+  orch-stub-start:
+    environment:
+      AUTHENTICATION_FRONTEND_URL: http://localhost:4400/
+      STUB_URL: http://localhost:4400/
+
+  authentication-frontend:
+    environment:
+      ORCH_TO_AUTH_AUDIENCE: http://localhost:4400/
+      SESSION_EXPIRY: 86400000
+
+  api-stub:
+    ports:
+      - "8080:8080"
+    environment:
+      ORCHESTRATION_REDIRECT_URL: http://localhost:4400
