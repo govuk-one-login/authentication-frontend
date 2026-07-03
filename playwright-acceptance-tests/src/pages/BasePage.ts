@@ -36,6 +36,14 @@ export class BasePage {
     await this.page.getByRole("button", { name: /continue/i }).click();
   }
 
+  async clickBack(): Promise<void> {
+    await this.page.getByRole("link", { name: /^back$/i }).click();
+  }
+
+  async selectRadioButton(label: string | RegExp): Promise<void> {
+    await this.page.getByLabel(label).check();
+  }
+
   async goto(url: string): Promise<void> {
     await this.page.goto(url, { waitUntil: "domcontentloaded" });
   }
