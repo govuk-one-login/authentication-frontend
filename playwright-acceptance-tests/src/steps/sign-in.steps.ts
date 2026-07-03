@@ -12,11 +12,7 @@ import { YouHaveOneLoginPage } from "../pages/YouHaveOneLoginPage";
 import { EnterAuthenticatorAppCodePage } from "../pages/EnterAuthenticatorAppCodePage";
 import { LockoutPage } from "../pages/LockoutPage";
 import { TEST_EMAIL, VALID_PASSWORD } from "../support/constants";
-
-function requirePage(world: PlaywrightWorld) {
-  if (!world.page) throw new Error("Playwright page is not initialised");
-  return world.page;
-}
+import { requirePage } from "../support/utils";
 
 /* ---- Given: user setup (no-ops with stub) ---- */
 
@@ -219,6 +215,13 @@ When(
     await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
       VALID_PASSWORD
     );
+  }
+);
+
+When(
+  "the user clicks the forgotten password link",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await new EnterPasswordPage(requirePage(this)).clickForgottenPasswordLink();
   }
 );
 
