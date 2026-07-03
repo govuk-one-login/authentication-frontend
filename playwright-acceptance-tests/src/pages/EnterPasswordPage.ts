@@ -20,6 +20,12 @@ export class EnterPasswordPage extends BasePage {
     await this.page.getByRole("button", { name: /continue/i }).click();
   }
 
+  async clickForgottenPasswordLink(): Promise<void> {
+    await this.page
+      .getByRole("link", { name: /forgotten my password/i })
+      .click();
+  }
+
   async enterPasswordAndContinue(password: string): Promise<void> {
     await this.enterPassword(password);
     await this.clickContinue();
