@@ -372,7 +372,6 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
         meta: {
-          optionalPaths: [PATH_NAMES.ENTER_PASSWORD],
           permittedJourneyRouteEvents: [
             USER_JOURNEY_EVENTS.SIGN_IN_WITHOUT_PASSKEY,
           ],
