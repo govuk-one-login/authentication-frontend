@@ -66,6 +66,8 @@
         signInWithPasskeyForm.querySelector('input[name="authenticationError"]').value = `${error.name} - ${error.message}`
       }
 
+      document.body.inert = true;
+
       signInWithPasskeyForm.submit();
     }
 
