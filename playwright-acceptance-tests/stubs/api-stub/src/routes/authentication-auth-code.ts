@@ -9,7 +9,8 @@ export function authenticationAuthCodeHandler(
   res: Response
 ): void {
   const { state } = req.body as OrchAuthCodeRequest;
+  const baseUrl = process.env.ORCHESTRATION_REDIRECT_URL || "http://proxy";
   res.json({
-    location: `http://proxy/orchestration-redirect?code=auth-code-123&state=${state}`,
+    location: `${baseUrl}/orchestration-redirect?code=auth-code-123&state=${state}`,
   });
 }

@@ -59,6 +59,7 @@ services:
         ]
       interval: 2s
       retries: 5
+
       start_period: 5s
     environment:
       AUTHENTICATION_FRONTEND_URL: http://proxy/
