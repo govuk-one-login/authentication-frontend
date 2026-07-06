@@ -88,6 +88,8 @@
         await triggerWebAuthnFlow();
       }
 
+      document.body.inert = true;
+
       cannotSignInPasskeyForm.submit();
     }
 
