@@ -893,6 +893,80 @@ describe("Integration:: contact us - public user", () => {
       .expect(302);
   });
 
+  describe("signing in problem with a passkey", () => {
+    it("should return the passkey questions page", async () => {
+      await request(app)
+        .get("/contact-us-questions")
+        .query({
+          theme: "signing_in",
+          subtheme: "signing_in_problem_with_a_passkey",
+        })
+        .expect(200)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("h1").text()).to.contains(
+            "There was a problem with a passkey"
+          );
+        });
+    });
+
+    it("should return validation error when whatWereYouTryingToDo radio is not selected", async () => {
+      const data = {
+        _csrf: token,
+        theme: "signing_in",
+        subtheme: "signing_in_problem_with_a_passkey",
+        formType: "signingInProblemWithAPasskey",
+        issueDescription: "something happened",
+        contact: "false",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions?radio_buttons=true",
+        data,
+        "#whatWereYouTryingToDo-error",
+        "Select what you were trying to do"
+      );
+    });
+
+    it("should return validation error when issueDescription is empty", async () => {
+      const data = {
+        _csrf: token,
+        theme: "signing_in",
+        subtheme: "signing_in_problem_with_a_passkey",
+        formType: "signingInProblemWithAPasskey",
+        whatWereYouTryingToDo: "set_up_a_new_passkey",
+        issueDescription: "",
+        contact: "false",
+      };
+      await expectValidationErrorOnPost(
+        "/contact-us-questions?radio_buttons=true",
+        data,
+        "#issueDescription-error",
+        "Enter what happened"
+      );
+    });
+
+    it("should redirect to success page when valid passkey form submitted", async () => {
+      nock(smartAgentApiUrl).post("/").once().reply(200);
+
+      await request(app)
+        .post("/contact-us-questions?radio_buttons=true")
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          theme: "signing_in",
+          subtheme: "signing_in_problem_with_a_passkey",
+          formType: "signingInProblemWithAPasskey",
+          whatWereYouTryingToDo: "sign_in_using_your_passkey",
+          issueDescription: "My passkey did not work",
+          contact: "true",
+          email: "test@test.com",
+        })
+        .expect("Location", PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS)
+        .expect(302);
+    });
+  });
+
   describe("Links to /contact-us-from-triage-page", () => {
     it("should redirect to /contact-us", async () => {
       await request(app)

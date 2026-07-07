@@ -38,6 +38,8 @@ const themeToPageTitle = {
     "pages.contactUsQuestions.signInPhoneNumberIssue.title",
   [CONTACT_US_THEMES.FORGOTTEN_PASSWORD]:
     "pages.contactUsQuestions.forgottenPassword.title",
+  [CONTACT_US_THEMES.SIGNING_IN_PROBLEM_WITH_A_PASSKEY]:
+    "pages.contactUsQuestions.signingInProblemWithAPasskey.title",
   [CONTACT_US_THEMES.NO_PHONE_NUMBER_ACCESS]:
     "pages.contactUsQuestions.noPhoneNumberAccess.title",
   [CONTACT_US_THEMES.LOST_SECURITY_CODE_ACCESS]:
@@ -604,6 +606,7 @@ export function contactUsQuestionsFormPostToSmartAgent(
             }
           : undefined,
       answeringQuestionsAbout: getReasonForAnsweringQuestionsAbout(req),
+      whatWereYouTryingToDo: req.body.whatWereYouTryingToDo,
     });
 
     req.log.info(
@@ -778,6 +781,15 @@ function getQuestionsFromFormTypeForMessageBody(
         "pages.contactUsQuestions.signignInProblem.section1.header",
         { lng: "en" }
       ),
+      serviceTryingToUse: req.t(
+        "pages.contactUsQuestions.serviceTryingToUse.header",
+        { lng: "en" }
+      ),
+    },
+    signingInProblemWithAPasskey: {
+      issueDescription: req.t("pages.contactUsQuestions.whatHappened.header", {
+        lng: "en",
+      }),
       serviceTryingToUse: req.t(
         "pages.contactUsQuestions.serviceTryingToUse.header",
         { lng: "en" }
@@ -1121,6 +1133,10 @@ function getQuestionFromThemes(
     ),
     something_else: req.t(
       "pages.contactUsFurtherInformation.signingIn.section1.radio7",
+      { lng: "en" }
+    ),
+    signing_in_problem_with_a_passkey: req.t(
+      "pages.contactUsFurtherInformation.signingIn.section1.radio8",
       { lng: "en" }
     ),
   };

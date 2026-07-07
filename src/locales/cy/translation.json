@@ -1485,6 +1485,8 @@
           "radio5": "Dywedwyd wrthych ’na ellir dod o hyd’ i’ch GOV.UK One Login",
           "radio6": "Roedd problem dechnegol (er enghraifft, nid oedd y gwasanaeth ar gael)",
           "radio7": "Rhywbeth arall",
+          "radio8": "Roedd problem gyda allwedd mynediad",
+          "radio8Hint": "Mae allweddi mynediad yn gadael i chi fewngofnodi drwy ddefnyddio’ch wyneb, olion bysedd, PIN neu god mynediad",
           "errorMessage": "Dewiswch y broblem oedd gennych wrth fewngofnodi i ’ch GOV.UK One Login"
         }
       },
@@ -1782,6 +1784,24 @@
         "section1": {
           "header": "Ydych chi eisiau dweud unrhyw beth arall wrthym",
           "paragraph1": "Er enghraifft, os ydych eisiau ychwanegu mwy o fanylion neu roi adborth i ni"
+        }
+      },
+      "signingInProblemWithAPasskey": {
+        "title": "Roedd problem gyda allwedd mynediad",
+        "header": "Roedd problem gyda allwedd mynediad",
+        "description": "Mae allweddi mynediad yn gadael i chi fewngofnodi yn yr un ffordd ag y byddwch yn datgloi’ch ffôn, cyfrifiadur neu dabled. Er enghraifft gyda’ch wyneb, olion bysedd, PIN neu god mynediad.",
+        "section1": {
+          "header": "Beth oeddech chi’n ceisio ei wneud?",
+          "errorMessage": "Dewiswch beth roeddech yn ceisio ei wneud",
+          "options": {
+            "set_up_a_new_passkey": "Sefydlu allwedd mynediad newydd",
+            "sign_in_using_your_passkey": "Mewngofnodi gan ddefnyddio’ch allwedd mynediad",
+            "something_else": "Rhywbeth arall"
+          }
+        },
+        "whatHappened": {
+          "errorMessage": "Rhowch beth ddigwyddodd",
+          "entryTooLongMessage": "Mae’n rhaid i Beth ddigwyddodd fod yn [maximumCharacters] nod neu lai"
         }
       },
       "noPhoneNumberAccess": {

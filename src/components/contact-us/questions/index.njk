@@ -56,6 +56,10 @@
         {% include 'contact-us/questions/_account-creation-problem-questions.njk' %}
     {% endif %}
 
+    {% if (theme == 'signing_in') and (subtheme == 'signing_in_problem_with_a_passkey') %}
+        {% include 'contact-us/questions/_signing-in-problem-with-a-passkey.njk' %}
+    {% endif %}
+
     {% if (theme == 'signing_in') and (subtheme == 'something_else') %}
         {% include 'contact-us/questions/_signing-in-problem-questions.njk' %}
     {% endif %}

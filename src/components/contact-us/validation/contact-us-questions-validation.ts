@@ -64,6 +64,16 @@ export function validateContactUsQuestionsRequest(): ValidationChainFunc {
           }
         );
       }),
+    body("whatWereYouTryingToDo")
+      .if(body("theme").equals("signing_in"))
+      .if(body("subtheme").equals("signing_in_problem_with_a_passkey"))
+      .notEmpty()
+      .withMessage((value, { req }) => {
+        return req.t(
+          "pages.contactUsQuestions.signingInProblemWithAPasskey.section1.errorMessage",
+          { value, lng: req.i18n.lng }
+        );
+      }),
     body("identityDocumentUsed")
       .if(body("theme").equals("id_check_app"))
       .if(body("subtheme").equals("taking_photo_of_id_problem"))
@@ -480,6 +490,9 @@ export function getErrorMessageForSigningInIssueDescription(
   if (subtheme === CONTACT_US_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.signignInProblem.section1.errorMessage";
   }
+  if (subtheme === CONTACT_US_THEMES.SIGNING_IN_PROBLEM_WITH_A_PASSKEY) {
+    return "pages.contactUsQuestions.signingInProblemWithAPasskey.whatHappened.errorMessage";
+  }
 }
 
 export function getErrorMessageForIdCheckAppIssueDescription(
@@ -603,6 +616,9 @@ export function getLengthExceededErrorMessageForSigningInIssueDescription(
   }
   if (subtheme === CONTACT_US_THEMES.SOMETHING_ELSE) {
     return "pages.contactUsQuestions.issueDescriptionErrorMessage.anythingElseTooLongMessage";
+  }
+  if (subtheme === CONTACT_US_THEMES.SIGNING_IN_PROBLEM_WITH_A_PASSKEY) {
+    return "pages.contactUsQuestions.signingInProblemWithAPasskey.whatHappened.entryTooLongMessage";
   }
 }
 
