@@ -219,7 +219,10 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY]: {
         on: {
           [USER_JOURNEY_EVENTS.SIGN_IN_WITH_PASSKEY]: [
-            PATH_NAMES.SIGN_IN_WITH_PASSKEY,
+            {
+              target: PATH_NAMES.SIGN_IN_WITH_PASSKEY,
+              meta: { reversible: true },
+            },
           ],
         },
         meta: {

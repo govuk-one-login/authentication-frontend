@@ -1,5 +1,5 @@
 import { describe } from "mocha";
-import { sinon } from "../../../../test/utils/test-utils.js";
+import { expect, sinon } from "../../../../test/utils/test-utils.js";
 import request from "supertest";
 import { PATH_NAMES } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
@@ -7,7 +7,13 @@ import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper
 import esmock from "esmock";
 
 describe("Integration:: account exists with passkey", () => {
-  async function setupApp(nextPath: string) {
+  let capturedSession: any;
+
+  async function setupApp(
+    nextPath?: string,
+    optionalPaths?: string[],
+    goBackHistory?: string[]
+  ) {
     const { createApp } = await esmock(
       "../../../app.js",
       {},
@@ -19,14 +25,18 @@ describe("Integration:: account exists with passkey", () => {
             next: NextFunction
           ): void {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+            res.locals.supportPasskeyUsage = true;
 
             req.session.user = {
               email: "test@test.com",
               journey: {
-                nextPath: nextPath,
-                optionalPaths: [],
+                nextPath: nextPath ?? PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY,
+                optionalPaths: optionalPaths ?? [],
+                goBackHistory: goBackHistory ?? [],
               },
             };
+
+            capturedSession = req.session;
 
             next();
           }),
@@ -47,7 +57,7 @@ describe("Integration:: account exists with passkey", () => {
   });
 
   it("should render the page when journey state permits access", async () => {
-    const app = await setupApp(PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY);
+    const app = await setupApp();
 
     await request(app).get(PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY).expect(200);
   });
@@ -61,8 +71,8 @@ describe("Integration:: account exists with passkey", () => {
       .expect("Location", PATH_NAMES.ENTER_PASSWORD);
   });
 
-  it("should redirect to sign in with passkey on POST", async () => {
-    const app = await setupApp(PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY);
+  it("should redirect to sign in with passkey on POST and save account-exists in goBackHistory", async () => {
+    const app = await setupApp();
 
     const { token, cookies } = extractCsrfTokenAndCookies(
       await request(app).get(PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY)
@@ -75,5 +85,22 @@ describe("Integration:: account exists with passkey", () => {
       .send({ _csrf: token })
       .expect(302)
       .expect("Location", PATH_NAMES.SIGN_IN_WITH_PASSKEY);
+
+    expect(capturedSession.user.journey.goBackHistory).to.deep.equal([
+      PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY,
+    ]);
+  });
+
+  it("should render account-exists and pop goBackHistory when user navigates back from sign-in-passkey", async () => {
+    const app = await setupApp(PATH_NAMES.SIGN_IN_WITH_PASSKEY, undefined, [
+      PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY,
+    ]);
+
+    await request(app).get(PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY).expect(200);
+
+    expect(capturedSession.user.journey.goBackHistory).to.deep.equal([]);
+    expect(capturedSession.user.journey.nextPath).to.equal(
+      PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY
+    );
   });
 });
