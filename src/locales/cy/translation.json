@@ -1211,7 +1211,7 @@
       },
       "section2": {
         "header": "Cael mynydiad i’ch GOV.UK One Login",
-        "paragraph1": "Rydych yn gyfrifol am wneud yr holl drefniadau i chi gael mynediad i’ch GOV.UK One Login. Mae hyn yn cynnwys darparu eich dyfais eich hun, system weithredu, porwr a chysylltiad rhyngrwyd. Dylech ddefnyddio dyfais sy’n defnyddio system weithredu Windows, OS, iOS neu Android. Rydym yn argymell eich bod yn defnyddio un o’r porwyr canlynol:",
+        "paragraph1": "Rydych yn gyfrifol am wneud yr holl drefniadau i chi gael mynediad i’ch GOV.UK One Login. Mae hyn yn cynnwys darparu eich dyfais eich hun, system weithredu, porwr a chysylltiad rhyngrwyd. Dylech ddefnyddio dyfais sy’n defnyddio system weithredu Windows, macOS, iOS neu Android. Rydym yn argymell eich bod yn defnyddio un o’r porwyr canlynol:",
         "bulletPoint1": "Y fersiwn diweddaraf o Google Chrome, Microsoft Edge, Mozilla Firefox, Samsung Internet neu Internet Explorer",
         "bulletPoint2": "Safari 12 neu ddiweddarach",
         "bulletPoint3": "Safari ar gyfer iOS 12.1 neu ddiweddarach",
