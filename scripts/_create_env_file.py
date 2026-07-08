@@ -90,7 +90,6 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             "USE_REBRAND": 1,
             "SUPPORT_PASSKEY_USAGE": 1,
             "SUPPORT_PASSKEY_REGISTRATION": 1,
-            "ENABLE_DWP_KBV_CONTACT_FORM_CHANGES": 1,
             "ENABLE_PASSKEY_CONTACT_FORM": 1,
             "SUPPORT_NEW_INTERNATIONAL_SMS": 1,
         },
