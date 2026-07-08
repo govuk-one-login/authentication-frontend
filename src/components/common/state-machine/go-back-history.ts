@@ -2,7 +2,11 @@ import type { Request, Response } from "express";
 import type { AuthState } from "./state-machine.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 
-export const goBackHistoryAllowList = [PATH_NAMES.ENTER_PASSWORD];
+// Paths that support using goBackHistory to navigate back to the previous page
+export const goBackHistoryAllowList = [
+  PATH_NAMES.ENTER_PASSWORD,
+  PATH_NAMES.SIGN_IN_WITH_PASSKEY,
+];
 
 export function getGoBackHistoryForTransition(
   req: Request,
