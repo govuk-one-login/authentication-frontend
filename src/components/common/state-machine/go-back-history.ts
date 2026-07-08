@@ -7,30 +7,14 @@ export const goBackHistoryAllowList = [PATH_NAMES.ENTER_PASSWORD];
 export function getGoBackHistoryForTransition(
   req: Request,
   res: Response,
-  currentState: string,
+  previousState: string,
   nextState: AuthState
 ): string[] {
-  const isReversibleTransition =
-    (nextState.transitions.length > 0 &&
-      nextState.transitions.every((t) => t.meta?.reversible === true)) ??
-    false;
   const passkeysEnabled =
     res.locals.supportPasskeyRegistration || res.locals.supportPasskeyUsage;
-  return buildGoBackHistoryForTransition(
-    req.session.user?.journey?.goBackHistory ?? [],
-    passkeysEnabled,
-    currentState,
-    isReversibleTransition
-  );
-}
+  const currentGoBackHistory = req.session.user?.journey?.goBackHistory ?? [];
 
-export function buildGoBackHistoryForTransition(
-  currentGoBackHistory: string[],
-  passkeysEnabled: boolean,
-  previousState: string,
-  isReversibleTransition: boolean
-): string[] {
-  if (!passkeysEnabled || !isReversibleTransition) {
+  if (!passkeysEnabled || !isReversibleTransition(nextState)) {
     return currentGoBackHistory;
   }
 
@@ -47,4 +31,12 @@ export function isBackTransition(
 
   const lastPath = goBackHistory[goBackHistory.length - 1];
   return lastPath === currentPath;
+}
+
+function isReversibleTransition(nextState: AuthState) {
+  return (
+    (nextState.transitions.length > 0 &&
+      nextState.transitions.every((t) => t.meta?.reversible === true)) ??
+    false
+  );
 }

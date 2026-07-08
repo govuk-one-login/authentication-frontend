@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import { describe } from "mocha";
 import {
-  buildGoBackHistoryForTransition,
   getGoBackHistoryForTransition,
   isBackTransition,
 } from "../go-back-history.js";
@@ -10,67 +9,6 @@ import { mockResponse } from "mock-req-res";
 import type { AuthState } from "../state-machine.js";
 
 describe("go-back-history", () => {
-  describe("buildGoBackHistoryForTransition", () => {
-    const testCases = [
-      {
-        currentGoBackHistory: [] as string[],
-        passkeysEnabled: true,
-        previousState: "/first-path",
-        isReversibleTransition: true,
-        expected: ["/first-path"],
-      },
-      {
-        currentGoBackHistory: ["/first-path"],
-        passkeysEnabled: true,
-        previousState: "/second-path",
-        isReversibleTransition: true,
-        expected: ["/first-path", "/second-path"],
-      },
-      {
-        currentGoBackHistory: ["/first-path"],
-        passkeysEnabled: true,
-        previousState: "/second-path",
-        isReversibleTransition: false,
-        expected: ["/first-path"],
-      },
-      {
-        currentGoBackHistory: ["/first-path"],
-        passkeysEnabled: false,
-        previousState: "/second-path",
-        isReversibleTransition: true,
-        expected: ["/first-path"],
-      },
-      {
-        currentGoBackHistory: ["/first-path"],
-        passkeysEnabled: false,
-        previousState: "/second-path",
-        isReversibleTransition: false,
-        expected: ["/first-path"],
-      },
-    ];
-
-    testCases.forEach(
-      ({
-        currentGoBackHistory,
-        passkeysEnabled,
-        previousState,
-        isReversibleTransition,
-        expected,
-      }) => {
-        it(`should return ${expected} when currentGoBackHistory=${currentGoBackHistory}, passkeysEnabled=${passkeysEnabled}, previousState=${previousState}, isReversibleTransition=${isReversibleTransition} `, () => {
-          expect(
-            buildGoBackHistoryForTransition(
-              currentGoBackHistory,
-              passkeysEnabled,
-              previousState,
-              isReversibleTransition
-            )
-          ).to.deep.equal(expected);
-        });
-      }
-    );
-  });
-
   describe("getGoBackHistoryForTransition", () => {
     function createNextState(
       transitions: { meta?: { reversible?: boolean } }[]
