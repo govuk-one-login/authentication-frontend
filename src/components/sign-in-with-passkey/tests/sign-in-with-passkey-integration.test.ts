@@ -81,6 +81,9 @@ describe("Integration:: sign in with passkey", () => {
       const options = $("#signInWithPasskeyForm").attr(
         "data-authentication-options"
       );
+      expect(
+        $('a[href="/journey/sign-in-passkey/SIGN_IN_WITHOUT_PASSKEY"]').length
+      ).to.equal(1);
       expect(options).to.equal(
         JSON.stringify(startPasskeyAssertionResponse.publicKey)
       );
@@ -187,5 +190,70 @@ describe("Integration:: sign in with passkey", () => {
           .expect("Location", PATH_NAMES.CANNOT_SIGN_IN_PASSKEY);
       });
     });
+  });
+});
+
+describe("Integration:: sign in with passkey - back navigation", () => {
+  let app: any;
+  let baseApi: string;
+  let capturedSession: any;
+
+  before(async () => {
+    process.env.SUPPORT_PASSKEY_USAGE = "1";
+
+    const { createApp } = await esmock(
+      "../../../app.js",
+      {},
+      {
+        "../../../middleware/session-middleware.js": {
+          validateSessionMiddleware: sinon.fake(function (
+            req: Request,
+            res: Response,
+            next: NextFunction
+          ): void {
+            res.locals.sessionId = commonVariables.sessionId;
+            res.locals.clientSessionId = commonVariables.clientSessionId;
+            res.locals.persistentSessionId =
+              commonVariables.diPersistentSessionId;
+            res.locals.supportPasskeyUsage = true;
+
+            req.session.user = {
+              journey: {
+                nextPath: PATH_NAMES.ENTER_PASSWORD,
+                optionalPaths: [],
+                goBackHistory: [PATH_NAMES.SIGN_IN_WITH_PASSKEY],
+              },
+            };
+
+            capturedSession = req.session;
+
+            next();
+          }),
+        },
+      }
+    );
+
+    baseApi = process.env.FRONTEND_API_BASE_URL as string;
+    app = await createApp();
+  });
+
+  after(() => {
+    delete process.env.SUPPORT_PASSKEY_USAGE;
+    sinon.restore();
+    app = undefined;
+  });
+
+  it("should render sign-in-passkey and pop goBackHistory when user navigates back from enter-password", async () => {
+    nock(baseApi)
+      .post(API_ENDPOINTS.START_PASSKEY_ASSERTION)
+      .once()
+      .reply(200, { publicKey: { challenge: "challenge", rpId: "localhost" } });
+
+    await request(app).get(PATH_NAMES.SIGN_IN_WITH_PASSKEY).expect(200);
+
+    expect(capturedSession.user.journey.goBackHistory).to.deep.equal([]);
+    expect(capturedSession.user.journey.nextPath).to.equal(
+      PATH_NAMES.SIGN_IN_WITH_PASSKEY
+    );
   });
 });
