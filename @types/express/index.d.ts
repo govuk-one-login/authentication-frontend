@@ -48,7 +48,6 @@ declare global {
       // Feature flags
       supportPasskeyUsage?: boolean;
       supportPasskeyRegistration?: boolean;
-      enableDwpKbvContactFormChanges?: boolean;
 
       // Misc
       currentUrl?: URL;
