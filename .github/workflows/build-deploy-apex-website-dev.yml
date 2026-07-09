@@ -13,6 +13,7 @@ env:
   AWS_REGION: eu-west-2
   GH_ACTIONS_ROLE_ARN: arn:aws:iam::975050272416:role/dev-apex-website-pipeline-GitHubActionsRole-jH9ilnuKPKwj
   APEX_ARTIFACT_BUCKET: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+  SIGNING_PROFILE_NAME: SigningProfile_bdzyxbYzrSD8
 
 jobs:
   deploy:
@@ -42,6 +43,10 @@ jobs:
           ./scripts/inline-cloudfront-functions.sh
           mv cloudformation/apex-website/apex-cloudfront-built.yaml cloudformation/apex-website/apex-cloudfront.yaml
 
+      - name: Zip copier Lambda
+        run: |
+          zip -j apex-website/lambda-functions/copier_lambda.zip apex-website/lambda-functions/copier_lambda.py
+
       - name: SAM build
         run: |
           sam validate --lint -t cloudformation/apex-website/apex-cloudfront.yaml
@@ -53,8 +58,7 @@ jobs:
           ARTIFACT_BUCKET: ${{ env.APEX_ARTIFACT_BUCKET }}
         run: |
           echo "::group::Zip govuk frontend artifacts"
-          cd govuk-frontend && zip -r ../govukfrontend.zip ./*/ && cd ..
-          zip -r govukfrontend.zip env-config/ robots.txt
+          zip -r govukfrontend.zip govuk-frontend/ env-config/ robots.txt
           echo "::endgroup::"
 
           echo "::group::Upload final artifact to S3"
@@ -82,6 +86,6 @@ jobs:
         uses: govuk-one-login/devplatform-upload-action@64e46134b4108ebfa1cf2a64fee00782f8e2e8cf # v4.1.0
         with:
           artifact-bucket-name: ${{ env.APEX_ARTIFACT_BUCKET }}
-          signing-profile-name: ${{ secrets.SIGNING_PROFILE_NAME }}
+          signing-profile-name: ${{ env.SIGNING_PROFILE_NAME }}
           working-directory: .aws-sam/build
           version: ${{ steps.version_info.outputs.version }}

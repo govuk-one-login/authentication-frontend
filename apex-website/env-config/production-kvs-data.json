@@ -1,0 +1,10 @@
+{
+  "data": [
+    { "key": "redirectBaseUrl", "value": "https://home.account.gov.uk" },
+    {
+      "key": "supportUrl",
+      "value": "https://signin.account.gov.uk/contact-us?supportType=PUBLIC"
+    },
+    { "key": "version", "value": "release-v5.11.0" }
+  ]
+}

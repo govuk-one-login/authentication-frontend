@@ -1,0 +1,609 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Apex website stack — S3, CloudFront, CloudFront Functions, and S3 file copier
+
+Parameters:
+  Environment:
+    Type: String
+    AllowedValues:
+      - build
+      - staging
+      - production
+      - integration
+      - dev
+
+  CodeSigningConfigArn:
+    Type: String
+    Description: Asserts that lambdas are signed when deployed.
+    Default: none
+
+  SubEnvironment:
+    Type: String
+    Default: none
+
+  ArtifactKey:
+    Type: String
+    Default: "govukfrontend.zip"
+    Description: The S3 key of the zip artifact to unzip into the destination bucket.
+
+  DeployApexStaticPage:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+    Description: If true, deploys the full GOV.UK static page function; if false, uses the simple redirect function
+
+  PermissionsBoundary:
+    Type: String
+    Default: none
+
+Conditions:
+  UsePermissionsBoundary: !Not [!Equals [!Ref PermissionsBoundary, none]]
+  UseCodeSigning: !Not [!Equals [!Ref CodeSigningConfigArn, none]]
+
+  UseSubEnvironment:
+    Fn::And:
+      - Fn::Equals: [!Ref Environment, dev]
+      - Fn::Not:
+          - Fn::Equals: [!Ref SubEnvironment, none]
+
+  UseApexStaticPage: !Equals [!Ref DeployApexStaticPage, "true"]
+
+Globals:
+  Function:
+    CodeSigningConfigArn:
+      !If [UseCodeSigning, !Ref CodeSigningConfigArn, !Ref AWS::NoValue]
+
+Mappings:
+  EnvironmentConfiguration:
+    none:
+      ApexRedirectUrl: ""
+      ApexSupportUrl: ""
+      ServiceDomain: ""
+      ArtifactSourceBucket: ""
+
+    authdev1:
+      ApexRedirectUrl: "https://home.authdev1.home.account.gov.uk"
+      ApexSupportUrl: "https://signin.signin.authdev1.dev.account.gov.uk/contact-us?supportType=PUBLIC"
+      ServiceDomain: "authdev1.dev.account.gov.uk"
+      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+
+    authdev2:
+      ApexRedirectUrl: "https://home.authdev2.home.account.gov.uk"
+      ApexSupportUrl: "https://signin.signin.authdev2.dev.account.gov.uk/contact-us?supportType=PUBLIC"
+      ServiceDomain: "authdev2.dev.account.gov.uk"
+      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+
+    authdev3:
+      ApexRedirectUrl: "https://home.authdev3.home.account.gov.uk"
+      ApexSupportUrl: "https://signin.signin.authdev3.dev.account.gov.uk/contact-us?supportType=PUBLIC"
+      ServiceDomain: "authdev3.dev.account.gov.uk"
+      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+
+    dev:
+      ApexRedirectUrl: "https://home.dev.account.gov.uk"
+      ApexSupportUrl: "https://signin.dev.account.gov.uk/contact-us?supportType=PUBLIC"
+      ServiceDomain: "dev.account.gov.uk"
+      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+
+    build:
+      ApexRedirectUrl: "https://home.build.account.gov.uk"
+      ApexSupportUrl: "https://signin.build.account.gov.uk/contact-us?supportType=PUBLIC"
+      ServiceDomain: "build.account.gov.uk"
+      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+
+    staging:
+      ApexRedirectUrl: "https://home.staging.account.gov.uk"
+      ApexSupportUrl: "https://signin.staging.account.gov.uk/contact-us?supportType=PUBLIC"
+      ServiceDomain: "staging.account.gov.uk"
+      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+
+    integration:
+      ApexRedirectUrl: "https://home.integration.account.gov.uk"
+      ApexSupportUrl: "https://signin.integration.account.gov.uk/contact-us?supportType=PUBLIC"
+      ServiceDomain: "integration.account.gov.uk"
+      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+
+    production:
+      ApexRedirectUrl: "https://home.account.gov.uk"
+      ApexSupportUrl: "https://signin.account.gov.uk/contact-us?supportType=PUBLIC"
+      ServiceDomain: "account.gov.uk"
+      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+
+Resources:
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: S3CopyAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:ListBucket
+                Resource:
+                  - !If
+                    - UseSubEnvironment
+                    - !Sub
+                      - "arn:aws:s3:::${Bucket}"
+                      - Bucket:
+                          !FindInMap [
+                            EnvironmentConfiguration,
+                            !Ref SubEnvironment,
+                            ArtifactSourceBucket,
+                          ]
+                    - !Sub
+                      - "arn:aws:s3:::${Bucket}"
+                      - Bucket:
+                          !FindInMap [
+                            EnvironmentConfiguration,
+                            !Ref Environment,
+                            ArtifactSourceBucket,
+                          ]
+                  - !If
+                    - UseSubEnvironment
+                    - !Sub
+                      - "arn:aws:s3:::${Bucket}/*"
+                      - Bucket:
+                          !FindInMap [
+                            EnvironmentConfiguration,
+                            !Ref SubEnvironment,
+                            ArtifactSourceBucket,
+                          ]
+                    - !Sub
+                      - "arn:aws:s3:::${Bucket}/*"
+                      - Bucket:
+                          !FindInMap [
+                            EnvironmentConfiguration,
+                            !Ref Environment,
+                            ArtifactSourceBucket,
+                          ]
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                Resource: !Sub "arn:aws:s3:::*-di-root-website/*"
+              - Effect: Allow
+                Action:
+                  - kms:GenerateDataKey
+                  - kms:Decrypt
+                Resource: !GetAtt ApexStaticWebSiteKey.Arn
+      PermissionsBoundary: !If
+        - UsePermissionsBoundary
+        - !Ref PermissionsBoundary
+        - !Ref AWS::NoValue
+
+  CopierLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "${AWS::StackName}-s3-file-copier"
+      Runtime: python3.12
+      Handler: copier_lambda.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 300
+      EphemeralStorage:
+        Size: 2048
+      CodeUri: ../../apex-website/lambda-functions/copier_lambda.zip
+
+  ApexS3FileCopier:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt CopierLambda.Arn
+      SourceBucket: !If
+        - UseSubEnvironment
+        - !FindInMap [
+            EnvironmentConfiguration,
+            !Ref SubEnvironment,
+            ArtifactSourceBucket,
+          ]
+        - !FindInMap [
+            EnvironmentConfiguration,
+            !Ref Environment,
+            ArtifactSourceBucket,
+          ]
+      DestinationBucket: !Ref ApexStaticWebsite
+      ArtifactKey: !Ref ArtifactKey
+
+  # ----------------------
+  # Apex website resources
+  # ----------------------
+
+  ApexStaticWebSiteKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: This key is used to encrypt bucket objects
+      EnableKeyRotation: true
+      PendingWindowInDays: 30
+      KeyPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: Enable IAM User Permissions for root user
+            Effect: Allow
+            Principal:
+              AWS: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:root"
+            Action: "kms:*"
+            Resource: "*"
+          - Sid: AllowS3AnonymousAccess
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: "kms:Decrypt"
+            Resource: "*"
+            Condition:
+              StringEquals:
+                "AWS:SourceAccount": !Ref AWS::AccountId
+      Tags:
+        - Key: Service
+          Value: apex-website
+
+  ApexAccessLogsBucket:
+    Type: AWS::S3::Bucket
+    # checkov:skip=CKV_AWS_18:This is the access logs bucket. It should not log itself.
+    Metadata:
+      checkov:
+        skip:
+          - id: "CKV_AWS_18"
+            comment: "This is the access logs bucket. It should not log itself"
+    Properties:
+      BucketName: !Sub
+        - "${Env}-di-root-website-logs"
+        - Env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
+              KMSMasterKeyID: !GetAtt ApexStaticWebSiteKey.Arn
+      VersioningConfiguration:
+        Status: Enabled
+      Tags:
+        - Key: Service
+          Value: apex-website
+
+  ApexAccessLogsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ApexAccessLogsBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowS3LogDelivery
+            Effect: Allow
+            Principal:
+              Service: logging.s3.amazonaws.com
+            Action: s3:PutObject
+            Resource: !Sub "${ApexAccessLogsBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                "aws:SourceAccount": !Ref AWS::AccountId
+          - Sid: AllowSSLRequestsOnly
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - !GetAtt ApexAccessLogsBucket.Arn
+              - !Sub "${ApexAccessLogsBucket.Arn}/*"
+            Condition:
+              Bool:
+                "aws:SecureTransport": "false"
+
+  ApexStaticWebsite:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub
+        - "${Env}-di-root-website"
+        - Env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
+              KMSMasterKeyID: !GetAtt ApexStaticWebSiteKey.Arn
+      VersioningConfiguration:
+        Status: Enabled
+      LoggingConfiguration:
+        DestinationBucketName: !Ref ApexAccessLogsBucket
+        LogFilePrefix: s3-access-logs/
+      Tags:
+        - Key: Service
+          Value: apex-website
+
+  ApexStaticWebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ApexStaticWebsite
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: "s3:GetObject"
+            Resource: !Sub "${ApexStaticWebsite.Arn}/*"
+            Condition:
+              StringEquals:
+                "AWS:SourceAccount": !Ref AWS::AccountId
+          - Sid: AllowCloudFrontKVSImport
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: "s3:GetObject"
+            Resource: !Sub "${ApexStaticWebsite.Arn}/env-config/*"
+          - Sid: AllowCloudFrontKVSImportBucketLocation
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: "s3:GetBucketLocation"
+            Resource: !GetAtt ApexStaticWebsite.Arn
+          - Sid: AllowSSLRequestsOnly
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - !GetAtt ApexStaticWebsite.Arn
+              - !Sub "${ApexStaticWebsite.Arn}/*"
+            Condition:
+              Bool:
+                "aws:SecureTransport": "false"
+              StringNotEquals:
+                "aws:PrincipalServiceName": "cloudfront.amazonaws.com"
+
+  WwwS3DistributionOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub
+          - "${Env}-apex-s3-bucket-access"
+          - Env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+        Description: Access to S3 buckets
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  HstsHeaderPolicy:
+    Type: AWS::CloudFront::ResponseHeadersPolicy
+    Properties:
+      ResponseHeadersPolicyConfig:
+        Name: !Sub
+          - "${Env}-hsts-headers-policy"
+          - Env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+        SecurityHeadersConfig:
+          StrictTransportSecurity:
+            AccessControlMaxAgeSec: 31536000
+            Preload: true
+            IncludeSubdomains: true
+            Override: true
+
+  ApexUrlKeyValueStore:
+    Type: AWS::CloudFront::KeyValueStore
+    DependsOn:
+      - ApexS3FileCopier
+      - ApexStaticWebsiteBucketPolicy
+    Properties:
+      Name: !Sub
+        - "${Env}-apex-url-kvs"
+        - Env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+      Comment: Holds per-environment apex redirect and support URLs for CloudFront functions
+      ImportSource:
+        SourceType: S3
+        SourceArn: !Sub
+          - "arn:aws:s3:::${BucketName}/env-config/${Env}-kvs-data.json"
+          - BucketName: !Ref ApexStaticWebsite
+            Env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+
+  RedirectFunction:
+    Type: AWS::CloudFront::Function
+    Properties:
+      Name: !Sub
+        - "${Env}-cloudfront-am-redirect"
+        - Env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+      AutoPublish: true
+      FunctionConfig:
+        Comment: Simple permanent redirect function
+        Runtime: cloudfront-js-2.0
+        KeyValueStoreAssociations:
+          - KeyValueStoreARN: !GetAtt ApexUrlKeyValueStore.Arn
+      FunctionCode: |
+        # __REDIRECT_FUNCTION_CODE__
+
+  ApexRedirectPageFunction:
+    Type: AWS::CloudFront::Function
+    Condition: UseApexStaticPage
+    Properties:
+      Name: !Sub
+        - "${Env}-cloudfront-apex-static-redirect-page"
+        - Env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+      AutoPublish: true
+      FunctionConfig:
+        Comment: Apex static redirect page function with EN/CY bilingual support
+        Runtime: cloudfront-js-2.0
+        KeyValueStoreAssociations:
+          - KeyValueStoreARN: !GetAtt ApexUrlKeyValueStore.Arn
+      FunctionCode: |
+        # __APEX_FUNCTION_CODE__
+
+  WwwS3Distribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        # Aliases:
+        #   - !If
+        #     - UseSubEnvironment
+        #     - !FindInMap [EnvironmentConfiguration, !Ref SubEnvironment, ServiceDomain]
+        #     - !FindInMap [EnvironmentConfiguration, !Ref Environment, ServiceDomain]
+        Enabled: true
+        IPV6Enabled: true
+        DefaultRootObject: index.html
+        Origins:
+          - DomainName: !GetAtt ApexStaticWebsite.RegionalDomainName
+            Id: !If
+              - UseSubEnvironment
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  ServiceDomain,
+                ]
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  ServiceDomain,
+                ]
+            OriginAccessControlId: !GetAtt WwwS3DistributionOAC.Id
+            S3OriginConfig: {}
+        DefaultCacheBehavior:
+          AllowedMethods: [GET, HEAD]
+          CachedMethods: [GET, HEAD]
+          TargetOriginId: !If
+            - UseSubEnvironment
+            - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref SubEnvironment,
+                ServiceDomain,
+              ]
+            - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref Environment,
+                ServiceDomain,
+              ]
+          ResponseHeadersPolicyId: !Ref HstsHeaderPolicy
+          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !If
+                - UseApexStaticPage
+                - !GetAtt ApexRedirectPageFunction.FunctionARN
+                - !GetAtt RedirectFunction.FunctionARN
+        CacheBehaviors:
+          - PathPattern: robots.txt
+            AllowedMethods: [GET, HEAD]
+            CachedMethods: [GET, HEAD]
+            TargetOriginId: !If
+              - UseSubEnvironment
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  ServiceDomain,
+                ]
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  ServiceDomain,
+                ]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+            ViewerProtocolPolicy: allow-all
+            Compress: true
+          - PathPattern: "/govuk-frontend/*/*.css"
+            AllowedMethods: [GET, HEAD]
+            CachedMethods: [GET, HEAD]
+            TargetOriginId: !If
+              - UseSubEnvironment
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  ServiceDomain,
+                ]
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  ServiceDomain,
+                ]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+            ViewerProtocolPolicy: redirect-to-https
+            Compress: true
+          - PathPattern: "/govuk-frontend/*/*.js"
+            AllowedMethods: [GET, HEAD]
+            CachedMethods: [GET, HEAD]
+            TargetOriginId: !If
+              - UseSubEnvironment
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  ServiceDomain,
+                ]
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  ServiceDomain,
+                ]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+            ViewerProtocolPolicy: redirect-to-https
+            Compress: true
+          - PathPattern: "/govuk-frontend/*/*.map"
+            AllowedMethods: [GET, HEAD]
+            CachedMethods: [GET, HEAD]
+            TargetOriginId: !If
+              - UseSubEnvironment
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  ServiceDomain,
+                ]
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  ServiceDomain,
+                ]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+            ViewerProtocolPolicy: redirect-to-https
+            Compress: true
+          - PathPattern: "/govuk-frontend/*/assets/*"
+            AllowedMethods: [GET, HEAD]
+            CachedMethods: [GET, HEAD]
+            TargetOriginId: !If
+              - UseSubEnvironment
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  ServiceDomain,
+                ]
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  ServiceDomain,
+                ]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+            ViewerProtocolPolicy: redirect-to-https
+            Compress: true
+        Restrictions:
+          GeoRestriction:
+            RestrictionType: none
+        # ViewerCertificate:
+        #   AcmCertificateArn: !Ref ApexCertificateArn
+        #   SslSupportMethod: sni-only
+        #   MinimumProtocolVersion: TLSv1.2_2019
+      Tags:
+        - Key: Service
+          Value: apex-website
+        - Key: FMSGlobalCustomPolicy
+          Value: cloudfrontapex
+
+Outputs:
+  ApexStaticWebsiteBucketName:
+    Value: !Ref ApexStaticWebsite
+    Export:
+      Name: !Sub "${AWS::StackName}-ApexStaticWebsiteBucketName"
+
+  WwwS3DistributionDomainName:
+    Value: !GetAtt WwwS3Distribution.DomainName
+    Export:
+      Name: !Sub "${AWS::StackName}-WwwS3DistributionDomainName"

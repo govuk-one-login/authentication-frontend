@@ -73,6 +73,7 @@ const config = [
       "journey-map",
       ".venv/**",
       "playwright-acceptance-tests/reports/**",
+      "apex-website/govuk-frontend/**",
     ],
   },
 ];

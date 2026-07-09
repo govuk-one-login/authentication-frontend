@@ -131,3 +131,6 @@ journey-map/public/application*
 
 # Detect secrets
 .secrets.baseline
+
+# SAM built template
+cloudformation/apex-website/apex-cloudfront-built.yaml

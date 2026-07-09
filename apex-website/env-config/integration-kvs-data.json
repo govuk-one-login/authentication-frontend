@@ -1,0 +1,13 @@
+{
+  "data": [
+    {
+      "key": "redirectBaseUrl",
+      "value": "https://home.integration.account.gov.uk"
+    },
+    {
+      "key": "supportUrl",
+      "value": "https://signin.integration.account.gov.uk/contact-us?supportType=PUBLIC"
+    },
+    { "key": "version", "value": "release-v5.11.0" }
+  ]
+}
