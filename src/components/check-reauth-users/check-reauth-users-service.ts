@@ -24,11 +24,7 @@ export function checkReauthUsersService(
     const config = getInternalRequestConfigWithSecurityHeaders(
       {
         sessionId,
-        validationStatuses: [
-          HTTP_STATUS_CODES.OK,
-          HTTP_STATUS_CODES.BAD_REQUEST,
-          HTTP_STATUS_CODES.NOT_FOUND,
-        ],
+        validationStatuses: [HTTP_STATUS_CODES.NOT_FOUND],
         clientSessionId,
         persistentSessionId,
       },
