@@ -40,6 +40,38 @@ describe("contact-us-structure-utils", () => {
     });
   });
 
+  it("should not return theme if it's hidden", () => {
+    const mockContactUsStructure: ContactFormStructure = new Map([
+      ["theme1", createTheme("nextPage1", "mainText1")],
+      [
+        "hiddenTheme1",
+        createTheme(
+          "hiddenNextPage2",
+          "hiddenMainText2",
+          undefined,
+          () => true
+        ),
+      ],
+      [
+        "shownTheme1",
+        createTheme("shownNextPage3", "shownMainText3", undefined, () => false),
+      ],
+    ]);
+
+    expect(getThemeRadioButtonsFromStructure(mockContactUsStructure)).to.eql([
+      {
+        value: "theme1",
+        mainTextKey: "mainText1",
+        hintTextKey: undefined,
+      },
+      {
+        value: "shownTheme1",
+        mainTextKey: "shownMainText3",
+        hintTextKey: undefined,
+      },
+    ]);
+  });
+
   describe("getTitleFromTheme", () => {
     it("should return the correct title", () => {
       const mockSubTheme = createTheme("theme", "nextPage", "mainText");
@@ -70,11 +102,13 @@ describe("contact-us-structure-utils", () => {
 const createTheme = (
   nextPageContent: string,
   mainText: string,
-  hintText?: string
+  hintText?: string,
+  isHidden?: () => boolean
 ): Theme => ({
   nextPageContent: nextPageContent,
   radio: {
     mainTextKey: mainText,
     hintTextKey: hintText,
   },
+  isHidden: isHidden,
 });

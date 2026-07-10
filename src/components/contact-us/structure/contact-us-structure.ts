@@ -10,7 +10,7 @@ export interface Theme {
     hintTextKey?: string;
   };
   subThemes?: ContactFormStructure;
-  isHidden?: boolean;
+  isHidden?: () => boolean;
 }
 
 export const CONTACT_FORM_STRUCTURE: ContactFormStructure = new Map([
@@ -146,7 +146,7 @@ export const CONTACT_FORM_STRUCTURE: ContactFormStructure = new Map([
               hintTextKey:
                 "pages.contactUsFurtherInformation.signingIn.section1.radio8Hint",
             },
-            isHidden: !enablePasskeyContactForm(),
+            isHidden: () => !enablePasskeyContactForm(),
           },
         ],
         [
