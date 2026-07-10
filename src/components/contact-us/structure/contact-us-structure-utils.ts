@@ -5,7 +5,7 @@ export function getThemeRadioButtonsFromStructure(
   structure: Map<string, Theme>
 ): TemplateThemeRadioButtons[] {
   return Array.from(structure)
-    .filter(([, theme]) => !theme.isHidden)
+    .filter(([, theme]) => !theme.isHidden?.())
     .map(([themeName, theme]) => ({
       value: themeName,
       mainTextKey: theme.radio.mainTextKey,
