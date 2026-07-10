@@ -2,6 +2,13 @@
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
+{% set showBack = true %}
+{% if (supportPasskeyUsage or supportPasskeyRegistration) and goBackHistory | length > 0 %}
+  {% set hrefBack = goBackHistory | last  %}
+{% else %}
+  {% set hrefBack = 'enter-email' %}
+{% endif %}
+
 {% set pageTitleName = 'pages.signInWithPasskey.title' | translate  %}
 
 {% block content %}

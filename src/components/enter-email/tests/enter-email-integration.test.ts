@@ -230,6 +230,36 @@ describe("Integration::enter email", () => {
     ]);
   });
 
+  it("should redirect to /sign-in-passkey and save enter-email in goBackHistory when passkeys are enabled and hasActivePasskey is true", async () => {
+    process.env.SUPPORT_PASSKEY_REGISTRATION = "1";
+    process.env.SUPPORT_PASSKEY_USAGE = "1";
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.USER_EXISTS)
+      .once()
+      .reply(HTTP_STATUS_CODES.OK, {
+        email: "test@test.com",
+        doesUserExist: true,
+        hasActivePasskey: true,
+      });
+
+    await request(app)
+      .post(PATH_NAMES.ENTER_EMAIL_SIGN_IN)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        email: "test@test.com",
+        browserSupportsWebAuthn: "true",
+      })
+      .expect("Location", PATH_NAMES.SIGN_IN_WITH_PASSKEY)
+      .expect(302);
+
+    expect(capturedSession.user.journey.goBackHistory).to.deep.equal([
+      PATH_NAMES.ENTER_EMAIL_SIGN_IN,
+    ]);
+  });
+
   it("should redirect to /account-not-found when email address not found", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.USER_EXISTS)

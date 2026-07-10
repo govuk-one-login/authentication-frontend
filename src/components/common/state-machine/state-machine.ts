@@ -138,6 +138,7 @@ const authStateMachine = createMachine<AuthStateContext>(
             {
               target: [PATH_NAMES.SIGN_IN_WITH_PASSKEY],
               cond: "shouldPromptToSignInWithPasskey",
+              meta: { reversible: true },
             },
             { target: [PATH_NAMES.ENTER_PASSWORD], meta: { reversible: true } },
           ],
@@ -218,11 +219,17 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.ACCOUNT_EXISTS_WITH_PASSKEY]: {
         on: {
           [USER_JOURNEY_EVENTS.SIGN_IN_WITH_PASSKEY]: [
-            PATH_NAMES.SIGN_IN_WITH_PASSKEY,
+            {
+              target: PATH_NAMES.SIGN_IN_WITH_PASSKEY,
+              meta: { reversible: true },
+            },
           ],
         },
         meta: {
-          optionalPaths: [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT],
+          optionalPaths: [
+            PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
+            PATH_NAMES.SIGN_IN_OR_CREATE,
+          ],
         },
       },
       [PATH_NAMES.CHECK_YOUR_EMAIL]: {
