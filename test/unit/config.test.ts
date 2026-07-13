@@ -19,6 +19,7 @@ import {
   showTestBanner,
   getAccountDomain,
   getPasskeyPromptClientAllowList,
+  getPasskeyRolloutPercentage,
 } from "../../src/config.js";
 import { CHANNEL } from "../../src/app.constants.js";
 
@@ -219,6 +220,32 @@ describe("config", () => {
     it("should return empty array when not set", () => {
       delete process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST;
       expect(getPasskeyPromptClientAllowList()).to.deep.equal([]);
+    });
+  });
+
+  describe("getPasskeyRolloutPercentage", () => {
+    [
+      {
+        passkeyRolloutPercentage: "50",
+        expected: 50,
+      },
+      {
+        passkeyRolloutPercentage: null,
+        expected: 0,
+      },
+      {
+        passkeyRolloutPercentage: undefined,
+        expected: 0,
+      },
+      {
+        passkeyRolloutPercentage: "100",
+        expected: 100,
+      },
+    ].forEach(({ passkeyRolloutPercentage, expected }) => {
+      it(`should return ${expected} when PASSKEY_ROLLOUT_PERCENTAGE is ${passkeyRolloutPercentage}`, () => {
+        process.env.PASSKEY_ROLLOUT_PERCENTAGE = passkeyRolloutPercentage;
+        expect(getPasskeyRolloutPercentage()).to.equal(expected);
+      });
     });
   });
 });
