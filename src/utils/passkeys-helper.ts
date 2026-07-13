@@ -17,7 +17,8 @@ export function shouldPromptToRegisterPasskey(
     !userHasBeenOnPasswordResetJourney(req) &&
     isPromptableRPClientID(req.session.client.rpClientId) &&
     userHasLoggedInWithPasswordAnd2Fa(req) &&
-    res.locals.supportPasskeyRegistration === true
+    res.locals.supportPasskeyRegistration === true &&
+    req.session.user.isInPasskeyPhasedRollout === true
   );
 }
 
