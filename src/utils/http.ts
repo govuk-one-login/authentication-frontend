@@ -86,7 +86,13 @@ export function getInternalRequestConfigWithSecurityHeaders(
 
   if (options.validationStatuses) {
     config.validateStatus = function (status: number) {
-      return options.validationStatuses.includes(status);
+      const isWithinDefaultValidateStatus =
+        status >= HTTP_STATUS_CODES.OK &&
+        status <= HTTP_STATUS_CODES.BAD_REQUEST;
+      return (
+        isWithinDefaultValidateStatus ||
+        options.validationStatuses.includes(status)
+      );
     };
   }
 

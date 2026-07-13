@@ -67,7 +67,7 @@ describe("send notification service", () => {
       expectedPath: API_ENDPOINTS.SEND_NOTIFICATION,
       expectedHeaders,
       expectedBody: { email, notificationType },
-      validateStatus: true,
+      validateStatus: false,
     };
 
     checkApiCallMadeWithExpectedBodyAndHeaders(
@@ -105,7 +105,7 @@ describe("send notification service", () => {
         phoneNumber,
         requestNewCode,
       },
-      validateStatus: true,
+      validateStatus: false,
     };
 
     checkApiCallMadeWithExpectedBodyAndHeaders(
