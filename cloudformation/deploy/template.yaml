@@ -456,7 +456,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
-      PasskeyPromptClientAllowList: ""
+      PasskeyPromptClientAllowList: "8dcd8666efcf84f45c6ca6a02bca2929"
     dev:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
