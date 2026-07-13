@@ -640,11 +640,11 @@ describe("authorize controller", () => {
     errorMessage: string,
     level?: string
   ) {
-    let caughtError;
+    let caughtError: Error;
 
     try {
       await fn();
-    } catch (error) {
+    } catch (error: any) {
       caughtError = error;
     }
 
