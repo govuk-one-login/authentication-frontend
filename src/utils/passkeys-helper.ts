@@ -1,5 +1,8 @@
 import type { Request, Response } from "express";
-import { getPasskeyPromptClientAllowList } from "../config.js";
+import {
+  getPasskeyPromptClientAllowList,
+  getPasskeyRolloutPercentage,
+} from "../config.js";
 
 export function shouldPromptToRegisterPasskey(
   req: Request,
@@ -27,6 +30,15 @@ export function shouldPromptToSignInWithPasskey(
     req.session.user?.hasActivePasskey === true &&
     res.locals.supportPasskeyUsage === true
   );
+}
+
+export function isInPasskeyPhasedRollout(): boolean {
+  const passkeyRolloutPercentage = getPasskeyRolloutPercentage();
+
+  if (!passkeyRolloutPercentage) return false;
+
+  const randomPercentage = Math.random() * 100;
+  return randomPercentage <= passkeyRolloutPercentage;
 }
 
 function isPromptableRPClientID(rpClientId: string) {

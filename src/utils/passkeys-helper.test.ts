@@ -2,8 +2,9 @@ import { describe } from "mocha";
 import {
   shouldPromptToRegisterPasskey,
   shouldPromptToSignInWithPasskey,
+  isInPasskeyPhasedRollout,
 } from "./passkeys-helper.js";
-import { expect } from "chai";
+import { expect, sinon } from "../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
 
 describe("passkeys helper", () => {
@@ -323,5 +324,61 @@ describe("passkeys helper", () => {
         });
       }
     );
+  });
+
+  describe("isInPasskeyPhasedRollout", () => {
+    let mathRandomStub: sinon.SinonStub;
+
+    afterEach(() => {
+      mathRandomStub?.restore();
+      delete process.env.PASSKEY_ROLLOUT_PERCENTAGE;
+    });
+
+    const testCases = [
+      {
+        rolloutPercentage: undefined,
+        randomValue: 0.1,
+        expected: false,
+      },
+      {
+        rolloutPercentage: "0",
+        randomValue: 0.1,
+        expected: false,
+      },
+      {
+        rolloutPercentage: "50",
+        randomValue: 0.3,
+        expected: true,
+      },
+      {
+        rolloutPercentage: "50",
+        randomValue: 0.7,
+        expected: false,
+      },
+      {
+        rolloutPercentage: "60",
+        randomValue: 0.6,
+        expected: true,
+      },
+      {
+        rolloutPercentage: "100",
+        randomValue: 0.99,
+        expected: true,
+      },
+      {
+        rolloutPercentage: "abc",
+        randomValue: 0.1,
+        expected: false,
+      },
+    ];
+
+    testCases.forEach(({ rolloutPercentage, randomValue, expected }) => {
+      it(`should return ${expected} when PASSKEY_ROLLOUT_PERCENTAGE is ${rolloutPercentage} and Math.random returns ${randomValue}`, () => {
+        process.env.PASSKEY_ROLLOUT_PERCENTAGE = rolloutPercentage;
+        mathRandomStub = sinon.stub(Math, "random").returns(randomValue);
+
+        expect(isInPasskeyPhasedRollout()).to.eq(expected);
+      });
+    });
   });
 });
