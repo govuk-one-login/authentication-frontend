@@ -460,6 +460,20 @@ describe("authorize controller", () => {
       expect(req.session.user.reauthenticate).to.eq(null);
     });
 
+    it("should set isInPasskeyPhasedRollout in session correctly", async () => {
+      process.env.PASSKEY_ROLLOUT_PERCENTAGE = "20";
+      sinon.stub(Math, "random").returns(0.1);
+      req.query.request = "JWE";
+
+      await authorizeGet(
+        fakeAuthorizeService,
+        fakeCookieConsentService,
+        fakeKmsDecryptionService,
+        fakeJwtService
+      )(req as Request, res as Response);
+      expect(req.session.user.isInPasskeyPhasedRollout).to.be.true;
+    });
+
     it("claims should be undefined when optional claims missing", async () => {
       req.query.request = "JWE";
 

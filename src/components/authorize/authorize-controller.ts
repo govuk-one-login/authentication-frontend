@@ -38,6 +38,7 @@ import {
 import type { Claims } from "./claims-config.js";
 import { isReauth, isUpliftRequired } from "../../utils/request.js";
 import { LocalDecryptionService } from "./local-decryption-service.js";
+import { isInPasskeyPhasedRollout } from "../../utils/passkeys-helper.js";
 
 const decryptionService =
   getAppEnv() === APP_ENV_NAME.LOCAL && getLocalEncryptionKey()
@@ -201,6 +202,8 @@ export function authorizeGet(
     const faceToFaceRpGoogleAnalyticsParamValue = sanitize(
       req.query[faceToFaceRpGoogleAnalyticsParamKey] as string
     );
+
+    req.session.user.isInPasskeyPhasedRollout = isInPasskeyPhasedRollout();
 
     return res.redirect(
       appendQueryParamIfHasValue(
