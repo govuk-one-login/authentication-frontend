@@ -368,29 +368,6 @@ Conditions:
                 ]
               - "Yes"
 
-  EnableDwpKbvContactFormChanges:
-    Fn::Or:
-      - Fn::And:
-          - !Condition UseSubEnvironment
-          - Fn::Equals:
-              - !FindInMap [
-                EnvironmentConfiguration,
-                !Ref SubEnvironment,
-                EnableDwpKbvContactFormChanges,
-                DefaultValue: "No",
-              ]
-              - "Yes"
-      - Fn::And:
-          - !Condition NotSubEnvironment
-          - Fn::Equals:
-              - !FindInMap [
-                EnvironmentConfiguration,
-                !Ref Environment,
-                EnableDwpKbvContactFormChanges,
-                DefaultValue: "No",
-              ]
-              - "Yes"
-
   EnablePasskeyContactForm:
     Fn::Or:
       - Fn::And:
@@ -442,7 +419,6 @@ Mappings:
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
-      EnableDwpKbvContactFormChanges: "Yes"
       EnablePasskeyContactForm: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "skwdHH2y6ERjJWTPSoAFbSt8lX04OgtI"
@@ -463,7 +439,6 @@ Mappings:
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
-      EnableDwpKbvContactFormChanges: "Yes"
       EnablePasskeyContactForm: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "rPEUe0hRrHqf0i0es1gYjKxE5ceGN7VK"
@@ -479,7 +454,6 @@ Mappings:
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
-      EnableDwpKbvContactFormChanges: "Yes"
       EnablePasskeyContactForm: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: ""
@@ -508,7 +482,6 @@ Mappings:
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
-      EnableDwpKbvContactFormChanges: "Yes"
       EnablePasskeyContactForm: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "J3tedNRsfssnsf4STuc2NNIV1C1gdxBB"
@@ -538,7 +511,6 @@ Mappings:
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
       SupportNewInternationalSms: "No"
-      EnableDwpKbvContactFormChanges: "Yes"
       EnablePasskeyContactForm: "No"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "Ykg9fGyY76On4e8tPvFabK5BIl65EkGH"
@@ -575,7 +547,6 @@ Mappings:
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
-      EnableDwpKbvContactFormChanges: "Yes"
       EnablePasskeyContactForm: "Yes"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "nsR2wZ7EebJ2VOzE1LUa9iAVadunWQP3,EMGmY82k-92QSakDl_9keKDFmZY" # perf-test client, home client
@@ -607,7 +578,6 @@ Mappings:
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
       SupportNewInternationalSms: "No"
-      EnableDwpKbvContactFormChanges: "Yes"
       EnablePasskeyContactForm: "No"
       PasskeyPromptClientAllowList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
@@ -640,7 +610,6 @@ Mappings:
       SupportPasskeyUsage: "No"
       SupportPasskeyRegistration: "No"
       SupportNewInternationalSms: "No"
-      EnableDwpKbvContactFormChanges: "Yes"
       EnablePasskeyContactForm: "No"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: ""
@@ -1186,8 +1155,6 @@ Resources:
                   - !Ref SubEnvironment
                   - !Ref Environment
                 - PasskeyPromptClientAllowList
-            - Name: ENABLE_DWP_KBV_CONTACT_FORM_CHANGES
-              Value: !If [EnableDwpKbvContactFormChanges, "1", "0"]
             - Name: ENABLE_PASSKEY_CONTACT_FORM
               Value: !If [EnablePasskeyContactForm, "1", "0"]
             - Name: SUPPORT_NEW_INTERNATIONAL_SMS

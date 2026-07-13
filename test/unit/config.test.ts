@@ -12,7 +12,6 @@ import {
   useRebrand,
   supportPasskeyUsage,
   supportPasskeyRegistration,
-  enableDwpKbvContactFormChanges,
   supportNewInternationalSms,
   supportSingleFactorAccountDeletion,
   getDefaultChannel,
@@ -36,7 +35,6 @@ describe("config", () => {
     delete process.env.USE_REBRAND;
     delete process.env.SUPPORT_PASSKEY_USAGE;
     delete process.env.SUPPORT_PASSKEY_REGISTRATION;
-    delete process.env.ENABLE_DWP_KBV_CONTACT_FORM_CHANGES;
     delete process.env.SUPPORT_NEW_INTERNATIONAL_SMS;
     delete process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION;
     delete process.env.DEFAULT_CHANNEL;
@@ -105,11 +103,6 @@ describe("config", () => {
         name: "supportPasskeyRegistration",
         envVar: "SUPPORT_PASSKEY_REGISTRATION",
         fn: supportPasskeyRegistration,
-      },
-      {
-        name: "enableDwpKbvContactFormChanges",
-        envVar: "ENABLE_DWP_KBV_CONTACT_FORM_CHANGES",
-        fn: enableDwpKbvContactFormChanges,
       },
       {
         name: "supportNewInternationalSms",

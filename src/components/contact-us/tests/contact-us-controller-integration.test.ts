@@ -17,8 +17,6 @@ describe("Integration:: contact us - public user", () => {
   let smartAgentApiUrl: string;
 
   before(async () => {
-    process.env.ENABLE_DWP_KBV_CONTACT_FORM_CHANGES = "1";
-
     const { createApp } = await esmock(
       "../../../app.js",
       {},
