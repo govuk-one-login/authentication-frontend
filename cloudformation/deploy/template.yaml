@@ -460,7 +460,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
-      PasskeyPromptClientAllowList: ""
+      PasskeyPromptClientAllowList: "fvWopxEECoAhdU7uTYqtF28gueApgiow"
       PasskeyRolloutPercentage: 100
       PasskeyPromptClientDenyList: ""
     dev:
