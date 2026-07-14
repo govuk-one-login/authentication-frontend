@@ -51,11 +51,11 @@ describe("create-passkey-callback controller", () => {
   describe("create-passkey-callback-controller", () => {
     describe("validation", () => {
       it("should throw BadRequestError if result was not successful", async () => {
-        const expectedError = {
+        const responseFromAmc = {
           code: 1001,
           message: "Some error message",
         };
-        const fakeService = createMockService(false, expectedError);
+        const fakeService = createMockService(false, responseFromAmc);
 
         await assert.rejects(
           async () =>
@@ -76,11 +76,11 @@ describe("create-passkey-callback controller", () => {
       });
 
       it("should throw BadRequestError if result was successful but scope is incorrect", async () => {
-        const expectedResult = {
+        const responseFromAmc = {
           success: true,
           scope: AMC_SCOPE.ACCOUNT_DELETE,
         };
-        const fakeService = createMockService(true, expectedResult);
+        const fakeService = createMockService(true, responseFromAmc);
 
         await assert.rejects(
           async () =>
@@ -101,7 +101,7 @@ describe("create-passkey-callback controller", () => {
       });
 
       it("should throw BadRequestError if result was successful but error description is unexpected", async () => {
-        const expectedResult = {
+        const responseFromAmc = {
           success: false,
           scope: AMC_SCOPE.PASSKEY_CREATE,
           actions: [
@@ -116,7 +116,7 @@ describe("create-passkey-callback controller", () => {
             },
           ],
         };
-        const fakeService = createMockService(true, expectedResult);
+        const fakeService = createMockService(true, responseFromAmc);
 
         await assert.rejects(
           async () =>
