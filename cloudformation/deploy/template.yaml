@@ -422,6 +422,7 @@ Mappings:
       EnablePasskeyContactForm: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "skwdHH2y6ERjJWTPSoAFbSt8lX04OgtI"
+      PasskeyRolloutPercentage: 100
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       frontendApiBaseUrl: https://nw0dah7bxk-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev2/
@@ -442,6 +443,7 @@ Mappings:
       EnablePasskeyContactForm: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "rPEUe0hRrHqf0i0es1gYjKxE5ceGN7VK"
+      PasskeyRolloutPercentage: 100
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: https://y3s69ubaz5-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev3/
@@ -457,6 +459,7 @@ Mappings:
       EnablePasskeyContactForm: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: ""
+      PasskeyRolloutPercentage: 100
     dev:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -486,6 +489,7 @@ Mappings:
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "J3tedNRsfssnsf4STuc2NNIV1C1gdxBB"
       serviceDownPageRegistry: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-w62weogzsdkb"
+      PasskeyRolloutPercentage: 100
     build:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "Yes"
@@ -515,6 +519,7 @@ Mappings:
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "Ykg9fGyY76On4e8tPvFabK5BIl65EkGH"
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
+      PasskeyRolloutPercentage: 0
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "Yes"
@@ -551,6 +556,7 @@ Mappings:
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "EB2EC91OpyzuhI7C2nw1aiEK2q8,3NKFv679oYlMdyrhKErrTGbzBy2h8rrd,nsR2wZ7EebJ2VOzE1LUa9iAVadunWQP3,EMGmY82k-92QSakDl_9keKDFmZY" # mobile sts, rp-stub, perf-test client, home client
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
+      PasskeyRolloutPercentage: 100
     integration:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -581,6 +587,7 @@ Mappings:
       EnablePasskeyContactForm: "No"
       PasskeyPromptClientAllowList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
+      PasskeyRolloutPercentage: 0
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -614,6 +621,7 @@ Mappings:
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
+      PasskeyRolloutPercentage: 0
 
   # /acceptance-tests/{env}}/CUCUMBER_FILTER_TAGS
   AcceptanceTestTags:
@@ -1161,6 +1169,17 @@ Resources:
               Value: !If [SupportNewInternationalSms, "1", "0"]
             - Name: SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION
               Value: !If [SupportSingleFactorAccountDeletion, "1", "0"]
+            - Name: PASSKEY_ROLLOUT_PERCENTAGE
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !If [
+                    UseSubEnvironment,
+                    !Ref SubEnvironment,
+                    !Ref Environment,
+                  ],
+                  PasskeyRolloutPercentage,
+                ]
 
           Secrets:
             - Name: API_KEY

@@ -226,3 +226,7 @@ export function getPasskeyPromptClientAllowList(): string[] {
   }
   return [];
 }
+
+export function getPasskeyRolloutPercentage(): number {
+  return Number(process.env.PASSKEY_ROLLOUT_PERCENTAGE) || 0;
+}

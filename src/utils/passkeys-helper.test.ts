@@ -2,147 +2,184 @@ import { describe } from "mocha";
 import {
   shouldPromptToRegisterPasskey,
   shouldPromptToSignInWithPasskey,
+  isInPasskeyPhasedRollout,
 } from "./passkeys-helper.js";
-import { expect } from "chai";
+import { expect, sinon } from "../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
 
 describe("passkeys helper", () => {
   describe("shouldPromptToRegisterPasskey", () => {
     const testCases = [
       {
-        browserSupportsWebAuthn: true,
-        hasActivePasskey: false,
-        hasSkippedPasskeyRegistration: false,
-        supportPasskeyRegistration: true,
-        rpClientId: "valid-rp-client-id",
-        backendIndicatesPasskeyPromptShouldBeSkipped: false,
+        conditions: {
+          browserSupportsWebAuthn: true,
+          hasActivePasskey: false,
+          hasSkippedPasskeyRegistration: false,
+          supportPasskeyRegistration: true,
+          rpClientId: "valid-rp-client-id",
+          backendIndicatesPasskeyPromptShouldBeSkipped: false,
+          isInPasskeyPhasedRollout: true,
+        },
         expected: true,
       },
       {
-        browserSupportsWebAuthn: true,
-        hasActivePasskey: false,
-        hasSkippedPasskeyRegistration: false,
-        supportPasskeyRegistration: true,
-        rpClientId: "valid-rp-client-id",
-        backendIndicatesPasskeyPromptShouldBeSkipped: null,
+        conditions: {
+          browserSupportsWebAuthn: true,
+          hasActivePasskey: false,
+          hasSkippedPasskeyRegistration: false,
+          supportPasskeyRegistration: true,
+          rpClientId: "valid-rp-client-id",
+          backendIndicatesPasskeyPromptShouldBeSkipped: null,
+          isInPasskeyPhasedRollout: true,
+        },
         expected: true,
       },
       {
-        browserSupportsWebAuthn: false,
-        hasActivePasskey: false,
-        hasSkippedPasskeyRegistration: false,
-        supportPasskeyRegistration: true,
-        rpClientId: "invalid-rp-client-id",
-        backendIndicatesPasskeyPromptShouldBeSkipped: false,
+        conditions: {
+          browserSupportsWebAuthn: false,
+          hasActivePasskey: false,
+          hasSkippedPasskeyRegistration: false,
+          supportPasskeyRegistration: true,
+          rpClientId: "invalid-rp-client-id",
+          backendIndicatesPasskeyPromptShouldBeSkipped: false,
+          isInPasskeyPhasedRollout: true,
+        },
         expected: false,
       },
       {
-        browserSupportsWebAuthn: true,
-        hasActivePasskey: true,
-        hasSkippedPasskeyRegistration: false,
-        supportPasskeyRegistration: true,
-        rpClientId: "invalid-rp-client-id",
-        backendIndicatesPasskeyPromptShouldBeSkipped: false,
+        conditions: {
+          browserSupportsWebAuthn: true,
+          hasActivePasskey: true,
+          hasSkippedPasskeyRegistration: false,
+          supportPasskeyRegistration: true,
+          rpClientId: "invalid-rp-client-id",
+          backendIndicatesPasskeyPromptShouldBeSkipped: false,
+          isInPasskeyPhasedRollout: true,
+        },
         expected: false,
       },
       {
-        browserSupportsWebAuthn: true,
-        hasActivePasskey: false,
-        hasSkippedPasskeyRegistration: true,
-        supportPasskeyRegistration: true,
-        rpClientId: "invalid-rp-client-id",
-        backendIndicatesPasskeyPromptShouldBeSkipped: false,
+        conditions: {
+          browserSupportsWebAuthn: true,
+          hasActivePasskey: false,
+          hasSkippedPasskeyRegistration: true,
+          supportPasskeyRegistration: true,
+          rpClientId: "invalid-rp-client-id",
+          backendIndicatesPasskeyPromptShouldBeSkipped: false,
+          isInPasskeyPhasedRollout: true,
+        },
         expected: false,
       },
       {
-        browserSupportsWebAuthn: true,
-        hasActivePasskey: false,
-        hasSkippedPasskeyRegistration: false,
-        supportPasskeyRegistration: false,
-        rpClientId: "invalid-rp-client-id",
-        backendIndicatesPasskeyPromptShouldBeSkipped: false,
+        conditions: {
+          browserSupportsWebAuthn: true,
+          hasActivePasskey: false,
+          hasSkippedPasskeyRegistration: false,
+          supportPasskeyRegistration: false,
+          rpClientId: "invalid-rp-client-id",
+          backendIndicatesPasskeyPromptShouldBeSkipped: false,
+          isInPasskeyPhasedRollout: true,
+        },
         expected: false,
       },
       {
-        browserSupportsWebAuthn: true,
-        hasActivePasskey: false,
-        hasSkippedPasskeyRegistration: false,
-        supportPasskeyRegistration: true,
-        reauthenticate: "12345",
-        rpClientId: "invalid-rp-client-id",
-        backendIndicatesPasskeyPromptShouldBeSkipped: false,
+        conditions: {
+          browserSupportsWebAuthn: true,
+          hasActivePasskey: false,
+          hasSkippedPasskeyRegistration: false,
+          supportPasskeyRegistration: true,
+          reauthenticate: "12345",
+          rpClientId: "invalid-rp-client-id",
+          backendIndicatesPasskeyPromptShouldBeSkipped: false,
+          isInPasskeyPhasedRollout: true,
+        },
         expected: false,
       },
       {
-        browserSupportsWebAuthn: true,
-        hasActivePasskey: false,
-        hasSkippedPasskeyRegistration: false,
-        supportPasskeyRegistration: true,
-        rpClientId: "invalid-rp-client-id",
-        backendIndicatesPasskeyPromptShouldBeSkipped: false,
+        conditions: {
+          browserSupportsWebAuthn: true,
+          hasActivePasskey: false,
+          hasSkippedPasskeyRegistration: false,
+          supportPasskeyRegistration: true,
+          rpClientId: "invalid-rp-client-id",
+          backendIndicatesPasskeyPromptShouldBeSkipped: false,
+          isInPasskeyPhasedRollout: true,
+        },
         expected: false,
       },
       {
-        browserSupportsWebAuthn: true,
-        hasActivePasskey: null,
-        hasSkippedPasskeyRegistration: false,
-        supportPasskeyRegistration: true,
-        rpClientId: "valid-rp-client-id",
-        backendIndicatesPasskeyPromptShouldBeSkipped: false,
+        conditions: {
+          browserSupportsWebAuthn: true,
+          hasActivePasskey: null,
+          hasSkippedPasskeyRegistration: false,
+          supportPasskeyRegistration: true,
+          rpClientId: "valid-rp-client-id",
+          backendIndicatesPasskeyPromptShouldBeSkipped: false,
+          isInPasskeyPhasedRollout: true,
+        },
         expected: false,
       },
       {
-        browserSupportsWebAuthn: true,
-        hasActivePasskey: false,
-        hasSkippedPasskeyRegistration: false,
-        supportPasskeyRegistration: true,
-        rpClientId: "valid-rp-client-id",
-        backendIndicatesPasskeyPromptShouldBeSkipped: true,
+        conditions: {
+          browserSupportsWebAuthn: true,
+          hasActivePasskey: false,
+          hasSkippedPasskeyRegistration: false,
+          supportPasskeyRegistration: true,
+          rpClientId: "valid-rp-client-id",
+          backendIndicatesPasskeyPromptShouldBeSkipped: true,
+          isInPasskeyPhasedRollout: true,
+        },
+        expected: false,
+      },
+      {
+        conditions: {
+          browserSupportsWebAuthn: true,
+          hasActivePasskey: false,
+          hasSkippedPasskeyRegistration: false,
+          supportPasskeyRegistration: true,
+          rpClientId: "valid-rp-client-id",
+          backendIndicatesPasskeyPromptShouldBeSkipped: false,
+          isInPasskeyPhasedRollout: false,
+        },
         expected: false,
       },
     ];
 
-    testCases.forEach(
-      ({
-        browserSupportsWebAuthn,
-        hasActivePasskey,
-        hasSkippedPasskeyRegistration,
-        supportPasskeyRegistration,
-        reauthenticate,
-        rpClientId,
-        backendIndicatesPasskeyPromptShouldBeSkipped,
-        expected,
-      }) => {
-        it(`should return ${expected} when browserSupportsWebAuthn=${browserSupportsWebAuthn}, hasActivePasskey=${hasActivePasskey}, hasSkippedPasskeyRegistration=${hasSkippedPasskeyRegistration}, supportPasskeyRegistration=${supportPasskeyRegistration}, reauthenticate=${reauthenticate}, rpClientId=${rpClientId}, backendIndicatesPasskeyPromptShouldBeSkipped=${backendIndicatesPasskeyPromptShouldBeSkipped}`, () => {
-          process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
+    testCases.forEach(({ conditions, expected }) => {
+      it(`should return ${expected} when conditions=${JSON.stringify(conditions)}`, () => {
+        process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
 
-          const req = {
-            session: {
-              user: {
-                browserSupportsWebAuthn,
-                hasActivePasskey,
-                hasSkippedPasskeyRegistration,
-                reauthenticate,
-                backendIndicatesPasskeyPromptShouldBeSkipped,
-                isPasswordResetJourney: false,
-                withinForcedPasswordResetJourney: false,
-                isCommonPasswordResetJourney: false,
-                isMfaRequired: true,
-                isUpliftRequired: false,
-              },
-              client: {
-                rpClientId: rpClientId,
-              },
+        const req = {
+          session: {
+            user: {
+              browserSupportsWebAuthn: conditions.browserSupportsWebAuthn,
+              hasActivePasskey: conditions.hasActivePasskey,
+              hasSkippedPasskeyRegistration:
+                conditions.hasSkippedPasskeyRegistration,
+              reauthenticate: conditions.reauthenticate,
+              backendIndicatesPasskeyPromptShouldBeSkipped:
+                conditions.backendIndicatesPasskeyPromptShouldBeSkipped,
+              isInPasskeyPhasedRollout: conditions.isInPasskeyPhasedRollout,
+              isPasswordResetJourney: false,
+              withinForcedPasswordResetJourney: false,
+              isCommonPasswordResetJourney: false,
+              isMfaRequired: true,
+              isUpliftRequired: false,
             },
-          } as any as Request;
-          const res = {
-            locals: { supportPasskeyRegistration },
-          } as any as Response;
+            client: {
+              rpClientId: conditions.rpClientId,
+            },
+          },
+        } as any as Request;
+        const res = {
+          locals: {
+            supportPasskeyRegistration: conditions.supportPasskeyRegistration,
+          },
+        } as any as Response;
 
-          expect(shouldPromptToRegisterPasskey(req, res)).to.eq(expected);
-        });
-      }
-    );
+        expect(shouldPromptToRegisterPasskey(req, res)).to.eq(expected);
+      });
+    });
 
     const passwordResetTestCases = [
       {
@@ -197,6 +234,7 @@ describe("passkeys helper", () => {
                 backendIndicatesPasskeyPromptShouldBeSkipped: false,
                 isMfaRequired: true,
                 isUpliftRequired: false,
+                isInPasskeyPhasedRollout: true,
                 isPasswordResetJourney,
                 withinForcedPasswordResetJourney,
                 isCommonPasswordResetJourney,
@@ -252,6 +290,7 @@ describe("passkeys helper", () => {
                 isPasswordResetJourney: false,
                 withinForcedPasswordResetJourney: false,
                 isCommonPasswordResetJourney: false,
+                isInPasskeyPhasedRollout: true,
               },
               client: {
                 rpClientId: "valid-rp-client-id",
@@ -323,5 +362,61 @@ describe("passkeys helper", () => {
         });
       }
     );
+  });
+
+  describe("isInPasskeyPhasedRollout", () => {
+    let mathRandomStub: sinon.SinonStub;
+
+    afterEach(() => {
+      mathRandomStub?.restore();
+      delete process.env.PASSKEY_ROLLOUT_PERCENTAGE;
+    });
+
+    const testCases = [
+      {
+        rolloutPercentage: undefined,
+        randomValue: 0.1,
+        expected: false,
+      },
+      {
+        rolloutPercentage: "0",
+        randomValue: 0.1,
+        expected: false,
+      },
+      {
+        rolloutPercentage: "50",
+        randomValue: 0.3,
+        expected: true,
+      },
+      {
+        rolloutPercentage: "50",
+        randomValue: 0.7,
+        expected: false,
+      },
+      {
+        rolloutPercentage: "60",
+        randomValue: 0.6,
+        expected: true,
+      },
+      {
+        rolloutPercentage: "100",
+        randomValue: 0.99,
+        expected: true,
+      },
+      {
+        rolloutPercentage: "abc",
+        randomValue: 0.1,
+        expected: false,
+      },
+    ];
+
+    testCases.forEach(({ rolloutPercentage, randomValue, expected }) => {
+      it(`should return ${expected} when PASSKEY_ROLLOUT_PERCENTAGE is ${rolloutPercentage} and Math.random returns ${randomValue}`, () => {
+        process.env.PASSKEY_ROLLOUT_PERCENTAGE = rolloutPercentage;
+        mathRandomStub = sinon.stub(Math, "random").returns(randomValue);
+
+        expect(isInPasskeyPhasedRollout()).to.eq(expected);
+      });
+    });
   });
 });

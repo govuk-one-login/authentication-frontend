@@ -98,6 +98,7 @@ export interface UserSession {
   needsForcedMFAReset?: boolean;
   browserSupportsWebAuthn?: boolean;
   backendIndicatesPasskeyPromptShouldBeSkipped?: boolean;
+  isInPasskeyPhasedRollout?: boolean;
 }
 
 export interface UserSessionClient {
