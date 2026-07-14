@@ -462,7 +462,7 @@ Mappings:
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "fvWopxEECoAhdU7uTYqtF28gueApgiow"
       PasskeyRolloutPercentage: 100
-      PasskeyPromptClientDenyList: ""
+      PasskeyPromptClientDenyList: "fvWopxEECoAhdU7uTYqtF28gueApgiow"
     dev:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
