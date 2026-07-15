@@ -23,7 +23,7 @@ router.get(
   PATH_NAMES.RESET_PASSWORD,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  accountInterventionsMiddleware(true, false),
+  accountInterventionsMiddleware(true, false, false),
   resetPasswordGet
 );
 

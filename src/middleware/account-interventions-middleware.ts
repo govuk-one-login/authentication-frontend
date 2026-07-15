@@ -11,6 +11,7 @@ import {
 export function accountInterventionsMiddleware(
   handleSuspendedStatus: boolean,
   handlePasswordResetStatus: boolean,
+  handleReproveIdentity: boolean,
   authenticated?: boolean,
   service = accountInterventionService()
 ): ExpressRouteFunc {
@@ -68,6 +69,17 @@ export function accountInterventionsMiddleware(
             req,
             res,
             USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION
+          )
+        );
+      } else if (
+        accountInterventionsResponse.data.reproveIdentity &&
+        handleReproveIdentity
+      ) {
+        return res.redirect(
+          await getNextPathAndUpdateJourney(
+            req,
+            res,
+            USER_JOURNEY_EVENTS.REPROVE_IDENTITY_INTERVENTION
           )
         );
       }

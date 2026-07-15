@@ -15,7 +15,7 @@ router.get(
   validateSessionMiddleware,
   requiredSessionFieldsMiddleware,
   allowUserJourneyMiddleware,
-  accountInterventionsMiddleware(false, true, true),
+  accountInterventionsMiddleware(false, true, false, true),
   authCodeGet()
 );
 
