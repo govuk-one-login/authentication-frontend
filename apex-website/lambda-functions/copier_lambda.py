@@ -6,6 +6,20 @@ import urllib.request
 import logging
 from botocore.exceptions import ClientError
 
+MIME_TYPES = {
+    ".css": "text/css",
+    ".js": "application/javascript",
+    ".map": "application/json",
+    ".svg": "image/svg+xml",
+    ".ico": "image/x-icon",
+    ".png": "image/png",
+    ".woff": "font/woff",
+    ".woff2": "font/woff2",
+    ".json": "application/json",
+    ".txt": "text/plain",
+    ".html": "text/html",
+}
+
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
@@ -91,9 +105,12 @@ def handler(event, context):
                 logger.info("Extracting %d files to s3://%s", len(entries), dst)
                 for entry in entries:
                     extra_args = {}
+                    ext = "." + entry.rsplit(".", 1)[-1] if "." in entry else ""
                     if entry.startswith("env-config/"):
                         extra_args["ServerSideEncryption"] = "AES256"
                         extra_args["ContentType"] = "application/json"
+                    elif ext in MIME_TYPES:
+                        extra_args["ContentType"] = MIME_TYPES[ext]
                     s3.put_object(
                         Bucket=dst, Key=entry, Body=zf.read(entry), **extra_args
                     )

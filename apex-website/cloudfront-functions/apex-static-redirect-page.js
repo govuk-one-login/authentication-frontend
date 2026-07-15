@@ -21,7 +21,7 @@ function generateContent(options, redirectBaseUrl, supportUrl, version) {
     <link href="/govuk-frontend/${version}/govuk-frontend-5.11.0.min.css" rel="stylesheet">
 </head>
 
-<body class="govuk-template__body ">
+<body class="govuk-template__body govuk-frontend-supported">
     <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
     <header class="govuk-header" data-module="govuk-header">

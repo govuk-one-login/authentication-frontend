@@ -512,61 +512,7 @@ Resources:
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
             ViewerProtocolPolicy: allow-all
             Compress: true
-          - PathPattern: "/govuk-frontend/*/*.css"
-            AllowedMethods: [GET, HEAD]
-            CachedMethods: [GET, HEAD]
-            TargetOriginId: !If
-              - UseSubEnvironment
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref SubEnvironment,
-                  ServiceDomain,
-                ]
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref Environment,
-                  ServiceDomain,
-                ]
-            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
-            ViewerProtocolPolicy: redirect-to-https
-            Compress: true
-          - PathPattern: "/govuk-frontend/*/*.js"
-            AllowedMethods: [GET, HEAD]
-            CachedMethods: [GET, HEAD]
-            TargetOriginId: !If
-              - UseSubEnvironment
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref SubEnvironment,
-                  ServiceDomain,
-                ]
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref Environment,
-                  ServiceDomain,
-                ]
-            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
-            ViewerProtocolPolicy: redirect-to-https
-            Compress: true
-          - PathPattern: "/govuk-frontend/*/*.map"
-            AllowedMethods: [GET, HEAD]
-            CachedMethods: [GET, HEAD]
-            TargetOriginId: !If
-              - UseSubEnvironment
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref SubEnvironment,
-                  ServiceDomain,
-                ]
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref Environment,
-                  ServiceDomain,
-                ]
-            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
-            ViewerProtocolPolicy: redirect-to-https
-            Compress: true
-          - PathPattern: "/govuk-frontend/*/assets/*"
+          - PathPattern: "/govuk-frontend/*"
             AllowedMethods: [GET, HEAD]
             CachedMethods: [GET, HEAD]
             TargetOriginId: !If
