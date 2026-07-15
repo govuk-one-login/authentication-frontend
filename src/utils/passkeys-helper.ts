@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import {
   getPasskeyPromptClientAllowList,
   getPasskeyRolloutPercentage,
+  getPasskeyPromptClientDenyList,
 } from "../config.js";
 
 export function shouldPromptToRegisterPasskey(
@@ -43,7 +44,10 @@ export function isInPasskeyPhasedRollout(): boolean {
 }
 
 function isPromptableRPClientID(rpClientId: string) {
-  return getPasskeyPromptClientAllowList().includes(rpClientId);
+  return (
+    getPasskeyPromptClientAllowList().includes(rpClientId) &&
+    !getPasskeyPromptClientDenyList().includes(rpClientId)
+  );
 }
 
 function userHasBeenOnPasswordResetJourney(req: Request) {

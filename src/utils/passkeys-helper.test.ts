@@ -181,6 +181,83 @@ describe("passkeys helper", () => {
       });
     });
 
+    describe("shouldPromptToRegisterPasskeyDependingOnAllowlistAndDenylist", () => {
+      const testCases = [
+        {
+          description:
+            "rpClientId is on the deny list even if on the allow list",
+          allowList: "valid-rp-client-id",
+          denyList: "valid-rp-client-id",
+          expected: false,
+        },
+        {
+          description:
+            "rpClientId is on the deny list even if on the allow list with multiple entries",
+          allowList: "other-client-id,valid-rp-client-id,another-client-id",
+          denyList: "valid-rp-client-id",
+          expected: false,
+        },
+        {
+          description:
+            "rpClientId is on the allow list but not on the deny list",
+          allowList: "other-client-id,valid-rp-client-id,another-client-id",
+          denyList: "some-other-client-id",
+          expected: true,
+        },
+        {
+          description: "allowList is empty",
+          allowList: "",
+          denyList: "some-other-client-id",
+          expected: false,
+        },
+        {
+          description: "denyList is empty",
+          allowList: "valid-rp-client-id",
+          denyList: "",
+          expected: true,
+        },
+        {
+          description: "both allowList and denyList are empty",
+          allowList: "",
+          denyList: "",
+          expected: false,
+        },
+      ];
+
+      testCases.forEach(({ description, allowList, denyList, expected }) => {
+        it(`should return ${expected} when ${description}`, () => {
+          process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = allowList;
+          process.env.PASSKEY_PROMPT_CLIENT_DENY_LIST = denyList;
+
+          const req = {
+            session: {
+              user: {
+                browserSupportsWebAuthn: true,
+                hasActivePasskey: false,
+                hasSkippedPasskeyRegistration: false,
+                backendIndicatesPasskeyPromptShouldBeSkipped: false,
+                reauthenticate: false,
+                isMfaRequired: true,
+                isUpliftRequired: false,
+                isInPasskeyPhasedRollout: true,
+                isPasswordResetJourney: false,
+                withinForcedPasswordResetJourney: false,
+                isCommonPasswordResetJourney: false,
+              },
+              client: {
+                rpClientId: "valid-rp-client-id",
+              },
+            },
+          } as any as Request;
+          const res = {
+            locals: { supportPasskeyRegistration: true },
+          } as any as Response;
+
+          expect(shouldPromptToRegisterPasskey(req, res)).to.eq(expected);
+        });
+      });
+    });
+
     const passwordResetTestCases = [
       {
         isPasswordResetJourney: false,

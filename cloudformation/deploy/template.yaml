@@ -423,6 +423,7 @@ Mappings:
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "skwdHH2y6ERjJWTPSoAFbSt8lX04OgtI"
       PasskeyRolloutPercentage: 100
+      PasskeyPromptClientDenyList: ""
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       frontendApiBaseUrl: https://nw0dah7bxk-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev2/
@@ -444,6 +445,7 @@ Mappings:
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "rPEUe0hRrHqf0i0es1gYjKxE5ceGN7VK"
       PasskeyRolloutPercentage: 100
+      PasskeyPromptClientDenyList: ""
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: https://y3s69ubaz5-vpce-0b907325ae3bfe3ce.execute-api.eu-west-2.amazonaws.com/authdev3/
@@ -460,6 +462,7 @@ Mappings:
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: ""
       PasskeyRolloutPercentage: 100
+      PasskeyPromptClientDenyList: ""
     dev:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -488,6 +491,7 @@ Mappings:
       EnablePasskeyContactForm: "Yes"
       SupportSingleFactorAccountDeletion: "Yes"
       PasskeyPromptClientAllowList: "J3tedNRsfssnsf4STuc2NNIV1C1gdxBB"
+      PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-w62weogzsdkb"
       PasskeyRolloutPercentage: 100
     build:
@@ -518,6 +522,7 @@ Mappings:
       EnablePasskeyContactForm: "No"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "Ykg9fGyY76On4e8tPvFabK5BIl65EkGH"
+      PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
       PasskeyRolloutPercentage: 0
     staging:
@@ -555,6 +560,7 @@ Mappings:
       EnablePasskeyContactForm: "Yes"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "EB2EC91OpyzuhI7C2nw1aiEK2q8,3NKFv679oYlMdyrhKErrTGbzBy2h8rrd,nsR2wZ7EebJ2VOzE1LUa9iAVadunWQP3,EMGmY82k-92QSakDl_9keKDFmZY" # mobile sts, rp-stub, perf-test client, home client
+      PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
       PasskeyRolloutPercentage: 100
     integration:
@@ -586,6 +592,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "No"
       PasskeyPromptClientAllowList: ""
+      PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
       PasskeyRolloutPercentage: 0
     production:
@@ -620,6 +627,7 @@ Mappings:
       EnablePasskeyContactForm: "No"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: ""
+      PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
       PasskeyRolloutPercentage: 0
 
@@ -1163,6 +1171,14 @@ Resources:
                   - !Ref SubEnvironment
                   - !Ref Environment
                 - PasskeyPromptClientAllowList
+            - Name: PASSKEY_PROMPT_CLIENT_DENY_LIST
+              Value: !FindInMap
+                - EnvironmentConfiguration
+                - !If
+                  - UseSubEnvironment
+                  - !Ref SubEnvironment
+                  - !Ref Environment
+                - PasskeyPromptClientDenyList
             - Name: ENABLE_PASSKEY_CONTACT_FORM
               Value: !If [EnablePasskeyContactForm, "1", "0"]
             - Name: SUPPORT_NEW_INTERNATIONAL_SMS
