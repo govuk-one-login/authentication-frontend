@@ -1,0 +1,87 @@
+name: Build and deploy Apex website
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "apex-website/**"
+      - "cloudformation/apex-website/**"
+
+env:
+  AWS_REGION: eu-west-2
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Set up SAM cli
+        uses: aws-actions/setup-sam@89ddb14d60e682855e3fea4be85b3c56485de310 # v2
+        with:
+          use-installer: true
+          version: 1.159.1
+
+      - name: Set up AWS creds
+        uses: aws-actions/configure-aws-credentials@e7f100cf4c008499ea8adda475de1042d6975c7b # v6.2.0
+        with:
+          role-to-assume: ${{ secrets.APEX_GH_ACTIONS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Inline CloudFront function code
+        run: |
+          ./scripts/inline-cloudfront-functions.sh
+          mv cloudformation/apex-website/apex-cloudfront-built.yaml cloudformation/apex-website/apex-cloudfront.yaml
+
+      - name: Zip copier Lambda
+        run: |
+          zip -j apex-website/lambda-functions/copier_lambda.zip apex-website/lambda-functions/copier_lambda.py
+
+      - name: SAM build
+        run: |
+          sam validate --lint -t cloudformation/apex-website/apex-cloudfront.yaml
+          sam build --parallel -t cloudformation/apex-website/apex-cloudfront.yaml
+
+      - name: Upload govuk frontend artifact to S3
+        working-directory: apex-website
+        env:
+          ARTIFACT_BUCKET: ${{ secrets.APEX_ARTIFACT_BUCKET }}
+        run: |
+          echo "::group::Zip govuk frontend artifacts"
+          zip -r govukfrontend.zip govuk-frontend/ env-config/ robots.txt
+          echo "::endgroup::"
+
+          echo "::group::Upload final artifact to S3"
+          OBJECT_VERSION="$(aws s3api put-object \
+            --bucket "${ARTIFACT_BUCKET}" \
+            --key govukfrontend.zip \
+            --body govukfrontend.zip \
+            --query VersionId --output text)"
+          echo "::endgroup::"
+          echo "::notice title=Final artifact uploaded to S3::object: govukfrontend.zip, version: $OBJECT_VERSION"
+
+      - name: Extract PR number and commit message
+        id: version_info
+        run: |
+          HEAD_MESSAGE=$(git log -1 --format=%s)
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          if [[ "$HEAD_MESSAGE" =~ \(#([0-9]+)\) ]]; then
+            VERSION="#${BASH_REMATCH[1]} - ${HEAD_MESSAGE}"
+          else
+            VERSION="${SHORT_SHA}${HEAD_MESSAGE:+: $HEAD_MESSAGE}"
+          fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy SAM app
+        uses: govuk-one-login/devplatform-upload-action@64e46134b4108ebfa1cf2a64fee00782f8e2e8cf # v4.1.0
+        with:
+          artifact-bucket-name: ${{ secrets.APEX_ARTIFACT_BUCKET }}
+          signing-profile-name: ${{ secrets.SIGNING_PROFILE_NAME }}
+          working-directory: .aws-sam/build
+          version: ${{ steps.version_info.outputs.version }}

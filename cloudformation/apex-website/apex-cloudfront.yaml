@@ -21,6 +21,10 @@ Parameters:
     Type: String
     Default: none
 
+  VpcStackName:
+    Description: "The VPC stack name in the account"
+    Type: "String"
+
   ArtifactKey:
     Type: String
     Default: "govukfrontend.zip"
@@ -65,19 +69,19 @@ Mappings:
       ApexRedirectUrl: "https://home.authdev1.home.account.gov.uk"
       ApexSupportUrl: "https://signin.signin.authdev1.dev.account.gov.uk/contact-us?supportType=PUBLIC"
       ServiceDomain: "authdev1.dev.account.gov.uk"
-      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+      ArtifactSourceBucket: "placeholder"
 
     authdev2:
       ApexRedirectUrl: "https://home.authdev2.home.account.gov.uk"
       ApexSupportUrl: "https://signin.signin.authdev2.dev.account.gov.uk/contact-us?supportType=PUBLIC"
       ServiceDomain: "authdev2.dev.account.gov.uk"
-      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+      ArtifactSourceBucket: "placeholder"
 
     authdev3:
       ApexRedirectUrl: "https://home.authdev3.home.account.gov.uk"
       ApexSupportUrl: "https://signin.signin.authdev3.dev.account.gov.uk/contact-us?supportType=PUBLIC"
       ServiceDomain: "authdev3.dev.account.gov.uk"
-      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+      ArtifactSourceBucket: "placeholder"
 
     dev:
       ApexRedirectUrl: "https://home.dev.account.gov.uk"
@@ -89,25 +93,25 @@ Mappings:
       ApexRedirectUrl: "https://home.build.account.gov.uk"
       ApexSupportUrl: "https://signin.build.account.gov.uk/contact-us?supportType=PUBLIC"
       ServiceDomain: "build.account.gov.uk"
-      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+      ArtifactSourceBucket: apex-website-pipeline-githubartifactsourcebucket-dj7sczpnjpx3
 
     staging:
       ApexRedirectUrl: "https://home.staging.account.gov.uk"
       ApexSupportUrl: "https://signin.staging.account.gov.uk/contact-us?supportType=PUBLIC"
       ServiceDomain: "staging.account.gov.uk"
-      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+      ArtifactSourceBucket: "placeholder"
 
     integration:
       ApexRedirectUrl: "https://home.integration.account.gov.uk"
       ApexSupportUrl: "https://signin.integration.account.gov.uk/contact-us?supportType=PUBLIC"
       ServiceDomain: "integration.account.gov.uk"
-      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+      ArtifactSourceBucket: "placeholder"
 
     production:
       ApexRedirectUrl: "https://home.account.gov.uk"
       ApexSupportUrl: "https://signin.account.gov.uk/contact-us?supportType=PUBLIC"
       ServiceDomain: "account.gov.uk"
-      ArtifactSourceBucket: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
+      ArtifactSourceBucket: "placeholder"
 
 Resources:
   LambdaExecutionRole:
@@ -177,15 +181,60 @@ Resources:
                   - kms:GenerateDataKey
                   - kms:Decrypt
                 Resource: !GetAtt ApexStaticWebSiteKey.Arn
+              - Sid: LoggingFromLambda
+                Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource:
+                  - arn:aws:logs:*:*:*
+              - Sid: ManagingVPCConnection
+                Effect: Allow
+                Action:
+                  - ec2:DescribeNetworkInterfaces
+                  - ec2:CreateNetworkInterface
+                  - ec2:DeleteNetworkInterface
+                Resource: "*"
+              - Sid: XRay
+                Effect: Allow
+                Action: xray:*
+                Resource: "*"
       PermissionsBoundary: !If
         - UsePermissionsBoundary
         - !Ref PermissionsBoundary
         - !Ref AWS::NoValue
 
+  LambdaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Lambda Security Group permissions ruleset
+      VpcId:
+        Fn::ImportValue: !Sub ${VpcStackName}-VpcId
+      SecurityGroupEgress:
+        - Description: Allow outbound traffic to vpc endpoints
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          DestinationSecurityGroupId:
+            Fn::ImportValue: !Sub ${VpcStackName}-AWSServicesEndpointSecurityGroupId
+        - Description: Allow outbound traffic to elasticache
+          IpProtocol: tcp
+          FromPort: 6379
+          ToPort: 6379
+          CidrIp: 10.0.0.0/16
+        - DestinationPrefixListId: pl-b3a742da # See https://docs.aws.amazon.com/vpc/latest/userguide/working-with-aws-managed-prefix-lists.html
+          Description: Allow outgoing HTTPS requests to AWS DynamoDB route from security group
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+
   CopierLambda:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub "${AWS::StackName}-s3-file-copier"
+      FunctionName: !Sub
+        - ${Env}-s3-file-copier
+        - Env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       Runtime: python3.12
       Handler: copier_lambda.handler
       Role: !GetAtt LambdaExecutionRole.Arn
@@ -193,6 +242,13 @@ Resources:
       EphemeralStorage:
         Size: 2048
       CodeUri: ../../apex-website/lambda-functions/copier_lambda.zip
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - Fn::ImportValue: !Sub ${VpcStackName}-PrivateSubnetIdA
+          - Fn::ImportValue: !Sub ${VpcStackName}-PrivateSubnetIdB
+          - Fn::ImportValue: !Sub ${VpcStackName}-PrivateSubnetIdC
 
   ApexS3FileCopier:
     Type: AWS::CloudFormation::CustomResource
