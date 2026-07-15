@@ -47,11 +47,6 @@ jobs:
         run: |
           zip -j apex-website/lambda-functions/copier_lambda.zip apex-website/lambda-functions/copier_lambda.py
 
-      - name: SAM build
-        run: |
-          sam validate --lint -t cloudformation/apex-website/apex-cloudfront.yaml
-          sam build --parallel -t cloudformation/apex-website/apex-cloudfront.yaml
-
       - name: Upload govuk frontend artifact to S3
         working-directory: apex-website
         env:
@@ -61,6 +56,25 @@ jobs:
           zip -r govukfrontend.zip govuk-frontend/ env-config/ robots.txt
           echo "::endgroup::"
 
+          echo "::group::Inject artifact checksum into CloudFormation template"
+          CHECKSUM=$(sha256sum govukfrontend.zip | cut -d' ' -f1)
+          echo "Checksum: ${CHECKSUM}"
+          sed -i "s/ArtifactVersion: \"initial\"/ArtifactVersion: \"${CHECKSUM}\"/" \
+            ../cloudformation/apex-website/apex-cloudfront.yaml
+          grep -n "ArtifactVersion" ../cloudformation/apex-website/apex-cloudfront.yaml
+          echo "::endgroup::"
+
+      - name: SAM build
+        run: |
+          sam validate --lint -t cloudformation/apex-website/apex-cloudfront.yaml
+          sam build --parallel -t cloudformation/apex-website/apex-cloudfront.yaml
+          grep -A2 "ArtifactVersion" .aws-sam/build/template.yaml
+
+      - name: Upload govuk frontend artifact to S3
+        working-directory: apex-website
+        env:
+          ARTIFACT_BUCKET: ${{ env.APEX_ARTIFACT_BUCKET }}
+        run: |
           echo "::group::Upload final artifact to S3"
           OBJECT_VERSION="$(aws s3api put-object \
             --bucket "${ARTIFACT_BUCKET}" \

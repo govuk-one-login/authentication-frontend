@@ -56,6 +56,10 @@ Globals:
   Function:
     CodeSigningConfigArn:
       !If [UseCodeSigning, !Ref CodeSigningConfigArn, !Ref AWS::NoValue]
+    PermissionsBoundary: !If
+      - UsePermissionsBoundary
+      - !Ref PermissionsBoundary
+      - !Ref AWS::NoValue
 
 Mappings:
   EnvironmentConfiguration:
@@ -114,120 +118,96 @@ Mappings:
       ArtifactSourceBucket: "placeholder"
 
 Resources:
-  LambdaExecutionRole:
-    Type: AWS::IAM::Role
+  LambdaBasicExecutionPolicy:
+    Type: AWS::IAM::ManagedPolicy
     Properties:
-      AssumeRolePolicyDocument:
+      Description: "IAM policy for Lambda Basic Execution"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: LoggingFromLambda
+            Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource:
+              - arn:aws:logs:*:*:*
+          - Sid: ManagingVPCConnection
+            Effect: Allow
+            Action:
+              - ec2:DescribeNetworkInterfaces
+              - ec2:CreateNetworkInterface
+              - ec2:DeleteNetworkInterface
+            Resource: "*"
+            Condition:
+              ArnLikeIfExists:
+                ec2:Vpc: !Sub
+                  - arn:aws:ec2:${AWS::Region}:${AWS::AccountId}:vpc/${VpcId}
+                  - VpcId:
+                      Fn::ImportValue: !Sub "${VpcStackName}-VpcId"
+          - Sid: XRay
+            Effect: Allow
+            Action: xray:*
+            Resource: "*"
+
+  CopierLambdaS3Policy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: "IAM policy for S3 copy access"
+      PolicyDocument:
         Version: "2012-10-17"
         Statement:
           - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-      Policies:
-        - PolicyName: S3CopyAccess
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - s3:GetObject
-                  - s3:ListBucket
-                Resource:
-                  - !If
-                    - UseSubEnvironment
-                    - !Sub
-                      - "arn:aws:s3:::${Bucket}"
-                      - Bucket:
-                          !FindInMap [
-                            EnvironmentConfiguration,
-                            !Ref SubEnvironment,
-                            ArtifactSourceBucket,
-                          ]
-                    - !Sub
-                      - "arn:aws:s3:::${Bucket}"
-                      - Bucket:
-                          !FindInMap [
-                            EnvironmentConfiguration,
-                            !Ref Environment,
-                            ArtifactSourceBucket,
-                          ]
-                  - !If
-                    - UseSubEnvironment
-                    - !Sub
-                      - "arn:aws:s3:::${Bucket}/*"
-                      - Bucket:
-                          !FindInMap [
-                            EnvironmentConfiguration,
-                            !Ref SubEnvironment,
-                            ArtifactSourceBucket,
-                          ]
-                    - !Sub
-                      - "arn:aws:s3:::${Bucket}/*"
-                      - Bucket:
-                          !FindInMap [
-                            EnvironmentConfiguration,
-                            !Ref Environment,
-                            ArtifactSourceBucket,
-                          ]
-              - Effect: Allow
-                Action:
-                  - s3:PutObject
-                Resource: !Sub "arn:aws:s3:::*-di-root-website/*"
-              - Effect: Allow
-                Action:
-                  - kms:GenerateDataKey
-                  - kms:Decrypt
-                Resource: !GetAtt ApexStaticWebSiteKey.Arn
-              - Sid: LoggingFromLambda
-                Effect: Allow
-                Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Resource:
-                  - arn:aws:logs:*:*:*
-              - Sid: ManagingVPCConnection
-                Effect: Allow
-                Action:
-                  - ec2:DescribeNetworkInterfaces
-                  - ec2:CreateNetworkInterface
-                  - ec2:DeleteNetworkInterface
-                Resource: "*"
-              - Sid: XRay
-                Effect: Allow
-                Action: xray:*
-                Resource: "*"
-      PermissionsBoundary: !If
-        - UsePermissionsBoundary
-        - !Ref PermissionsBoundary
-        - !Ref AWS::NoValue
-
-  LambdaSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Lambda Security Group permissions ruleset
-      VpcId:
-        Fn::ImportValue: !Sub ${VpcStackName}-VpcId
-      SecurityGroupEgress:
-        - Description: Allow outbound traffic to vpc endpoints
-          IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          DestinationSecurityGroupId:
-            Fn::ImportValue: !Sub ${VpcStackName}-AWSServicesEndpointSecurityGroupId
-        - Description: Allow outbound traffic to elasticache
-          IpProtocol: tcp
-          FromPort: 6379
-          ToPort: 6379
-          CidrIp: 10.0.0.0/16
-        - DestinationPrefixListId: pl-b3a742da # See https://docs.aws.amazon.com/vpc/latest/userguide/working-with-aws-managed-prefix-lists.html
-          Description: Allow outgoing HTTPS requests to AWS DynamoDB route from security group
-          IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
+            Action:
+              - s3:GetObject
+              - s3:ListBucket
+            Resource:
+              - !If
+                - UseSubEnvironment
+                - !Sub
+                  - "arn:aws:s3:::${Bucket}"
+                  - Bucket:
+                      !FindInMap [
+                        EnvironmentConfiguration,
+                        !Ref SubEnvironment,
+                        ArtifactSourceBucket,
+                      ]
+                - !Sub
+                  - "arn:aws:s3:::${Bucket}"
+                  - Bucket:
+                      !FindInMap [
+                        EnvironmentConfiguration,
+                        !Ref Environment,
+                        ArtifactSourceBucket,
+                      ]
+              - !If
+                - UseSubEnvironment
+                - !Sub
+                  - "arn:aws:s3:::${Bucket}/*"
+                  - Bucket:
+                      !FindInMap [
+                        EnvironmentConfiguration,
+                        !Ref SubEnvironment,
+                        ArtifactSourceBucket,
+                      ]
+                - !Sub
+                  - "arn:aws:s3:::${Bucket}/*"
+                  - Bucket:
+                      !FindInMap [
+                        EnvironmentConfiguration,
+                        !Ref Environment,
+                        ArtifactSourceBucket,
+                      ]
+          - Effect: Allow
+            Action:
+              - s3:PutObject
+            Resource: !Sub "arn:aws:s3:::*-di-root-website/*"
+          - Effect: Allow
+            Action:
+              - kms:GenerateDataKey
+              - kms:Decrypt
+            Resource: !GetAtt ApexStaticWebSiteKey.Arn
 
   CopierLambda:
     Type: AWS::Serverless::Function
@@ -237,18 +217,13 @@ Resources:
         - Env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
       Runtime: python3.12
       Handler: copier_lambda.handler
-      Role: !GetAtt LambdaExecutionRole.Arn
+      Policies:
+        - !Ref LambdaBasicExecutionPolicy
+        - !Ref CopierLambdaS3Policy
       Timeout: 300
       EphemeralStorage:
         Size: 2048
       CodeUri: ../../apex-website/lambda-functions/copier_lambda.zip
-      VpcConfig:
-        SecurityGroupIds:
-          - !Ref LambdaSecurityGroup
-        SubnetIds:
-          - Fn::ImportValue: !Sub ${VpcStackName}-PrivateSubnetIdA
-          - Fn::ImportValue: !Sub ${VpcStackName}-PrivateSubnetIdB
-          - Fn::ImportValue: !Sub ${VpcStackName}-PrivateSubnetIdC
 
   ApexS3FileCopier:
     Type: AWS::CloudFormation::CustomResource
@@ -268,6 +243,7 @@ Resources:
           ]
       DestinationBucket: !Ref ApexStaticWebsite
       ArtifactKey: !Ref ArtifactKey
+      ArtifactVersion: "initial"
 
   # ----------------------
   # Apex website resources

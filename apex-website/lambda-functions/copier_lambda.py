@@ -4,6 +4,7 @@ import io
 import json
 import urllib.request
 import logging
+from botocore.config import Config
 from botocore.exceptions import ClientError
 
 MIME_TYPES = {
@@ -25,6 +26,11 @@ logger.setLevel(logging.INFO)
 
 SUCCESS = "SUCCESS"
 FAILED = "FAILED"
+
+s3 = boto3.client(
+    "s3",
+    config=Config(connect_timeout=10, read_timeout=60, retries={"max_attempts": 2}),
+)
 
 
 def send(event, context, status, data):
@@ -51,7 +57,7 @@ def send(event, context, status, data):
             "Content-Length": str(len(body)),
         },
     )
-    urllib.request.urlopen(req)
+    urllib.request.urlopen(req, timeout=30)
     logger.info("Response sent successfully")
 
 
@@ -68,8 +74,6 @@ def handler(event, context):
     logger.info("Create/Update request — src=%s dst=%s key=%s", src, dst, artifact_key)
 
     try:
-        s3 = boto3.client("s3")
-
         try:
             zip_obj = s3.get_object(Bucket=src, Key=artifact_key)
             logger.info("Downloaded artifact from s3://%s/%s", src, artifact_key)
