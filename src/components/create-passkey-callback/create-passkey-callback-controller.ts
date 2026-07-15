@@ -18,7 +18,7 @@ const ERROR_CONFIG_MAP = new Map<string, ErrorConfiguration>([
   [
     AMC_ERROR_DESCRIPTION.USER_BACKED_OUT_OF_JOURNEY,
     {
-      errorEvent: USER_JOURNEY_EVENTS.CREATE_PASSKEY_BACK,
+      errorEvent: USER_JOURNEY_EVENTS.AMC_RETURNED_CREATE_PASSKEY_BACK,
       updateSession: async () => {
         return;
       },
@@ -27,7 +27,7 @@ const ERROR_CONFIG_MAP = new Map<string, ErrorConfiguration>([
   [
     AMC_ERROR_DESCRIPTION.USER_ABORTED_JOURNEY,
     {
-      errorEvent: USER_JOURNEY_EVENTS.CREATE_PASSKEY_SKIPPED,
+      errorEvent: USER_JOURNEY_EVENTS.AMC_RETURNED_CREATE_PASSKEY_SKIPPED,
       updateSession: async (req: Request) => {
         req.session.user.hasSkippedPasskeyRegistration = true;
         await saveSessionState(req);
