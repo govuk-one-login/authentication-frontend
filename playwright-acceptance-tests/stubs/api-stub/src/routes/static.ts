@@ -32,14 +32,6 @@ export function registerStaticRoutes(app: Express): void {
       ],
     })
   );
-  app.post("/account-interventions", (_, res) =>
-    res.json({
-      blocked: false,
-      suspended: false,
-      reproveIdentity: false,
-      resetPassword: false,
-    })
-  );
   app.post("/account-recovery", (_, res) =>
     res.json({ accountRecoveryPermitted: true })
   );
