@@ -23,6 +23,7 @@ const postValidationLocals = function locals(
   req: Request
 ): Record<string, unknown> {
   return {
+    authenticationOptions: req.session.user.cannotSignInPasskeyAuthOptions,
     is2FAJourney: req.session.user.isMfaRequired,
   };
 };

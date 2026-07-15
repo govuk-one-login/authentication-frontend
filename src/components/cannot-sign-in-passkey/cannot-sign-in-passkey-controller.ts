@@ -26,9 +26,12 @@ export function cannotSignInPasskeyGet(
     }
 
     const authenticationOptions = startPasskeyAssertionResult.data;
+    req.session.user.cannotSignInPasskeyAuthOptions = JSON.stringify(
+      authenticationOptions.publicKey
+    );
 
     res.render("cannot-sign-in-passkey/index.njk", {
-      authenticationOptions: JSON.stringify(authenticationOptions.publicKey),
+      authenticationOptions: req.session.user.cannotSignInPasskeyAuthOptions,
       is2FAJourney: req.session.user.isMfaRequired,
     });
   };
