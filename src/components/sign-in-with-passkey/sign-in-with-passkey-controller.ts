@@ -5,6 +5,7 @@ import type { ExpressRouteFunc } from "../../types.js";
 import type { AuthenticationResponseJSON } from "@simplewebauthn/browser";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import { supportReauthentication } from "../../config.js";
 
 export function signInWithPasskeyGet(
   service: PasskeyServiceInterface = passkeyService()
@@ -25,9 +26,13 @@ export function signInWithPasskeyGet(
 
     const authenticationOptions = startPasskeyAssertionResult.data;
 
-    res.render("sign-in-with-passkey/index.njk", {
+    const options = {
       authenticationOptions: JSON.stringify(authenticationOptions.publicKey),
-    });
+      isReauth: !!(
+        supportReauthentication() && req.session.user.reauthenticate
+      ),
+    };
+    res.render("sign-in-with-passkey/index.njk", options);
   };
 }
 

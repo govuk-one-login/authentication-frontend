@@ -367,7 +367,8 @@
       "title": "Mewngofnodi gyda’ch wyneb, olion bysedd neu god mynediad",
       "header": "Mewngofnodi gyda’ch wyneb, olion bysedd neu god mynediad",
       "paragraph1": {
-        "default": "Defnyddiwch eich allwedd mynediad i fewngofnodi i GOV.UK One Login."
+        "default": "Defnyddiwch eich allwedd mynediad i fewngofnodi i GOV.UK One Login.",
+        "reauth": "Defnyddiwch eich allwedd mynediad i helpu ni i wneud yn siŵr mae chi yw chi."
       },
       "paragraph2": "Gofynnir i chi sganio’ch wyneb neu’ch olion bysedd, neu roi PIN neu batrwm eich dyfais.",
       "paragraph3": "Bydd hyn fodd bynnag yn datgloi eich ffôn, cyfrifiadur neu dabled.",

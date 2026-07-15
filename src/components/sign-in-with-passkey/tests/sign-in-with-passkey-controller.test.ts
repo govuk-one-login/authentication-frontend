@@ -57,7 +57,40 @@ describe("sign in with passkey controller", () => {
 
       expect(res.render).to.have.been.calledWith(
         "sign-in-with-passkey/index.njk",
-        { authenticationOptions: JSON.stringify(mockData.publicKey) }
+        {
+          authenticationOptions: JSON.stringify(mockData.publicKey),
+          isReauth: false,
+        }
+      );
+    });
+
+    it("should pass isReauth=true if running a reauth journey", async () => {
+      const mockData = {
+        publicKey: {
+          test: "test",
+        },
+      };
+
+      const fakePasskeyService = {
+        startPasskeyAssertion: sinon.fake.returns({
+          success: true,
+          data: mockData,
+        }),
+      } as unknown as PasskeyServiceInterface;
+
+      req.session.user.reauthenticate = "reauth";
+
+      await signInWithPasskeyGet(fakePasskeyService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.been.calledWith(
+        "sign-in-with-passkey/index.njk",
+        {
+          authenticationOptions: JSON.stringify(mockData.publicKey),
+          isReauth: true,
+        }
       );
     });
 
