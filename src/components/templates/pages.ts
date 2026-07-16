@@ -63,6 +63,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
       name: "1FA journey",
       template: "cannot-sign-in-passkey/index.njk",
       options: {
+        authenticationOptions: "",
         is2FAJourney: false,
       },
     },
@@ -70,6 +71,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
       name: "2FA journey",
       template: "cannot-sign-in-passkey/index.njk",
       options: {
+        authenticationOptions: "",
         is2FAJourney: true,
       },
     },

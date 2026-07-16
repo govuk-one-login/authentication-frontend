@@ -99,6 +99,7 @@ export interface UserSession {
   browserSupportsWebAuthn?: boolean;
   backendIndicatesPasskeyPromptShouldBeSkipped?: boolean;
   isInPasskeyPhasedRollout?: boolean;
+  cannotSignInPasskeyAuthOptions?: string;
 }
 
 export interface UserSessionClient {

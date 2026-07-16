@@ -37,6 +37,7 @@ describe("Integration:: cannot sign in passkey", () => {
               commonVariables.diPersistentSessionId;
 
             req.session.user = {
+              ...req.session.user,
               journey: getPermittedJourneyForPath(
                 PATH_NAMES.CANNOT_SIGN_IN_PASSKEY
               ),
@@ -83,12 +84,10 @@ describe("Integration:: cannot sign in passkey", () => {
       const res = await request(app)
         .get(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
         .expect(200);
-      const $ = cheerio.load(res.text);
-      const options = $("#cannotSignInPasskeyForm").attr(
-        "data-authentication-options"
-      );
-      expect(options).to.equal(
-        JSON.stringify(startPasskeyAssertionResponse.publicKey)
+
+      expectDataAuthenticationOptionsToBeRendered(
+        startPasskeyAssertionResponse.publicKey,
+        res.text
       );
     });
   });
@@ -96,11 +95,18 @@ describe("Integration:: cannot sign in passkey", () => {
   describe("POST /cannot-sign-in-passkey", () => {
     let token: string;
     let cookies: string;
+    const fakeStartPasskeyAssertionOptions = {
+      publicKey: {
+        challenge: "test",
+        rpId: "localhost",
+      },
+    };
+
     before(async () => {
       nock(baseApi)
         .post(API_ENDPOINTS.START_PASSKEY_ASSERTION)
         .once()
-        .reply(200, { challenge: "test", rpId: "localhost" });
+        .reply(200, fakeStartPasskeyAssertionOptions);
 
       ({ token, cookies } = extractCsrfTokenAndCookies(
         await request(app).get(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
@@ -208,7 +214,7 @@ describe("Integration:: cannot sign in passkey", () => {
       });
 
       it("should return a validation error when no option is selected", async () => {
-        await request(app)
+        const res = await request(app)
           .post(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
           .type("form")
           .set("Cookie", cookies)
@@ -223,7 +229,23 @@ describe("Integration:: cannot sign in passkey", () => {
             ).to.contains("Select what you would like to do");
           })
           .expect(400);
+
+        expectDataAuthenticationOptionsToBeRendered(
+          fakeStartPasskeyAssertionOptions.publicKey,
+          res.text
+        );
       });
     });
   });
 });
+
+function expectDataAuthenticationOptionsToBeRendered(
+  expectedOptions: object,
+  resText: string
+) {
+  const $ = cheerio.load(resText);
+  const options = $("#cannotSignInPasskeyForm").attr(
+    "data-authentication-options"
+  );
+  expect(options).to.equal(JSON.stringify(expectedOptions));
+}
