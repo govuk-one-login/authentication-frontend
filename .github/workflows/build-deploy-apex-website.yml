@@ -1,19 +1,15 @@
-name: Build and deploy Apex website  to Dev
-run-name: Deploy Apex website  to ${{ inputs.environment }}
+name: Build and deploy Apex website
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: "Environment to run against"
-        type: environment
-        required: true
+  push:
+    branches:
+      - main
+    paths:
+      - "apex-website/**"
+      - "cloudformation/apex-website/**"
 
 env:
   AWS_REGION: eu-west-2
-  GH_ACTIONS_ROLE_ARN: arn:aws:iam::975050272416:role/dev-apex-website-pipeline-GitHubActionsRole-jH9ilnuKPKwj
-  APEX_ARTIFACT_BUCKET: dev-apex-website-pipeline-githubartifactsourcebuck-m2rvkmwdqqzn
-  SIGNING_PROFILE_NAME: SigningProfile_bdzyxbYzrSD8
 
 jobs:
   deploy:
@@ -35,7 +31,7 @@ jobs:
       - name: Set up AWS creds
         uses: aws-actions/configure-aws-credentials@e7f100cf4c008499ea8adda475de1042d6975c7b # v6.2.0
         with:
-          role-to-assume: ${{ env.GH_ACTIONS_ROLE_ARN }}
+          role-to-assume: ${{ secrets.APEX_GH_ACTIONS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Inline CloudFront function code
@@ -62,7 +58,7 @@ jobs:
           grep -n "ArtifactVersion" ../cloudformation/apex-website/apex-cloudfront.yaml
           echo "::endgroup::"
 
-      - name: SAM build Apex website template
+      - name: SAM build
         run: |
           sam validate --lint -t cloudformation/apex-website/apex-cloudfront.yaml
           sam build --parallel -t cloudformation/apex-website/apex-cloudfront.yaml
@@ -70,7 +66,7 @@ jobs:
       - name: Upload govuk frontend artifact to S3
         working-directory: apex-website
         env:
-          ARTIFACT_BUCKET: ${{ env.APEX_ARTIFACT_BUCKET }}
+          ARTIFACT_BUCKET: ${{ secrets.APEX_ARTIFACT_BUCKET }}
         run: |
           echo "::group::Upload final artifact to S3"
           OBJECT_VERSION="$(aws s3api put-object \
@@ -96,7 +92,7 @@ jobs:
       - name: Deploy SAM app
         uses: govuk-one-login/devplatform-upload-action@64e46134b4108ebfa1cf2a64fee00782f8e2e8cf # v4.1.0
         with:
-          artifact-bucket-name: ${{ env.APEX_ARTIFACT_BUCKET }}
-          signing-profile-name: ${{ env.SIGNING_PROFILE_NAME }}
+          artifact-bucket-name: ${{ secrets.APEX_ARTIFACT_BUCKET }}
+          signing-profile-name: ${{ secrets.SIGNING_PROFILE_NAME }}
           working-directory: .aws-sam/build
           version: ${{ steps.version_info.outputs.version }}

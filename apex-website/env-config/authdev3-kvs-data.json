@@ -1,0 +1,13 @@
+{
+  "data": [
+    {
+      "key": "redirectBaseUrl",
+      "value": "https://home.authdev3.home.account.gov.uk"
+    },
+    {
+      "key": "supportUrl",
+      "value": "https://signin.signin.authdev3.dev.account.gov.uk/contact-us?supportType=PUBLIC"
+    },
+    { "key": "version", "value": "release-v5.11.0" }
+  ]
+}

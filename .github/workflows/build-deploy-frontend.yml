@@ -9,6 +9,8 @@ on:
       - "docs/**"
       - "**/README.md"
       - "quality-gate.manifest.json"
+      - "apex-website/**"
+      - "cloudformation/apex-website/**"
 
 jobs:
   deploy-service-down-page:
