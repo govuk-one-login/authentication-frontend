@@ -51,11 +51,11 @@ describe("create-passkey-callback controller", () => {
   describe("create-passkey-callback-controller", () => {
     describe("validation", () => {
       it("should throw BadRequestError if result was not successful", async () => {
-        const expectedError = {
+        const responseFromAmc = {
           code: 1001,
           message: "Some error message",
         };
-        const fakeService = createMockService(false, expectedError);
+        const fakeService = createMockService(false, responseFromAmc);
 
         await assert.rejects(
           async () =>
@@ -76,11 +76,11 @@ describe("create-passkey-callback controller", () => {
       });
 
       it("should throw BadRequestError if result was successful but scope is incorrect", async () => {
-        const expectedResult = {
+        const responseFromAmc = {
           success: true,
           scope: AMC_SCOPE.ACCOUNT_DELETE,
         };
-        const fakeService = createMockService(true, expectedResult);
+        const fakeService = createMockService(true, responseFromAmc);
 
         await assert.rejects(
           async () =>
@@ -101,7 +101,7 @@ describe("create-passkey-callback controller", () => {
       });
 
       it("should throw BadRequestError if result was successful but error description is unexpected", async () => {
-        const expectedResult = {
+        const responseFromAmc = {
           success: false,
           scope: AMC_SCOPE.PASSKEY_CREATE,
           actions: [
@@ -116,7 +116,7 @@ describe("create-passkey-callback controller", () => {
             },
           ],
         };
-        const fakeService = createMockService(true, expectedResult);
+        const fakeService = createMockService(true, responseFromAmc);
 
         await assert.rejects(
           async () =>
@@ -184,8 +184,99 @@ describe("create-passkey-callback controller", () => {
           expect(res.redirect).to.have.been.calledWith(expectedRedirectUri);
         });
       });
+
+      [
+        {
+          blocked: true,
+          suspended: false,
+          reproveIdentity: false,
+          resetPassword: false,
+        },
+        {
+          blocked: false,
+          suspended: true,
+          reproveIdentity: false,
+          resetPassword: false,
+        },
+        {
+          blocked: false,
+          suspended: true,
+          reproveIdentity: true,
+          resetPassword: false,
+        },
+        {
+          blocked: false,
+          suspended: true,
+          reproveIdentity: false,
+          resetPassword: true,
+        },
+        {
+          blocked: false,
+          suspended: true,
+          reproveIdentity: true,
+          resetPassword: true,
+        },
+      ].forEach(({ blocked, suspended, reproveIdentity, resetPassword }) => {
+        it(`should redirect to auth code for result indicating account interventions: blocked ${blocked}, suspended ${suspended}, reproveIdentity ${reproveIdentity}, resetPassword ${resetPassword}`, async () => {
+          const resultFromAmc = {
+            success: false,
+            scope: AMC_SCOPE.PASSKEY_CREATE,
+            actions: [
+              buildAccountInterventionsFailureDetails(
+                blocked,
+                suspended,
+                reproveIdentity,
+                resetPassword
+              ),
+            ],
+          };
+          const fakeService = createMockService(true, resultFromAmc);
+
+          await createPasskeyCallbackGet(fakeService)(
+            req as Request,
+            res as Response
+          );
+
+          expect(fakeService.getAMCResult).to.have.been.calledWith(
+            sessionId,
+            clientSessionId,
+            diPersistentSessionId,
+            req,
+            AUTH_CODE,
+            STATE,
+            USED_REDIRECT_URL,
+            LANGUAGE
+          );
+          expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
+        });
+      });
     });
   });
+
+  function buildAccountInterventionsFailureDetails(
+    blocked: boolean,
+    suspended: boolean,
+    reproveIdentity: boolean,
+    resetPassword: boolean
+  ) {
+    return {
+      action: AMC_SCOPE.PASSKEY_CREATE,
+      details: {
+        accountInterventionsStatus: {
+          state: {
+            blocked: blocked,
+            reproveIdentity: reproveIdentity,
+            resetPassword: resetPassword,
+            suspended: suspended,
+          },
+        },
+        error: {
+          code: 1004,
+          description: "AccountHasInterventions",
+        },
+      },
+    };
+  }
 
   function buildActionDetails(description: string) {
     return {

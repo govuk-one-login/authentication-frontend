@@ -8,6 +8,7 @@ export enum AMC_SCOPE {
 export enum AMC_ERROR_DESCRIPTION {
   USER_BACKED_OUT_OF_JOURNEY = "UserBackedOutOfJourney",
   USER_ABORTED_JOURNEY = "UserAbortedJourney",
+  ACCOUNT_HAS_INTERVENTIONS = "AccountHasInterventions",
 }
 
 export interface CreatePasskeyResultSuccessResponse {
