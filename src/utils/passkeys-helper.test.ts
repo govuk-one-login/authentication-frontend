@@ -145,8 +145,8 @@ describe("passkeys helper", () => {
       },
     ];
 
-    testCases.forEach(({ conditions, expected }) => {
-      it(`should return ${expected} when conditions=${JSON.stringify(conditions)}`, () => {
+    testCases.forEach(({ conditions, expected }, index) => {
+      it(`[${index}] should return ${expected} when conditions=${JSON.stringify(conditions)}`, () => {
         process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
 
         const req = {
@@ -224,8 +224,8 @@ describe("passkeys helper", () => {
         },
       ];
 
-      testCases.forEach(({ description, allowList, denyList, expected }) => {
-        it(`should return ${expected} when ${description}`, () => {
+      testCases.forEach(({ description, allowList, denyList, expected }, index) => {
+        it(`[${index}] should return ${expected} when ${description}`, () => {
           process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = allowList;
           process.env.PASSKEY_PROMPT_CLIENT_DENY_LIST = denyList;
 
@@ -297,8 +297,8 @@ describe("passkeys helper", () => {
         withinForcedPasswordResetJourney,
         isCommonPasswordResetJourney,
         expectedShouldPromptToRegister,
-      }) => {
-        it(`should return ${expectedShouldPromptToRegister} when passwordResetJourney=${isPasswordResetJourney}, withinForcedPasswordResetJourney=${withinForcedPasswordResetJourney} and isCommonPasswordResetJourney=${isCommonPasswordResetJourney}`, () => {
+      }, index) => {
+        it(`[${index}] should return ${expectedShouldPromptToRegister} when passwordResetJourney=${isPasswordResetJourney}, withinForcedPasswordResetJourney=${withinForcedPasswordResetJourney} and isCommonPasswordResetJourney=${isCommonPasswordResetJourney}`, () => {
           process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
 
           const req = {
@@ -350,8 +350,8 @@ describe("passkeys helper", () => {
       },
     ];
     mfaVariantTestCases.forEach(
-      ({ isMfaRequired, isUpliftRequired, expectedShouldPromptToRegister }) => {
-        it(`should return ${expectedShouldPromptToRegister} when isMfaRequired=${isMfaRequired} and isUpliftRequired=${isUpliftRequired}`, () => {
+      ({ isMfaRequired, isUpliftRequired, expectedShouldPromptToRegister }, index) => {
+        it(`[${index}] should return ${expectedShouldPromptToRegister} when isMfaRequired=${isMfaRequired} and isUpliftRequired=${isUpliftRequired}`, () => {
           process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
 
           const req = {
@@ -426,8 +426,8 @@ describe("passkeys helper", () => {
         hasActivePasskey,
         supportPasskeyUsage,
         expected,
-      }) => {
-        it(`should return ${expected} when browserSupportsWebAuthn=${browserSupportsWebAuthn}, hasActivePasskey=${hasActivePasskey}, supportPasskeyUsage=${supportPasskeyUsage}`, () => {
+      }, index) => {
+        it(`[${index}] should return ${expected} when browserSupportsWebAuthn=${browserSupportsWebAuthn}, hasActivePasskey=${hasActivePasskey}, supportPasskeyUsage=${supportPasskeyUsage}`, () => {
           const req = {
             session: { user: { browserSupportsWebAuthn, hasActivePasskey } },
           } as any as Request;
@@ -487,8 +487,8 @@ describe("passkeys helper", () => {
       },
     ];
 
-    testCases.forEach(({ rolloutPercentage, randomValue, expected }) => {
-      it(`should return ${expected} when PASSKEY_ROLLOUT_PERCENTAGE is ${rolloutPercentage} and Math.random returns ${randomValue}`, () => {
+    testCases.forEach(({ rolloutPercentage, randomValue, expected }, index) => {
+      it(`[${index}] should return ${expected} when PASSKEY_ROLLOUT_PERCENTAGE is ${rolloutPercentage} and Math.random returns ${randomValue}`, () => {
         process.env.PASSKEY_ROLLOUT_PERCENTAGE = rolloutPercentage;
         mathRandomStub = sinon.stub(Math, "random").returns(randomValue);
 
