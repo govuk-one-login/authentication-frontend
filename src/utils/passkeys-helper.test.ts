@@ -147,7 +147,7 @@ describe("passkeys helper", () => {
 
     testCases.forEach(({ conditions, expected }, index) => {
       it(`[${index}] should return ${expected} when conditions=${JSON.stringify(conditions)}`, () => {
-        process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
+        process.env.PASSKEY_PROMPT_CLIENT_DENY_LIST = "invalid-rp-client-id";
 
         const req = {
           session: {
@@ -181,52 +181,32 @@ describe("passkeys helper", () => {
       });
     });
 
-    describe("shouldPromptToRegisterPasskeyDependingOnAllowlistAndDenylist", () => {
+    describe("shouldPromptToRegisterPasskeyDependingOnDenylist", () => {
       const testCases = [
         {
-          description:
-            "rpClientId is on the deny list even if on the allow list",
-          allowList: "valid-rp-client-id",
-          denyList: "valid-rp-client-id",
+          description: "rpClientId is on the deny list",
+          denyList: "an-rp-client-id",
           expected: false,
         },
         {
-          description:
-            "rpClientId is on the deny list even if on the allow list with multiple entries",
-          allowList: "other-client-id,valid-rp-client-id,another-client-id",
-          denyList: "valid-rp-client-id",
+          description: "rpClientId is on the deny list with multiple entries",
+          denyList: "other-client-id,an-rp-client-id,another-client-id",
           expected: false,
         },
         {
-          description:
-            "rpClientId is on the allow list but not on the deny list",
-          allowList: "other-client-id,valid-rp-client-id,another-client-id",
+          description: "rpClientId is not on the deny list",
           denyList: "some-other-client-id",
           expected: true,
-        },
-        {
-          description: "allowList is empty",
-          allowList: "",
-          denyList: "some-other-client-id",
-          expected: false,
         },
         {
           description: "denyList is empty",
-          allowList: "valid-rp-client-id",
           denyList: "",
           expected: true,
         },
-        {
-          description: "both allowList and denyList are empty",
-          allowList: "",
-          denyList: "",
-          expected: false,
-        },
       ];
 
-      testCases.forEach(({ description, allowList, denyList, expected }, index) => {
+      testCases.forEach(({ description, denyList, expected }, index) => {
         it(`[${index}] should return ${expected} when ${description}`, () => {
-          process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = allowList;
           process.env.PASSKEY_PROMPT_CLIENT_DENY_LIST = denyList;
 
           const req = {
@@ -245,7 +225,7 @@ describe("passkeys helper", () => {
                 isCommonPasswordResetJourney: false,
               },
               client: {
-                rpClientId: "valid-rp-client-id",
+                rpClientId: "an-rp-client-id",
               },
             },
           } as any as Request;
@@ -292,12 +272,15 @@ describe("passkeys helper", () => {
     ];
 
     passwordResetTestCases.forEach(
-      ({
-        isPasswordResetJourney,
-        withinForcedPasswordResetJourney,
-        isCommonPasswordResetJourney,
-        expectedShouldPromptToRegister,
-      }, index) => {
+      (
+        {
+          isPasswordResetJourney,
+          withinForcedPasswordResetJourney,
+          isCommonPasswordResetJourney,
+          expectedShouldPromptToRegister,
+        },
+        index
+      ) => {
         it(`[${index}] should return ${expectedShouldPromptToRegister} when passwordResetJourney=${isPasswordResetJourney}, withinForcedPasswordResetJourney=${withinForcedPasswordResetJourney} and isCommonPasswordResetJourney=${isCommonPasswordResetJourney}`, () => {
           process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
 
@@ -350,7 +333,10 @@ describe("passkeys helper", () => {
       },
     ];
     mfaVariantTestCases.forEach(
-      ({ isMfaRequired, isUpliftRequired, expectedShouldPromptToRegister }, index) => {
+      (
+        { isMfaRequired, isUpliftRequired, expectedShouldPromptToRegister },
+        index
+      ) => {
         it(`[${index}] should return ${expectedShouldPromptToRegister} when isMfaRequired=${isMfaRequired} and isUpliftRequired=${isUpliftRequired}`, () => {
           process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
 
@@ -421,12 +407,15 @@ describe("passkeys helper", () => {
     ];
 
     testCases.forEach(
-      ({
-        browserSupportsWebAuthn,
-        hasActivePasskey,
-        supportPasskeyUsage,
-        expected,
-      }, index) => {
+      (
+        {
+          browserSupportsWebAuthn,
+          hasActivePasskey,
+          supportPasskeyUsage,
+          expected,
+        },
+        index
+      ) => {
         it(`[${index}] should return ${expected} when browserSupportsWebAuthn=${browserSupportsWebAuthn}, hasActivePasskey=${hasActivePasskey}, supportPasskeyUsage=${supportPasskeyUsage}`, () => {
           const req = {
             session: { user: { browserSupportsWebAuthn, hasActivePasskey } },
