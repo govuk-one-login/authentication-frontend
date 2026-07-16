@@ -43,14 +43,12 @@ jobs:
           ./scripts/inline-cloudfront-functions.sh
           mv cloudformation/apex-website/apex-cloudfront-built.yaml cloudformation/apex-website/apex-cloudfront.yaml
 
-      - name: Zip copier Lambda
+      - name: Build copier Lambda
         run: |
           zip -j apex-website/lambda-functions/copier_lambda.zip apex-website/lambda-functions/copier_lambda.py
 
-      - name: Upload govuk frontend artifact to S3
+      - name: Zip govuk frontend and inject checksum
         working-directory: apex-website
-        env:
-          ARTIFACT_BUCKET: ${{ env.APEX_ARTIFACT_BUCKET }}
         run: |
           echo "::group::Zip govuk frontend artifacts"
           zip -r govukfrontend.zip govuk-frontend/ env-config/ robots.txt
@@ -64,11 +62,10 @@ jobs:
           grep -n "ArtifactVersion" ../cloudformation/apex-website/apex-cloudfront.yaml
           echo "::endgroup::"
 
-      - name: SAM build
+      - name: SAM build Apex website template
         run: |
           sam validate --lint -t cloudformation/apex-website/apex-cloudfront.yaml
           sam build --parallel -t cloudformation/apex-website/apex-cloudfront.yaml
-          grep -A2 "ArtifactVersion" .aws-sam/build/template.yaml
 
       - name: Upload govuk frontend artifact to S3
         working-directory: apex-website
