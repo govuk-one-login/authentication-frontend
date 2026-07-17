@@ -60,6 +60,7 @@ describe("cannot sign in passkey controller", () => {
         {
           authenticationOptions: JSON.stringify(mockData.publicKey),
           is2FAJourney: undefined,
+          passkeySignInWebauthnError: undefined,
         }
       );
     });
@@ -127,6 +128,58 @@ describe("cannot sign in passkey controller", () => {
         "StartPasskeyAssertionError: Session expired"
       );
       expect(res.render).to.not.have.been.called;
+    });
+
+    it("should pass a valid passkeySignInWebauthnError query param into the template", async () => {
+      req.query.passkeySignInWebauthnError = "NotAllowedError";
+      const fakePasskeyService = {
+        startPasskeyAssertion: sinon.fake.returns({
+          success: true,
+          data: {
+            publicKey: {},
+          },
+        }),
+      } as unknown as PasskeyServiceInterface;
+
+      await cannotSignInPasskeyGet(fakePasskeyService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.been.calledWith(
+        "cannot-sign-in-passkey/index.njk",
+        {
+          authenticationOptions: "{}",
+          is2FAJourney: undefined,
+          passkeySignInWebauthnError: "NotAllowedError",
+        }
+      );
+    });
+
+    it("should not pass an invalid passkeySignInWebauthnError query param into the template", async () => {
+      req.query.passkeySignInWebauthnError = "SomeInvalidError";
+      const fakePasskeyService = {
+        startPasskeyAssertion: sinon.fake.returns({
+          success: true,
+          data: {
+            publicKey: {},
+          },
+        }),
+      } as unknown as PasskeyServiceInterface;
+
+      await cannotSignInPasskeyGet(fakePasskeyService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.render).to.have.been.calledWith(
+        "cannot-sign-in-passkey/index.njk",
+        {
+          authenticationOptions: "{}",
+          is2FAJourney: undefined,
+          passkeySignInWebauthnError: undefined,
+        }
+      );
     });
   });
 
