@@ -8,13 +8,24 @@ import {
   isSuspendedWithoutUserActions,
   passwordHasBeenResetMoreRecentlyThanInterventionApplied,
 } from "../utils/interventions.js";
+
+type Options = {
+  handleSuspendedStatus: boolean;
+  handlePasswordResetStatus: boolean;
+  handleReproveIdentity: boolean;
+};
+
 export function accountInterventionsMiddleware(
-  handleSuspendedStatus: boolean,
-  handlePasswordResetStatus: boolean,
+  options: Options,
   authenticated?: boolean,
   service = accountInterventionService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response, next: NextFunction) {
+    const {
+      handleSuspendedStatus,
+      handlePasswordResetStatus,
+      handleReproveIdentity,
+    } = options;
     if (supportAccountInterventions()) {
       const email = req.session.user.email.toLowerCase();
       const { sessionId, clientSessionId, persistentSessionId } = res.locals;
@@ -68,6 +79,17 @@ export function accountInterventionsMiddleware(
             req,
             res,
             USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION
+          )
+        );
+      } else if (
+        accountInterventionsResponse.data.reproveIdentity &&
+        handleReproveIdentity
+      ) {
+        return res.redirect(
+          await getNextPathAndUpdateJourney(
+            req,
+            res,
+            USER_JOURNEY_EVENTS.REPROVE_IDENTITY_INTERVENTION
           )
         );
       }

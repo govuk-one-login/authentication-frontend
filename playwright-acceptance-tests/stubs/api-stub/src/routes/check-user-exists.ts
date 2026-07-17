@@ -23,5 +23,5 @@ export function checkUserExistsHandler(req: Request, res: Response): void {
     res.json({ email, doesUserExist: false });
     return;
   }
-  res.json({ email, doesUserExist: true });
+  res.json({ email, doesUserExist: true, hasActivePasskey: false });
 }

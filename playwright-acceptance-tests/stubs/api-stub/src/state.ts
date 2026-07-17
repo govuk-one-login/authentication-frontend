@@ -13,6 +13,7 @@ export interface State {
   credentialStrength: CredentialStrength | "";
   userMfaMethodType: MfaMethodType;
   registered: Record<string, boolean>;
+  accountInterventions: Record<string, boolean>;
 }
 
 export const state: State = createFreshState();
@@ -30,6 +31,12 @@ function createFreshState(): State {
     credentialStrength: "",
     userMfaMethodType: MfaMethodType.SMS,
     registered: {},
+    accountInterventions: {
+      blocked: false,
+      suspended: false,
+      reproveIdentity: false,
+      resetPassword: false,
+    },
   };
 }
 

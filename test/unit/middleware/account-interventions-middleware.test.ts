@@ -7,6 +7,8 @@ import { expect } from "chai";
 import { accountInterventionsMiddleware } from "../../../src/middleware/account-interventions-middleware.js";
 import type { AccountInterventionsInterface } from "../../../src/components/account-intervention/types.js";
 import { accountInterventionsFakeHelper } from "../../helpers/account-interventions-helpers.js";
+import { createMockRequest } from "../../helpers/mock-request-helper.js";
+
 describe("accountInterventionsMiddleware", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -51,7 +53,7 @@ describe("accountInterventionsMiddleware", () => {
         reproveIdentity: false,
       });
 
-      await callMiddleware(false, false, fakeAccountInterventionService);
+      await callMiddleware(false, false, false, fakeAccountInterventionService);
       expect(next).to.be.calledOnce;
     });
   });
@@ -73,7 +75,12 @@ describe("accountInterventionsMiddleware", () => {
         });
 
         it("should call next() when no account intervention API response options are true", async () => {
-          await callMiddleware(false, false, noAccountInterventionsService);
+          await callMiddleware(
+            false,
+            false,
+            false,
+            noAccountInterventionsService
+          );
           expect(next).to.be.calledOnce;
         });
       });
@@ -92,7 +99,12 @@ describe("accountInterventionsMiddleware", () => {
       });
 
       it("should redirect to UNAVAILABLE PERMANENT", async () => {
-        await callMiddleware(false, false, accountInterventionsWithBlockedTrue);
+        await callMiddleware(
+          false,
+          false,
+          false,
+          accountInterventionsWithBlockedTrue
+        );
         expect(res.redirect).to.have.been.calledWith(
           PATH_NAMES.UNAVAILABLE_PERMANENT
         );
@@ -116,6 +128,7 @@ describe("accountInterventionsMiddleware", () => {
         await callMiddleware(
           false,
           true,
+          false,
           accountInterventionsWithPasswordResetTrue
         );
         expect(res.redirect).to.have.been.calledWith(
@@ -125,6 +138,7 @@ describe("accountInterventionsMiddleware", () => {
 
       it("should call next when handlePasswordResetStatus is false", async () => {
         await callMiddleware(
+          false,
           false,
           false,
           accountInterventionsWithPasswordResetTrue
@@ -139,6 +153,7 @@ describe("accountInterventionsMiddleware", () => {
         await callMiddleware(
           true,
           true,
+          false,
           accountInterventionsWithPasswordResetTrue
         );
         expect(res.redirect).to.have.been.calledWith(
@@ -166,6 +181,7 @@ describe("accountInterventionsMiddleware", () => {
         await callMiddleware(
           true,
           true,
+          false,
           accountInterventionsWithPasswordResetTrueAndAppliedAtNow
         );
         expect(res.redirect).to.have.been.calledWith(
@@ -193,6 +209,7 @@ describe("accountInterventionsMiddleware", () => {
         await callMiddleware(
           true,
           true,
+          false,
           accountInterventionsWithPasswordResetTrueAndAppliedAtNow
         );
         expect(res.redirect).not.to.have.been.calledWith(
@@ -205,6 +222,7 @@ describe("accountInterventionsMiddleware", () => {
         await callMiddleware(
           true,
           false,
+          false,
           accountInterventionsWithPasswordResetTrue
         );
         expect(res.redirect).to.not.have.been.calledWith(
@@ -215,29 +233,49 @@ describe("accountInterventionsMiddleware", () => {
     });
 
     describe("when reproveIdentity and temporarilySuspended is true", () => {
-      let accountIntervetionsWithReproveIdentity: AccountInterventionsInterface;
+      let accountInterventionsWithReproveIdentity: AccountInterventionsInterface;
 
       before(() => {
-        accountIntervetionsWithReproveIdentity = accountInterventionsFakeHelper(
-          {
+        accountInterventionsWithReproveIdentity =
+          accountInterventionsFakeHelper({
             passwordResetRequired: false,
             blocked: false,
             temporarilySuspended: true,
             reproveIdentity: true,
-          }
-        );
+          });
       });
 
       it("should not redirect to UNAVAILABLE_TEMPORARY when handleSuspended status is true and handlePasswordResetStatus is false", async () => {
         await callMiddleware(
           true,
           false,
-          accountIntervetionsWithReproveIdentity
+          false,
+          accountInterventionsWithReproveIdentity
         );
         expect(res.redirect).to.not.have.been.calledWith(
           PATH_NAMES.UNAVAILABLE_TEMPORARY
         );
         expect(next).to.be.calledOnce;
+      });
+
+      it("should redirect to AUTH_CODE when user is on CREATE_PASSKEY and handleReproveIdentity is true", async () => {
+        req = createMockRequest(PATH_NAMES.CREATE_PASSKEY);
+        req.session.user = { email: "test@test.com" };
+        accountInterventionsWithReproveIdentity =
+          accountInterventionsFakeHelper({
+            passwordResetRequired: false,
+            blocked: false,
+            temporarilySuspended: false,
+            reproveIdentity: true,
+          });
+
+        await callMiddleware(
+          false,
+          false,
+          true,
+          accountInterventionsWithReproveIdentity
+        );
+        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
       });
     });
 
@@ -258,6 +296,7 @@ describe("accountInterventionsMiddleware", () => {
         await callMiddleware(
           true,
           false,
+          false,
           accountInterventionsWithTemporarilySuspendedTrue
         );
         expect(res.redirect).to.have.been.calledWith(
@@ -267,6 +306,7 @@ describe("accountInterventionsMiddleware", () => {
 
       it("should not redirect to UNAVAILABLE_TEMPORARY when handleSuspendedStatus is false", async () => {
         await callMiddleware(
+          false,
           false,
           false,
           accountInterventionsWithTemporarilySuspendedTrue
@@ -284,11 +324,16 @@ describe("accountInterventionsMiddleware", () => {
   const callMiddleware = async (
     handleSuspendedStatus: boolean,
     handlePasswordResetStatus: boolean,
+    handleReproveIdentity: boolean,
     accountInterventionService: AccountInterventionsInterface
   ) => {
-    await accountInterventionsMiddleware(
+    const options = {
       handleSuspendedStatus,
       handlePasswordResetStatus,
+      handleReproveIdentity,
+    };
+    await accountInterventionsMiddleware(
+      options,
       undefined,
       accountInterventionService
     )(req as Request, res as Response, next as NextFunction);

@@ -1,4 +1,4 @@
-import { When } from "@cucumber/cucumber";
+import { Given, When } from "@cucumber/cucumber";
 import type { PlaywrightWorld } from "../support/world";
 import { BasePage } from "../pages/BasePage";
 import { requirePage } from "../support/utils";
@@ -16,5 +16,14 @@ When(
     const page = new BasePage(requirePage(this));
     await page.selectRadioButton(label);
     await page.clickContinue();
+  }
+);
+
+Given(
+  "the browser supports passkeys",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await requirePage(this)
+      .locator("#browserSupportsWebAuthn")
+      .evaluate((el: HTMLInputElement) => (el.value = "true"));
   }
 );
