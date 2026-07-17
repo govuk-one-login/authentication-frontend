@@ -161,7 +161,7 @@ describe("sign in with passkey controller", () => {
       );
     });
 
-    it("should redirect to cannot sign in passkey when authenticationError is present", async () => {
+    it("should redirect to cannot sign in passkey with passkeySignInWebauthnError query param when authenticationError is present", async () => {
       req.body.authenticationError = "NotAllowedError";
 
       const fakePasskeyService = {
@@ -174,7 +174,7 @@ describe("sign in with passkey controller", () => {
       );
 
       expect(res.redirect).to.have.been.calledWith(
-        PATH_NAMES.CANNOT_SIGN_IN_PASSKEY
+        `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=NotAllowedError`
       );
       expect(fakePasskeyService.finishPasskeyAssertion).to.not.have.been.called;
     });

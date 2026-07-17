@@ -70,7 +70,7 @@
         }
       } catch (error) {
         console.error(error.message);
-        signInWithPasskeyForm.querySelector('input[name="authenticationError"]').value = `${error.name} - ${error.message}`
+        signInWithPasskeyForm.querySelector('input[name="authenticationError"]').value = error.name
       }
 
       document.body.inert = true;
