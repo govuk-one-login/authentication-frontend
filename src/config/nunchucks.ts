@@ -2,7 +2,7 @@ import type express from "express";
 import nunjucks from "nunjucks";
 import i18next from "i18next";
 import { returnLastCharactersOnly } from "../utils/phone-number.js";
-import { getNodeEnv, useRebrand } from "../config.js";
+import { getNodeEnv, useRebrand, getGovukFrontendUrl } from "../config.js";
 import { ENVIRONMENT_NAME } from "../app.constants.js";
 import addLanguageParam from "@govuk-one-login/frontend-language-toggle";
 
@@ -41,6 +41,15 @@ export function configureNunjucks(
 
   nunjucksEnv.addGlobal("addLanguageParam", addLanguageParam);
   nunjucksEnv.addGlobal("govukRebrand", useRebrand());
+
+  const govukFrontendUrl = getGovukFrontendUrl();
+  if (govukFrontendUrl) {
+    const assetPath = useRebrand()
+      ? `${govukFrontendUrl}/assets/rebrand`
+      : `${govukFrontendUrl}/assets`;
+    nunjucksEnv.addGlobal("assetPath", assetPath);
+    nunjucksEnv.addGlobal("govukFrontendUrl", govukFrontendUrl);
+  }
 
   return nunjucksEnv;
 }

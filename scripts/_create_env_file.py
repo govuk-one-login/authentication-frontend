@@ -128,6 +128,15 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             },
         },
     },
+    {
+        "header": "govuk-frontend CDN",
+        "variables": {
+            "GOVUK_FRONTEND_URL": {
+                "value": "",
+                "comment": "Base URL for govuk-frontend assets on CloudFront (leave empty for local node_modules)",
+            },
+        },
+    },
 ]
 
 DEFAULT_USER_VARIABLE_LOOKUP = {

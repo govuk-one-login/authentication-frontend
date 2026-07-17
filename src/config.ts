@@ -238,3 +238,7 @@ export function getPasskeyPromptClientDenyList(): string[] {
   }
   return [];
 }
+
+export function getGovukFrontendUrl(): string {
+  return process.env.GOVUK_FRONTEND_URL || "";
+}

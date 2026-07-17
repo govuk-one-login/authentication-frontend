@@ -17,6 +17,7 @@ import Backend from "i18next-fs-backend";
 
 import {
   getAppEnv,
+  getGovukFrontendUrl,
   getLanguageToggleEnabled,
   getNodeEnv,
   getSessionExpiry,
@@ -239,13 +240,15 @@ async function createApp(): Promise<express.Application> {
     );
   }
 
-  app.use(
-    "/assets",
-    express.static(
-      path.resolve("node_modules/govuk-frontend/dist/govuk/assets"),
-      staticAssetOptions
-    )
-  );
+  if (!getGovukFrontendUrl()) {
+    app.use(
+      "/assets",
+      express.static(
+        path.resolve("node_modules/govuk-frontend/dist/govuk/assets"),
+        staticAssetOptions
+      )
+    );
+  }
 
   app.use(
     "/public",

@@ -2,12 +2,26 @@ import type { HelmetOptions } from "helmet";
 import type { Response } from "express";
 import type { IncomingMessage } from "http";
 import type { ServerResponse } from "http";
+import { getGovukFrontendUrl } from "../config.js";
+
+function getGovukFrontendCspSource(): string[] {
+  const govukFrontendUrl = getGovukFrontendUrl();
+  if (govukFrontendUrl) {
+    try {
+      const origin = new URL(govukFrontendUrl).origin;
+      return [origin];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
 
 export const helmetConfiguration: HelmetOptions = {
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      styleSrc: ["'self'"],
+      styleSrc: ["'self'", ...getGovukFrontendCspSource()],
       scriptSrc: [
         "'self'",
         (req: IncomingMessage, res: ServerResponse): string =>
@@ -17,6 +31,7 @@ export const helmetConfiguration: HelmetOptions = {
         "https://*.googletagmanager.com",
         "https://www.google-analytics.com",
         "https://ssl.google-analytics.com",
+        ...getGovukFrontendCspSource(),
       ],
       imgSrc: [
         "'self'",
@@ -24,7 +39,9 @@ export const helmetConfiguration: HelmetOptions = {
         "https://*.google-analytics.com",
         "https://*.googletagmanager.com",
         "https://www.google-analytics.com",
+        ...getGovukFrontendCspSource(),
       ],
+      fontSrc: ["'self'", ...getGovukFrontendCspSource()],
       objectSrc: ["'none'"],
       connectSrc: [
         "'self'",

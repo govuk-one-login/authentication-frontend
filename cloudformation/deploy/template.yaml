@@ -1196,6 +1196,18 @@ Resources:
                   ],
                   PasskeyRolloutPercentage,
                 ]
+            - Name: GOVUK_FRONTEND_URL
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !If [
+                    UseSubEnvironment,
+                    !Ref SubEnvironment,
+                    !Ref Environment,
+                  ],
+                  GovukFrontendUrl,
+                  DefaultValue: "",
+                ]
 
           Secrets:
             - Name: API_KEY
