@@ -4,6 +4,7 @@ import {
   getPasskeyRolloutPercentage,
   getPasskeyPromptClientDenyList,
 } from "../config.js";
+import { logger } from "./logger.js";
 
 export function shouldPromptToRegisterPasskey(
   req: Request,
@@ -27,6 +28,10 @@ export function shouldPromptToSignInWithPasskey(
   req: Request,
   res: Response
 ): boolean {
+  logger.info("BECKA checking if should prompt to sign in with passkey");
+  logger.info(`BECKA browserSupportsWebAuthn is ${req.session.user?.browserSupportsWebAuthn}`)
+  logger.info(`BECKA hasActivePasskey is ${req.session.user?.hasActivePasskey}`)
+  logger.info(`BECKA supportPasskeyUsage is ${res.locals.supportPasskeyUsage}`)
   return (
     req.session.user?.browserSupportsWebAuthn === true &&
     req.session.user?.hasActivePasskey === true &&

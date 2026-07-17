@@ -31,6 +31,7 @@ import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific
 import { isReauth } from "../../utils/request.js";
 import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 import { shouldPromptToSignInWithPasskey } from "../../utils/passkeys-helper.js";
+import { logger } from "../../utils/logger.js";
 
 export const RE_ENTER_EMAIL_TEMPLATE =
   "enter-email/index-re-enter-email-account.njk";
@@ -105,6 +106,7 @@ async function getExistingUserAndPopulateSessionData(
     req.session.user.mfaMethods,
     { redactedPhoneNumber: result.data.phoneNumberLastThree }
   );
+  logger.info(`BECKA has active passkey is ${result.data.hasActivePasskey}`)
   req.session.user.hasActivePasskey = result.data.hasActivePasskey;
   req.session.user.backendIndicatesPasskeyPromptShouldBeSkipped =
     result.data.shouldSuppressPasskeyRegistrationPrompt;
