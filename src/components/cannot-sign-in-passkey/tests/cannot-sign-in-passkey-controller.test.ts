@@ -264,6 +264,24 @@ describe("cannot sign in passkey controller", () => {
           PATH_NAMES.CANNOT_SIGN_IN_PASSKEY
         );
       });
+
+      it("should redirect back to cannot-sign-in-passkey with passkeySignInWebauthnError query param when authenticationError exists", async () => {
+        req.body.authenticationError = "NotAllowedError";
+        const fakePasskeyService = {
+          finishPasskeyAssertion: sinon.fake.returns({
+            success: true,
+          }),
+        } as unknown as PasskeyServiceInterface;
+
+        await cannotSignInPasskeyPost(fakePasskeyService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(res.redirect).to.have.been.calledWith(
+          `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=NotAllowedError`
+        );
+      });
     });
   });
 });

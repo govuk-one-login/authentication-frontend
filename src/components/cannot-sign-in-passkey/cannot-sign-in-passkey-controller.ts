@@ -51,6 +51,7 @@ export function cannotSignInPasskeyPost(
       req.body.authenticationResponse;
     const cannotSignInPasskeyAction: CANNOT_SIGN_IN_PASSKEY_ACTION =
       req.body["cannot-sign-in-passkey-action"];
+    const authenticationError = req.body.authenticationError;
 
     if (
       cannotSignInPasskeyAction ===
@@ -62,6 +63,13 @@ export function cannotSignInPasskeyPost(
           res,
           USER_JOURNEY_EVENTS.SIGN_IN_WITHOUT_PASSKEY
         )
+      );
+    }
+
+    if (!!authenticationError) {
+      req.log.warn("Passkey usage failed with error: %s", authenticationError);
+      return res.redirect(
+        `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=${authenticationError}`
       );
     }
 

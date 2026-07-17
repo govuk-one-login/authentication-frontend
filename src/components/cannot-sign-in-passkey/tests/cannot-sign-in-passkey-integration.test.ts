@@ -235,6 +235,24 @@ describe("Integration:: cannot sign in passkey", () => {
           res.text
         );
       });
+
+      it("should redirect to cannot-sign-in-passkey with passkeySignInWebauthnError query param when authenticationError exists", async () => {
+        await request(app)
+          .post(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            authenticationError: "NotAllowedError",
+            "cannot-sign-in-passkey-action":
+              CANNOT_SIGN_IN_PASSKEY_ACTION.RETRY_PASSKEY,
+          })
+          .expect(302)
+          .expect(
+            "Location",
+            `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=NotAllowedError`
+          );
+      });
     });
   });
 });
