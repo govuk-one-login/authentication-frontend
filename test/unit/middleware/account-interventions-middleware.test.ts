@@ -327,10 +327,13 @@ describe("accountInterventionsMiddleware", () => {
     handleReproveIdentity: boolean,
     accountInterventionService: AccountInterventionsInterface
   ) => {
-    await accountInterventionsMiddleware(
+    const options = {
       handleSuspendedStatus,
       handlePasswordResetStatus,
       handleReproveIdentity,
+    };
+    await accountInterventionsMiddleware(
+      options,
       undefined,
       accountInterventionService
     )(req as Request, res as Response, next as NextFunction);

@@ -8,14 +8,24 @@ import {
   isSuspendedWithoutUserActions,
   passwordHasBeenResetMoreRecentlyThanInterventionApplied,
 } from "../utils/interventions.js";
+
+type Options = {
+  handleSuspendedStatus: boolean;
+  handlePasswordResetStatus: boolean;
+  handleReproveIdentity: boolean;
+};
+
 export function accountInterventionsMiddleware(
-  handleSuspendedStatus: boolean,
-  handlePasswordResetStatus: boolean,
-  handleReproveIdentity: boolean,
+  options: Options,
   authenticated?: boolean,
   service = accountInterventionService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response, next: NextFunction) {
+    const {
+      handleSuspendedStatus,
+      handlePasswordResetStatus,
+      handleReproveIdentity,
+    } = options;
     if (supportAccountInterventions()) {
       const email = req.session.user.email.toLowerCase();
       const { sessionId, clientSessionId, persistentSessionId } = res.locals;

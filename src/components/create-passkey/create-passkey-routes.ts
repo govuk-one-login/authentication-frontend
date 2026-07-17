@@ -13,7 +13,14 @@ router.get(
   PATH_NAMES.CREATE_PASSKEY,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  accountInterventionsMiddleware(true, true, true, true),
+  accountInterventionsMiddleware(
+    {
+      handleSuspendedStatus: true,
+      handlePasswordResetStatus: true,
+      handleReproveIdentity: true,
+    },
+    true
+  ),
   createPasskeyGet
 );
 

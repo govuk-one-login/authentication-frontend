@@ -23,7 +23,11 @@ router.get(
   PATH_NAMES.RESET_PASSWORD,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  accountInterventionsMiddleware(true, false, false),
+  accountInterventionsMiddleware({
+    handleSuspendedStatus: true,
+    handlePasswordResetStatus: false,
+    handleReproveIdentity: false,
+  }),
   resetPasswordGet
 );
 
