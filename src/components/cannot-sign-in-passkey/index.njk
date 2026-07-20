@@ -52,7 +52,7 @@
     }) }}
   </form>
 
-{% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
+{% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false, reason: passkeySignInWebauthnError } %}
 {%- include "ga4-opl/template.njk" -%}
 {% endblock %}
 

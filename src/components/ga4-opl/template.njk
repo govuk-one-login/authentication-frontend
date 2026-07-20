@@ -13,7 +13,8 @@
                 taxonomy_level5: '{{ ga4Params.taxonomyLevel5 | default(analyticsProperties.taxonomy.taxonomyLevel5, false) }}',
                 content_id: '{{ ga4Params.contentId | default(analyticsProperties.contentId, false) }}',
                 logged_in_status: {{ga4Params.loggedInStatus}},
-                dynamic: {{ga4Params.dynamic}}
+                dynamic: {{ga4Params.dynamic}},
+                reason: '{{ ga4Params.reason }}'
             });
     });
 </script>

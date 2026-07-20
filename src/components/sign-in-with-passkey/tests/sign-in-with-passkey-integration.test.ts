@@ -151,7 +151,10 @@ describe("Integration:: sign in with passkey", () => {
             authenticationError: "NotAllowedError",
           })
           .expect(302)
-          .expect("Location", PATH_NAMES.CANNOT_SIGN_IN_PASSKEY);
+          .expect(
+            "Location",
+            `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=NotAllowedError`
+          );
       });
 
       it("should redirect to cannot sign in passkey when parsing pkc error", async () => {

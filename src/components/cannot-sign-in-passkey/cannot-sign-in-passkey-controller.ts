@@ -7,6 +7,7 @@ import { CANNOT_SIGN_IN_PASSKEY_ACTION } from "./types.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { PATH_NAMES } from "../../app.constants.js";
+import { VALID_WEBAUTHN_ERRORS } from "../common/constants.js";
 
 export function cannotSignInPasskeyGet(
   service: PasskeyServiceInterface = passkeyService()
@@ -30,9 +31,14 @@ export function cannotSignInPasskeyGet(
       authenticationOptions.publicKey
     );
 
+    const passkeySignInWebauthnError = VALID_WEBAUTHN_ERRORS.find(
+      (error) => error === req.query.passkeySignInWebauthnError
+    );
+
     res.render("cannot-sign-in-passkey/index.njk", {
       authenticationOptions: req.session.user.cannotSignInPasskeyAuthOptions,
       is2FAJourney: req.session.user.isMfaRequired,
+      passkeySignInWebauthnError: passkeySignInWebauthnError,
     });
   };
 }
@@ -45,6 +51,7 @@ export function cannotSignInPasskeyPost(
       req.body.authenticationResponse;
     const cannotSignInPasskeyAction: CANNOT_SIGN_IN_PASSKEY_ACTION =
       req.body["cannot-sign-in-passkey-action"];
+    const authenticationError = req.body.authenticationError;
 
     if (
       cannotSignInPasskeyAction ===
@@ -56,6 +63,13 @@ export function cannotSignInPasskeyPost(
           res,
           USER_JOURNEY_EVENTS.SIGN_IN_WITHOUT_PASSKEY
         )
+      );
+    }
+
+    if (!!authenticationError) {
+      req.log.warn("Passkey usage failed with error: %s", authenticationError);
+      return res.redirect(
+        `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=${authenticationError}`
       );
     }
 

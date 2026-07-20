@@ -43,12 +43,13 @@ export function signInWithPasskeyPost(
     const authenticationError = req.body.authenticationError;
     if (!!authenticationError) {
       req.log.warn("Passkey usage failed with error: %s", authenticationError);
+      const nextPath = await getNextPathAndUpdateJourney(
+        req,
+        res,
+        USER_JOURNEY_EVENTS.PASSKEY_AUTHENTICATION_FAILED
+      );
       return res.redirect(
-        await getNextPathAndUpdateJourney(
-          req,
-          res,
-          USER_JOURNEY_EVENTS.PASSKEY_AUTHENTICATION_FAILED
-        )
+        `${nextPath}?passkeySignInWebauthnError=${authenticationError}`
       );
     }
 

@@ -185,3 +185,14 @@ export const JOURNEY_TYPE = {
   SIGN_IN: "sign-in",
   CREATE_ACCOUNT: "create-account",
 };
+
+export const VALID_WEBAUTHN_ERRORS = [
+  "NotAllowedError",
+  "AbortError",
+  "SecurityError",
+  "InvalidStateError",
+  "ConstraintError",
+  "DataError",
+  "NotSupportedError",
+  "UnknownError",
+];
