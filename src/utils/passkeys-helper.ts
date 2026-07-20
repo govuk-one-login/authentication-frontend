@@ -9,18 +9,21 @@ export function shouldPromptToRegisterPasskey(
   req: Request,
   res: Response
 ): boolean {
-  return (
-    req.session.user?.browserSupportsWebAuthn === true &&
-    req.session.user?.hasActivePasskey === false &&
-    req.session.user?.hasSkippedPasskeyRegistration !== true &&
-    req.session.user?.backendIndicatesPasskeyPromptShouldBeSkipped !== true &&
-    !req.session.user?.reauthenticate &&
-    !userHasBeenOnPasswordResetJourney(req) &&
-    isPromptableRPClientID(req.session.client.rpClientId) &&
-    userHasLoggedInWithPasswordAnd2Fa(req) &&
-    res.locals.supportPasskeyRegistration === true &&
-    req.session.user.isInPasskeyPhasedRollout === true
-  );
+  const { user } = req.session;
+  const userHasActivePasskeyOrUnknown = user?.hasActivePasskey !== false;
+
+  if (!user?.browserSupportsWebAuthn) return false;
+  if (userHasActivePasskeyOrUnknown) return false;
+  if (user.hasSkippedPasskeyRegistration) return false;
+  if (user.backendIndicatesPasskeyPromptShouldBeSkipped) return false;
+  if (user.reauthenticate) return false;
+  if (userHasBeenOnPasswordResetJourney(req)) return false;
+  if (!isPromptableRPClientID(req.session.client.rpClientId)) return false;
+  if (!userHasLoggedInWithPasswordAnd2Fa(req)) return false;
+  if (!res.locals.supportPasskeyRegistration) return false;
+  if (!user.isInPasskeyPhasedRollout) return false;
+
+  return true;
 }
 
 export function shouldPromptToSignInWithPasskey(
