@@ -11,6 +11,8 @@
 
 {% set pageTitleName = 'pages.signInWithPasskey.title' | translate  %}
 
+{% set paragraph1Key = 'pages.signInWithPasskey.paragraph1.reauth' if isReauth else 'pages.signInWithPasskey.paragraph1.default' %}
+
 {% block content %}
 
   <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">
@@ -18,7 +20,7 @@
   </h1>
 
   <p class="govuk-body">
-    {{'pages.signInWithPasskey.paragraph1' | translate }}
+    {{ paragraph1Key | translate }}
   </p>
   <p class="govuk-body">
     {{'pages.signInWithPasskey.paragraph2' | translate }}

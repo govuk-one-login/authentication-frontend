@@ -55,9 +55,24 @@ export const pages: Record<string, Page | PageVariant[]> = {
       template: "enter-email/index-sign-in-details-entered-too-many-times.njk",
     },
   ],
-  [PATH_NAMES.SIGN_IN_WITH_PASSKEY]: {
-    template: "sign-in-with-passkey/index.njk",
-  },
+  [PATH_NAMES.SIGN_IN_WITH_PASSKEY]: [
+    {
+      name: "default",
+      template: "sign-in-with-passkey/index.njk",
+      options: {
+        authenticationOptions: "",
+        isReauth: false,
+      },
+    },
+    {
+      name: "reauth",
+      template: "sign-in-with-passkey/index.njk",
+      options: {
+        authenticationOptions: "",
+        isReauth: true,
+      },
+    },
+  ],
   [PATH_NAMES.CANNOT_SIGN_IN_PASSKEY]: [
     {
       name: "1FA journey",
