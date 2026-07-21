@@ -14,6 +14,7 @@ type Options = {
   handleSuspendedStatus: boolean;
   handlePasswordResetStatus: boolean;
   handleReproveIdentity: boolean;
+  onRedirect?: (req: Request) => void;
 };
 
 export function accountInterventionsMiddleware(
@@ -39,9 +40,15 @@ export function accountInterventionsMiddleware(
         authenticated
       );
 
-    const accountInterventionRedirect = await getAccountInterventionsRedirect(req, res, accountInterventionsResponse.data, options)
+    const accountInterventionRedirect = await getAccountInterventionsRedirect(
+      req,
+      res,
+      accountInterventionsResponse.data,
+      options
+    );
     if (accountInterventionRedirect) {
-      return res.redirect(accountInterventionRedirect)
+      options.onRedirect?.(req);
+      return res.redirect(accountInterventionRedirect);
     }
 
     return next();
@@ -60,11 +67,11 @@ async function getAccountInterventionsRedirect(
     handleReproveIdentity,
   } = options;
   if (accountInterventionsResponse.blocked) {
-      return await getNextPathAndUpdateJourney(
-        req,
-        res,
-        USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION
-      )
+    return await getNextPathAndUpdateJourney(
+      req,
+      res,
+      USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION
+    );
   } else if (
     accountInterventionsResponse.passwordResetRequired &&
     handlePasswordResetStatus
@@ -75,10 +82,10 @@ async function getAccountInterventionsRedirect(
         accountInterventionsResponse
       )
     ) {
-        return await getNextPathAndUpdateJourney(
-          req,
-          res,
-          USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION
+      return await getNextPathAndUpdateJourney(
+        req,
+        res,
+        USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION
       );
     } else {
       req.log.info(
@@ -89,20 +96,20 @@ async function getAccountInterventionsRedirect(
     isSuspendedWithoutUserActions(accountInterventionsResponse) &&
     handleSuspendedStatus
   ) {
-      return await getNextPathAndUpdateJourney(
-        req,
-        res,
-        USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION
-      )
+    return await getNextPathAndUpdateJourney(
+      req,
+      res,
+      USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION
+    );
   } else if (
     accountInterventionsResponse.reproveIdentity &&
     handleReproveIdentity
   ) {
-      return await getNextPathAndUpdateJourney(
-        req,
-        res,
-        USER_JOURNEY_EVENTS.REPROVE_IDENTITY_INTERVENTION
-      );
+    return await getNextPathAndUpdateJourney(
+      req,
+      res,
+      USER_JOURNEY_EVENTS.REPROVE_IDENTITY_INTERVENTION
+    );
   }
   return null;
 }

@@ -350,6 +350,36 @@ describe("accountInterventionsMiddleware", () => {
         expect(next).to.have.been.calledOnce;
       });
     });
+
+    describe("onRedirect", () => {
+      let accountInterventionsWithBlockedTrue: AccountInterventionsInterface;
+
+      before(() => {
+        accountInterventionsWithBlockedTrue = accountInterventionsFakeHelper({
+          passwordResetRequired: false,
+          blocked: true,
+          temporarilySuspended: false,
+          reproveIdentity: false,
+        });
+      });
+
+      it("should call onRedirect before redirecting when property in options object", async () => {
+        const onRedirect = sinon.spy();
+        await callMiddleware(
+          {
+            handleSuspendedStatus: false,
+            handlePasswordResetStatus: false,
+            handleReproveIdentity: false,
+            onRedirect,
+          },
+          accountInterventionsWithBlockedTrue
+        );
+        expect(onRedirect).to.have.been.calledOnce;
+        expect(res.redirect).to.have.been.calledWith(
+          PATH_NAMES.UNAVAILABLE_PERMANENT
+        );
+      });
+    });
   });
 
   const callMiddleware = async (
@@ -357,6 +387,7 @@ describe("accountInterventionsMiddleware", () => {
       handleSuspendedStatus: boolean;
       handlePasswordResetStatus: boolean;
       handleReproveIdentity: boolean;
+      onRedirect?: (req: Request) => void;
     },
     accountInterventionService: AccountInterventionsInterface
   ) => {
