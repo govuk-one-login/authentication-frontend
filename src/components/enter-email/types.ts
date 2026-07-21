@@ -25,6 +25,7 @@ export interface EnterEmailServiceInterface {
     emailAddress: string,
     clientSessionId: string,
     persistentSessionId: string,
-    req: Request
+    req: Request,
+    supportPasskeyUsage?: boolean
   ) => Promise<ApiResponseResult<UserExists>>;
 }

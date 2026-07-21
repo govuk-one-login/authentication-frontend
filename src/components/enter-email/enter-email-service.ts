@@ -17,12 +17,14 @@ export function enterEmailService(
     emailAddress: string,
     clientSessionId: string,
     persistentSessionId: string,
-    req: Request
+    req: Request,
+    supportPasskeyUsage: boolean = false
   ): Promise<ApiResponseResult<UserExists>> {
     const response = await axios.client.post<UserExists>(
       API_ENDPOINTS.USER_EXISTS,
       {
         email: emailAddress.toLowerCase(),
+        supportPasskeyUsage,
       },
       getInternalRequestConfigWithSecurityHeaders(
         {

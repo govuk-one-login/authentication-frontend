@@ -83,7 +83,8 @@ async function getExistingUserAndPopulateSessionData(
     email,
     clientSessionId,
     persistentSessionId,
-    req
+    req,
+    res.locals.supportPasskeyUsage === true
   );
 
   if (!result.success) {
