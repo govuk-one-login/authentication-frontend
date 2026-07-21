@@ -100,6 +100,7 @@ export interface UserSession {
   backendIndicatesPasskeyPromptShouldBeSkipped?: boolean;
   isInPasskeyPhasedRollout?: boolean;
   cannotSignInPasskeyAuthOptions?: string;
+  accountInterventionAppliedDuringPasskeyRegistration?: boolean;
 }
 
 export interface UserSessionClient {
