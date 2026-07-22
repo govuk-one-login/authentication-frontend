@@ -28,7 +28,7 @@ repos:
     hooks:
       - id: eslint
         name: Run ESLint
-        language: node
+        language: system
         types_or:
           - javascript
           - ts
@@ -36,7 +36,7 @@ repos:
         pass_filenames: true
       - id: prettier
         name: Run prettier
-        language: node
+        language: system
         types_or:
           - ts
           - javascript
