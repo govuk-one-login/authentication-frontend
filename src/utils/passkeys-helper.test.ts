@@ -456,6 +456,21 @@ describe("passkeys helper", () => {
         expected: false,
       },
       {
+        rolloutPercentage: "0.25",
+        randomValue: 0.0024,
+        expected: true,
+      },
+      {
+        rolloutPercentage: "0.25",
+        randomValue: 0.0025,
+        expected: true,
+      },
+      {
+        rolloutPercentage: "0.25",
+        randomValue: 0.0026,
+        expected: false,
+      },
+      {
         rolloutPercentage: "0",
         randomValue: 0.1,
         expected: false,
