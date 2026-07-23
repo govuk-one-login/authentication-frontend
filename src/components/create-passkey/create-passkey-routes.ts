@@ -18,6 +18,8 @@ router.get(
       handleSuspendedStatus: true,
       handlePasswordResetStatus: true,
       handleReproveIdentity: true,
+      onRedirect: (req) =>
+        (req.session.user.accountInterventionAppliedDuringPasskeyRegistration = true),
     },
     true
   ),

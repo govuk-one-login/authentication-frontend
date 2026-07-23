@@ -627,16 +627,16 @@ const authStateMachine = createMachine<AuthStateContext>(
             PATH_NAMES.CREATE_PASSKEY_CALLBACK,
           ],
           [USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION]: [
-            PATH_NAMES.UNAVAILABLE_PERMANENT,
+            INTERMEDIATE_STATES.SIGN_IN_END,
           ],
           [USER_JOURNEY_EVENTS.TEMPORARILY_BLOCKED_INTERVENTION]: [
-            PATH_NAMES.UNAVAILABLE_TEMPORARY,
+            INTERMEDIATE_STATES.SIGN_IN_END,
           ],
           [USER_JOURNEY_EVENTS.PASSWORD_RESET_INTERVENTION]: [
-            PATH_NAMES.PASSWORD_RESET_REQUIRED,
+            INTERMEDIATE_STATES.SIGN_IN_END,
           ],
           [USER_JOURNEY_EVENTS.REPROVE_IDENTITY_INTERVENTION]: [
-            PATH_NAMES.AUTH_CODE,
+            INTERMEDIATE_STATES.SIGN_IN_END,
           ],
         },
       },
@@ -652,7 +652,7 @@ const authStateMachine = createMachine<AuthStateContext>(
             PATH_NAMES.CREATE_PASSKEY,
           ],
           [USER_JOURNEY_EVENTS.AMC_RETURNED_ACCOUNT_INTERVENTIONS]: [
-            PATH_NAMES.AUTH_CODE,
+            INTERMEDIATE_STATES.SIGN_IN_END,
           ],
         },
         meta: {
