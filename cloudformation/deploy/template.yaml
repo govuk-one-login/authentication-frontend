@@ -524,7 +524,7 @@ Mappings:
       PasskeyPromptClientAllowList: "Ykg9fGyY76On4e8tPvFabK5BIl65EkGH"
       PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
-      PasskeyRolloutPercentage: 0
+      PasskeyRolloutPercentage: 100
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "Yes"
@@ -594,7 +594,7 @@ Mappings:
       PasskeyPromptClientAllowList: "gjWNvoLYietMjeaOE6Zoww533u18ZUfr"
       PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
-      PasskeyRolloutPercentage: 0
+      PasskeyRolloutPercentage: 100
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -629,7 +629,7 @@ Mappings:
       PasskeyPromptClientAllowList: "5Vfplamzln0AoarlnX5CX4UTqyh59xfA"
       PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
-      PasskeyRolloutPercentage: 0
+      PasskeyRolloutPercentage: 100
 
   # /acceptance-tests/{env}}/CUCUMBER_FILTER_TAGS
   AcceptanceTestTags:
