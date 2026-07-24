@@ -6,6 +6,7 @@ import {
 } from "./passkeys-helper.js";
 import { expect, sinon } from "../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
+import { createMockRequest } from "../../test/helpers/mock-request-helper.js";
 
 describe("passkeys helper", () => {
   describe("shouldPromptToRegisterPasskey", () => {
@@ -173,7 +174,7 @@ describe("passkeys helper", () => {
       it(`should return ${expected} when conditions=${JSON.stringify(conditions)}`, () => {
         process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
 
-        const req = {
+        const req = createMockRequest("", {
           session: {
             user: {
               browserSupportsWebAuthn: conditions.browserSupportsWebAuthn,
@@ -196,7 +197,7 @@ describe("passkeys helper", () => {
               rpClientId: conditions.rpClientId,
             },
           },
-        } as any as Request;
+        });
         const res = {
           locals: {
             supportPasskeyRegistration: conditions.supportPasskeyRegistration,
@@ -255,7 +256,7 @@ describe("passkeys helper", () => {
           process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = allowList;
           process.env.PASSKEY_PROMPT_CLIENT_DENY_LIST = denyList;
 
-          const req = {
+          const req = createMockRequest("", {
             session: {
               user: {
                 browserSupportsWebAuthn: true,
@@ -274,7 +275,7 @@ describe("passkeys helper", () => {
                 rpClientId: "valid-rp-client-id",
               },
             },
-          } as any as Request;
+          });
           const res = {
             locals: { supportPasskeyRegistration: true },
           } as any as Response;
@@ -327,7 +328,7 @@ describe("passkeys helper", () => {
         it(`should return ${expectedShouldPromptToRegister} when passwordResetJourney=${isPasswordResetJourney}, withinForcedPasswordResetJourney=${withinForcedPasswordResetJourney} and isCommonPasswordResetJourney=${isCommonPasswordResetJourney}`, () => {
           process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
 
-          const req = {
+          const req = createMockRequest("", {
             session: {
               user: {
                 browserSupportsWebAuthn: true,
@@ -346,7 +347,8 @@ describe("passkeys helper", () => {
                 rpClientId: "valid-rp-client-id",
               },
             },
-          } as any as Request;
+          });
+
           const res = {
             locals: { supportPasskeyRegistration: true },
           } as any as Response;
@@ -380,7 +382,7 @@ describe("passkeys helper", () => {
         it(`should return ${expectedShouldPromptToRegister} when isMfaRequired=${isMfaRequired} and isUpliftRequired=${isUpliftRequired}`, () => {
           process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST = "valid-rp-client-id";
 
-          const req = {
+          const req = createMockRequest("", {
             session: {
               user: {
                 isMfaRequired: isMfaRequired,
@@ -399,7 +401,7 @@ describe("passkeys helper", () => {
                 rpClientId: "valid-rp-client-id",
               },
             },
-          } as any as Request;
+          });
           const res = {
             locals: { supportPasskeyRegistration: true },
           } as any as Response;
