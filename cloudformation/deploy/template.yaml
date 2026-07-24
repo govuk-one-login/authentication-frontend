@@ -146,6 +146,9 @@ Conditions:
           - !Ref Environment
           - production
 
+  UseProvisionedBilling:
+    Fn::Equals: [!Ref Environment, staging]
+
   SupportHTTPKeepAlive:
     Fn::Or:
       - Fn::And:
@@ -531,6 +534,10 @@ Mappings:
       frontendApiBaseUrl: https://z02rnzbqw8-vpce-07078f5f005fe5efc.execute-api.eu-west-2.amazonaws.com/staging/
       frontendAutoScalingMinCount: 12
       frontendAutoScalingMaxCount: 240
+      dynamoSessionReadCapacity: 200
+      dynamoSessionWriteCapacity: 200
+      dynamoSessionReadMaxCapacity: 4000
+      dynamoSessionWriteMaxCapacity: 4000
       frontendTaskDefinitionCpu: 1024
       frontendTaskDefinitionMemory: 2048
       cloudwatchLogRetentionInDays: 7
@@ -601,6 +608,10 @@ Mappings:
       frontendApiBaseUrl: https://86n9innl95-vpce-0db136878c87bf2d0.execute-api.eu-west-2.amazonaws.com/production/
       frontendAutoScalingMinCount: 12
       frontendAutoScalingMaxCount: 240
+      dynamoSessionReadCapacity: 200
+      dynamoSessionWriteCapacity: 200
+      dynamoSessionReadMaxCapacity: 4000
+      dynamoSessionWriteMaxCapacity: 4000
       frontendTaskDefinitionCpu: 1024
       frontendTaskDefinitionMemory: 2048
       cloudwatchLogRetentionInDays: 30
@@ -1790,7 +1801,12 @@ Resources:
       KeySchema:
         - AttributeName: id
           KeyType: HASH
-      BillingMode: PAY_PER_REQUEST
+      BillingMode: !If [UseProvisionedBilling, PROVISIONED, PAY_PER_REQUEST]
+      ProvisionedThroughput: !If
+        - UseProvisionedBilling
+        - ReadCapacityUnits: !FindInMap [EnvironmentConfiguration, !Ref Environment, dynamoSessionReadCapacity]
+          WriteCapacityUnits: !FindInMap [EnvironmentConfiguration, !Ref Environment, dynamoSessionWriteCapacity]
+        - !Ref AWS::NoValue
       DeletionProtectionEnabled: true
       SSESpecification:
         SSEEnabled: true
@@ -1806,6 +1822,74 @@ Resources:
           Value: !Ref Environment
         - Key: Application
           Value: "auth-frontend"
+
+  #
+  # DynamoDB session table auto-scaling
+  #
+
+  SessionTableReadScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Condition: UseProvisionedBilling
+    Properties:
+      MinCapacity: !FindInMap [EnvironmentConfiguration, !Ref Environment, dynamoSessionReadCapacity]
+      MaxCapacity: !FindInMap [EnvironmentConfiguration, !Ref Environment, dynamoSessionReadMaxCapacity]
+      ResourceId: !Sub
+        - "table/${TableName}"
+        - TableName: !Ref FrontendSessionsTable
+      RoleARN: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+      ScalableDimension: dynamodb:table:ReadCapacityUnits
+      ServiceNamespace: dynamodb
+
+  SessionTableWriteScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Condition: UseProvisionedBilling
+    Properties:
+      MinCapacity: !FindInMap [EnvironmentConfiguration, !Ref Environment, dynamoSessionWriteCapacity]
+      MaxCapacity: !FindInMap [EnvironmentConfiguration, !Ref Environment, dynamoSessionWriteMaxCapacity]
+      ResourceId: !Sub
+        - "table/${TableName}"
+        - TableName: !Ref FrontendSessionsTable
+      RoleARN: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+      ScalableDimension: dynamodb:table:WriteCapacityUnits
+      ServiceNamespace: dynamodb
+
+  SessionTableReadScalingPolicy:
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Condition: UseProvisionedBilling
+    DependsOn: SessionTableReadScalingTarget
+    Properties:
+      PolicyName: !Sub "${AWS::StackName}-SessionTableReadScalingPolicy"
+      PolicyType: TargetTrackingScaling
+      ResourceId: !Sub
+        - "table/${TableName}"
+        - TableName: !Ref FrontendSessionsTable
+      ScalableDimension: dynamodb:table:ReadCapacityUnits
+      ServiceNamespace: dynamodb
+      TargetTrackingScalingPolicyConfiguration:
+        TargetValue: 70
+        PredefinedMetricSpecification:
+          PredefinedMetricType: DynamoDBReadCapacityUtilization
+        ScaleInCooldown: 300
+        ScaleOutCooldown: 30
+
+  SessionTableWriteScalingPolicy:
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Condition: UseProvisionedBilling
+    DependsOn: SessionTableWriteScalingTarget
+    Properties:
+      PolicyName: !Sub "${AWS::StackName}-SessionTableWriteScalingPolicy"
+      PolicyType: TargetTrackingScaling
+      ResourceId: !Sub
+        - "table/${TableName}"
+        - TableName: !Ref FrontendSessionsTable
+      ScalableDimension: dynamodb:table:WriteCapacityUnits
+      ServiceNamespace: dynamodb
+      TargetTrackingScalingPolicyConfiguration:
+        TargetValue: 70
+        PredefinedMetricSpecification:
+          PredefinedMetricType: DynamoDBWriteCapacityUtilization
+        ScaleInCooldown: 300
+        ScaleOutCooldown: 30
 
   #
   # Anomaly detection
