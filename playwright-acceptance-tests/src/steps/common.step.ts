@@ -2,6 +2,7 @@ import { Given, When } from "@cucumber/cucumber";
 import type { PlaywrightWorld } from "../support/world";
 import { BasePage } from "../pages/BasePage";
 import { requirePage } from "../support/utils";
+import { TermsAndConditionsPage } from "../pages/TermsAndConditionsPage";
 
 When(
   "the user clicks the Back link",
@@ -25,5 +26,23 @@ Given(
     await requirePage(this)
       .locator("#browserSupportsWebAuthn")
       .evaluate((el: HTMLInputElement) => (el.value = "true"));
+  }
+);
+
+Given(
+  "the user has not yet accepted the latest terms and conditions",
+  async function () {
+    const stubUrl = process.env.API_STUB_URL || "http://api-stub:8080";
+    await fetch(`${stubUrl}/test/state/terms-and-conditions-not-accepted`, {
+      method: "PUT",
+    });
+  }
+);
+
+When(
+  "the user agrees to the updated terms and conditions",
+  async function (this: PlaywrightWorld): Promise<void> {
+    const page = new TermsAndConditionsPage(requirePage(this));
+    await page.agreeAndClickContinue();
   }
 );
