@@ -14,6 +14,7 @@ export interface State {
   userMfaMethodType: MfaMethodType;
   registered: Record<string, boolean>;
   accountInterventions: Record<string, boolean>;
+  latestTermsAndConditionsAccepted: boolean;
 }
 
 export const state: State = createFreshState();
@@ -37,6 +38,7 @@ function createFreshState(): State {
       reproveIdentity: false,
       resetPassword: false,
     },
+    latestTermsAndConditionsAccepted: true,
   };
 }
 

@@ -15,35 +15,6 @@ const AUTH_APP_EMAILS: readonly string[] = [
   TEST_EMAIL.NEW_USER,
 ];
 
-const LOGIN_SMS = {
-  redactedPhoneNumber: "****7890",
-  mfaMethodType: MfaMethodType.SMS,
-  latestTermsAndConditionsAccepted: true,
-  mfaMethodVerified: true,
-  passwordChangeRequired: false,
-  mfaMethods: [
-    {
-      id: "stub-mfa-method-id",
-      type: MfaMethodType.SMS,
-      priority: "DEFAULT",
-      redactedPhoneNumber: "****7890",
-    },
-  ],
-};
-const LOGIN_AUTH_APP = {
-  redactedPhoneNumber: "****7890",
-  mfaMethodType: MfaMethodType.AUTH_APP,
-  latestTermsAndConditionsAccepted: true,
-  mfaMethodVerified: true,
-  passwordChangeRequired: false,
-  mfaMethods: [
-    {
-      id: "stub-mfa-method-id",
-      type: MfaMethodType.AUTH_APP,
-      priority: "DEFAULT",
-    },
-  ],
-};
 interface LoginRequest {
   email?: string;
   password: string;
@@ -97,9 +68,21 @@ export function loginHandler(req: Request, res: Response): void {
     state.authenticatedCredentialStrength = CredentialStrength.PASSWORD_ONLY;
   }
 
-  if (isAuthAppUser) {
-    res.json(LOGIN_AUTH_APP);
-    return;
-  }
-  res.json(LOGIN_SMS);
+  res.json(getLoginResponseForUser(isAuthAppUser));
 }
+
+const getLoginResponseForUser = (isAuthAppUser: boolean) => ({
+  redactedPhoneNumber: "****7890",
+  mfaMethodType: isAuthAppUser ? MfaMethodType.AUTH_APP : MfaMethodType.SMS,
+  latestTermsAndConditionsAccepted: state.latestTermsAndConditionsAccepted,
+  mfaMethodVerified: true,
+  passwordChangeRequired: false,
+  mfaMethods: [
+    {
+      id: "stub-mfa-method-id",
+      type: isAuthAppUser ? MfaMethodType.AUTH_APP : MfaMethodType.SMS,
+      priority: "DEFAULT",
+      redactedPhoneNumber: !isAuthAppUser && "****7890",
+    },
+  ],
+});

@@ -38,8 +38,9 @@ const ERROR_CONFIG_MAP = new Map<string, ErrorConfiguration>([
     AMC_ERROR_DESCRIPTION.ACCOUNT_HAS_INTERVENTIONS,
     {
       errorEvent: USER_JOURNEY_EVENTS.AMC_RETURNED_ACCOUNT_INTERVENTIONS,
-      updateSession: async () => {
-        return;
+      updateSession: async (req: Request) => {
+        req.session.user.accountInterventionAppliedDuringPasskeyRegistration = true;
+        await saveSessionState(req);
       },
     },
   ],

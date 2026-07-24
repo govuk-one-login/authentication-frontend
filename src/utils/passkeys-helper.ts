@@ -22,6 +22,7 @@ export function shouldPromptToRegisterPasskey(
   if (!userHasLoggedInWithPasswordAnd2Fa(req)) return false;
   if (!res.locals.supportPasskeyRegistration) return false;
   if (!user.isInPasskeyPhasedRollout) return false;
+  if (user.accountInterventionAppliedDuringPasskeyRegistration) return false;
 
   return true;
 }
