@@ -1,11 +1,11 @@
 {
-  "$schema": "https://raw.githubusercontent.com/govuk-one-login/quality-gates/refs/tags/v0.13.0/schemas/schema.json",
+  "$schema": "https://raw.githubusercontent.com/govuk-one-login/quality-gates/refs/tags/v0.14.0/schemas/schema.json",
   "services": [
     {
       "product": "Authentication",
       "component": "authentication-frontend",
       "promotionType": "securePipelines",
-      "checks": [
+      "automated": [
         {
           "checkTypes": [
             "code style and linting"
