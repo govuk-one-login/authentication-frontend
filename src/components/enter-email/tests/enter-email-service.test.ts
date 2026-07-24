@@ -49,7 +49,7 @@ describe("enter email service", () => {
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.USER_EXISTS,
       expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
-      expectedBody: { email },
+      expectedBody: { email, supportPasskeyUsage: false },
     };
 
     const result = await service.userExists(
