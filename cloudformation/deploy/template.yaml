@@ -517,14 +517,14 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.build.account.gov.uk"
       UseRebrand: "Yes"
       SupportPasskeyUsage: "No"
-      SupportPasskeyRegistration: "No"
-      SupportNewInternationalSms: "No"
+      SupportPasskeyRegistration: "Yes"
+      SupportNewInternationalSms: "Yes"
       EnablePasskeyContactForm: "No"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: "Ykg9fGyY76On4e8tPvFabK5BIl65EkGH"
       PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
-      PasskeyRolloutPercentage: 0
+      PasskeyRolloutPercentage: 100
     staging:
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
       DeployServiceDownPage: "Yes"
@@ -640,8 +640,7 @@ Mappings:
     build:
       tags: >-
         @UI and not (@under-development or @ReauthMultiTabLogout or
-        @AcceptInternationalNumbers or @InternationalSmsSendingDisabled
-        or @PasskeysEnabled or @PasskeyUsageEnabled)
+        @AcceptInternationalNumbers or @InternationalSmsSendingDisabled)
     staging:
       tags: >-
         @UI and not (@under-development or @AccountInterventions or @new-mfa-reset-with-ipv or
