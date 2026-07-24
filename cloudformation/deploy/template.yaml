@@ -587,14 +587,14 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.integration.account.gov.uk"
       PrivacyNoticeRedirectEnabled: "Yes"
       UseRebrand: "Yes"
-      SupportPasskeyUsage: "No"
-      SupportPasskeyRegistration: "No"
+      SupportPasskeyUsage: "Yes"
+      SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "No"
       PasskeyPromptClientAllowList: ""
       PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
-      PasskeyRolloutPercentage: 0
+      PasskeyRolloutPercentage: 100
     production:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceProductionVariables
@@ -621,15 +621,15 @@ Mappings:
       OrchApiBaseUrl: "https://oidc.account.gov.uk"
       PrivacyNoticeRedirectEnabled: "Yes"
       UseRebrand: "Yes"
-      SupportPasskeyUsage: "No"
-      SupportPasskeyRegistration: "No"
+      SupportPasskeyUsage: "Yes"
+      SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "No"
       SupportSingleFactorAccountDeletion: "No"
       PasskeyPromptClientAllowList: ""
       PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
-      PasskeyRolloutPercentage: 0
+      PasskeyRolloutPercentage: 0.5
 
   # /acceptance-tests/{env}}/CUCUMBER_FILTER_TAGS
   AcceptanceTestTags:
