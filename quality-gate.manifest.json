@@ -39,29 +39,65 @@
           "provider": "GitHub",
           "config": {
             "file": ".github/workflows/pre-merge-checks.yml",
-            "path": "$.jobs.run-tests"
+            "path": "$.jobs.run-tests.steps[?@.name=='Run integration tests']"
+          },
+          "checks": [
+            {
+              "name": "integration"
+            },
+            {
+              "name": "new feature"
+            },
+            {
+              "name": "regression"
+            }
+          ]
+        },
+        {
+          "phase": "pre-merge",
+          "provider": "GitHub",
+          "config": {
+            "file": ".github/workflows/pre-merge-checks.yml",
+            "path": "$.jobs.run-tests.steps[?@.name=='Run lint']"
+          },
+          "checks": [
+            {
+              "name": "code style and linting"
+            }
+          ]
+        },
+        {
+          "phase": "pre-merge",
+          "provider": "GitHub",
+          "config": {
+            "file": ".github/workflows/pre-merge-checks.yml",
+            "path": "$.jobs.run-tests.steps[?@.name=='SonarCloud Scan']"
+          },
+          "checks": [
+            {
+              "name": "code quality"
+            }
+          ]
+        },
+        {
+          "phase": "pre-merge",
+          "provider": "GitHub",
+          "config": {
+            "file": ".github/workflows/pre-merge-checks.yml",
+            "path": "$.jobs.run-tests.steps[?@.name=='Run unit tests']"
           },
           "checks": [
             {
               "name": "unit"
             },
             {
+              "name": "unit test coverage"
+            },
+            {
               "name": "new feature"
             },
             {
-              "name": "integration"
-            },
-            {
               "name": "regression"
-            },
-            {
-              "name": "code style and linting"
-            },
-            {
-              "name": "code quality"
-            },
-            {
-              "name": "unit test coverage"
             }
           ]
         },
