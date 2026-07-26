@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/govuk-one-login/quality-gates/refs/tags/v0.16.0/schemas/schema.json",
+  "$schema": "https://raw.githubusercontent.com/govuk-one-login/quality-gates/refs/tags/v0.17.0/schemas/schema.json",
   "services": [
     {
       "product": "Authentication",
@@ -9,36 +9,28 @@
         {
           "phase": "pre-merge",
           "provider": "GitHub",
-          "config": {
-            "file": ".github/workflows/pre-commit.yml",
-            "path": "$.jobs.pre-commit"
-          },
           "checks": [
             {
               "name": "code style and linting"
             }
-          ]
+          ],
+          "file": ".github/workflows/pre-commit.yml",
+          "path": "$.jobs.pre-commit"
         },
         {
           "phase": "pre-merge",
           "provider": "GitHub",
-          "config": {
-            "file": ".github/workflows/dependency-review.yml",
-            "path": "$.jobs.dependency-review"
-          },
           "checks": [
             {
               "name": "vulnerability detection"
             }
-          ]
+          ],
+          "file": ".github/workflows/dependency-review.yml",
+          "path": "$.jobs.dependency-review"
         },
         {
           "phase": "pre-merge",
           "provider": "GitHub",
-          "config": {
-            "file": ".github/workflows/pre-merge-checks.yml",
-            "path": "$.jobs.run-tests.steps[?@.name=='Run integration tests']"
-          },
           "checks": [
             {
               "name": "integration",
@@ -47,41 +39,35 @@
                 "regression"
               ]
             }
-          ]
+          ],
+          "file": ".github/workflows/pre-merge-checks.yml",
+          "path": "$.jobs.run-tests.steps[?@.name=='Run integration tests']"
         },
         {
           "phase": "pre-merge",
           "provider": "GitHub",
-          "config": {
-            "file": ".github/workflows/pre-merge-checks.yml",
-            "path": "$.jobs.run-tests.steps[?@.name=='Run lint']"
-          },
           "checks": [
             {
               "name": "code style and linting"
             }
-          ]
+          ],
+          "file": ".github/workflows/pre-merge-checks.yml",
+          "path": "$.jobs.run-tests.steps[?@.name=='Run lint']"
         },
         {
           "phase": "pre-merge",
           "provider": "GitHub",
-          "config": {
-            "file": ".github/workflows/pre-merge-checks.yml",
-            "path": "$.jobs.run-tests.steps[?@.name=='SonarCloud Scan']"
-          },
           "checks": [
             {
               "name": "code quality"
             }
-          ]
+          ],
+          "file": ".github/workflows/pre-merge-checks.yml",
+          "path": "$.jobs.run-tests.steps[?@.name=='SonarCloud Scan']"
         },
         {
           "phase": "pre-merge",
           "provider": "GitHub",
-          "config": {
-            "file": ".github/workflows/pre-merge-checks.yml",
-            "path": "$.jobs.run-tests.steps[?@.name=='Run unit tests']"
-          },
           "checks": [
             {
               "name": "unit",
@@ -93,28 +79,24 @@
             {
               "name": "unit test coverage"
             }
-          ]
+          ],
+          "file": ".github/workflows/pre-merge-checks.yml",
+          "path": "$.jobs.run-tests.steps[?@.name=='Run unit tests']"
         },
         {
           "phase": "pre-merge",
           "provider": "GitHub",
-          "config": {
-            "file": ".github/workflows/pre-merge-checks.yml",
-            "path": "$.jobs.snapshot-tests"
-          },
           "checks": [
             {
               "name": "visual regression"
             }
-          ]
+          ],
+          "file": ".github/workflows/pre-merge-checks.yml",
+          "path": "$.jobs.snapshot-tests"
         },
         {
           "phase": "pre-merge",
           "provider": "GitHub",
-          "config": {
-            "file": ".github/workflows/checkov.yml",
-            "path": "$.jobs.scan"
-          },
           "checks": [
             {
               "name": "code style and linting"
@@ -122,28 +104,24 @@
             {
               "name": "code quality"
             }
-          ]
+          ],
+          "file": ".github/workflows/checkov.yml",
+          "path": "$.jobs.scan"
         },
         {
           "phase": "pre-merge",
           "provider": "GitHub",
-          "config": {
-            "file": ".github/workflows/dependabot-validate.yml",
-            "path": "$.jobs.validate"
-          },
           "checks": [
             {
               "name": "code style and linting"
             }
-          ]
+          ],
+          "file": ".github/workflows/dependabot-validate.yml",
+          "path": "$.jobs.validate"
         },
         {
           "phase": "pre-merge",
           "provider": "GitHub",
-          "config": {
-            "file": ".github/workflows/pre-merge-checks-shellscript.yaml",
-            "path": "$.jobs.shellcheck"
-          },
           "checks": [
             {
               "name": "code style and linting"
@@ -151,15 +129,13 @@
             {
               "name": "code quality"
             }
-          ]
+          ],
+          "file": ".github/workflows/pre-merge-checks-shellscript.yaml",
+          "path": "$.jobs.shellcheck"
         },
         {
           "phase": "pre-merge",
           "provider": "GitHub",
-          "config": {
-            "file": ".github/workflows/require-pinned-github-actions.yml",
-            "path": "$.jobs.check-actions-sha"
-          },
           "checks": [
             {
               "name": "code style and linting"
@@ -167,7 +143,9 @@
             {
               "name": "code quality"
             }
-          ]
+          ],
+          "file": ".github/workflows/require-pinned-github-actions.yml",
+          "path": "$.jobs.check-actions-sha"
         }
       ]
     }
