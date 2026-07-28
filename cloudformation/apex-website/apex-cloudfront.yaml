@@ -103,19 +103,19 @@ Mappings:
       ApexRedirectUrl: "https://home.staging.account.gov.uk"
       ApexSupportUrl: "https://signin.staging.account.gov.uk/contact-us?supportType=PUBLIC"
       ServiceDomain: "staging.account.gov.uk"
-      ArtifactSourceBucket: "placeholder"
+      ArtifactSourceBucket: apex-website-pipeline-artifactpromotionbucket-yoclsl9zky6o
 
     integration:
       ApexRedirectUrl: "https://home.integration.account.gov.uk"
       ApexSupportUrl: "https://signin.integration.account.gov.uk/contact-us?supportType=PUBLIC"
       ServiceDomain: "integration.account.gov.uk"
-      ArtifactSourceBucket: "placeholder"
+      ArtifactSourceBucket: apex-website-pipeline-artifactpromotionbucket-orreke0nzyfk
 
     production:
       ApexRedirectUrl: "https://home.account.gov.uk"
       ApexSupportUrl: "https://signin.account.gov.uk/contact-us?supportType=PUBLIC"
       ServiceDomain: "account.gov.uk"
-      ArtifactSourceBucket: "placeholder"
+      ArtifactSourceBucket: apex-website-pipeline-artifactpromotionbucket-orreke0nzyfk
 
 Resources:
   LambdaBasicExecutionPolicy:
