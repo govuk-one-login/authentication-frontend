@@ -17,7 +17,7 @@ export default {
      * - res.locals.foo.bar = ""
      */
 
-    const filename = context.getFilename();
+    const filename = context.filename;
     if (filename.endsWith("middleware.ts") || filename.endsWith("test.ts")) {
       return {};
     }
