@@ -26,15 +26,15 @@
     "yaml": "2.8.3"
   },
   "devDependencies": {
-    "@eslint/js": "9.28.0",
+    "@eslint/js": "10.0.1",
     "@types/express": "5.0.3",
     "esbuild": "0.28.1",
-    "eslint": "9.28.0",
-    "eslint-config-prettier": "10.1.5",
+    "eslint": "10.7.0",
+    "eslint-config-prettier": "10.1.8",
     "globals": "16.2.0",
     "prettier": "3.5.3",
     "tsx": "4.19.4",
-    "typescript-eslint": "8.34.0"
+    "typescript-eslint": "8.65.0"
   },
   "overrides": {
     "lodash-es": "4.18.1",
