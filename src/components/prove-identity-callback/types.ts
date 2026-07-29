@@ -18,8 +18,7 @@ export interface ProveIdentityCallbackServiceInterface {
 }
 
 export type ProcessIdentityResponse =
-  | ProcessIdentitySPOTResponse
-  | ProcessIdentityInterventionResponse;
+  ProcessIdentitySPOTResponse | ProcessIdentityInterventionResponse;
 
 interface ProcessIdentitySPOTResponse extends DefaultApiResponse {
   status:

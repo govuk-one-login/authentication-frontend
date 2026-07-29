@@ -21,8 +21,7 @@ export enum REVERIFICATION_ERROR_CODE {
 }
 
 export type ReverificationResultResponse =
-  | ReverificationResultFailedResponse
-  | ReverificationResultSuccessResponse;
+  ReverificationResultFailedResponse | ReverificationResultSuccessResponse;
 
 export function isReverificationResultFailedResponse(
   response: ReverificationResultResponse
