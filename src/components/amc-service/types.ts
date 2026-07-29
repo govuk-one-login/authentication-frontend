@@ -30,5 +30,4 @@ export interface AMCResultInterface<T> {
 }
 
 export type AMCServiceResult<T> =
-  | { success: true; data: T }
-  | { success: false; data: DefaultApiResponse };
+  { success: true; data: T } | { success: false; data: DefaultApiResponse };
