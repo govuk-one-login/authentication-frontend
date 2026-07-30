@@ -51,6 +51,7 @@ Conditions:
           - Fn::Equals: [!Ref SubEnvironment, none]
 
   UseApexStaticPage: !Equals [!Ref DeployApexStaticPage, "true"]
+  EnableAlias: !Equals [!Ref Environment, dev]
 
 Globals:
   Function:
@@ -476,11 +477,21 @@ Resources:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
-        # Aliases:
-        #   - !If
-        #     - UseSubEnvironment
-        #     - !FindInMap [EnvironmentConfiguration, !Ref SubEnvironment, ServiceDomain]
-        #     - !FindInMap [EnvironmentConfiguration, !Ref Environment, ServiceDomain]
+        Aliases: !If
+          - EnableAlias
+          - - !If
+              - UseSubEnvironment
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  ServiceDomain,
+                ]
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  ServiceDomain,
+                ]
+          - !Ref AWS::NoValue
         Enabled: true
         IPV6Enabled: true
         DefaultRootObject: index.html
@@ -565,10 +576,15 @@ Resources:
         Restrictions:
           GeoRestriction:
             RestrictionType: none
-        # ViewerCertificate:
-        #   AcmCertificateArn: !Ref ApexCertificateArn
-        #   SslSupportMethod: sni-only
-        #   MinimumProtocolVersion: TLSv1.2_2019
+        ViewerCertificate: !If
+          - EnableAlias
+          - AcmCertificateArn: !Sub
+              - "{{resolve:ssm:/deploy/${Env}/apex_certificate_arn}}"
+              - Env:
+                  !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+            SslSupportMethod: sni-only
+            MinimumProtocolVersion: TLSv1.2_2019
+          - !Ref AWS::NoValue
       Tags:
         - Key: Service
           Value: apex-website
