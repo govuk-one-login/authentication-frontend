@@ -84,6 +84,7 @@ describe("create passkey controller", () => {
         log: {
           debug: sinon.spy(),
           info: sinon.spy(),
+          warn: sinon.spy(),
           error: sinon.spy(),
         },
       } as unknown as Request;
@@ -167,6 +168,28 @@ describe("create passkey controller", () => {
         "persistent-session-123",
         req
       );
+    });
+
+    it("should not throw error if the call to the update profile service fails", async () => {
+      const req = createRequestWithPasskeyOption("skip");
+
+      const updateProfileReturnsSuccess = false;
+      const updateProfileService = fakeUpdateProfileService(
+        updateProfileReturnsSuccess
+      );
+
+      await createPasskeyPost(
+        fakeAmcAuthorizeService(true, AMC_COOKIE),
+        updateProfileService
+      )(req, res);
+
+      expect(updateProfileService.updateProfile).to.have.been.calledOnce;
+
+      expect(req.log.warn).to.have.been.calledOnce;
+
+      expect(req.session.user.hasSkippedPasskeyRegistration).to.be.true;
+      expect(req.session.save).to.have.been.called;
+      expect(res.redirect).to.have.been.called;
     });
 
     it("should not set hasSkippedPasskeyRegistration or call update profile when submit button is clicked", async () => {

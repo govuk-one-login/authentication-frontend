@@ -46,7 +46,7 @@ async function handleSkipCreatePasskey(
 
   const { email } = req.session.user;
   const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-  await updateProfileService.updateProfile(
+  const updateProfileResult = await updateProfileService.updateProfile(
     sessionId,
     clientSessionId,
     email,
@@ -57,6 +57,12 @@ async function handleSkipCreatePasskey(
     persistentSessionId,
     req
   );
+
+  if (!updateProfileResult.success) {
+    req.log.warn(
+      "Did not successfully manage to update profile with skip event, passkey registration prompt may not be suppressed"
+    );
+  }
 
   const userJourneyEvent = USER_JOURNEY_EVENTS.SKIP_CREATE_PASSKEY;
   return res.redirect(
