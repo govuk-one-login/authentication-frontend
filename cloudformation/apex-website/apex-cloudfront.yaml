@@ -579,7 +579,7 @@ Resources:
         ViewerCertificate: !If
           - EnableAlias
           - AcmCertificateArn: !Sub
-              - "{{resolve:ssm:/deploy/${Env}/apex_certificate_arn}}"
+              - "{{resolve:ssm:/deploy/${Env}/apex-certificate-arn}}"
               - Env:
                   !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
             SslSupportMethod: sni-only
