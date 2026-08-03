@@ -18,6 +18,5 @@ export interface RequestType {
 }
 
 export enum UpdateType {
-  CAPTURE_CONSENT = "CAPTURE_CONSENT",
   UPDATE_TERMS_CONDS = "UPDATE_TERMS_CONDS",
 }

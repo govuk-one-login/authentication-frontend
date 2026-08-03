@@ -48,7 +48,7 @@ describe("update profile service", () => {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
     const profileInformation = true;
-    const updateProfileType = UpdateType.CAPTURE_CONSENT;
+    const updateProfileType = UpdateType.UPDATE_TERMS_CONDS;
 
     const result = await service.updateProfile(
       sessionId,
