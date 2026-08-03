@@ -8,6 +8,9 @@ import { amcAuthorizeService } from "../amc-service/amc-authorize-service.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import { BadRequestError } from "../../utils/error.js";
 import { getAccountDomain } from "../../config.js";
+import type { UpdateProfileServiceInterface } from "../common/update-profile/types.js";
+import { UpdateType } from "../common/update-profile/types.js";
+import { updateProfileService } from "../common/update-profile/update-profile-service.js";
 
 const TEMPLATE_NAME = "create-passkey/index.njk";
 
@@ -16,13 +19,14 @@ export function createPasskeyGet(req: Request, res: Response): void {
 }
 
 export function createPasskeyPost(
-  service: AmcAuthorizeInterface = amcAuthorizeService()
+  service: AmcAuthorizeInterface = amcAuthorizeService(),
+  updateSkipProfileService: UpdateProfileServiceInterface = updateProfileService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response): Promise<void> {
     if (req.body.createPasskeyOption === "submit") {
       return await handleCreatePasskey(service, req, res);
     } else if (req.body.createPasskeyOption === "skip") {
-      return await handleSkipCreatePasskey(req, res);
+      return await handleSkipCreatePasskey(req, res, updateSkipProfileService);
     } else {
       throw new Error(
         `Invalid createPasskeyOption: ${req.body.createPasskeyOption}`
@@ -31,10 +35,29 @@ export function createPasskeyPost(
   };
 }
 
-async function handleSkipCreatePasskey(req: Request, res: Response) {
+async function handleSkipCreatePasskey(
+  req: Request,
+  res: Response,
+  updateProfileService: UpdateProfileServiceInterface
+) {
   req.log.info("User has skipped passkey registration");
   req.session.user.hasSkippedPasskeyRegistration = true;
   await saveSessionState(req);
+
+  const { email } = req.session.user;
+  const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+  await updateProfileService.updateProfile(
+    sessionId,
+    clientSessionId,
+    email,
+    {
+      updateProfileType: UpdateType.SKIP_ADDING_PASSKEY,
+      profileInformation: true,
+    },
+    persistentSessionId,
+    req
+  );
+
   const userJourneyEvent = USER_JOURNEY_EVENTS.SKIP_CREATE_PASSKEY;
   return res.redirect(
     await getNextPathAndUpdateJourney(req, res, userJourneyEvent)

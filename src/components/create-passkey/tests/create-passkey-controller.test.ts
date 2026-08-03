@@ -13,6 +13,10 @@ import type { AmcAuthorizeInterface } from "../../amc-service/types.js";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { strict as assert } from "assert";
 import { BadRequestError } from "../../../utils/error.js";
+import {
+  UpdateType,
+  type UpdateProfileServiceInterface,
+} from "../../common/update-profile/types.js";
 
 describe("create passkey controller", () => {
   let res: ResponseOutput;
@@ -40,6 +44,16 @@ describe("create passkey controller", () => {
         data,
       }),
     } as unknown as AmcAuthorizeInterface;
+  };
+
+  const fakeUpdateProfileService = (
+    returnSuccess: boolean
+  ): UpdateProfileServiceInterface => {
+    return {
+      updateProfile: sinon.fake.returns({
+        success: returnSuccess,
+      }),
+    } as unknown as UpdateProfileServiceInterface;
   };
 
   beforeEach(() => {
@@ -114,24 +128,58 @@ describe("create passkey controller", () => {
     it("should set hasSkippedPasskeyRegistration when skip button is clicked", async () => {
       const req = createRequestWithPasskeyOption("skip");
 
-      await createPasskeyPost(fakeAmcAuthorizeService(true, AMC_COOKIE))(
-        req,
-        res
-      );
+      const updateProfileService = fakeUpdateProfileService(true);
+      await createPasskeyPost(
+        fakeAmcAuthorizeService(true, AMC_COOKIE),
+        updateProfileService
+      )(req, res);
 
       expect(req.session.user.hasSkippedPasskeyRegistration).to.be.true;
       expect(req.session.save).to.have.been.called;
     });
 
-    it("should not set hasSkippedPasskeyRegistration when submit button is clicked", async () => {
-      const req = createRequestWithPasskeyOption("submit");
+    it("should call update profile with skip action when skip button is clicked", async () => {
+      const req = createRequestWithPasskeyOption("skip");
+      req.session.user.email = "test@example.com";
+      res.locals.sessionId = "session-123";
+      res.locals.clientSessionId = "client-session-123";
+      res.locals.persistentSessionId = "persistent-session-123";
 
-      await createPasskeyPost(fakeAmcAuthorizeService(true, AMC_COOKIE))(
-        req,
-        res
+      const updateProfileReturnsSuccess = true;
+      const updateProfileService = fakeUpdateProfileService(
+        updateProfileReturnsSuccess
       );
 
+      await createPasskeyPost(
+        fakeAmcAuthorizeService(true, AMC_COOKIE),
+        updateProfileService
+      )(req, res);
+
+      expect(updateProfileService.updateProfile).to.have.been.calledOnce;
+      expect(updateProfileService.updateProfile).to.have.been.calledWith(
+        "session-123",
+        "client-session-123",
+        "test@example.com",
+        {
+          updateProfileType: UpdateType.SKIP_ADDING_PASSKEY,
+          profileInformation: true,
+        },
+        "persistent-session-123",
+        req
+      );
+    });
+
+    it("should not set hasSkippedPasskeyRegistration or call update profile when submit button is clicked", async () => {
+      const req = createRequestWithPasskeyOption("submit");
+      const updateProfileService = fakeUpdateProfileService(true);
+
+      await createPasskeyPost(
+        fakeAmcAuthorizeService(true, AMC_COOKIE),
+        updateProfileService
+      )(req, res);
+
       expect(req.session.user.hasSkippedPasskeyRegistration).to.be.undefined;
+      expect(updateProfileService.updateProfile).not.to.have.been.called;
     });
   });
 });

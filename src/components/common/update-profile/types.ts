@@ -19,4 +19,5 @@ export interface RequestType {
 
 export enum UpdateType {
   UPDATE_TERMS_CONDS = "UPDATE_TERMS_CONDS",
+  SKIP_ADDING_PASSKEY = "SKIP_ADDING_PASSKEY",
 }

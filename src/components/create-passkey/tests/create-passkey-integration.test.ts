@@ -5,6 +5,7 @@ import request from "supertest";
 import {
   AMC_JOURNEY_TYPES,
   API_ENDPOINTS,
+  HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
@@ -13,10 +14,15 @@ import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper
 import esmock from "esmock";
 import type { UserSession } from "../../../types.js";
 import nock from "nock";
+import {
+  noInterventions,
+  setupAccountInterventionsResponse,
+} from "../../../../test/helpers/account-interventions-helpers";
 
 describe("Integration:: create passkey", () => {
   let token: string | string[];
   let cookies: string;
+  let baseApi: string;
   let app: any;
   let sessionUserOverrides: Partial<UserSession> = {};
   let capturedUserSession: UserSession;
@@ -34,8 +40,11 @@ describe("Integration:: create passkey", () => {
             next: NextFunction
           ): void {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+            res.locals.clientSessionId = "tDy103saszhcxbQq0-mjdzU33d";
+            res.locals.persistentSessionId = "dips-123456-abc";
 
             req.session.user = {
+              email: "test@test.com",
               journey: getPermittedJourneyForPath(PATH_NAMES.CREATE_PASSKEY),
               ...sessionUserOverrides,
             };
@@ -49,6 +58,7 @@ describe("Integration:: create passkey", () => {
     );
 
     app = await createApp();
+    baseApi = process.env.FRONTEND_API_BASE_URL;
 
     ({ token, cookies } = extractCsrfTokenAndCookies(
       await request(app).get(PATH_NAMES.CREATE_PASSKEY)
@@ -153,6 +163,11 @@ describe("Integration:: create passkey", () => {
 
         const buttonName = skipButton.attr("name");
         const buttonValue = skipButton.attr("value");
+
+        nock(baseApi)
+          .post(API_ENDPOINTS.UPDATE_PROFILE)
+          .once()
+          .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
         await request(app)
           .post(PATH_NAMES.CREATE_PASSKEY)
