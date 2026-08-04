@@ -7,44 +7,11 @@ import {
   AMC_ERROR_DESCRIPTION,
   AMC_SCOPE,
   type CreatePasskeyResultSuccessResponse,
-  type ErrorConfiguration,
 } from "./types.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { saveSessionState } from "../common/constants.js";
 import type { AMCResultInterface } from "../amc-service/types.js";
-
-const ERROR_CONFIG_MAP = new Map<string, ErrorConfiguration>([
-  [
-    AMC_ERROR_DESCRIPTION.USER_BACKED_OUT_OF_JOURNEY,
-    {
-      errorEvent: USER_JOURNEY_EVENTS.AMC_RETURNED_CREATE_PASSKEY_BACK,
-      updateSession: async () => {
-        return;
-      },
-    },
-  ],
-  [
-    AMC_ERROR_DESCRIPTION.USER_ABORTED_JOURNEY,
-    {
-      errorEvent: USER_JOURNEY_EVENTS.AMC_RETURNED_CREATE_PASSKEY_SKIPPED,
-      updateSession: async (req: Request) => {
-        req.session.user.hasSkippedPasskeyRegistration = true;
-        await saveSessionState(req);
-      },
-    },
-  ],
-  [
-    AMC_ERROR_DESCRIPTION.ACCOUNT_HAS_INTERVENTIONS,
-    {
-      errorEvent: USER_JOURNEY_EVENTS.AMC_RETURNED_ACCOUNT_INTERVENTIONS,
-      updateSession: async (req: Request) => {
-        req.session.user.accountInterventionAppliedDuringPasskeyRegistration = true;
-        await saveSessionState(req);
-      },
-    },
-  ],
-]);
 
 function getErrorDescription(result: CreatePasskeyResultSuccessResponse) {
   const createPasskeyJourney = result.actions.find(
@@ -121,19 +88,40 @@ export function createPasskeyCallbackGet(
         `Passkey creation failed for session id ${sessionId} with error ${errorDescription}`
       );
 
-      const errorConfig = ERROR_CONFIG_MAP.get(errorDescription);
-      if (!errorConfig) {
-        throw new BadRequestError(
-          `Unexpected error description: ${errorDescription}`,
-          500
-        );
-      }
-
-      await errorConfig.updateSession(req);
+      await handleAmcError(errorDescription, req);
 
       res.redirect(
-        await getNextPathAndUpdateJourney(req, res, errorConfig.errorEvent)
+        await getNextPathAndUpdateJourney(req, res, getJourneyEventForError(errorDescription))
       );
     }
   };
+}
+
+function getJourneyEventForError(amcErrorDescription: AMC_ERROR_DESCRIPTION) {
+  switch (amcErrorDescription) {
+    case AMC_ERROR_DESCRIPTION.USER_ABORTED_JOURNEY:
+      return USER_JOURNEY_EVENTS.AMC_RETURNED_CREATE_PASSKEY_SKIPPED;
+    case AMC_ERROR_DESCRIPTION.ACCOUNT_HAS_INTERVENTIONS:
+      return USER_JOURNEY_EVENTS.AMC_RETURNED_ACCOUNT_INTERVENTIONS;
+    case AMC_ERROR_DESCRIPTION.USER_BACKED_OUT_OF_JOURNEY:
+      return USER_JOURNEY_EVENTS.AMC_RETURNED_CREATE_PASSKEY_BACK;
+  }
+}
+
+async function handleAmcError(amcErrorDescription: AMC_ERROR_DESCRIPTION, req: Request) {
+  switch (amcErrorDescription) {
+    case AMC_ERROR_DESCRIPTION.USER_ABORTED_JOURNEY:
+      req.session.user.hasSkippedPasskeyRegistration = true;
+      return await saveSessionState(req);
+    case AMC_ERROR_DESCRIPTION.ACCOUNT_HAS_INTERVENTIONS:
+      req.session.user.accountInterventionAppliedDuringPasskeyRegistration = true;
+      return await saveSessionState(req);
+    case AMC_ERROR_DESCRIPTION.USER_BACKED_OUT_OF_JOURNEY:
+      return;
+    default:
+      throw new BadRequestError(
+        `Unexpected error description: ${amcErrorDescription}`,
+        500
+      );
+  }
 }

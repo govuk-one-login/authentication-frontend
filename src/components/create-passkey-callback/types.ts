@@ -1,5 +1,3 @@
-import type { Request } from "express";
-
 export enum AMC_SCOPE {
   PASSKEY_CREATE = "passkey-create",
   ACCOUNT_DELETE = "account-delete",
@@ -33,9 +31,4 @@ export interface AMCActionErrorDetails {
     code: number;
     description: AMC_ERROR_DESCRIPTION;
   };
-}
-
-export interface ErrorConfiguration {
-  errorEvent: string;
-  updateSession: (req: Request) => Promise<void>;
 }
