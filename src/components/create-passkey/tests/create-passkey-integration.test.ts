@@ -5,6 +5,7 @@ import request from "supertest";
 import {
   AMC_JOURNEY_TYPES,
   API_ENDPOINTS,
+  HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants.js";
 import type { NextFunction, Request, Response } from "express";
@@ -13,16 +14,22 @@ import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper
 import esmock from "esmock";
 import type { UserSession } from "../../../types.js";
 import nock from "nock";
+import {
+  noInterventions,
+  setupAccountInterventionsResponse,
+} from "../../../../test/helpers/account-interventions-helpers.js";
 
 describe("Integration:: create passkey", () => {
   let token: string | string[];
   let cookies: string;
+  let baseApi: string;
   let app: any;
   let sessionUserOverrides: Partial<UserSession> = {};
   let capturedUserSession: UserSession;
 
   before(async () => {
     process.env.SUPPORT_PASSKEY_REGISTRATION = "1";
+    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     const { createApp } = await esmock(
       "../../../app.js",
       {},
@@ -34,8 +41,11 @@ describe("Integration:: create passkey", () => {
             next: NextFunction
           ): void {
             res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
+            res.locals.clientSessionId = "tDy103saszhcxbQq0-mjdzU33d";
+            res.locals.persistentSessionId = "dips-123456-abc";
 
             req.session.user = {
+              email: "test@test.com",
               journey: getPermittedJourneyForPath(PATH_NAMES.CREATE_PASSKEY),
               ...sessionUserOverrides,
             };
@@ -49,6 +59,8 @@ describe("Integration:: create passkey", () => {
     );
 
     app = await createApp();
+    baseApi = process.env.FRONTEND_API_BASE_URL;
+    setupAccountInterventionsResponse(baseApi, noInterventions);
 
     ({ token, cookies } = extractCsrfTokenAndCookies(
       await request(app).get(PATH_NAMES.CREATE_PASSKEY)
@@ -66,10 +78,12 @@ describe("Integration:: create passkey", () => {
   });
 
   it("should return create passkey page", async () => {
+    setupAccountInterventionsResponse(baseApi, noInterventions);
     await request(app).get(PATH_NAMES.CREATE_PASSKEY).expect(200);
   });
 
   it("should return error when csrf not present", async () => {
+    setupAccountInterventionsResponse(baseApi, noInterventions);
     await request(app)
       .post(PATH_NAMES.CREATE_PASSKEY)
       .type("form")
@@ -80,6 +94,7 @@ describe("Integration:: create passkey", () => {
   });
 
   it("should redirect to amc authorize uri on continue button submission", async () => {
+    setupAccountInterventionsResponse(baseApi, noInterventions);
     const getResponse = await request(app).get(PATH_NAMES.CREATE_PASSKEY);
     const $ = cheerio.load(getResponse.text);
 
@@ -91,7 +106,6 @@ describe("Integration:: create passkey", () => {
     const buttonName = continueButton.attr("name");
     const buttonValue = continueButton.attr("value");
 
-    const baseApi = process.env.FRONTEND_API_BASE_URL;
     const redirectUrl = "https://example.com";
     const amcCookie = "some-cookie-value";
 
@@ -137,6 +151,7 @@ describe("Integration:: create passkey", () => {
   testValues.forEach(
     ({ isLatestTermsAndConditionsAccepted, expectedRedirect }) => {
       it(`should handle skip button submission when isLatestTermsAndConditionsAccepted is ${isLatestTermsAndConditionsAccepted}`, async () => {
+        setupAccountInterventionsResponse(baseApi, noInterventions);
         sessionUserOverrides = { isLatestTermsAndConditionsAccepted };
 
         const getResponse = await request(app).get(PATH_NAMES.CREATE_PASSKEY);
@@ -154,6 +169,11 @@ describe("Integration:: create passkey", () => {
         const buttonName = skipButton.attr("name");
         const buttonValue = skipButton.attr("value");
 
+        nock(baseApi)
+          .post(API_ENDPOINTS.UPDATE_PROFILE)
+          .once()
+          .reply(HTTP_STATUS_CODES.NO_CONTENT);
+
         await request(app)
           .post(PATH_NAMES.CREATE_PASSKEY)
           .type("form")
@@ -169,6 +189,7 @@ describe("Integration:: create passkey", () => {
   );
 
   it("should return an error when the createPasskeyOption not one of skip or submit", async () => {
+    setupAccountInterventionsResponse(baseApi, noInterventions);
     await request(app)
       .post(PATH_NAMES.CREATE_PASSKEY)
       .type("form")

@@ -47,17 +47,13 @@ describe("update profile service", () => {
     const req = createMockRequest(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
-    const profileInformation = true;
-    const updateProfileType = UpdateType.CAPTURE_CONSENT;
+    const updateProfileType = UpdateType.UPDATE_TERMS_CONDS;
 
     const result = await service.updateProfile(
       sessionId,
       clientSessionId,
       email,
-      {
-        profileInformation,
-        updateProfileType,
-      },
+      updateProfileType,
       diPersistentSessionId,
       req
     );
@@ -65,7 +61,7 @@ describe("update profile service", () => {
     const expectedApiCallDetails = {
       expectedPath: API_ENDPOINTS.UPDATE_PROFILE,
       expectedHeaders: expectedHeadersFromCommonVarsWithSecurityHeaders,
-      expectedBody: { email, profileInformation, updateProfileType },
+      expectedBody: { email, updateProfileType },
     };
 
     checkApiCallMadeWithExpectedBodyAndHeaders(

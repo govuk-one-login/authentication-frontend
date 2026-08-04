@@ -17,7 +17,7 @@ export function createMockRequest(
     session: {
       client: {},
       user: {},
-      save: (callback: () => void) => callback(),
+      save: sinon.spy((callback) => callback(null)),
     },
     log: {
       info: sinon.fake(),
