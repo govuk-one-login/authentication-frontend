@@ -12,13 +12,27 @@ import { commonVariables } from "../../../../test/helpers/common-test-variables.
 import { strict as assert } from "assert";
 import { BadRequestError } from "../../../utils/error.js";
 
-const createMockService = (success: boolean, data?: any) => {
-  return {
-    getAMCResult: sinon.fake.resolves({
-      success,
-      data,
-    }),
-  };
+const userAbortedJourneyResponse = {
+  success: false,
+  scope: AMC_SCOPE.PASSKEY_CREATE,
+  actions: [buildActionDetails("UserAbortedJourney")],
+};
+
+const userBackedOutOfJourneyResponse = {
+  success: false,
+  scope: AMC_SCOPE.PASSKEY_CREATE,
+  actions: [buildActionDetails("UserBackedOutOfJourney")],
+};
+
+const passkeySuccessfullyCreatedResponse = {
+  success: true,
+  scope: AMC_SCOPE.PASSKEY_CREATE,
+};
+
+const userHasBlockedInterventionsResponse = {
+  success: false,
+  scope: AMC_SCOPE.PASSKEY_CREATE,
+  actions: [buildAccountInterventionsFailureDetails(true, false, false, false)],
 };
 
 describe("create-passkey-callback controller", () => {
@@ -140,26 +154,15 @@ describe("create-passkey-callback controller", () => {
     describe("successful response", () => {
       [
         {
-          resultFromAmc: {
-            success: true,
-            scope: AMC_SCOPE.PASSKEY_CREATE,
-          },
+          resultFromAmc: passkeySuccessfullyCreatedResponse,
           expectedRedirectUri: PATH_NAMES.PASSKEY_CREATED,
         },
         {
-          resultFromAmc: {
-            success: false,
-            scope: AMC_SCOPE.PASSKEY_CREATE,
-            actions: [buildActionDetails("UserBackedOutOfJourney")],
-          },
+          resultFromAmc: userBackedOutOfJourneyResponse,
           expectedRedirectUri: PATH_NAMES.CREATE_PASSKEY,
         },
         {
-          resultFromAmc: {
-            success: false,
-            scope: AMC_SCOPE.PASSKEY_CREATE,
-            actions: [buildActionDetails("UserAbortedJourney")],
-          },
+          resultFromAmc: userAbortedJourneyResponse,
           expectedRedirectUri: PATH_NAMES.AUTH_CODE,
         },
       ].forEach(({ resultFromAmc, expectedRedirectUri }) => {
@@ -182,6 +185,63 @@ describe("create-passkey-callback controller", () => {
             LANGUAGE
           );
           expect(res.redirect).to.have.been.calledWith(expectedRedirectUri);
+        });
+      });
+
+      [
+        {
+          scenarioName: "created successfully",
+          resultFromAmc: passkeySuccessfullyCreatedResponse,
+          sessionAssertion: (req: Request) =>
+            req.session.user.hasSkippedPasskeyRegistration == undefined &&
+            req.session.user
+              .accountInterventionAppliedDuringPasskeyRegistration == undefined,
+        },
+        {
+          scenarioName: "backed out of journey",
+          resultFromAmc: userBackedOutOfJourneyResponse,
+          sessionAssertion: (req: Request) =>
+            req.session.user.hasSkippedPasskeyRegistration == undefined &&
+            req.session.user
+              .accountInterventionAppliedDuringPasskeyRegistration == undefined,
+        },
+        {
+          scenarioName: "user aborted journey",
+          resultFromAmc: userAbortedJourneyResponse,
+          sessionAssertion: (req: Request) =>
+            req.session.user.hasSkippedPasskeyRegistration == true &&
+            req.session.user
+              .accountInterventionAppliedDuringPasskeyRegistration == undefined,
+        },
+        {
+          scenarioName: "user has intervention",
+          resultFromAmc: userHasBlockedInterventionsResponse,
+          sessionAssertion: (req: Request) =>
+            req.session.user.hasSkippedPasskeyRegistration == undefined &&
+            req.session.user
+              .accountInterventionAppliedDuringPasskeyRegistration == true,
+        },
+      ].forEach(({ scenarioName, resultFromAmc, sessionAssertion }) => {
+        it(`should save the relevant information on the session given the response from amc is ${scenarioName}`, async () => {
+          const fakeService = createMockService(true, resultFromAmc);
+
+          await createPasskeyCallbackGet(fakeService)(
+            req as Request,
+            res as Response
+          );
+
+          expect(fakeService.getAMCResult).to.have.been.calledWith(
+            sessionId,
+            clientSessionId,
+            diPersistentSessionId,
+            req,
+            AUTH_CODE,
+            STATE,
+            USED_REDIRECT_URL,
+            LANGUAGE
+          );
+          expect(sessionAssertion(req)).to.be.true;
+          expect(req.session.save).to.have.been.called;
         });
       });
 
@@ -252,41 +312,50 @@ describe("create-passkey-callback controller", () => {
       });
     });
   });
-
-  function buildAccountInterventionsFailureDetails(
-    blocked: boolean,
-    suspended: boolean,
-    reproveIdentity: boolean,
-    resetPassword: boolean
-  ) {
-    return {
-      action: AMC_SCOPE.PASSKEY_CREATE,
-      details: {
-        accountInterventionsStatus: {
-          state: {
-            blocked: blocked,
-            reproveIdentity: reproveIdentity,
-            resetPassword: resetPassword,
-            suspended: suspended,
-          },
-        },
-        error: {
-          code: 1004,
-          description: "AccountHasInterventions",
-        },
-      },
-    };
-  }
-
-  function buildActionDetails(description: string) {
-    return {
-      action: AMC_SCOPE.PASSKEY_CREATE,
-      details: {
-        error: {
-          code: 1,
-          description,
-        },
-      },
-    };
-  }
 });
+
+function buildAccountInterventionsFailureDetails(
+  blocked: boolean,
+  suspended: boolean,
+  reproveIdentity: boolean,
+  resetPassword: boolean
+) {
+  return {
+    action: AMC_SCOPE.PASSKEY_CREATE,
+    details: {
+      accountInterventionsStatus: {
+        state: {
+          blocked: blocked,
+          reproveIdentity: reproveIdentity,
+          resetPassword: resetPassword,
+          suspended: suspended,
+        },
+      },
+      error: {
+        code: 1004,
+        description: "AccountHasInterventions",
+      },
+    },
+  };
+}
+
+function createMockService(success: boolean, data?: any) {
+  return {
+    getAMCResult: sinon.fake.resolves({
+      success,
+      data,
+    }),
+  };
+}
+
+function buildActionDetails(description: string) {
+  return {
+    action: AMC_SCOPE.PASSKEY_CREATE,
+    details: {
+      error: {
+        code: 1,
+        description,
+      },
+    },
+  };
+}
