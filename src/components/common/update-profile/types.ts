@@ -6,15 +6,10 @@ export interface UpdateProfileServiceInterface {
     sessionId: string,
     clientSessionId: string,
     email: string,
-    requestType: RequestType,
+    updateType: UpdateType,
     persistentSessionId: string,
     req: Request
   ) => Promise<ApiResponseResult<DefaultApiResponse>>;
-}
-
-export interface RequestType {
-  profileInformation: string | boolean;
-  updateProfileType: UpdateType;
 }
 
 export enum UpdateType {

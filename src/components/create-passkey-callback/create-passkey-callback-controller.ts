@@ -166,10 +166,7 @@ async function updateUserProfileWithSkip(
     res.locals.sessionId,
     res.locals.clientSessionId,
     req.session.user.email,
-    {
-      updateProfileType: UpdateType.SKIP_ADDING_PASSKEY,
-      profileInformation: true,
-    },
+    UpdateType.SKIP_ADDING_PASSKEY,
     res.locals.persistentSessionId,
     req
   );

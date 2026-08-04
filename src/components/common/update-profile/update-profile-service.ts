@@ -1,4 +1,4 @@
-import type { RequestType, UpdateProfileServiceInterface } from "./types.js";
+import type { UpdateProfileServiceInterface, UpdateType } from "./types.js";
 import { API_ENDPOINTS, HTTP_STATUS_CODES } from "../../../app.constants.js";
 import type { Http } from "../../../utils/http.js";
 import {
@@ -16,7 +16,7 @@ export function updateProfileService(
     sessionId: string,
     clientSessionId: string,
     email: string,
-    requestType: RequestType,
+    updateType: UpdateType,
     persistentSessionId: string,
     req: Request
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
@@ -24,8 +24,7 @@ export function updateProfileService(
       API_ENDPOINTS.UPDATE_PROFILE,
       {
         email,
-        profileInformation: requestType.profileInformation,
-        updateProfileType: requestType.updateProfileType,
+        updateProfileType: updateType,
       },
       getInternalRequestConfigWithSecurityHeaders(
         {

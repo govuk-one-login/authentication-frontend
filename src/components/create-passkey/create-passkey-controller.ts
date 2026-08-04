@@ -50,10 +50,7 @@ async function handleSkipCreatePasskey(
     sessionId,
     clientSessionId,
     email,
-    {
-      updateProfileType: UpdateType.SKIP_ADDING_PASSKEY,
-      profileInformation: true,
-    },
+    UpdateType.SKIP_ADDING_PASSKEY,
     persistentSessionId,
     req
   );

@@ -266,10 +266,7 @@ describe("create-passkey-callback controller", () => {
                 sessionId,
                 clientSessionId,
                 EMAIL,
-                {
-                  profileInformation: true,
-                  updateProfileType: UpdateType.SKIP_ADDING_PASSKEY,
-                },
+                UpdateType.SKIP_ADDING_PASSKEY,
                 diPersistentSessionId,
                 req
               );

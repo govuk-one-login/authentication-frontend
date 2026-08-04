@@ -39,10 +39,7 @@ export function updatedTermsConditionsPost(
         sessionId,
         clientSessionId,
         email,
-        {
-          updateProfileType: UpdateType.UPDATE_TERMS_CONDS,
-          profileInformation: true,
-        },
+        UpdateType.UPDATE_TERMS_CONDS,
         persistentSessionId,
         req
       );

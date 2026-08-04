@@ -161,10 +161,7 @@ describe("create passkey controller", () => {
         "session-123",
         "client-session-123",
         "test@example.com",
-        {
-          updateProfileType: UpdateType.SKIP_ADDING_PASSKEY,
-          profileInformation: true,
-        },
+        UpdateType.SKIP_ADDING_PASSKEY,
         "persistent-session-123",
         req
       );
