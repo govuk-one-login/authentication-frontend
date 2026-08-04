@@ -11,6 +11,8 @@ import { AMC_SCOPE } from "../types.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { strict as assert } from "assert";
 import { BadRequestError } from "../../../utils/error.js";
+import type { UpdateProfileServiceInterface } from "../../common/update-profile/types.js";
+import { UpdateType } from "../../common/update-profile/types.js";
 
 const userAbortedJourneyResponse = {
   success: false,
@@ -38,15 +40,18 @@ const userHasBlockedInterventionsResponse = {
 describe("create-passkey-callback controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
+  let successfulUpdateProfileService: UpdateProfileServiceInterface;
 
   const { sessionId, clientSessionId, diPersistentSessionId } = commonVariables;
   const AUTH_CODE = "test-code";
   const STATE = "test-state";
   const LANGUAGE = "en";
   const USED_REDIRECT_URL = "https://www.test.com/create-passkey-callback";
+  const EMAIL = "test@test.com";
 
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.CREATE_PASSKEY_CALLBACK);
+    req.session.user.email = EMAIL;
     req.query = { code: AUTH_CODE, state: STATE };
     req.cookies = { lng: LANGUAGE };
     res = mockResponse();
@@ -56,6 +61,7 @@ describe("create-passkey-callback controller", () => {
       persistentSessionId: diPersistentSessionId,
       currentUrl: new URL(USED_REDIRECT_URL + "?code=123&state=abc"),
     };
+    successfulUpdateProfileService = fakeUpdateProfileService(true);
   });
 
   afterEach(() => {
@@ -69,14 +75,14 @@ describe("create-passkey-callback controller", () => {
           code: 1001,
           message: "Some error message",
         };
-        const fakeService = createMockService(false, responseFromAmc);
+        const fakeService = fakeAmcService(false, responseFromAmc);
 
         await assert.rejects(
           async () =>
-            createPasskeyCallbackGet(fakeService)(
-              req as Request,
-              res as Response
-            ),
+            createPasskeyCallbackGet(
+              fakeService,
+              successfulUpdateProfileService
+            )(req as Request, res as Response),
           (error: Error) => {
             expect(error).to.be.instanceOf(BadRequestError);
             expect(error.message).to.equal(
@@ -94,14 +100,14 @@ describe("create-passkey-callback controller", () => {
           success: true,
           scope: AMC_SCOPE.ACCOUNT_DELETE,
         };
-        const fakeService = createMockService(true, responseFromAmc);
+        const fakeService = fakeAmcService(true, responseFromAmc);
 
         await assert.rejects(
           async () =>
-            createPasskeyCallbackGet(fakeService)(
-              req as Request,
-              res as Response
-            ),
+            createPasskeyCallbackGet(
+              fakeService,
+              successfulUpdateProfileService
+            )(req as Request, res as Response),
           (error: Error) => {
             expect(error).to.be.instanceOf(BadRequestError);
             expect(error.message).to.equal(
@@ -130,14 +136,14 @@ describe("create-passkey-callback controller", () => {
             },
           ],
         };
-        const fakeService = createMockService(true, responseFromAmc);
+        const fakeService = fakeAmcService(true, responseFromAmc);
 
         await assert.rejects(
           async () =>
-            createPasskeyCallbackGet(fakeService)(
-              req as Request,
-              res as Response
-            ),
+            createPasskeyCallbackGet(
+              fakeService,
+              successfulUpdateProfileService
+            )(req as Request, res as Response),
           (error: Error) => {
             expect(error).to.be.instanceOf(BadRequestError);
             expect(error.message).to.equal(
@@ -167,12 +173,12 @@ describe("create-passkey-callback controller", () => {
         },
       ].forEach(({ resultFromAmc, expectedRedirectUri }) => {
         it(`should redirect to ${expectedRedirectUri} given the journey outcome when create-passkey response is 200`, async () => {
-          const fakeService = createMockService(true, resultFromAmc);
+          const fakeService = fakeAmcService(true, resultFromAmc);
 
-          await createPasskeyCallbackGet(fakeService)(
-            req as Request,
-            res as Response
-          );
+          await createPasskeyCallbackGet(
+            fakeService,
+            successfulUpdateProfileService
+          )(req as Request, res as Response);
 
           expect(fakeService.getAMCResult).to.have.been.calledWith(
             sessionId,
@@ -196,6 +202,7 @@ describe("create-passkey-callback controller", () => {
             req.session.user.hasSkippedPasskeyRegistration == undefined &&
             req.session.user
               .accountInterventionAppliedDuringPasskeyRegistration == undefined,
+          shouldCallUpdateProfile: false,
         },
         {
           scenarioName: "backed out of journey",
@@ -204,6 +211,7 @@ describe("create-passkey-callback controller", () => {
             req.session.user.hasSkippedPasskeyRegistration == undefined &&
             req.session.user
               .accountInterventionAppliedDuringPasskeyRegistration == undefined,
+          shouldCallUpdateProfile: false,
         },
         {
           scenarioName: "user aborted journey",
@@ -212,6 +220,7 @@ describe("create-passkey-callback controller", () => {
             req.session.user.hasSkippedPasskeyRegistration == true &&
             req.session.user
               .accountInterventionAppliedDuringPasskeyRegistration == undefined,
+          shouldCallUpdateProfile: true,
         },
         {
           scenarioName: "user has intervention",
@@ -220,29 +229,81 @@ describe("create-passkey-callback controller", () => {
             req.session.user.hasSkippedPasskeyRegistration == undefined &&
             req.session.user
               .accountInterventionAppliedDuringPasskeyRegistration == true,
+          shouldCallUpdateProfile: false,
         },
-      ].forEach(({ scenarioName, resultFromAmc, sessionAssertion }) => {
-        it(`should save the relevant information on the session given the response from amc is ${scenarioName}`, async () => {
-          const fakeService = createMockService(true, resultFromAmc);
+      ].forEach(
+        ({
+          scenarioName,
+          resultFromAmc,
+          sessionAssertion,
+          shouldCallUpdateProfile,
+        }) => {
+          it(`should save the relevant information on the session and user profile given the response from amc is ${scenarioName}`, async () => {
+            const amcService = fakeAmcService(true, resultFromAmc);
 
-          await createPasskeyCallbackGet(fakeService)(
-            req as Request,
-            res as Response
-          );
+            await createPasskeyCallbackGet(
+              amcService,
+              successfulUpdateProfileService
+            )(req as Request, res as Response);
 
-          expect(fakeService.getAMCResult).to.have.been.calledWith(
-            sessionId,
-            clientSessionId,
-            diPersistentSessionId,
-            req,
-            AUTH_CODE,
-            STATE,
-            USED_REDIRECT_URL,
-            LANGUAGE
-          );
-          expect(sessionAssertion(req)).to.be.true;
-          expect(req.session.save).to.have.been.called;
-        });
+            expect(amcService.getAMCResult).to.have.been.calledWith(
+              sessionId,
+              clientSessionId,
+              diPersistentSessionId,
+              req,
+              AUTH_CODE,
+              STATE,
+              USED_REDIRECT_URL,
+              LANGUAGE
+            );
+            expect(sessionAssertion(req)).to.be.true;
+            expect(req.session.save).to.have.been.called;
+
+            if (shouldCallUpdateProfile) {
+              expect(
+                successfulUpdateProfileService.updateProfile
+              ).to.have.been.calledWith(
+                sessionId,
+                clientSessionId,
+                EMAIL,
+                {
+                  profileInformation: true,
+                  updateProfileType: UpdateType.SKIP_ADDING_PASSKEY,
+                },
+                diPersistentSessionId,
+                req
+              );
+            } else {
+              expect(successfulUpdateProfileService.updateProfile).not.to.have
+                .been.called;
+            }
+          });
+        }
+      );
+
+      it("should not throw error if the call to the update profile service fails", async () => {
+        const updateProfileReturnsSuccess = false;
+        const unsucessfulUpdateProfileService = fakeUpdateProfileService(
+          updateProfileReturnsSuccess
+        );
+
+        const amcService = fakeAmcService(true, userAbortedJourneyResponse);
+
+        await createPasskeyCallbackGet(
+          amcService,
+          unsucessfulUpdateProfileService
+        )(req as Request, res as Response);
+
+        expect(amcService.getAMCResult).to.have.been.called;
+
+        expect(unsucessfulUpdateProfileService.updateProfile).to.have.been
+          .called;
+
+        expect(req.log.warn).to.have.been.calledOnce;
+
+        expect(req.session.user.hasSkippedPasskeyRegistration).to.be.true;
+        expect(req.session.save).to.have.been.called;
+        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.AUTH_CODE);
       });
 
       [
@@ -290,7 +351,7 @@ describe("create-passkey-callback controller", () => {
               ),
             ],
           };
-          const fakeService = createMockService(true, resultFromAmc);
+          const fakeService = fakeAmcService(true, resultFromAmc);
 
           await createPasskeyCallbackGet(fakeService)(
             req as Request,
@@ -339,13 +400,23 @@ function buildAccountInterventionsFailureDetails(
   };
 }
 
-function createMockService(success: boolean, data?: any) {
+function fakeAmcService(success: boolean, data?: any) {
   return {
     getAMCResult: sinon.fake.resolves({
       success,
       data,
     }),
   };
+}
+
+function fakeUpdateProfileService(
+  returnSuccess: boolean
+): UpdateProfileServiceInterface {
+  return {
+    updateProfile: sinon.fake.returns({
+      success: returnSuccess,
+    }),
+  } as unknown as UpdateProfileServiceInterface;
 }
 
 function buildActionDetails(description: string) {

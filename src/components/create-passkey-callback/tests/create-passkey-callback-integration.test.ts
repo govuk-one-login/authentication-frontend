@@ -1,5 +1,9 @@
 import { afterEach, describe } from "mocha";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../../app.constants.js";
 import type { Application, NextFunction, Request, Response } from "express";
 import esmock from "esmock";
 import { sinon } from "../../../../test/utils/test-utils.js";
@@ -112,6 +116,11 @@ describe("Integration:: create passkey callback", () => {
           },
         ],
       });
+
+    nock(baseApi)
+      .post(API_ENDPOINTS.UPDATE_PROFILE)
+      .once()
+      .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
     const requestPath =
       PATH_NAMES.CREATE_PASSKEY_CALLBACK + "?code=test-code&state=test-state";

@@ -12,6 +12,11 @@ import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machi
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { saveSessionState } from "../common/constants.js";
 import type { AMCResultInterface } from "../amc-service/types.js";
+import {
+  type UpdateProfileServiceInterface,
+  UpdateType,
+} from "../common/update-profile/types.js";
+import { updateProfileService } from "../common/update-profile/update-profile-service.js";
 
 function getErrorDescription(result: CreatePasskeyResultSuccessResponse) {
   const createPasskeyJourney = result.actions.find(
@@ -25,7 +30,8 @@ function getErrorDescription(result: CreatePasskeyResultSuccessResponse) {
 }
 
 export function createPasskeyCallbackGet(
-  service: AMCResultInterface<CreatePasskeyResultSuccessResponse> = amcResultService()
+  service: AMCResultInterface<CreatePasskeyResultSuccessResponse> = amcResultService(),
+  updateUserProfileService: UpdateProfileServiceInterface = updateProfileService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response): Promise<void> {
     const { sessionId, clientSessionId, persistentSessionId, currentUrl } =
@@ -88,10 +94,19 @@ export function createPasskeyCallbackGet(
         `Passkey creation failed for session id ${sessionId} with error ${errorDescription}`
       );
 
-      await handleAmcError(errorDescription, req);
+      await performActionsForAmcError(
+        errorDescription,
+        updateUserProfileService,
+        req,
+        res
+      );
 
       res.redirect(
-        await getNextPathAndUpdateJourney(req, res, getJourneyEventForError(errorDescription))
+        await getNextPathAndUpdateJourney(
+          req,
+          res,
+          getJourneyEventForError(errorDescription)
+        )
       );
     }
   };
@@ -108,11 +123,27 @@ function getJourneyEventForError(amcErrorDescription: AMC_ERROR_DESCRIPTION) {
   }
 }
 
-async function handleAmcError(amcErrorDescription: AMC_ERROR_DESCRIPTION, req: Request) {
+async function performActionsForAmcError(
+  amcErrorDescription: AMC_ERROR_DESCRIPTION,
+  updateUserProfileService: UpdateProfileServiceInterface,
+  req: Request,
+  res: Response
+) {
   switch (amcErrorDescription) {
-    case AMC_ERROR_DESCRIPTION.USER_ABORTED_JOURNEY:
+    case AMC_ERROR_DESCRIPTION.USER_ABORTED_JOURNEY: {
+      const updateResult = await updateUserProfileWithSkip(
+        res,
+        req,
+        updateUserProfileService
+      );
+      if (!updateResult.success) {
+        req.log.warn(
+          "Did not successfully manage to update profile with skip event, passkey registration prompt may not be suppressed"
+        );
+      }
       req.session.user.hasSkippedPasskeyRegistration = true;
       return await saveSessionState(req);
+    }
     case AMC_ERROR_DESCRIPTION.ACCOUNT_HAS_INTERVENTIONS:
       req.session.user.accountInterventionAppliedDuringPasskeyRegistration = true;
       return await saveSessionState(req);
@@ -124,4 +155,22 @@ async function handleAmcError(amcErrorDescription: AMC_ERROR_DESCRIPTION, req: R
         500
       );
   }
+}
+
+async function updateUserProfileWithSkip(
+  res: Response,
+  req: Request,
+  updateUserProfileService: UpdateProfileServiceInterface
+) {
+  return await updateUserProfileService.updateProfile(
+    res.locals.sessionId,
+    res.locals.clientSessionId,
+    req.session.user.email,
+    {
+      updateProfileType: UpdateType.SKIP_ADDING_PASSKEY,
+      profileInformation: true,
+    },
+    res.locals.persistentSessionId,
+    req
+  );
 }
