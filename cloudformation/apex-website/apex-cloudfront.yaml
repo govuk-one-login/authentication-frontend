@@ -51,6 +51,7 @@ Conditions:
           - Fn::Equals: [!Ref SubEnvironment, none]
 
   UseApexStaticPage: !Equals [!Ref DeployApexStaticPage, "true"]
+  EnableAlias: !Equals [!Ref Environment, dev]
 
 Globals:
   Function:
@@ -472,15 +473,47 @@ Resources:
       FunctionCode: |
         # __APEX_FUNCTION_CODE__
 
+  AssetPathRewriteFunction:
+    Type: AWS::CloudFront::Function
+    Properties:
+      Name: !Sub
+        - "${Env}-asset-path-rewrite"
+        - Env: !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+      AutoPublish: true
+      FunctionConfig:
+        Comment: Rewrites /assets/* to /govuk-frontend/<version>/assets/*
+        Runtime: cloudfront-js-2.0
+        KeyValueStoreAssociations:
+          - KeyValueStoreARN: !GetAtt ApexUrlKeyValueStore.Arn
+      FunctionCode: |
+        import cf from "cloudfront";
+        const kvsHandle = cf.kvs();
+        async function handler(event) {
+          const version = await kvsHandle.get("version");
+          const request = event.request;
+          request.uri = "/govuk-frontend/" + version + request.uri;
+          return request;
+        }
+
   WwwS3Distribution:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
-        # Aliases:
-        #   - !If
-        #     - UseSubEnvironment
-        #     - !FindInMap [EnvironmentConfiguration, !Ref SubEnvironment, ServiceDomain]
-        #     - !FindInMap [EnvironmentConfiguration, !Ref Environment, ServiceDomain]
+        Aliases: !If
+          - EnableAlias
+          - - !If
+              - UseSubEnvironment
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  ServiceDomain,
+                ]
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  ServiceDomain,
+                ]
+          - !Ref AWS::NoValue
         Enabled: true
         IPV6Enabled: true
         DefaultRootObject: index.html
@@ -544,6 +577,27 @@ Resources:
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
             ViewerProtocolPolicy: allow-all
             Compress: true
+          - PathPattern: "/assets/*"
+            AllowedMethods: [GET, HEAD]
+            CachedMethods: [GET, HEAD]
+            TargetOriginId: !If
+              - UseSubEnvironment
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  ServiceDomain,
+                ]
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  ServiceDomain,
+                ]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+            ViewerProtocolPolicy: redirect-to-https
+            Compress: true
+            FunctionAssociations:
+              - EventType: viewer-request
+                FunctionARN: !GetAtt AssetPathRewriteFunction.FunctionARN
           - PathPattern: "/govuk-frontend/*"
             AllowedMethods: [GET, HEAD]
             CachedMethods: [GET, HEAD]
@@ -565,10 +619,15 @@ Resources:
         Restrictions:
           GeoRestriction:
             RestrictionType: none
-        # ViewerCertificate:
-        #   AcmCertificateArn: !Ref ApexCertificateArn
-        #   SslSupportMethod: sni-only
-        #   MinimumProtocolVersion: TLSv1.2_2019
+        ViewerCertificate: !If
+          - EnableAlias
+          - AcmCertificateArn: !Sub
+              - "{{resolve:ssm:/deploy/${Env}/apex-certificate-arn}}"
+              - Env:
+                  !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+            SslSupportMethod: sni-only
+            MinimumProtocolVersion: TLSv1.2_2019
+          - !Ref AWS::NoValue
       Tags:
         - Key: Service
           Value: apex-website
