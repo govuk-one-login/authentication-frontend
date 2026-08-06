@@ -1214,7 +1214,7 @@
       },
       "section2": {
         "header": "Accessing GOV.UK One Login",
-        "paragraph1": "You are responsible for making all arrangements for you to access GOV.UK One Login. This includes providing your own device, operating system, browser and internet connection. You should use a device that uses a Windows, OS, iOS or Android operating system. We recommend you use one of the following browsers:",
+        "paragraph1": "You are responsible for making all arrangements for you to access GOV.UK One Login. This includes providing your own device, operating system, browser and internet connection. You should use a device that uses a Windows, macOS, iOS or Android operating system. We recommend you use one of the following browsers:",
         "bulletPoint1": "The latest version of Google Chrome, Microsoft Edge, Mozilla Firefox, Samsung Internet or Internet Explorer",
         "bulletPoint2": "Safari 12 or later",
         "bulletPoint3": "Safari for iOS 12.1 or later",
