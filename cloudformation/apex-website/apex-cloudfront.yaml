@@ -51,7 +51,10 @@ Conditions:
           - Fn::Equals: [!Ref SubEnvironment, none]
 
   UseApexStaticPage: !Equals [!Ref DeployApexStaticPage, "true"]
-  EnableAlias: !Equals [!Ref Environment, dev]
+
+  EnableAlias: !Or
+    - !Equals [!Ref Environment, dev]
+    - !Equals [!Ref Environment, staging]
 
 Globals:
   Function:
