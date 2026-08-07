@@ -3,6 +3,7 @@ name: Playwright acceptance tests
 on:
   pull_request:
     types: [opened, reopened, synchronize]
+  merge_group:
   workflow_dispatch:
 
 jobs:
