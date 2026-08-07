@@ -7,6 +7,7 @@ on:
       - reopened
       - ready_for_review
       - synchronize
+  merge_group:
 
 jobs:
   pre-commit:
@@ -45,5 +46,5 @@ jobs:
         uses: whi-tw/pre-commit-action@9a134f4f53ddd4071215facfc20ea754f9cb337b # v3.1.1
         with:
           extra_args: |
-            --from-ref "${{ github.event.pull_request.base.sha }}" \
-            --to-ref "${{ github.event.pull_request.head.sha }}"
+            --from-ref "${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}" \
+            --to-ref "${{ github.event.pull_request.head.sha || github.event.merge_group.head_sha }}"
