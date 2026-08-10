@@ -54,7 +54,7 @@ jobs:
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Build, push and deploy frontend
-        uses: govuk-one-login/devplatform-upload-action-ecr@3931602236c176dd4ec2c11dceb38002110b5d87 # v1.3.0
+        uses: govuk-one-login/devplatform-upload-action-ecr@92757b2d05691a43bcde208c3b1408f599fea0d9
         with:
           checkout-repo: "false"
           role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
