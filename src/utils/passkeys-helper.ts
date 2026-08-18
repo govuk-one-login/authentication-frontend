@@ -87,10 +87,13 @@ export function shouldPromptToSignInWithPasskey(
   );
 }
 
-export function isInPasskeyPhasedRollout(): boolean {
+export function isInPasskeyPhasedRollout(req: Request): boolean {
   const passkeyRolloutPercentage = getPasskeyRolloutPercentage();
 
-  if (!passkeyRolloutPercentage) return false;
+  if (!passkeyRolloutPercentage) {
+    req.log.info("No passkey rollout percentage configured");
+    return false;
+  }
 
   const randomPercentage = Math.random() * 100;
   return randomPercentage <= passkeyRolloutPercentage;

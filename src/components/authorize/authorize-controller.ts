@@ -203,7 +203,7 @@ export function authorizeGet(
       req.query[faceToFaceRpGoogleAnalyticsParamKey] as string
     );
 
-    req.session.user.isInPasskeyPhasedRollout = isInPasskeyPhasedRollout();
+    req.session.user.isInPasskeyPhasedRollout = isInPasskeyPhasedRollout(req);
 
     return res.redirect(
       appendQueryParamIfHasValue(
