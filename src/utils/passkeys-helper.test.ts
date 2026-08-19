@@ -523,8 +523,9 @@ describe("passkeys helper", () => {
       it(`[${index}] should return ${expected} when PASSKEY_ROLLOUT_PERCENTAGE is ${rolloutPercentage} and Math.random returns ${randomValue}`, () => {
         process.env.PASSKEY_ROLLOUT_PERCENTAGE = rolloutPercentage;
         mathRandomStub = sinon.stub(Math, "random").returns(randomValue);
+        const req = createMockRequest("");
 
-        expect(isInPasskeyPhasedRollout()).to.eq(expected);
+        expect(isInPasskeyPhasedRollout(req)).to.eq(expected);
       });
     });
   });

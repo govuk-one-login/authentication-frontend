@@ -11,29 +11,68 @@ export function shouldPromptToRegisterPasskey(
   const { user } = req.session;
   const userHasActivePasskeyOrUnknown = user?.hasActivePasskey !== false;
 
-  if (!res.locals.supportPasskeyRegistration) return false;
-  req.log.info("!supportPasskeyRegistration=true");
-  if (!user.isInPasskeyPhasedRollout) return false;
-  req.log.info("!isInPasskeyPhasedRollout=true");
-  if (!user?.browserSupportsWebAuthn) return false;
-  req.log.info("browserSupportsWebAuthn=true");
-  if (userHasActivePasskeyOrUnknown) return false;
-  req.log.info("userHasActivePasskeyOrUnknown=true");
-  if (user.hasSkippedPasskeyRegistration) return false;
-  req.log.info("hasSkippedPasskeyRegistration=true");
-  if (user.backendIndicatesPasskeyPromptShouldBeSkipped) return false;
-  req.log.info("backendIndicatesPasskeyPromptShouldBeSkipped=true");
-  if (user.reauthenticate) return false;
-  req.log.info("reauthenticate=true");
-  if (userHasBeenOnPasswordResetJourney(req)) return false;
-  req.log.info("userHasBeenOnPasswordResetJourney=true");
-  if (!isPromptableRPClientID(req.session.client.rpClientId)) return false;
-  req.log.info("!isPromptableRPClientID=true");
-  if (!userHasLoggedInWithPasswordAnd2Fa(req)) return false;
-  req.log.info("userHasLoggedInWithPasswordAnd2Fa=true");
-  if (user.accountInterventionAppliedDuringPasskeyRegistration) return false;
-  req.log.info("!accountInterventionAppliedDuringPasskeyRegistration=true");
-  req.log.info("shouldPromptToRegisterPasskey=true");
+  if (!res.locals.supportPasskeyRegistration) {
+    req.log.info("Passkey registration not enabled, skipping passkey prompt");
+    return false;
+  }
+  if (!user.isInPasskeyPhasedRollout) {
+    req.log.info("User not in passkey phased rollout, skipping passkey prompt");
+    return false;
+  }
+  if (!user?.browserSupportsWebAuthn) {
+    req.log.info(
+      "Browser does not support WebAuthn, cannot register a passkey, skipping passkey prompt"
+    );
+    return false;
+  }
+  if (userHasActivePasskeyOrUnknown) {
+    req.log.info(
+      "User already has a passkey, or it cannot be determined, skipping passkey prompt"
+    );
+    return false;
+  }
+  if (user.hasSkippedPasskeyRegistration) {
+    req.log.info(
+      "User has already skipped passkey registration, skipping passkey prompt"
+    );
+    return false;
+  }
+  if (user.backendIndicatesPasskeyPromptShouldBeSkipped) {
+    req.log.info(
+      "Backend indicated the passkey prompt should be skipped, skipping passkey prompt"
+    );
+    return false;
+  }
+  if (user.reauthenticate) {
+    req.log.info("User is reauthenticating, skipping passkey prompt");
+    return false;
+  }
+  if (userHasBeenOnPasswordResetJourney(req)) {
+    req.log.info(
+      "User has been on a password reset journey, skipping passkey prompt"
+    );
+    return false;
+  }
+  if (!isPromptableRPClientID(req.session.client.rpClientId)) {
+    req.log.info(
+      "Relying party is on the passkey prompt deny list, skipping passkey prompt"
+    );
+    return false;
+  }
+  if (!userHasLoggedInWithPasswordAnd2Fa(req)) {
+    req.log.info(
+      "User has not signed in with a password and 2FA, skipping passkey prompt"
+    );
+    return false;
+  }
+  if (user.accountInterventionAppliedDuringPasskeyRegistration) {
+    req.log.info(
+      "Account intervention applied during passkey registration, skipping passkey prompt"
+    );
+    return false;
+  }
+
+  req.log.info("Prompting passkey registration");
   return true;
 }
 
@@ -48,10 +87,13 @@ export function shouldPromptToSignInWithPasskey(
   );
 }
 
-export function isInPasskeyPhasedRollout(): boolean {
+export function isInPasskeyPhasedRollout(req: Request): boolean {
   const passkeyRolloutPercentage = getPasskeyRolloutPercentage();
 
-  if (!passkeyRolloutPercentage) return false;
+  if (!passkeyRolloutPercentage) {
+    req.log.info("No passkey rollout percentage configured");
+    return false;
+  }
 
   const randomPercentage = Math.random() * 100;
   return randomPercentage <= passkeyRolloutPercentage;
