@@ -75,7 +75,7 @@ export function authorizeGet(
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const loginPrompt = sanitize(req.query.prompt as string);
-
+    // hi
     const clientId = req.query.client_id as string;
     const responseType = req.query.response_type as string;
     let claims: Claims;
