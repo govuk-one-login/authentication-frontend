@@ -2143,6 +2143,57 @@ Resources:
       ComparisonOperator: GreaterThanThreshold
       TreatMissingData: notBreaching
 
+  FrontendTargetGroupAHealthyHostCountAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: >
+        The number of healthy targets registered with the frontend target group A
+        has fallen below 1. This indicates a potential availability issue.
+      AlarmActions: !If
+        - UseAlarmActions
+        - - !Sub "{{resolve:ssm:/deploy/${Environment}/notification_topic_arn}}"
+        - []
+      MetricName: HealthyHostCount
+      Namespace: AWS/ApplicationELB
+      Statistic: Minimum
+      Dimensions:
+        - Name: TargetGroup
+          Value: !GetAtt ApplicationLoadBalancerTargetGroupA.TargetGroupFullName
+        - Name: LoadBalancer
+          Value: !GetAtt ApplicationLoadBalancer.LoadBalancerFullName
+      Period: 60
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 1
+      ComparisonOperator: LessThanThreshold
+      TreatMissingData: breaching
+
+  FrontendTargetGroupBHealthyHostCountAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Condition: UseECSCanaryDeploymentStack
+    Properties:
+      AlarmDescription: >
+        The number of healthy targets registered with the frontend target group B
+        has fallen below 1. This indicates a potential availability issue.
+      AlarmActions: !If
+        - UseAlarmActions
+        - - !Sub "{{resolve:ssm:/deploy/${Environment}/notification_topic_arn}}"
+        - []
+      MetricName: HealthyHostCount
+      Namespace: AWS/ApplicationELB
+      Statistic: Minimum
+      Dimensions:
+        - Name: TargetGroup
+          Value: !GetAtt ApplicationLoadBalancerTargetGroupB.TargetGroupFullName
+        - Name: LoadBalancer
+          Value: !GetAtt ApplicationLoadBalancer.LoadBalancerFullName
+      Period: 60
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      Threshold: 1
+      ComparisonOperator: LessThanThreshold
+      TreatMissingData: breaching
+
   #
   # Canary Deployment
   #
