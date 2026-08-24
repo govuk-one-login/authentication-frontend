@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: snapshots-frontend.Dockerfile
+      secrets:
+        - node_auth_token
     ports:
       - "4401:4401"
     ipc: host
@@ -19,6 +21,8 @@ services:
     build:
       context: .
       dockerfile: snapshots-playwright.Dockerfile
+      secrets:
+        - node_auth_token
     depends_on:
       frontend:
         condition: service_healthy
@@ -29,3 +33,7 @@ services:
       - ./test:/app/test
     command: npx playwright test ${COMMAND:-}
     network_mode: "host"
+
+secrets:
+  node_auth_token:
+    environment: "NODE_AUTH_TOKEN"
