@@ -12,6 +12,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      packages: read
 
     steps:
       - name: Checkout
@@ -36,6 +37,8 @@ jobs:
 
       - name: Run tests
         working-directory: playwright-acceptance-tests
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: docker compose up --build --abort-on-container-exit --exit-code-from test-runner
 
       - name: Collect logs

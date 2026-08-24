@@ -19,6 +19,8 @@ services:
     build:
       context: ../
       dockerfile: dev.Dockerfile
+      secrets:
+        - node_auth_token
     env_file: ../.env.local
     environment:
       FRONTEND_API_BASE_URL: http://api-stub:8080/
@@ -107,3 +109,7 @@ services:
 
 networks:
   test-net:
+
+secrets:
+  node_auth_token:
+    environment: "NODE_AUTH_TOKEN"
