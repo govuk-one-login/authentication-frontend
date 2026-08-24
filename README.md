@@ -42,6 +42,15 @@ may be updated, and changes will persist through reruns.
 
 `UI_LOCALES` can be used be the stub to request specific locales when authorising. Only 'en' and 'cy' are supported.
 
+### Personal Access Token
+
+We have some private packages that require authenticating with the private GitHub packages registry. In order to correctly run
+`npm install` you will need to setup a Personal Access Token and export it in your shell
+
+- In GitHub create a classic personal access token which has `read:packages` permission. (make sure it's classic otherwise this won't work).
+  - Give it an expiration date of 1 year.
+- In the configuration file for your shell (for example `.zshrc`) export a variable called `NODE_AUTH_TOKEN` with the value of the personal access token
+
 ### Starting all services in Docker
 
 Run one of the following:
