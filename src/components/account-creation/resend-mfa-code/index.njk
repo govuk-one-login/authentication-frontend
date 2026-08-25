@@ -6,18 +6,13 @@
 {% set showBack = true %}
 {% set hrefBack = 'enter-code' %}
 
-{% if isResendCodeRequest %}
-    {% set phoneNumberMessage %}
-       {{ 'pages.resendMfaCode.phoneNumber.isResendCodeRequest' | translate }} <span class='govuk-!-font-weight-bold'>{{ phoneNumber }}</span>
-    {% endset %}
-{% else %}
-    {% set phoneNumberMessage = 'pages.resendMfaCode.phoneNumber.default' | translate | replace("[mobile]", phoneNumber) %}
-{% endif %}
+{% set phoneNumberMessage %}
+   {{ 'pages.resendMfaCode.phoneNumber.isResendCodeRequest' | translate }} <span class='govuk-!-font-weight-bold'>{{ phoneNumber }}</span>
+{% endset %}
 
 {% block content %}
     <form action="/resend-code-create-account" method="post" novalidate="novalidate">
         <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-        <input type="hidden" name="isResendCodeRequest" value="{{isResendCodeRequest}}"/>
 
         <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resendMfaCode.header' | translate}}</h1>
 

@@ -7,10 +7,7 @@ import {
   NOTIFICATION_TYPE,
   PATH_NAMES,
 } from "../../../app.constants.js";
-import {
-  getErrorPathByCode,
-  pathWithQueryParam,
-} from "../../common/constants.js";
+import { getErrorPathByCode } from "../../common/constants.js";
 import type { SendNotificationServiceInterface } from "../../common/send-notification/types.js";
 import { sendNotificationService } from "../../common/send-notification/send-notification-service.js";
 import { BadRequestError } from "../../../utils/error.js";
@@ -19,13 +16,7 @@ import { isAccountRecoveryJourney } from "../../../utils/request.js";
 import { getDefaultSmsMfaMethod } from "../../../utils/mfa.js";
 
 export function resendMfaCodeGet(req: Request, res: Response): void {
-  const newCodeLink = req.query?.isResendCodeRequest
-    ? pathWithQueryParam(
-        PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
-        "isResendCodeRequest",
-        "true"
-      )
-    : PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
+  const newCodeLink = PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
 
   if (isLocked(req.session.user.wrongCodeEnteredLock)) {
     res.render("security-code-error/index-security-code-entered-exceeded.njk", {
@@ -41,7 +32,6 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     res.render("account-creation/resend-mfa-code/index.njk", {
       phoneNumber: getDefaultSmsMfaMethod(req.session.user.mfaMethods)
         ?.redactedPhoneNumber,
-      isResendCodeRequest: req.query?.isResendCodeRequest,
     });
   }
 }
