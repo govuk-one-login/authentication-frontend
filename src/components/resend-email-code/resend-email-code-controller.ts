@@ -99,12 +99,7 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const accountRecoveryJourney = isAccountRecoveryJourney(req);
     if (isLocked(req.session.user.codeRequestLock)) {
-      const newCodeLink = req.query?.isResendCodeRequest
-        ? "/security-code-check-time-limit?isResendCodeRequest=true"
-        : "/security-code-check-time-limit";
-      return res.render("security-code-error/index-wait.njk", {
-        newCodeLink,
-      });
+      return res.render("security-code-error/index-wait.njk");
     }
 
     if (accountRecoveryJourney) {

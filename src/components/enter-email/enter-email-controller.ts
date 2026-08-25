@@ -10,7 +10,6 @@ import type {
   EnterEmailServiceInterface,
   LockoutInformation,
 } from "./types.js";
-import type { SecurityCodeErrorType } from "../common/constants.js";
 import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { BadRequestError } from "../../utils/error.js";
@@ -25,7 +24,6 @@ import {
   formatValidationError,
   renderBadRequest,
 } from "../../utils/validation.js";
-import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import { isLocked, timestampNSecondsFromNow } from "../../utils/lock-helper.js";
 import { getChannelSpecificErrorMessage } from "../../utils/get-channel-specific-error-message.js";
 import { isReauth } from "../../utils/request.js";
@@ -230,11 +228,7 @@ export function enterEmailCreatePost(
         ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT
       ) {
         return res.render("security-code-error/index-wait.njk", {
-          newCodeLink: getNewCodePath(
-            req.query.actionType as SecurityCodeErrorType
-          ),
           isAccountCreationJourney: true,
-          contentId: "",
         });
       }
       const path = getErrorPathByCode(sendNotificationResponse.data.code);

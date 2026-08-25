@@ -2,7 +2,6 @@ import type { Request, Response } from "express";
 import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import { redactPhoneNumber } from "../../utils/strings.js";
-import type { SecurityCodeErrorType } from "../common/constants.js";
 import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { BadRequestError } from "../../utils/error.js";
@@ -11,7 +10,6 @@ import { sendNotificationService } from "../common/send-notification/send-notifi
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { convertInternationalPhoneNumberToE164Format } from "../../utils/phone-number.js";
 import xss from "xss";
-import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import { isAccountRecoveryJourneyAndPermitted } from "../../utils/request.js";
 import { upsertDefaultSmsMfaMethod } from "../../utils/mfa.js";
 import { supportNewInternationalSms } from "../../config.js";
@@ -78,13 +76,9 @@ export function enterPhoneNumberPost(
         ERROR_CODES.VERIFY_PHONE_NUMBER_MAX_CODES_SENT
       ) {
         return res.render("security-code-error/index-wait.njk", {
-          newCodeLink: getNewCodePath(
-            req.query.actionType as SecurityCodeErrorType
-          ),
           isAccountCreationJourney:
             req.session.user.isAccountCreationJourney ||
             req.session.user.isAccountPartCreated,
-          contentId: "",
         });
       }
       const path = getErrorPathByCode(sendNotificationResponse.data.code);
