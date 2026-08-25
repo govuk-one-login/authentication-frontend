@@ -103,7 +103,6 @@ export function resetPasswordCheckEmailGet(
 
       return res.render(errorTemplate, {
         show2HrScreen: true,
-        contentId: "",
       });
     } else {
       throw new BadRequestError(result.data.message, result.data.code);
@@ -158,9 +157,6 @@ export function resetPasswordCheckEmailPost(
       }
       if (mfaResponse.data.code == ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED) {
         res.render("security-code-error/index-wait.njk", {
-          newCodeLink: getNewCodePath(
-            req.query.actionType as SecurityCodeErrorType
-          ),
           isAccountCreationJourney: false,
         });
         return true;

@@ -26,12 +26,7 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
         !req.session.user.isAccountRecoveryJourney,
     });
   } else if (isLocked(req.session.user.codeRequestLock)) {
-    const newCodeLink = req.query?.isResendCodeRequest
-      ? "/resend-code?isResendCodeRequest=true"
-      : "/resend-code";
-    res.render("security-code-error/index-wait.njk", {
-      newCodeLink,
-    });
+    res.render("security-code-error/index-wait.njk");
   } else {
     const journeyType = getJourneyTypeFromUserSession(req.session.user, {
       includeReauthentication: true,

@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import type { ExpressRouteFunc, SmsMfaMethod } from "src/types.js";
-import type { SecurityCodeErrorType } from "../common/constants.js";
 import { ERROR_CODES, pathWithQueryParam } from "../common/constants.js";
 import {
   JOURNEY_TYPE,
@@ -12,7 +11,6 @@ import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
 import type { AccountInterventionsInterface } from "../account-intervention/types.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
-import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import { isLocked } from "../../utils/lock-helper.js";
 
 const TEMPLATE_NAME = "reset-password-2fa-sms/index.njk";
@@ -35,9 +33,6 @@ export function resetPassword2FASmsGet(): ExpressRouteFunc {
     }
     if (isLocked(req.session.user.codeRequestLock)) {
       return res.render("security-code-error/index-wait.njk", {
-        newCodeLink: getNewCodePath(
-          req.query.actionType as SecurityCodeErrorType
-        ),
         isAccountCreationJourney: false,
       });
     }
