@@ -25,7 +25,6 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     });
   } else if (isLocked(req.session.user.codeRequestLock)) {
     res.render("security-code-error/index-wait.njk", {
-      newCodeLink,
       isAccountCreationJourney: req.session.user.isAccountCreationJourney,
     });
   } else {

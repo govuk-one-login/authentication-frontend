@@ -30,7 +30,6 @@ const RESEND_CODE_LINK = PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
 export function checkYourPhoneGet(req: Request, res: Response): void {
   if (isLocked(req.session.user.codeRequestLock)) {
     return res.render("security-code-error/index-wait.njk", {
-      newCodeLink: RESEND_CODE_LINK,
       isAccountCreationJourney: req.session.user.isAccountCreationJourney,
     });
   }
