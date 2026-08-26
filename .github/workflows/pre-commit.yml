@@ -40,6 +40,8 @@ jobs:
             echo "ignore-scripts is set to true"
           fi
       - name: Install dependencies
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm ci --ignore-scripts
 
       - name: Run pre-commit

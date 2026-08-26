@@ -5,8 +5,9 @@ COPY .npmrc ./
 COPY ./package.json ./package-lock.json  ./
 COPY ./src ./src
 RUN npm config get ignore-scripts | grep -q "true" || exit 1
-RUN npm ci --ignore-scripts
-
+RUN --mount=type=secret,id=node_auth_token \
+    export NODE_AUTH_TOKEN=$(cat /run/secrets/node_auth_token) && \
+    npm ci --ignore-scripts
 
 FROM mcr.microsoft.com/playwright:v1.59.1-noble@sha256:eac9b0a5312cdab40ee8c2429df5bf19bffdccf8f3bf3c42268e173f97541645 AS playwright
 

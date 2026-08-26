@@ -37,6 +37,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      packages: read
     steps:
       - name: Checkout repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -54,7 +55,7 @@ jobs:
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Build, push and deploy frontend
-        uses: govuk-one-login/devplatform-upload-action-ecr@92757b2d05691a43bcde208c3b1408f599fea0d9
+        uses: govuk-one-login/devplatform-upload-action-ecr@43159c282e7485a7ac9ff514227c1dd658ecd84b
         with:
           checkout-repo: "false"
           role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
@@ -68,3 +69,5 @@ jobs:
           version-number: ${{ steps.version_info.outputs.version }}
           build-contexts: |
             oneagent_codemodules=docker-image://${{ secrets.DYNATRACE_REGISTRY_NAME}}.live.dynatrace.com/linux/oneagent-codemodules-musl:nodejs
+          build-secrets: |
+            node_auth_token=${{ secrets.GITHUB_TOKEN }}
