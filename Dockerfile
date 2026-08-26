@@ -6,7 +6,9 @@ COPY .npmrc ./
 COPY package.json ./
 COPY package-lock.json ./
 RUN npm config get ignore-scripts | grep -q "true" || exit 1
-RUN npm ci --ignore-scripts
+RUN --mount=type=secret,id=node_auth_token \
+    export NODE_AUTH_TOKEN=$(cat /run/secrets/node_auth_token) && \
+    npm ci --ignore-scripts
 
 COPY tsconfig.json ./
 COPY ./@types ./@types
