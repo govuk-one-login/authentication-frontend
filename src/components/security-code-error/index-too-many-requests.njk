@@ -3,10 +3,6 @@
 
 {% set pageTitleName = 'pages.securityRequestsExceededExpired.title' | translate %}
 
-{% if isResendCodeRequest %}
-    {% set newCodeLink = newCodeLink + "?isResendCodeRequest=true" %}
-{% endif %}
-
 {% block content %}
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.securityRequestsExceededExpired.header' | translate }}</h1>
 

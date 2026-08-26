@@ -552,14 +552,11 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED]: {
     template: "security-code-error/index-too-many-requests.njk",
     options: {
-      newCodeLink: "#",
-      isResendCodeRequest: false,
       isAccountCreationJourney: false,
     },
   },
   [PATH_NAMES.SECURITY_CODE_WAIT]: {
     template: "security-code-error/index-too-many-requests.njk",
-    options: { newCodeLink: "#" },
   },
 
   // Account interventions

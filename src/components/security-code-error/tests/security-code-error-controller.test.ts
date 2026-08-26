@@ -9,11 +9,9 @@ import {
   securityCodeInvalidGet,
   securityCodeTriesExceededGet,
   securityCodeEnteredExceededGet,
-  getNewCodePath,
 } from "../security-code-error-controller.js";
 import {
   pathWithQueryParam,
-  SECURITY_CODE_ERROR,
   SecurityCodeErrorType,
 } from "../../common/constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
@@ -74,8 +72,6 @@ describe("security code controller", () => {
         expect(res.render).to.have.calledWith(
           "security-code-error/index-too-many-requests.njk",
           {
-            newCodeLink: params.newCodeLink,
-            isResendCodeRequest: undefined,
             isAccountCreationJourney: params.isAccountCreationJourney,
           }
         );
@@ -92,9 +88,6 @@ describe("security code controller", () => {
 
         expect(res.render).to.have.calledWith(
           "security-code-error/index-too-many-requests.njk",
-          {
-            newCodeLink: params.expectedCodeLink,
-          }
         );
       });
     });
@@ -389,12 +382,6 @@ describe("security code controller", () => {
         expect(res.render).to.have.calledWith(
           "security-code-error/index-too-many-requests.njk",
           {
-            newCodeLink: pathWithQueryParam(
-              PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-              SECURITY_CODE_ERROR,
-              SecurityCodeErrorType.MfaMaxRetries
-            ),
-            isResendCodeRequest: undefined,
             isAccountCreationJourney: undefined,
           }
         );
@@ -416,12 +403,6 @@ describe("security code controller", () => {
         expect(res.render).to.have.calledWith(
           "security-code-error/index-too-many-requests.njk",
           {
-            newCodeLink: pathWithQueryParam(
-              PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-              SECURITY_CODE_ERROR,
-              SecurityCodeErrorType.MfaMaxRetries
-            ),
-            isResendCodeRequest: undefined,
             isAccountCreationJourney: undefined,
           }
         );
@@ -439,8 +420,6 @@ describe("security code controller", () => {
         expect(res.render).to.have.calledWith(
           "security-code-error/index-too-many-requests.njk",
           {
-            newCodeLink: getNewCodePath(SecurityCodeErrorType.OtpBlocked),
-            isResendCodeRequest: undefined,
             isAccountCreationJourney: undefined,
           }
         );
@@ -455,12 +434,6 @@ describe("security code controller", () => {
       expect(res.render).to.have.calledWith(
         "security-code-error/index-too-many-requests.njk",
         {
-          newCodeLink: pathWithQueryParam(
-            PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-            SECURITY_CODE_ERROR,
-            SecurityCodeErrorType.MfaMaxRetries
-          ),
-          isResendCodeRequest: undefined,
           isAccountCreationJourney: true,
         }
       );
