@@ -52,9 +52,7 @@ export function securityCodeTriesExceededGet(
     );
   }
 
-  return res.render("security-code-error/index-too-many-requests.njk", {
-    isAccountCreationJourney: req.session.user?.isAccountCreationJourney,
-  });
+  return res.render("security-code-error/index-too-many-requests.njk");
 }
 
 export function securityCodeCannotRequestCodeGet(

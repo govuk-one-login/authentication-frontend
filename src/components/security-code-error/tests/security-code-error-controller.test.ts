@@ -63,17 +63,12 @@ describe("security code controller", () => {
     SCENARIOS.SECURITY_CODE_TRIES_EXCEEDED_GET.forEach(function (params) {
       it(`should render index-too-many-requests.njk for ${params.actionType} when max number of codes have been sent`, () => {
         req.query.actionType = params.actionType;
-        req.session.user.isAccountCreationJourney =
-          params.isAccountCreationJourney;
         res.locals.strategicAppChannel = true;
 
         securityCodeTriesExceededGet(req as Request, res as Response);
 
         expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk",
-          {
-            isAccountCreationJourney: params.isAccountCreationJourney,
-          }
+          "security-code-error/index-too-many-requests.njk"
         );
       });
     });
@@ -87,7 +82,7 @@ describe("security code controller", () => {
         securityCodeCannotRequestCodeGet(req, res);
 
         expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk",
+          "security-code-error/index-too-many-requests.njk"
         );
       });
     });
@@ -380,10 +375,7 @@ describe("security code controller", () => {
         securityCodeTriesExceededGet(req as Request, res as Response);
 
         expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk",
-          {
-            isAccountCreationJourney: undefined,
-          }
+          "security-code-error/index-too-many-requests.njk"
         );
         expect(req.session.user.codeRequestLock).to.eq(
           "Mon, 01 Jan 2024 00:15:00 GMT"
@@ -401,10 +393,7 @@ describe("security code controller", () => {
         securityCodeTriesExceededGet(req as Request, res as Response);
 
         expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk",
-          {
-            isAccountCreationJourney: undefined,
-          }
+          "security-code-error/index-too-many-requests.njk"
         );
       }
     );
@@ -418,10 +407,7 @@ describe("security code controller", () => {
         securityCodeTriesExceededGet(req as Request, res as Response);
 
         expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk",
-          {
-            isAccountCreationJourney: undefined,
-          }
+          "security-code-error/index-too-many-requests.njk"
         );
       }
     );
@@ -432,10 +418,7 @@ describe("security code controller", () => {
       securityCodeTriesExceededGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
-        "security-code-error/index-too-many-requests.njk",
-        {
-          isAccountCreationJourney: true,
-        }
+        "security-code-error/index-too-many-requests.njk"
       );
     });
 
