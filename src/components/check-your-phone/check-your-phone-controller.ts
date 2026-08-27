@@ -6,11 +6,7 @@ import {
   PATH_NAMES,
 } from "../../app.constants.js";
 import type { ExpressRouteFunc } from "../../types.js";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-  pathWithQueryParam,
-} from "../common/constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import type { SendNotificationServiceInterface } from "../common/send-notification/types.js";
 import { sendNotificationService } from "../common/send-notification/send-notification-service.js";
@@ -29,16 +25,11 @@ import { isAccountRecoveryJourneyAndPermitted } from "../../utils/request.js";
 import { getDefaultSmsMfaMethod } from "../../utils/mfa.js";
 
 const TEMPLATE_NAME = "check-your-phone/index.njk";
-const RESEND_CODE_LINK = pathWithQueryParam(
-  PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
-  "isResendCodeRequest",
-  "true"
-);
+const RESEND_CODE_LINK = PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION;
 
 export function checkYourPhoneGet(req: Request, res: Response): void {
   if (isLocked(req.session.user.codeRequestLock)) {
     return res.render("security-code-error/index-wait.njk", {
-      newCodeLink: RESEND_CODE_LINK,
       isAccountCreationJourney: req.session.user.isAccountCreationJourney,
     });
   }
