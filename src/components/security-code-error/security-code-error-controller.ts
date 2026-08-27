@@ -52,23 +52,14 @@ export function securityCodeTriesExceededGet(
     );
   }
 
-  return res.render("security-code-error/index-too-many-requests.njk", {
-    newCodeLink: getNewCodePath(
-      req.query.actionType as SecurityCodeErrorType,
-      req.session.user.isAccountCreationJourney
-    ),
-    isResendCodeRequest: req.query.isResendCodeRequest,
-    isAccountCreationJourney: req.session.user?.isAccountCreationJourney,
-  });
+  return res.render("security-code-error/index-too-many-requests.njk");
 }
 
 export function securityCodeCannotRequestCodeGet(
   req: Request,
   res: Response
 ): void {
-  res.render("security-code-error/index-too-many-requests.njk", {
-    newCodeLink: getNewCodePath(req.query.actionType as SecurityCodeErrorType),
-  });
+  res.render("security-code-error/index-too-many-requests.njk");
 }
 
 export function securityCodeEnteredExceededGet(
