@@ -399,6 +399,26 @@ export const pages: Record<string, Page | PageVariant[]> = {
       chooseMfaMethodHref: "#",
     },
   },
+  [PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS]: [
+    {
+      name: "default",
+      template: "reset-password-resend-code-2fa-sms/index.njk",
+      options: {
+        redactedPhoneNumber: "1234",
+        supportReauthentication: true,
+        isReauthJourney: false,
+      },
+    },
+    {
+      name: "reauth",
+      template: "reset-password-resend-code-2fa-sms/index.njk",
+      options: {
+        redactedPhoneNumber: "1234",
+        supportReauthentication: true,
+        isReauthJourney: true,
+      },
+    },
+  ],
   [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP]: {
     template: "reset-password-2fa-auth-app/index.njk",
     options: {
