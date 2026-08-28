@@ -569,6 +569,7 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.RESEND_SMS]: [
             {
               target: [PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS],
+              meta: { reversible: true },
             },
           ],
         },

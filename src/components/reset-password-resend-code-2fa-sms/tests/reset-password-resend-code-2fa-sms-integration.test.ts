@@ -107,4 +107,16 @@ describe("Integration:: reset password resend-code-2fa sms", () => {
       })
       .expect(200);
   });
+
+  it("should render a back link to /reset-password-2fa-sms", async () => {
+    await request(app)
+      .get(PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($(".govuk-back-link").attr("href")).to.contain(
+          "reset-password-2fa-sms"
+        );
+      })
+      .expect(200);
+  });
 });

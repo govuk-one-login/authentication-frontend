@@ -1,4 +1,3 @@
-// TODO - back button history
 // TODO - GA content ID
 
 import type { Request, Response } from "express";
