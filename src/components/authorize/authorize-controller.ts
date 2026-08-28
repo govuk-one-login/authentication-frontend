@@ -150,7 +150,6 @@ export function authorizeGet(
     req.session.user.isAccountCreationJourney = undefined;
 
     req.log.info(`Reauth claim length ${claims.reauthenticate?.length}`);
-    req.log.info(`Support for reauth is enabled ${supportReauthentication()}`);
 
     const nextStateEvent = getNextStateEvent(req);
 
