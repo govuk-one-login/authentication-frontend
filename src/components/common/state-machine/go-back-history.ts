@@ -6,6 +6,7 @@ import { PATH_NAMES } from "../../../app.constants.js";
 export const goBackHistoryAllowList = [
   PATH_NAMES.ENTER_PASSWORD,
   PATH_NAMES.SIGN_IN_WITH_PASSKEY,
+  PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS,
 ];
 
 export function getGoBackHistoryForTransition(

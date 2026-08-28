@@ -7,6 +7,7 @@ import * as express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
 import { validateResetPassword2faSMSValidation } from "./reset-password-2fa-sms-validation.js";
+import { goBackMiddleware } from "../../middleware/go-back-middleware.js";
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ router.get(
   PATH_NAMES.RESET_PASSWORD_2FA_SMS,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
+  goBackMiddleware,
   resetPassword2FASmsGet()
 );
 
