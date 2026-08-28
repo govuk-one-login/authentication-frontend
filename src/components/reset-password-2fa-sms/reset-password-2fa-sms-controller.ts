@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import type { ExpressRouteFunc, SmsMfaMethod } from "src/types.js";
-import { ERROR_CODES, pathWithQueryParam } from "../common/constants.js";
+import { ERROR_CODES } from "../common/constants.js";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
@@ -14,11 +14,7 @@ import { accountInterventionService } from "../account-intervention/account-inte
 import { isLocked } from "../../utils/lock-helper.js";
 
 const TEMPLATE_NAME = "reset-password-2fa-sms/index.njk";
-const RESEND_CODE_LINK = pathWithQueryParam(
-  PATH_NAMES.RESEND_MFA_CODE,
-  "isResendCodeRequest",
-  "true"
-);
+const RESEND_CODE_LINK = "/journey/reset-password-2fa-sms/RESEND_SMS";
 
 export function resetPassword2FASmsGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
