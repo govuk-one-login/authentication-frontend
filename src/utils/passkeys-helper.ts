@@ -15,8 +15,10 @@ export function shouldPromptToRegisterPasskey(
     req.log.info("Passkey registration not enabled, skipping passkey prompt");
     return false;
   }
-  if (!user.isInPasskeyPhasedRollout) {
-    req.log.info("User not in passkey phased rollout, skipping passkey prompt");
+  if (!isPromptableRPClientID(req.session.client.rpClientId)) {
+    req.log.info(
+      "Relying party is on the passkey prompt deny list, skipping passkey prompt"
+    );
     return false;
   }
   if (!user?.browserSupportsWebAuthn) {
@@ -53,12 +55,6 @@ export function shouldPromptToRegisterPasskey(
     );
     return false;
   }
-  if (!isPromptableRPClientID(req.session.client.rpClientId)) {
-    req.log.info(
-      "Relying party is on the passkey prompt deny list, skipping passkey prompt"
-    );
-    return false;
-  }
   if (!userHasLoggedInWithPasswordAnd2Fa(req)) {
     req.log.info(
       "User has not signed in with a password and 2FA, skipping passkey prompt"
@@ -71,7 +67,10 @@ export function shouldPromptToRegisterPasskey(
     );
     return false;
   }
-
+  if (!user.isInPasskeyPhasedRollout) {
+    req.log.info("User not in passkey phased rollout, skipping passkey prompt");
+    return false;
+  }
   req.log.info("Prompting passkey registration");
   return true;
 }
