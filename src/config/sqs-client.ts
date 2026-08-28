@@ -1,9 +1,31 @@
-import { SQSClient } from "@aws-sdk/client-sqs";
+import {
+  CreateQueueCommand,
+  type CreateQueueCommandInput,
+  type CreateQueueResult,
+  PurgeQueueCommand,
+  type PurgeQueueCommandInput,
+  ReceiveMessageCommand,
+  type ReceiveMessageCommandInput,
+  type ReceiveMessageResult,
+  SendMessageCommand,
+  type SendMessageCommandInput,
+  SQSClient,
+} from "@aws-sdk/client-sqs";
 import { getAwsRegion } from "../config.js";
 
-let client: SQSClient | undefined
+let client: SQSClient | undefined;
 
-function getSqsClient(): SQSClient {
+export type SqsClientConfig = {
+  client: SQSClient;
+  sendMessage: (message: SendMessageCommandInput) => Promise<void>;
+  receiveMessage: (
+    message: ReceiveMessageCommandInput
+  ) => Promise<ReceiveMessageResult>;
+  createQueue: (input: CreateQueueCommandInput) => Promise<CreateQueueResult>;
+  purgeQueue: (input: PurgeQueueCommandInput) => Promise<void>;
+};
+
+function getSqsClientConfig(): SqsClientConfig {
   if (!client) {
     const clientOptions: ConstructorParameters<typeof SQSClient>[0] = {
       region: getAwsRegion(),
@@ -20,7 +42,21 @@ function getSqsClient(): SQSClient {
 
     client = new SQSClient(clientOptions);
   }
-  return client
+  return {
+    client,
+    sendMessage: async (message: SendMessageCommandInput) => {
+      await client.send(new SendMessageCommand(message));
+    },
+    receiveMessage: async (message: ReceiveMessageCommandInput) => {
+      return await client.send(new ReceiveMessageCommand(message));
+    },
+    createQueue: async (input: CreateQueueCommandInput) => {
+      return await client.send(new CreateQueueCommand(input));
+    },
+    purgeQueue: async (input: PurgeQueueCommandInput) => {
+      await client.send(new PurgeQueueCommand(input));
+    },
+  };
 }
 
-export default getSqsClient;
+export default getSqsClientConfig;
