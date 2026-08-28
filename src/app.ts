@@ -114,6 +114,7 @@ import { setGoBackHistoryMiddleware } from "./middleware/set-go-back-history-mid
 import { accountExistsWithPasskeyRouter } from "./components/account-exists-with-passkey/account-exists-with-passkey-routes.js";
 import { cannotSignInPasskeyRouter } from "./components/cannot-sign-in-passkey/cannot-sign-in-passkey-routes.js";
 import { journeyRouter } from "./components/journey/journey-routes.js";
+import { resetPasswordResendCode2faRouter } from "./components/reset-password-resend-code-2fa-sms/reset-password-resend-code-2fa-sms-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -154,6 +155,7 @@ function registerRoutes(app: express.Application) {
   app.use(updatedTermsConditionsRouter);
   app.use(resetPasswordRouter);
   app.use(resetPassword2FARouter);
+  app.use(resetPasswordResendCode2faRouter);
   app.use(resetPassword2FAAuthAppRouter);
   app.use(upliftJourneyRouter);
   app.use(contactUsRouter);
