@@ -97,6 +97,13 @@ describe("Integration:: base page ", () => {
       expect($(".govuk-footer").length).to.equal(1);
     });
 
+    it("should link to the accessibility statement in the footer", async () => {
+      const link = $(
+        `.govuk-footer a[href="${PATH_NAMES.ACCESSIBILITY_STATEMENT}"]`
+      );
+      expect(link.length).to.equal(1);
+    });
+
     describe("when in a non-production environment", () => {
       it("should render the test phase banner", async () => {
         expect($(".govuk-phase-banner").length).to.equal(1);

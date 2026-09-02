@@ -11,7 +11,7 @@ export function termsConditionsGet(req: Request, res: Response): void {
 }
 
 export function accessibilityStatementGet(req: Request, res: Response): void {
-  res.render("common/footer/accessibility-statement.njk");
+  redirectToExternalAccessibilityStatement(req, res);
 }
 
 export function supportGet(req: Request, res: Response): void {
@@ -33,14 +33,19 @@ export function supportPost(req: Request, res: Response): void {
 }
 
 function redirectToExternalPrivacyNotice(req: Request, res: Response) {
-  if (req.i18n?.language === "cy") {
-    return res.redirect(
-      "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice.cy"
-    );
-  }
-  res.redirect(
-    "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice"
-  );
+  const privacyNoticeUrl =
+    req.i18n?.language === "cy"
+      ? "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice.cy"
+      : "https://www.gov.uk/government/publications/govuk-one-login-privacy-notice";
+  res.redirect(privacyNoticeUrl);
+}
+
+function redirectToExternalAccessibilityStatement(req: Request, res: Response) {
+  const accessibilityStatementUrl =
+    req.i18n?.language === "cy"
+      ? "https://www.gov.uk/guidance/govuk-one-login-accessibility-statement.cy"
+      : "https://www.gov.uk/guidance/govuk-one-login-accessibility-statement";
+  res.redirect(accessibilityStatementUrl);
 }
 
 function appendQueryParam(param: string, value: string, url: string) {

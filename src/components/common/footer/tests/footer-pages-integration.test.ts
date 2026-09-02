@@ -48,3 +48,42 @@ describe("Integration:: privacy notice link", () => {
     });
   });
 });
+
+describe("Integration:: accessibility statement link", () => {
+  it("should redirect to the accessibility statement", async () => {
+    const app = await createApp();
+    await request(app)
+      .get(PATH_NAMES.ACCESSIBILITY_STATEMENT)
+      .expect(302)
+      .then((res) => {
+        expect(res.headers["location"]).to.equal(
+          "https://www.gov.uk/guidance/govuk-one-login-accessibility-statement"
+        );
+      });
+  });
+
+  it("should redirect to the welsh accessibility statement when the lng cookie is cy", async () => {
+    const app = await createApp();
+    await request(app)
+      .get(PATH_NAMES.ACCESSIBILITY_STATEMENT)
+      .set("Cookie", ["lng=cy"])
+      .expect(302)
+      .then((res) => {
+        expect(res.headers["location"]).to.equal(
+          "https://www.gov.uk/guidance/govuk-one-login-accessibility-statement.cy"
+        );
+      });
+  });
+
+  it("should redirect to the welsh accessibility statement when the lng query param is cy", async () => {
+    const app = await createApp();
+    await request(app)
+      .get(PATH_NAMES.ACCESSIBILITY_STATEMENT + "?lng=cy")
+      .expect(302)
+      .then((res) => {
+        expect(res.headers["location"]).to.equal(
+          "https://www.gov.uk/guidance/govuk-one-login-accessibility-statement.cy"
+        );
+      });
+  });
+});
