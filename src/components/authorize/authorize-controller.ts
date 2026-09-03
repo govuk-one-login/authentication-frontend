@@ -101,6 +101,10 @@ export function authorizeGet(
       );
     }
 
+    req.log.info(
+      `authenticated in claims is ${claims?.authenticated} for sessionId ${sessionId}`
+    );
+
     // Set client session properties
     req.session.client.prompt = loginPrompt;
     setSessionDataFromClaims(req, claims);
@@ -150,7 +154,6 @@ export function authorizeGet(
     req.session.user.isAccountCreationJourney = undefined;
 
     req.log.info(`Reauth claim length ${claims.reauthenticate?.length}`);
-    req.log.info(`Support for reauth is enabled ${supportReauthentication()}`);
 
     const nextStateEvent = getNextStateEvent(req);
 
