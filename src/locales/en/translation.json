@@ -260,8 +260,8 @@
   "pages": {
     "signInOrCreate": {
       "mandatory": {
-        "title": "Create your GOV.UK One Login or sign in",
-        "header": "Create your GOV.UK One&nbsp;Login or sign&nbsp;in"
+        "title": "Create your GOV.UK One Login or sign in [SOME TEST CONTENT FOR DEV ONLY]",
+        "header": "Create your GOV.UK One&nbsp;Login or sign&nbsp;in [SOME TEST CONTENT FOR DEV ONLY]"
       },
       "optional": {
         "title": "Create a GOV.UK One Login or sign in to save your progress",
