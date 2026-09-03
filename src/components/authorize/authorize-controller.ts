@@ -101,10 +101,6 @@ export function authorizeGet(
       );
     }
 
-    req.log.info(
-      `authenticated in claims is ${claims?.authenticated} for sessionId ${sessionId}`
-    );
-
     // Set client session properties
     req.session.client.prompt = loginPrompt;
     setSessionDataFromClaims(req, claims);
