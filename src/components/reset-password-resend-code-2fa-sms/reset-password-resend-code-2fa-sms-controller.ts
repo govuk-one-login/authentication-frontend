@@ -1,5 +1,3 @@
-// TODO - GA content ID
-
 import type { Request, Response } from "express";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import type { SmsMfaMethod } from "../../types.js";
