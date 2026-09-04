@@ -45,7 +45,7 @@ repos:
           - markdown
         stages:
           - pre-commit
-        entry: npm run pretty --write --ignore-unknown
+        entry: npx prettier --write --ignore-unknown
         pass_filenames: true
 
   - repo: https://github.com/lalten/check-gha-pinning

@@ -131,6 +131,10 @@ export function getPasswordResetCodeEnteredWrongBlockDurationInMinutes(): number
   );
 }
 
+export function getAuditEventQueueUrl(): string {
+  return process.env.AUDIT_EVENTS_QUEUE_URL;
+}
+
 export function supportNoPhotoIdContactForms(): boolean {
   return process.env.NO_PHOTO_ID_CONTACT_FORMS === "1";
 }

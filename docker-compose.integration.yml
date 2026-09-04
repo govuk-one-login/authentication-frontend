@@ -1,0 +1,7 @@
+services:
+  floci:
+    image: floci/floci:latest
+    ports:
+      - "4566:4566"
+    environment:
+      AUDIT_EVENTS_QUEUE_URL: http://localhost:4566/000000000000/TxMASQSProducerAuditEventQueue
