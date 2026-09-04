@@ -50,7 +50,8 @@
     "timeout": 20000,
     "recursive": true,
     "require": [
-      "tsx"
+      "tsx",
+      "src/test-utils/floci-setup.ts"
     ],
     "exit": true
   },
