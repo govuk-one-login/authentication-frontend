@@ -41,7 +41,12 @@ jobs:
       - name: Run unit tests
         run: npm run test:unit
       - name: Run integration tests
-        run: npm run test:integration-no-clear-cov
+        run: |
+          docker compose -f docker-compose.integration.yml up -d --wait
+          npm run test:integration-no-clear-cov
+      - name: Stop Docker
+        if: ${{ always() }}
+        run: docker compose -f docker-compose.integration.yml down
       - name: Run test coverage
         run: npm run test:coverage
       - name: SonarCloud Scan
