@@ -48,5 +48,5 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
 export function resendMfaCodePost(
   service: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
-  return sendMfaGeneric(service);
+  return sendMfaGeneric(service, true);
 }
