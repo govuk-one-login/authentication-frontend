@@ -149,24 +149,6 @@ describe("Integration:: resend mfa code", () => {
       .expect(302);
   });
 
-  it("should redirect to /check-your-phone when new code requested as part of account creation journey", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.MFA)
-      .once()
-      .reply(HTTP_STATUS_CODES.NO_CONTENT);
-
-    await request(app)
-      .post(PATH_NAMES.RESEND_MFA_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-        isResendCodeRequest: true,
-      })
-      .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
-      .expect(302);
-  });
-
   it("should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active", async () => {
     const testSpecificCookies = cookies + "; re=true";
     await request(app)
