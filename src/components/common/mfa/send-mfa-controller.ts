@@ -64,12 +64,12 @@ async function handleErrors(
 }
 
 export function sendMfaGeneric(
-  mfaCodeService: MfaServiceInterface
+  mfaCodeService: MfaServiceInterface,
+  isResendCodeRequest: boolean
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email, activeMfaMethodId } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const isResendCodeRequest: boolean = req.body?.isResendCodeRequest ?? false;
 
     const result = await mfaCodeService.sendMfaCode(
       sessionId,
