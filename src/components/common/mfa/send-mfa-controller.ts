@@ -10,20 +10,9 @@ import { getNextPathAndUpdateJourney } from "../state-machine/state-machine-exec
 import { BadRequestError } from "../../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine.js";
 import { PATH_NAMES } from "../../../app.constants.js";
-import { sanitize } from "../../../utils/strings.js";
 import xss from "xss";
 import { getJourneyTypeFromUserSession } from "../journey/journey.js";
 import { isReauth } from "../../../utils/request.js";
-function addGA(req: Request, redirectPath: string) {
-  if (req.query._ga) {
-    const queryParams = new URLSearchParams({
-      _ga: sanitize(req.query._ga as string),
-    }).toString();
-
-    redirectPath = redirectPath + "?" + queryParams;
-  }
-  return redirectPath;
-}
 
 async function handleErrors(
   mfaFailResponse: ApiResponseResult<DefaultApiResponse>,
@@ -115,8 +104,6 @@ export function sendMfaGeneric(
     if (isResendCodeRequest) {
       redirectPath = PATH_NAMES.CHECK_YOUR_PHONE;
     }
-
-    redirectPath = addGA(req, redirectPath);
 
     return res.redirect(redirectPath);
   };
