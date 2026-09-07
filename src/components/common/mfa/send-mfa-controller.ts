@@ -9,7 +9,6 @@ import { ERROR_CODES, getErrorPathByCode } from "../constants.js";
 import { getNextPathAndUpdateJourney } from "../state-machine/state-machine-executor.js";
 import { BadRequestError } from "../../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine.js";
-import { PATH_NAMES } from "../../../app.constants.js";
 import xss from "xss";
 import { getJourneyTypeFromUserSession } from "../journey/journey.js";
 import { isReauth } from "../../../utils/request.js";
@@ -99,10 +98,6 @@ export function sendMfaGeneric(
         res,
         USER_JOURNEY_EVENTS.VERIFY_MFA
       );
-    }
-
-    if (isResendCodeRequest) {
-      redirectPath = PATH_NAMES.CHECK_YOUR_PHONE;
     }
 
     return res.redirect(redirectPath);
