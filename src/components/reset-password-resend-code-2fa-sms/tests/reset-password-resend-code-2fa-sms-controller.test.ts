@@ -46,5 +46,50 @@ describe("reset password resend code 2fa sms controller", () => {
         })
       );
     });
+
+    it("should render security-code-error/index-wait.njk if user has been locked out in current session", () => {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      req.session.user.codeRequestLock = tomorrow.toUTCString();
+      resetPasswordResendCode2faSmsGet(req as Request, res as Response);
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-wait.njk"
+      );
+    });
+
+    [
+      {
+        isSignInJourney: true,
+        isAccountRecoveryJourney: false,
+        expectedShow2HrScreen: true,
+      },
+      {
+        isSignInJourney: false,
+        isAccountRecoveryJourney: true,
+        expectedShow2HrScreen: false,
+      },
+      {
+        isSignInJourney: true,
+        isAccountRecoveryJourney: true,
+        expectedShow2HrScreen: false,
+      },
+    ].forEach((i) => {
+      it(`should render correct lockout when isSignInJourney is ${i.isSignInJourney} and isAccountRecoveryJourney is ${i.isAccountRecoveryJourney}`, () => {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        req.session.user.wrongCodeEnteredLock = tomorrow.toUTCString();
+        req.session.user.isSignInJourney = i.isSignInJourney;
+        req.session.user.isAccountRecoveryJourney = i.isAccountRecoveryJourney;
+
+        resetPasswordResendCode2faSmsGet(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWithMatch(
+          "security-code-error/index-security-code-entered-exceeded.njk",
+          sinon.match({
+            show2HrScreen: i.expectedShow2HrScreen,
+          })
+        );
+      });
+    });
   });
 });
