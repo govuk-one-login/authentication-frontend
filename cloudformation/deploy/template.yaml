@@ -453,7 +453,7 @@ Mappings:
       SupportHTTPKeepAlive: "Yes"
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
-      OrchApiBaseUrl: "https://oidc.authdev3.dev.account.gov.uk"
+      OrchApiBaseUrl: "https://oidc.dev.account.gov.uk" # Note: Authdev3 is directly integrated with orch
       UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
