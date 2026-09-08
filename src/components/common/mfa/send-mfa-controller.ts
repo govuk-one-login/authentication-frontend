@@ -90,16 +90,12 @@ export function sendMfaGeneric(
       return handleErrors(result, isResendCodeRequest, res, req);
     }
 
-    let redirectPath;
-
-    if (!isResendCodeRequest) {
-      redirectPath = await getNextPathAndUpdateJourney(
+    return res.redirect(
+      await getNextPathAndUpdateJourney(
         req,
         res,
         USER_JOURNEY_EVENTS.VERIFY_MFA
-      );
-    }
-
-    return res.redirect(redirectPath);
+      )
+    );
   };
 }
