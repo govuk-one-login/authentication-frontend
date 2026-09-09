@@ -1,89 +1,152 @@
 {
-  "$schema": "https://raw.githubusercontent.com/govuk-one-login/quality-gates/refs/tags/v0.2.0/schemas/schema.json",
+  "$schema": "https://raw.githubusercontent.com/govuk-one-login/quality-gates/refs/tags/v0.19.0/schemas/schema.json",
   "services": [
     {
-      "service-tag": "auth",
-      "quality-gates": [
+      "product": "Authentication",
+      "component": "authentication-frontend",
+      "promotionType": "securePipelines",
+      "automated": [
         {
-          "check-types": ["code style and linting"],
-          "provider": "GitHub",
+          "checkTypes": ["code style and linting"],
           "phase": "pre-merge",
-          "config": {
-            "file": ".github/workflows/pre-commit.yml",
-            "path": "jobs.pre-commit",
-            "name": "Run pre-commit"
-          }
-        },
-        {
-          "check-types": ["vulnerability detection"],
           "provider": "GitHub",
-          "phase": "pre-merge",
-          "config": {
-            "file": ".github/workflows/dependency-review.yml",
-            "path": "jobs.dependency-review"
-          }
-        },
-        {
-          "check-types": [
-            "unit",
-            "new feature",
-            "integration",
-            "regression",
-            "code style and linting",
-            "code quality",
-            "unit test coverage"
+          "checks": [
+            {
+              "name": "code style and linting"
+            }
           ],
-          "provider": "GitHub",
-          "phase": "pre-merge",
-          "config": {
-            "file": ".github/workflows/pre-merge-checks.yml",
-            "path": "jobs.run-tests"
-          }
+          "file": ".github/workflows/pre-commit.yml",
+          "path": "$.jobs.pre-commit"
         },
         {
-          "check-types": ["visual regression"],
-          "provider": "GitHub",
+          "checkTypes": ["vulnerability detection"],
           "phase": "pre-merge",
-          "config": {
-            "file": ".github/workflows/pre-merge-checks.yml",
-            "path": "jobs.snapshot-tests"
-          }
+          "provider": "GitHub",
+          "checks": [
+            {
+              "name": "vulnerability detection"
+            }
+          ],
+          "file": ".github/workflows/dependency-review.yml",
+          "path": "$.jobs.dependency-review"
         },
         {
-          "check-types": ["code style and linting", "code quality"],
-          "provider": "GitHub",
           "phase": "pre-merge",
-          "config": {
-            "file": ".github/workflows/checkov.yml",
-            "path": "jobs.scan"
-          }
+          "provider": "GitHub",
+          "checks": [
+            {
+              "name": "integration",
+              "purpose": ["new feature", "regression"]
+            }
+          ],
+          "file": ".github/workflows/pre-merge-checks.yml",
+          "path": "$.jobs.run-tests.steps[?@.name=='Run integration tests']"
         },
         {
-          "check-types": ["code style and linting"],
-          "provider": "GitHub",
           "phase": "pre-merge",
-          "config": {
-            "file": ".github/workflows/dependabot-validate.yml",
-            "path": "jobs.validate"
-          }
+          "provider": "GitHub",
+          "checks": [
+            {
+              "name": "code style and linting"
+            }
+          ],
+          "file": ".github/workflows/pre-merge-checks.yml",
+          "path": "$.jobs.run-tests.steps[?@.name=='Run lint']"
         },
         {
-          "check-types": ["code style and linting", "code quality"],
-          "provider": "GitHub",
           "phase": "pre-merge",
-          "config": {
-            "file": ".github/workflows/pre-merge-checks-shellscript.yaml",
-            "path": "jobs.shellcheck"
-          }
+          "provider": "GitHub",
+          "checks": [
+            {
+              "name": "code quality"
+            }
+          ],
+          "file": ".github/workflows/pre-merge-checks.yml",
+          "path": "$.jobs.run-tests.steps[?@.name=='SonarCloud Scan']"
         },
         {
-          "check-types": ["code style and linting", "code quality"],
-          "provider": "GitHub",
           "phase": "pre-merge",
-          "config": {
-            "file": ".github/workflows/require-pinned-github-actions.yml",
-            "path": "jobs.check-actions-sha"
-          }
+          "provider": "GitHub",
+          "checks": [
+            {
+              "name": "unit",
+              "purpose": ["new feature", "regression"]
+            },
+            {
+              "name": "unit test coverage"
+            }
+          ],
+          "file": ".github/workflows/pre-merge-checks.yml",
+          "path": "$.jobs.run-tests.steps[?@.name=='Run unit tests']"
+        },
+        {
+          "checkTypes": ["visual regression"],
+          "phase": "pre-merge",
+          "provider": "GitHub",
+          "checks": [
+            {
+              "name": "visual regression"
+            }
+          ],
+          "file": ".github/workflows/pre-merge-checks.yml",
+          "path": "$.jobs.snapshot-tests"
+        },
+        {
+          "checkTypes": ["code style and linting", "code quality"],
+          "phase": "pre-merge",
+          "provider": "GitHub",
+          "checks": [
+            {
+              "name": "code style and linting"
+            },
+            {
+              "name": "code quality"
+            }
+          ],
+          "file": ".github/workflows/checkov.yml",
+          "path": "$.jobs.scan"
+        },
+        {
+          "checkTypes": ["code style and linting"],
+          "phase": "pre-merge",
+          "provider": "GitHub",
+          "checks": [
+            {
+              "name": "code style and linting"
+            }
+          ],
+          "file": ".github/workflows/dependabot-validate.yml",
+          "path": "$.jobs.validate"
+        },
+        {
+          "checkTypes": ["code style and linting", "code quality"],
+          "phase": "pre-merge",
+          "provider": "GitHub",
+          "checks": [
+            {
+              "name": "code style and linting"
+            },
+            {
+              "name": "code quality"
+            }
+          ],
+          "file": ".github/workflows/pre-merge-checks-shellscript.yaml",
+          "path": "$.jobs.shellcheck"
+        },
+        {
+          "checkTypes": ["code style and linting", "code quality"],
+          "phase": "pre-merge",
+          "provider": "GitHub",
+          "checks": [
+            {
+              "name": "code style and linting"
+            },
+            {
+              "name": "code quality"
+            }
+          ],
+          "file": ".github/workflows/require-pinned-github-actions.yml",
+          "path": "$.jobs.check-actions-sha"
         }
       ]
     }
