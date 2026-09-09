@@ -588,6 +588,9 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS]: {
         on: {
           [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.RESET_PASSWORD_2FA_SMS],
+          [USER_JOURNEY_EVENTS.MFA_INDEFINITELY_BLOCKED]: [
+            PATH_NAMES.CANNOT_USE_SECURITY_CODE,
+          ],
         },
       },
       [PATH_NAMES.RESET_PASSWORD]: {
