@@ -1,6 +1,10 @@
 import { afterEach, describe } from "mocha";
-import { resetPasswordResendCode2faSmsGet } from "../reset-password-resend-code-2fa-sms-controller.js";
+import {
+  resetPasswordResendCode2faSmsGet,
+  resetPasswordResendCode2faSmsPost,
+} from "../reset-password-resend-code-2fa-sms-controller.js";
 import type { Request, Response } from "express";
+import type { MfaServiceInterface } from "../../common/mfa/types.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import { expect } from "chai";
 import { mockResponse } from "mock-req-res";
@@ -90,6 +94,39 @@ describe("reset password resend code 2fa sms controller", () => {
           })
         );
       });
+    });
+  });
+
+  describe("resetPasswordResendCode2faSmsPost", () => {
+    it("should send mfa code and redirect to /reset-password-2fa-sms view", async () => {
+      const fakeService: MfaServiceInterface = {
+        sendMfaCode: sinon.fake.returns({
+          success: true,
+        }),
+      } as unknown as MfaServiceInterface;
+
+      req.session.user.email = "test@test.com";
+      req.path = PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS;
+
+      await resetPasswordResendCode2faSmsPost(fakeService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.been.calledWith(
+        PATH_NAMES.RESET_PASSWORD_2FA_SMS
+      );
+      expect(fakeService.sendMfaCode).to.have.been.calledOnceWithExactly(
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        TEST_DEFAULT_MFA_ID,
+        sinon.match.any
+      );
     });
   });
 });
