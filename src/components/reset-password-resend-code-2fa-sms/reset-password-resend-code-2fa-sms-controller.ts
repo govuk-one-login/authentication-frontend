@@ -1,9 +1,12 @@
 import type { Request, Response } from "express";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
-import type { SmsMfaMethod } from "../../types.js";
+import type { ExpressRouteFunc, SmsMfaMethod } from "../../types.js";
 import { supportReauthentication } from "../../config.js";
 import { JOURNEY_TYPE, PATH_NAMES } from "../../app.constants.js";
 import { isLocked } from "../../utils/lock-helper.js";
+import type { MfaServiceInterface } from "../common/mfa/types.js";
+import { mfaService } from "../common/mfa/mfa-service.js";
+import { sendMfaGeneric } from "../common/mfa/send-mfa-controller.js";
 
 export function resetPasswordResendCode2faSmsGet(
   req: Request,
@@ -34,4 +37,10 @@ export function resetPasswordResendCode2faSmsGet(
       isReauthJourney: journeyType === JOURNEY_TYPE.REAUTHENTICATION,
     });
   }
+}
+
+export function resetPasswordResendCode2faSmsPost(
+  service: MfaServiceInterface = mfaService()
+): ExpressRouteFunc {
+  return sendMfaGeneric(service, true);
 }
