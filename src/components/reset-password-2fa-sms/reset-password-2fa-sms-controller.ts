@@ -22,7 +22,6 @@ export function resetPassword2FASmsGet(): ExpressRouteFunc {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
-          newCodeLink: PATH_NAMES.RESET_PASSWORD_2FA_SMS,
           show2HrScreen: true,
         }
       );
