@@ -4,11 +4,7 @@ import { MfaMethodPriority } from "../../types.js";
 import type { ResetPasswordCheckEmailServiceInterface } from "./types.js";
 import { resetPasswordCheckEmailService } from "./reset-password-check-email-service.js";
 import { BadRequestError } from "../../utils/error.js";
-import {
-  ERROR_CODES,
-  getErrorPathByCode,
-  type SecurityCodeErrorType,
-} from "../common/constants.js";
+import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
 import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
@@ -21,7 +17,6 @@ import type { AccountInterventionsInterface } from "../account-intervention/type
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
 import { isLocked } from "../../utils/lock-helper.js";
 import xss from "xss";
-import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import type { MfaServiceInterface } from "../common/mfa/types.js";
 import { mfaService } from "../common/mfa/mfa-service.js";
 
@@ -51,13 +46,9 @@ export function resetPasswordCheckEmailGet(
     }
 
     if (isLocked(req.session.user.wrongCodeEnteredPasswordResetLock)) {
-      const newCodeLink = req.query?.isResendCodeRequest
-        ? "/security-code-check-time-limit?isResendCodeRequest=true"
-        : "/security-code-check-time-limit";
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
-          newCodeLink,
           show2HrScreen: true,
         }
       );
@@ -165,11 +156,7 @@ export function resetPasswordCheckEmailPost(
         res.render(
           "security-code-error/index-security-code-entered-exceeded.njk",
           {
-            newCodeLink: getNewCodePath(
-              req.query.actionType as SecurityCodeErrorType
-            ),
             show2HrScreen: true,
-            isAccountCreationJourney: false,
           }
         );
         return true;
