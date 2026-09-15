@@ -26,7 +26,6 @@ export function enterMfaGet(
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
-          newCodeLink: PATH_NAMES.ENTER_MFA,
           show2HrScreen: true,
         }
       );

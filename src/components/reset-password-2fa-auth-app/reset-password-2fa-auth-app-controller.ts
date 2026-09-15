@@ -26,8 +26,6 @@ export function resetPassword2FAAuthAppGet(): ExpressRouteFunc {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
-          newCodeLink: PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP,
-          isAuthApp: true,
           show2HrScreen: true,
         }
       );
