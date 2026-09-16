@@ -15,9 +15,7 @@ export function resendEmailCodeGet(req: Request, res: Response): void {
     isLocked(req.session.user.wrongCodeEnteredAccountRecoveryLock) ||
     isLocked(req.session.user.wrongCodeEnteredPasswordResetLock)
   ) {
-    const newCodeLink = req.query?.isResendCodeRequest
-      ? "/security-code-check-time-limit?isResendCodeRequest=true"
-      : "/security-code-check-time-limit";
+    const newCodeLink = "/security-code-check-time-limit";
 
     let show2HrScreen = false;
     if (

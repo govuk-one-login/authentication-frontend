@@ -186,7 +186,6 @@ export const pages: Record<string, Page | PageVariant[]> = {
       template: "resend-mfa-code/index.njk",
       options: {
         redactedPhoneNumber: "123",
-        isResendCodeRequest: false,
         supportReauthentication: true,
         isReauthJourney: false,
       },
@@ -196,7 +195,6 @@ export const pages: Record<string, Page | PageVariant[]> = {
       template: "resend-mfa-code/index.njk",
       options: {
         redactedPhoneNumber: "123",
-        isResendCodeRequest: false,
         supportReauthentication: true,
         isReauthJourney: true,
       },
@@ -322,7 +320,6 @@ export const pages: Record<string, Page | PageVariant[]> = {
       template: "account-creation/resend-mfa-code/index.njk",
       options: {
         phoneNumber: "123",
-        isResendCodeRequest: false,
       },
     },
     {
@@ -330,7 +327,6 @@ export const pages: Record<string, Page | PageVariant[]> = {
       template: "account-creation/resend-mfa-code/index.njk",
       options: {
         phoneNumber: "123",
-        isResendCodeRequest: true,
       },
     },
   ],
