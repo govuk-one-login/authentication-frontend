@@ -34,10 +34,12 @@ async function handleErrors(
 
   const pathWithQueryParams = getErrorPathByCode(mfaFailResponse.data.code);
 
+  // NOTE: the resend and non-resend branches below deliberately sit on either
+  // side of the isReauth() check. A resend request redirects to the error page
+  // directly, whereas a non-resend reauth request is instead logged out
+  // (login_required).
   if (pathWithQueryParams && isResendCodeRequest) {
-    return pathWithQueryParams.includes("?")
-      ? res.redirect(pathWithQueryParams + "&isResendCodeRequest=true")
-      : res.redirect(pathWithQueryParams + "?isResendCodeRequest=true");
+    return res.redirect(pathWithQueryParams);
   }
 
   if (isReauth(req)) {
@@ -54,7 +56,7 @@ async function handleErrors(
   }
 
   if (pathWithQueryParams && !isResendCodeRequest) {
-    res.redirect(pathWithQueryParams);
+    return res.redirect(pathWithQueryParams);
   }
 
   throw new BadRequestError(

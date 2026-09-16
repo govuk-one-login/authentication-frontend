@@ -1,7 +1,6 @@
 import { validateBodyMiddleware } from "../../middleware/form-validation-middleware.js";
 import type { ValidationChainFunc } from "../../types.js";
 import { validateCode } from "../common/verify-code/verify-code-validation.js";
-import { pathWithQueryParam } from "../common/constants.js";
 import { PATH_NAMES } from "../../app.constants.js";
 export function validateSmsCodeRequest(): ValidationChainFunc {
   return [
@@ -16,12 +15,7 @@ export function validateSmsCodeRequest(): ValidationChainFunc {
 }
 
 const postValidationLocals = function locals(): Record<string, unknown> {
-  const resendCodeLinkAsPostValidationLocal = pathWithQueryParam(
-    PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
-    "isResendCodeRequest",
-    "true"
-  );
   return {
-    resendCodeLink: resendCodeLinkAsPostValidationLocal,
+    resendCodeLink: PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
   };
 };

@@ -13,7 +13,6 @@
 {% block content %}
     <form action="/resend-code" method="post" novalidate="novalidate">
         <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
-        <input type="hidden" name="isResendCodeRequest" value="{{isResendCodeRequest}}"/>
 
         <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resendMfaCode.header' | translate}}</h1>
 
