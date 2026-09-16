@@ -95,7 +95,6 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
-        isResendCodeRequest: true,
       })
       .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
       .expect(302);
