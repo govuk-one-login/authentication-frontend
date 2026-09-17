@@ -57,6 +57,7 @@ const getNextStateEvent = (req: Request): string => {
       return USER_JOURNEY_EVENTS.UPLIFT;
     }
     if (req.session.client?.prompt === OIDC_PROMPT.LOGIN) {
+      req.log.info("non reauth login prompt journey");
       return USER_JOURNEY_EVENTS.PROMPT_LOGIN;
     }
     return USER_JOURNEY_EVENTS.SILENT_LOGIN;
