@@ -44,6 +44,14 @@ jobs:
         run: |
           docker compose -f docker-compose.integration.yml up -d --wait
           npm run test:integration-no-clear-cov
+      - name: Dump Docker logs on integration test failure
+        if: ${{ failure() }}
+        run: |
+          echo "--- Container Logs ---"
+          docker logs authentication-frontend-floci-1 || true
+          
+          echo "--- Health Check Output ---"
+          docker inspect --format="{{json .State.Health}}" authentication-frontend-floci-1 || true
       - name: Stop Docker
         if: ${{ always() }}
         run: docker compose -f docker-compose.integration.yml down
