@@ -20,7 +20,8 @@ describe("send mfa controller", () => {
 
   let getJourneyTypeFromUserSessionSpy: SinonSpy;
   let mockSendMfaGeneric: (
-    mfaCodeService: MfaServiceInterface
+    mfaCodeService: MfaServiceInterface,
+    isResendCodeRequest: boolean
   ) => ExpressRouteFunc;
 
   beforeEach(async () => {
@@ -61,7 +62,10 @@ describe("send mfa controller", () => {
         activeMfaMethodId: "active_mfa_method_id",
       };
 
-      await mockSendMfaGeneric(fakeService)(req as Request, res as Response);
+      await mockSendMfaGeneric(fakeService, true)(
+        req as Request,
+        res as Response
+      );
 
       expect(
         getJourneyTypeFromUserSessionSpy
@@ -77,11 +81,16 @@ describe("send mfa controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        sinon.match.any,
+        true,
         sinon.match.any,
         sinon.match.any,
         "active_mfa_method_id",
         JOURNEY_TYPE.REAUTHENTICATION
+      );
+      // On success sendMfaGeneric always completes via the VERIFY_MFA
+      // transition; from RESEND_MFA_CODE that resolves to /enter-code.
+      expect(res.redirect).to.have.been.calledOnceWithExactly(
+        PATH_NAMES.ENTER_MFA
       );
     });
   });
@@ -106,7 +115,7 @@ describe("send mfa controller", () => {
         redirectUri: "https://rp/",
       };
 
-      mockSendMfaGeneric(fakeService)(req as Request, res as Response);
+      mockSendMfaGeneric(fakeService, false)(req as Request, res as Response);
 
       expect(
         getJourneyTypeFromUserSessionSpy
@@ -121,7 +130,7 @@ describe("send mfa controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        sinon.match.any,
+        false,
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
@@ -149,7 +158,10 @@ describe("send mfa controller", () => {
         redirectUri: "https://rp/",
       };
 
-      await mockSendMfaGeneric(fakeService)(req as Request, res as Response);
+      await mockSendMfaGeneric(fakeService, false)(
+        req as Request,
+        res as Response
+      );
 
       expect(
         getJourneyTypeFromUserSessionSpy
@@ -165,7 +177,7 @@ describe("send mfa controller", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        sinon.match.any,
+        false,
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
