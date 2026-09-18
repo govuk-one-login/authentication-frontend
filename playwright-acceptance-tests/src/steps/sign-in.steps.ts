@@ -446,13 +446,6 @@ Then(
   }
 );
 
-When(
-  "the user clicks link {string}",
-  async function (this: PlaywrightWorld, linkText: string): Promise<void> {
-    await requirePage(this).getByRole("link", { name: linkText }).click();
-  }
-);
-
 /* ---- Continue button ---- */
 
 When(
