@@ -73,6 +73,18 @@ describe("Integration:: resend SMS mfa code (account creation variant)", () => {
       .expect(200);
   });
 
+  it("should render a back link to /check-your-phone", async () => {
+    await request(app)
+      .get(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($(".govuk-back-link").attr("href")).to.contain(
+          "check-your-phone"
+        );
+      })
+      .expect(200);
+  });
+
   it("should return error when csrf not present", async () => {
     await request(app)
       .post(PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION)
