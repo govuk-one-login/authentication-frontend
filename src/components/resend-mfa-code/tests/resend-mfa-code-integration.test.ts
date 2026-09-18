@@ -80,6 +80,16 @@ describe("Integration:: resend mfa code", () => {
       .expect(200);
   });
 
+  it("should render a back link to /enter-code", async () => {
+    await request(app)
+      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($(".govuk-back-link").attr("href")).to.contain("enter-code");
+      })
+      .expect(200);
+  });
+
   it("should return resend mfa code page with reauth analytics properties", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     await request(app)
