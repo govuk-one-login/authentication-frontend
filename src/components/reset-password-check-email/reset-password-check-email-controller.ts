@@ -63,7 +63,7 @@ export function resetPasswordCheckEmailGet(
       );
     }
 
-    if (result.success) {
+    if (result?.success) {
       req.session.user.activeMfaMethodId = result.data.mfaMethods.find(
         (method: MfaMethod) => method.priority === MfaMethodPriority.DEFAULT
       )?.id;

@@ -46,3 +46,20 @@ When(
     await page.agreeAndClickContinue();
   }
 );
+
+When(
+  "the user clicks link {string}",
+  async function (this: PlaywrightWorld, linkText: string): Promise<void> {
+    await requirePage(this).getByRole("link", { name: linkText }).click();
+  }
+);
+
+When(
+  "the user clicks details with text {string}",
+  async function (this: PlaywrightWorld, detailsText): Promise<void> {
+    await requirePage(this)
+      .locator(".govuk-details__summary")
+      .filter({ hasText: detailsText })
+      .click();
+  }
+);
