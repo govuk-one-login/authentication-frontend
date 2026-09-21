@@ -34,3 +34,41 @@ Feature: Resend security code
     When the user clicks the Back link
     Then the user is taken to the "Check your phone" page
     And the current page path is "/enter-code"
+
+  Scenario: Uplift user can resend their security code and return to enter the code
+    Given a user with SMS MFA exists
+    When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    And the user dismisses the passkey registration page if present
+    Then the user is returned to the service
+    When the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Enter a security code to continue" page
+    And the current page path is "/enter-code"
+    When the user chooses to resend the security code
+    Then the user is taken to the "Get security code" page
+    And the current page path is "/resend-code"
+    When the user requests a new security code
+    Then the user is taken to the "Enter a security code to continue" page
+    And the current page path is "/enter-code"
+
+  Scenario: Uplift user can go back from the resend security code page to enter the code
+    Given a user with SMS MFA exists
+    When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    And the user dismisses the passkey registration page if present
+    Then the user is returned to the service
+    When the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Enter a security code to continue" page
+    And the current page path is "/enter-code"
+    When the user chooses to resend the security code
+    Then the user is taken to the "Get security code" page
+    And the current page path is "/resend-code"
+    When the user clicks the Back link
+    Then the user is taken to the "Enter a security code to continue" page
+    And the current page path is "/enter-code"
