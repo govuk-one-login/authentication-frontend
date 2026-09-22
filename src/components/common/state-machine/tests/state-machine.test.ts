@@ -28,14 +28,6 @@ describe("state-machine", () => {
       );
       expect(nextState.value).to.equal(PATH_NAMES.AUTH_CODE);
     });
-    it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.ENTER_PASSWORD} for prompt login`, () => {
-      const nextState = getNextState(
-        PATH_NAMES.AUTHORIZE,
-        USER_JOURNEY_EVENTS.PROMPT_LOGIN,
-        DEFAULT_CONTEXT
-      );
-      expect(nextState.value).to.equal(PATH_NAMES.ENTER_PASSWORD);
-    });
     it(`should move from ${PATH_NAMES.AUTHORIZE} to ${PATH_NAMES.UPLIFT_JOURNEY} for uplift`, () => {
       const nextState = getNextState(
         PATH_NAMES.AUTHORIZE,

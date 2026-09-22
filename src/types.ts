@@ -110,7 +110,6 @@ export interface UserSessionClient {
   cookieConsentEnabled?: boolean;
   crossDomainGaTrackingId?: string;
   scopes?: string[];
-  prompt?: string;
   redirectUri?: string;
   state?: string;
   isOneLoginService?: boolean;

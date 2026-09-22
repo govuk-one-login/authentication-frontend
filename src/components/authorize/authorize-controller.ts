@@ -6,7 +6,6 @@ import {
   COOKIES_CHANNEL,
   CHANNEL,
   APP_ENV_NAME,
-  OIDC_PROMPT,
 } from "../../app.constants.js";
 import { ERROR_CODES } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
@@ -56,10 +55,6 @@ const getNextStateEvent = (req: Request): string => {
     if (isUpliftRequired(req)) {
       return USER_JOURNEY_EVENTS.UPLIFT;
     }
-    if (req.session.client?.prompt === OIDC_PROMPT.LOGIN) {
-      req.log.info("non reauth login prompt journey");
-      return USER_JOURNEY_EVENTS.PROMPT_LOGIN;
-    }
     return USER_JOURNEY_EVENTS.SILENT_LOGIN;
   }
 
@@ -75,7 +70,6 @@ export function authorizeGet(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const loginPrompt = sanitize(req.query.prompt as string);
 
     const clientId = req.query.client_id as string;
     const responseType = req.query.response_type as string;
@@ -103,7 +97,6 @@ export function authorizeGet(
     }
 
     // Set client session properties
-    req.session.client.prompt = loginPrompt;
     setSessionDataFromClaims(req, claims);
 
     const startAuthResponse = await authService.start(

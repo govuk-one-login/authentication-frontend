@@ -10,7 +10,6 @@ import {
   CHANNEL,
   COOKIE_CONSENT,
   COOKIES_PREFERENCES_SET,
-  OIDC_PROMPT,
   PATH_NAMES,
 } from "../../../app.constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
@@ -301,19 +300,6 @@ describe("authorize controller", () => {
       )(req as Request, res as Response);
 
       expect(res.redirect).to.have.calledWith(PATH_NAMES.SIGN_IN_OR_CREATE);
-    });
-
-    it("should redirect to /enter-password page when prompt is login", async () => {
-      req.query.prompt = OIDC_PROMPT.LOGIN;
-
-      await authorizeGet(
-        fakeAuthorizeService,
-        fakeCookieConsentService,
-        fakeKmsDecryptionService,
-        fakeJwtService
-      )(req as Request, res as Response);
-
-      expect(res.redirect).to.have.calledWith(PATH_NAMES.ENTER_PASSWORD);
     });
 
     it("should redirect to /sign-in-or-create page with _ga query param when present", async () => {
