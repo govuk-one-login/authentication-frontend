@@ -294,11 +294,6 @@ export const EXTERNAL_LINKS = {
   GOV_UK: "https://www.gov.uk/",
 };
 
-export const OIDC_PROMPT = {
-  LOGIN: "LOGIN",
-  NONE: "NONE",
-};
-
 export const OIDC_ERRORS = {
   ACCESS_DENIED: "access_denied",
 };
