@@ -596,11 +596,7 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
         meta: {
-          optionalPaths: [
-            PATH_NAMES.ENTER_EMAIL_SIGN_IN,
-            PATH_NAMES.ACCOUNT_LOCKED,
-            PATH_NAMES.SIGN_IN_OR_CREATE,
-          ],
+          optionalPaths: [PATH_NAMES.ACCOUNT_LOCKED],
         },
       },
       [PATH_NAMES.PROVE_IDENTITY_CALLBACK]: {
