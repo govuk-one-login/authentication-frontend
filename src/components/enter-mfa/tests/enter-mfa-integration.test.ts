@@ -126,6 +126,19 @@ describe("Integration:: enter mfa", () => {
     await request(app).get(PATH_NAMES.ENTER_MFA).expect(200);
   });
 
+  it("should include a resend code link to /resend-code", async () => {
+    await setupStubbedApp();
+    await request(app)
+      .get(PATH_NAMES.ENTER_MFA)
+      .expect(200)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect(
+          $(`a[href='${PATH_NAMES.RESEND_MFA_CODE}']`).length
+        ).to.be.greaterThan(0);
+      });
+  });
+
   [
     {
       partialMfaMethods: [

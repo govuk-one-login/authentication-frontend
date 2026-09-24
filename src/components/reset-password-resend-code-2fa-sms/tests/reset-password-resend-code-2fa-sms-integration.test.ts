@@ -8,7 +8,6 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants.js";
-import { ERROR_CODES } from "../../common/constants.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
@@ -17,7 +16,7 @@ import { buildMfaMethods } from "../../../../test/helpers/mfa-helper.js";
 import esmock from "esmock";
 const { testPhoneNumber, testRedactedPhoneNumber } = commonVariables;
 
-describe("Integration:: resend mfa code", () => {
+describe("Integration:: reset password resend-code-2fa sms", () => {
   let token: string | string[];
   let cookies: string;
   let app: any;
@@ -42,7 +41,9 @@ describe("Integration:: resend mfa code", () => {
                 phoneNumber: testPhoneNumber,
                 redactedPhoneNumber: testRedactedPhoneNumber,
               }),
-              journey: getPermittedJourneyForPath(PATH_NAMES.ENTER_MFA),
+              journey: getPermittedJourneyForPath(
+                PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS
+              ),
               reauthenticate: "reauth",
             };
 
@@ -57,7 +58,7 @@ describe("Integration:: resend mfa code", () => {
     baseApi = process.env.FRONTEND_API_BASE_URL;
 
     ({ token, cookies } = extractCsrfTokenAndCookies(
-      await request(app).get(PATH_NAMES.RESEND_MFA_CODE)
+      await request(app).get(PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS)
     ));
   });
 
@@ -70,9 +71,9 @@ describe("Integration:: resend mfa code", () => {
     app = undefined;
   });
 
-  it("should return resend mfa code page with sign in analytics properties", async () => {
+  it("should return resend code page with expected title", async () => {
     await request(app)
-      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .get(PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS)
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("title").text()).to.contain("Get security code");
@@ -80,20 +81,10 @@ describe("Integration:: resend mfa code", () => {
       .expect(200);
   });
 
-  it("should render a back link to /enter-code", async () => {
-    await request(app)
-      .get(PATH_NAMES.RESEND_MFA_CODE)
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($(".govuk-back-link").attr("href")).to.contain("enter-code");
-      })
-      .expect(200);
-  });
-
-  it("should return resend mfa code page with reauth analytics properties", async () => {
+  it("should return resend code page with reauth analytics properties", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     await request(app)
-      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .get(PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS)
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($("title").text()).to.contain("Get security code");
@@ -103,7 +94,7 @@ describe("Integration:: resend mfa code", () => {
 
   it("should include the last three digits of the user's telephone number", async () => {
     await request(app)
-      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .get(PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS)
       .expect(function (res) {
         const $ = cheerio.load(res.text);
         expect($.text()).to.contain(testRedactedPhoneNumber.slice(-3));
@@ -113,7 +104,7 @@ describe("Integration:: resend mfa code", () => {
 
   it("should state user could be locked out", async () => {
     await request(app)
-      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .get(PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS)
       .expect((res) => {
         const $ = cheerio.load(res.text);
         expect($.text()).to.contain("you will be locked out for 2 hours.");
@@ -121,10 +112,10 @@ describe("Integration:: resend mfa code", () => {
       .expect(200);
   });
 
-  it("should state reauthenticating user could be logged out", async () => {
+  it("should state reauthenticating user could be signed out", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     await request(app)
-      .get(PATH_NAMES.RESEND_MFA_CODE)
+      .get(PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS)
       .expect((res) => {
         const $ = cheerio.load(res.text);
         expect($.text()).to.contain("you will be signed out");
@@ -132,41 +123,43 @@ describe("Integration:: resend mfa code", () => {
       .expect(200);
   });
 
-  it("should return error when csrf not present", async () => {
+  it("should render a back link to /reset-password-2fa-sms", async () => {
     await request(app)
-      .post(PATH_NAMES.RESEND_MFA_CODE)
-      .type("form")
-      .send({
-        code: "123456",
+      .get(PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($(".govuk-back-link").attr("href")).to.contain(
+          "reset-password-2fa-sms"
+        );
       })
-      .expect(403);
+      .expect(200);
   });
 
-  it("should redirect to /enter-code when new code requested as part of sign in journey", async () => {
+  it("should redirect to /reset-password-2fa-sms when a new code is requested", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.MFA)
       .once()
       .reply(HTTP_STATUS_CODES.NO_CONTENT);
 
     await request(app)
-      .post(PATH_NAMES.RESEND_MFA_CODE)
+      .post(PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS)
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
       })
-      .expect("Location", PATH_NAMES.ENTER_MFA)
+      .expect("Location", PATH_NAMES.RESET_PASSWORD_2FA_SMS)
       .expect(302);
   });
 
-  it("should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active", async () => {
-    const testSpecificCookies = cookies + "; re=true";
+  it("should return error when csrf not present", async () => {
     await request(app)
-      .get(PATH_NAMES.RESEND_MFA_CODE)
-      .set("Cookie", testSpecificCookies)
-      .expect((res) => {
-        res.text.includes("You cannot get a new security code at the moment");
-      });
+      .post(PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS)
+      .type("form")
+      .send({
+        code: "123456",
+      })
+      .expect(403);
   });
 
   it("should return 500 error screen when API call fails", async () => {
@@ -175,77 +168,16 @@ describe("Integration:: resend mfa code", () => {
     });
 
     await request(app)
-      .post(PATH_NAMES.RESEND_MFA_CODE)
+      .post(PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS)
       .type("form")
       .set("Cookie", cookies)
       .send({
         _csrf: token,
       })
       .expect(500);
-  });
-
-  it("should return 400 error screen when API call fails", async () => {
-    nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
-      errorCode: "1015",
-    });
-
-    await request(app)
-      .post(PATH_NAMES.RESEND_MFA_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-      })
-      .expect(500);
-  });
-
-  it("should redirect to /security-code-requested-too-many-times when request OTP more than 5 times", async () => {
-    process.env.SUPPORT_REAUTHENTICATION = "0";
-
-    nock(baseApi)
-      .post(API_ENDPOINTS.MFA)
-      .times(6)
-      .reply(400, { code: ERROR_CODES.MFA_SMS_MAX_CODES_SENT });
-
-    request(app)
-      .post(PATH_NAMES.RESEND_MFA_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-      })
-      .expect(
-        "Location",
-        "/security-code-requested-too-many-times?actionType=mfaMaxCodesSent"
-      )
-      .expect(302);
-  });
-
-  it("should redirect to /security-code-invalid-request when exceeded OTP request limit", async () => {
-    process.env.SUPPORT_REAUTHENTICATION = "0";
-
-    nock(baseApi)
-      .post(API_ENDPOINTS.MFA)
-      .once()
-      .reply(400, { code: ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED });
-
-    request(app)
-      .post(PATH_NAMES.RESEND_MFA_CODE)
-      .type("form")
-      .set("Cookie", cookies)
-      .send({
-        _csrf: token,
-      })
-      .expect(
-        "Location",
-        "/security-code-invalid-request?actionType=mfaBlocked"
-      )
-      .expect(302);
   });
 
   it("should redirect to cannot-use-security-code page when MFA returns indefinite international SMS block error", async () => {
-    process.env.SUPPORT_REAUTHENTICATION = "0";
-
     nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(400, {
       code: 1092,
       message:
@@ -253,7 +185,7 @@ describe("Integration:: resend mfa code", () => {
     });
 
     await request(app)
-      .post(PATH_NAMES.RESEND_MFA_CODE)
+      .post(PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS)
       .type("form")
       .set("Cookie", cookies)
       .send({

@@ -23,7 +23,7 @@ export function mfaResetWithIpvGet(
       const redirectPath = await getNextPathAndUpdateJourney(
         req,
         res,
-        USER_JOURNEY_EVENTS.MFA_RESET_ATTEMPTED_VIA_AUTH_APP
+        USER_JOURNEY_EVENTS.MFA_RESET_ATTEMPTED_VIA_APP
       );
       return res.redirect(redirectPath);
     }

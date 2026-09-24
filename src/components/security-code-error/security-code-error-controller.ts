@@ -99,16 +99,8 @@ export function getNewCodePath(
       return PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER;
     case SecurityCodeErrorType.OtpMaxRetries:
       return isAccountCreationJourney
-        ? pathWithQueryParam(
-            PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
-            "isResendCodeRequest",
-            "true"
-          )
-        : pathWithQueryParam(
-            PATH_NAMES.RESEND_MFA_CODE,
-            "isResendCodeRequest",
-            "true"
-          );
+        ? PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION
+        : PATH_NAMES.RESEND_MFA_CODE;
     case SecurityCodeErrorType.EmailMaxCodesSent:
     case SecurityCodeErrorType.EmailBlocked:
       return PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;

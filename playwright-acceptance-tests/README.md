@@ -93,7 +93,7 @@ It also exposes the api-stub on port 8080 so the `Before` hook can reset stub st
 
 2. **Click play** on any scenario in a `.feature` file in IntelliJ.
 
-   Click on a specific `Scenario:` line to run just that test. Clicking at the `Feature:` level will run all scenarios in the directory.
+   Click on a specific `Scenario:` line to run just that test. Clicking at the `Feature:` level will run all scenarios in that file.
 
 3. **Stop services when done:**
 

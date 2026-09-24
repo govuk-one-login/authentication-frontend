@@ -186,7 +186,6 @@ export const pages: Record<string, Page | PageVariant[]> = {
       template: "resend-mfa-code/index.njk",
       options: {
         redactedPhoneNumber: "123",
-        isResendCodeRequest: false,
         supportReauthentication: true,
         isReauthJourney: false,
       },
@@ -196,7 +195,6 @@ export const pages: Record<string, Page | PageVariant[]> = {
       template: "resend-mfa-code/index.njk",
       options: {
         redactedPhoneNumber: "123",
-        isResendCodeRequest: false,
         supportReauthentication: true,
         isReauthJourney: true,
       },
@@ -322,7 +320,6 @@ export const pages: Record<string, Page | PageVariant[]> = {
       template: "account-creation/resend-mfa-code/index.njk",
       options: {
         phoneNumber: "123",
-        isResendCodeRequest: false,
       },
     },
     {
@@ -330,7 +327,6 @@ export const pages: Record<string, Page | PageVariant[]> = {
       template: "account-creation/resend-mfa-code/index.njk",
       options: {
         phoneNumber: "123",
-        isResendCodeRequest: true,
       },
     },
   ],
@@ -399,6 +395,26 @@ export const pages: Record<string, Page | PageVariant[]> = {
       chooseMfaMethodHref: "#",
     },
   },
+  [PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS]: [
+    {
+      name: "default",
+      template: "reset-password-resend-code-2fa-sms/index.njk",
+      options: {
+        redactedPhoneNumber: "1234",
+        supportReauthentication: true,
+        isReauthJourney: false,
+      },
+    },
+    {
+      name: "reauth",
+      template: "reset-password-resend-code-2fa-sms/index.njk",
+      options: {
+        redactedPhoneNumber: "1234",
+        supportReauthentication: true,
+        isReauthJourney: true,
+      },
+    },
+  ],
   [PATH_NAMES.RESET_PASSWORD_2FA_AUTH_APP]: {
     template: "reset-password-2fa-auth-app/index.njk",
     options: {
@@ -529,7 +545,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
   ],
   [PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT]: {
     template: "security-code-error/index-wait.njk",
-    options: { newCodeLink: "#" },
+    options: {},
   },
   [PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED]: [
     {

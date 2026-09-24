@@ -5,7 +5,7 @@ import type { Request, Response } from "express";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import { PATH_NAMES } from "../../../app.constants.js";
-import { ERROR_CODES, pathWithQueryParam } from "../../common/constants.js";
+import { ERROR_CODES } from "../../common/constants.js";
 import {
   resetPassword2FASmsGet,
   resetPassword2FASmsPost,
@@ -52,7 +52,7 @@ describe("reset password 2fa SMS controller", () => {
         "reset-password-2fa-sms/index.njk",
         {
           phoneNumber: TEST_REDACTED_PHONE_NUMBER,
-          resendCodeLink: "/resend-code?isResendCodeRequest=true",
+          resendCodeLink: "/journey/reset-password-2fa-sms/RESEND_SMS",
           hasMultipleMfaMethods: false,
           chooseMfaMethodHref: "/how-do-you-want-security-codes",
         }
@@ -106,11 +106,7 @@ describe("reset password 2fa SMS controller", () => {
         "reset-password-2fa-sms/index.njk",
         {
           phoneNumber: TEST_REDACTED_PHONE_NUMBER,
-          resendCodeLink: pathWithQueryParam(
-            PATH_NAMES.RESEND_MFA_CODE,
-            "isResendCodeRequest",
-            "true"
-          ),
+          resendCodeLink: "/journey/reset-password-2fa-sms/RESEND_SMS",
           hasMultipleMfaMethods: false,
           chooseMfaMethodHref: PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES,
         }
