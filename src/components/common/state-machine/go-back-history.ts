@@ -15,6 +15,10 @@ export function getGoBackHistoryForTransition(
   previousState: string,
   nextState: AuthState
 ): string[] {
+  if (shouldClearGoBackHistory(nextState)) {
+    return [];
+  }
+
   const passkeysEnabled =
     res.locals.supportPasskeyRegistration || res.locals.supportPasskeyUsage;
   const currentGoBackHistory = req.session.user?.journey?.goBackHistory ?? [];
@@ -36,6 +40,13 @@ export function isBackTransition(
 
   const lastPath = goBackHistory[goBackHistory.length - 1];
   return lastPath === currentPath;
+}
+
+// NOTE: `clearGoBackHistory` is a temporary requirement whilst we're migrating
+//  over to goBackHistory. Eventually, any transition that isn't marked as
+//  `reversible` in the state machine should cause this effect.
+function shouldClearGoBackHistory(nextState: AuthState) {
+  return nextState.transitions.some((t) => t.meta?.clearGoBackHistory === true);
 }
 
 function isReversibleTransition(nextState: AuthState) {
