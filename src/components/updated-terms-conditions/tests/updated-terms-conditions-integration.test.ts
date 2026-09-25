@@ -75,13 +75,11 @@ describe("Integration:: updated-terms-code", () => {
     await request(app)
       .post(PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS)
       .type("form")
-      .send({
-        termsAndConditionsResult: "reject",
-      })
+      .send({})
       .expect(403);
   });
 
-  it("should redirect to /auth_code when terms accepted", async () => {
+  it("should redirect to /auth_code on submit", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.UPDATE_PROFILE)
       .once()
@@ -93,7 +91,6 @@ describe("Integration:: updated-terms-code", () => {
       .set("Cookie", cookies)
       .send({
         _csrf: token,
-        termsAndConditionsResult: "accept",
       })
       .expect("Location", PATH_NAMES.AUTH_CODE)
       .expect(302);

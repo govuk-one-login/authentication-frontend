@@ -39,7 +39,7 @@ describe("updated terms conditions controller", () => {
   });
 
   describe("updatedTermsCondsPost", () => {
-    it("should redirect to /auth-code when terms accepted", async () => {
+    it("should update profile and redirect to /auth-code on submit", async () => {
       const fakeService: UpdateProfileServiceInterface = {
         updateProfile: sinon.fake.returns({
           success: true,
@@ -48,7 +48,6 @@ describe("updated terms conditions controller", () => {
       } as unknown as UpdateProfileServiceInterface;
 
       req.path = PATH_NAMES.UPDATED_TERMS_AND_CONDITIONS;
-      req.body.termsAndConditionsResult = "accept";
 
       await updatedTermsConditionsPost(fakeService)(
         req as Request,

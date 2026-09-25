@@ -16,29 +16,26 @@ export function updatedTermsConditionsPost(
   return async function (req: Request, res: Response) {
     const { email } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
-    const termsAndConditionsResult = req.body.termsAndConditionsResult;
 
-    if (termsAndConditionsResult === "accept") {
-      const result = await service.updateProfile(
-        sessionId,
-        clientSessionId,
-        email,
-        UpdateType.UPDATE_TERMS_CONDS,
-        persistentSessionId,
-        req
-      );
+    const result = await service.updateProfile(
+      sessionId,
+      clientSessionId,
+      email,
+      UpdateType.UPDATE_TERMS_CONDS,
+      persistentSessionId,
+      req
+    );
 
-      if (!result.success) {
-        throw new BadRequestError(result.data.message, result.data.code);
-      }
-
-      res.redirect(
-        await getNextPathAndUpdateJourney(
-          req,
-          res,
-          USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED
-        )
-      );
+    if (!result.success) {
+      throw new BadRequestError(result.data.message, result.data.code);
     }
+
+    res.redirect(
+      await getNextPathAndUpdateJourney(
+        req,
+        res,
+        USER_JOURNEY_EVENTS.TERMS_AND_CONDITIONS_ACCEPTED
+      )
+    );
   };
 }
