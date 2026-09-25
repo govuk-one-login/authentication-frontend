@@ -241,6 +241,7 @@ function setSessionDataFromClaims(req: Request, claims: Claims) {
   });
 
   req.log.info(`Channel is set to: ${req.session.user.channel}`);
+  req.log.info(`User-Agent: ${req.get("User-Agent") ?? "unknown"}`);
 }
 
 function setSessionDataFromAuthResponse(
