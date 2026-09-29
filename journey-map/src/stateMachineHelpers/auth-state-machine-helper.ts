@@ -47,11 +47,13 @@ export const getAuthStateMachineConfig = (
         const targetStateName = transition.target.substring(
           stateMachine.id.length + 1
         );
-        states.push({
-          name: targetStateName,
-          id: transition.target,
-          onClick: openPageIfExists(targetStateName),
-        });
+        if (!states.some((state) => state.id === transition.target)) {
+          states.push({
+            name: targetStateName,
+            id: transition.target,
+            onClick: openPageIfExists(targetStateName),
+          });
+        }
       }
     });
   }
