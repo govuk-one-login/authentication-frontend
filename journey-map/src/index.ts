@@ -183,6 +183,65 @@ const setupStateClickHandlers = (states: State[]): void => {
   };
 };
 
+const OPTIONS_STORAGE_KEY = "journeyMapOptions";
+
+interface PersistedOptions {
+  checkboxes?: Record<string, boolean>;
+  context?: string;
+}
+
+const persistFormState = (form: HTMLFormElement): void => {
+  const checkboxes: Record<string, boolean> = {};
+  form
+    .querySelectorAll<HTMLInputElement>('input[type="checkbox"]')
+    .forEach((checkbox) => {
+      checkboxes[checkbox.id] = checkbox.checked;
+    });
+
+  const contextInput = form.querySelector<HTMLTextAreaElement>("#context");
+
+  const state: PersistedOptions = {
+    checkboxes,
+    context: contextInput?.value,
+  };
+
+  try {
+    localStorage.setItem(OPTIONS_STORAGE_KEY, JSON.stringify(state));
+  } catch (err) {
+    console.warn("Unable to persist journey map options", err);
+  }
+};
+
+const restoreFormState = (form: HTMLFormElement): void => {
+  let state: PersistedOptions;
+  try {
+    const stored = localStorage.getItem(OPTIONS_STORAGE_KEY);
+    if (!stored) return;
+    state = JSON.parse(stored);
+  } catch (err) {
+    console.warn("Unable to restore journey map options", err);
+    return;
+  }
+
+  if (state.checkboxes) {
+    Object.entries(state.checkboxes).forEach(([id, checked]) => {
+      const checkbox = form.querySelector<HTMLInputElement>(
+        `#${CSS.escape(id)}`
+      );
+      if (checkbox) {
+        checkbox.checked = checked;
+      }
+    });
+  }
+
+  if (typeof state.context === "string") {
+    const contextInput = form.querySelector<HTMLTextAreaElement>("#context");
+    if (contextInput) {
+      contextInput.value = state.context;
+    }
+  }
+};
+
 const setupFormHandlers = (
   contextInput: HTMLTextAreaElement,
   contextToggle: HTMLInputElement,
@@ -191,6 +250,7 @@ const setupFormHandlers = (
 ): void => {
   form.addEventListener("change", async (event) => {
     event.preventDefault();
+    persistFormState(form);
     await renderFormStateMachine(form);
   });
   contextToggle.addEventListener("change", (event) => {
@@ -198,6 +258,10 @@ const setupFormHandlers = (
     contextInput.classList.toggle("hidden");
   });
   contextInput.value = JSON.stringify(authStateMachine.context, undefined, 2);
+
+  restoreFormState(form);
+  // Keep the context textarea visibility in sync with the restored toggle
+  contextInput.classList.toggle("hidden", !contextToggle.checked);
 };
 
 const initialiseAuthJourneyMap = async () => {
