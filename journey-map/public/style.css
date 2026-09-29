@@ -122,10 +122,14 @@ form textarea.hidden {
   color-scheme: light dark;
   --diagram-bg: #ffffff;
   --diagram-stroke: #333333;
+  --cluster-bg: #f3f3f8;
+  --cluster-label: #111111;
 
   @media (prefers-color-scheme: dark) {
     --diagram-bg: #282c34;
     --diagram-stroke: #818181;
+    --cluster-bg: #363b45;
+    --cluster-label: #e6e6e6;
   }
 }
 
@@ -147,6 +151,19 @@ form textarea.hidden {
 
 #diagramSvg .flowchart-link {
   stroke: var(--diagram-stroke) !important;
+}
+
+/* Subgraph (group) styling — adapts to light/dark mode */
+#diagramSvg .cluster rect {
+  fill: var(--cluster-bg) !important;
+  stroke: var(--diagram-stroke) !important;
+}
+#diagramSvg .cluster-label,
+#diagramSvg .cluster-label div,
+#diagramSvg .cluster-label span,
+#diagramSvg .cluster-label p {
+  color: var(--cluster-label) !important;
+  fill: var(--cluster-label) !important;
 }
 
 #diagramSvg .marker {
