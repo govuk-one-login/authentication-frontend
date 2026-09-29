@@ -21,6 +21,14 @@ declare global {
 export interface StateMachineConfig {
   states: State[];
   transitions: Transition[];
+  groups?: StateGroup[];
+}
+
+export interface StateGroup {
+  // Label rendered on the Mermaid subgraph
+  title: string;
+  // State names (PATH_NAMES values) that belong to this group
+  states: string[];
 }
 
 export interface State {

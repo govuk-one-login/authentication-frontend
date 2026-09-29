@@ -6,6 +6,7 @@ import {
 import type { AnyEventObject, StateNode, TransitionDefinition } from "xstate";
 import { pages } from "../../../src/components/templates/pages.js";
 import { State, StateMachineConfig, Transition } from "../index.js";
+import { AUTH_STATE_GROUPS } from "../auth-state-groups.js";
 
 export interface Options {
   includeOptional: boolean;
@@ -56,7 +57,7 @@ export const getAuthStateMachineConfig = (
     });
   }
 
-  return { states, transitions };
+  return { states, transitions, groups: AUTH_STATE_GROUPS };
 };
 
 const openPageIfExists = (name: string) => {
