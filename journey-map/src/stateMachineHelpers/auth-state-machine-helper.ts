@@ -10,6 +10,7 @@ import { AUTH_STATE_GROUPS } from "../auth-state-groups.js";
 
 export interface Options {
   includeOptional: boolean;
+  enableGrouping: boolean;
   context?: AuthStateContext;
 }
 
@@ -22,6 +23,8 @@ export const getAuthStateMachineConfig = (
   const states: State[] = [];
   const transitions: Transition[] = [];
 
+  const options = parseOptions(new FormData(formElement));
+
   for (const state of xStates) {
     // Record this state
     states.push({
@@ -31,11 +34,7 @@ export const getAuthStateMachineConfig = (
     });
 
     // Find transitions from this state
-    const activeTransitions = getTransitions(
-      stateMachine,
-      state,
-      parseOptions(new FormData(formElement))
-    );
+    const activeTransitions = getTransitions(stateMachine, state, options);
     transitions.push(...activeTransitions);
 
     // Add target states to the list of states to traverse
@@ -57,7 +56,11 @@ export const getAuthStateMachineConfig = (
     });
   }
 
-  return { states, transitions, groups: AUTH_STATE_GROUPS };
+  return {
+    states,
+    transitions,
+    groups: options.enableGrouping ? AUTH_STATE_GROUPS : undefined,
+  };
 };
 
 const openPageIfExists = (name: string) => {
@@ -75,6 +78,7 @@ const openPageIfExists = (name: string) => {
 const parseOptions = (formData: FormData): Options => {
   return {
     includeOptional: formData.getAll("otherOption").includes("includeOptional"),
+    enableGrouping: formData.getAll("otherOption").includes("enableGrouping"),
     context: parseContext(formData),
   };
 };
