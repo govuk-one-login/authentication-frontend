@@ -1,7 +1,6 @@
 import type { Request, Response } from "express";
 import type { ExpressRouteFunc, SmsMfaMethod } from "src/types.js";
-import type { SecurityCodeErrorType } from "../common/constants.js";
-import { ERROR_CODES, pathWithQueryParam } from "../common/constants.js";
+import { ERROR_CODES } from "../common/constants.js";
 import {
   JOURNEY_TYPE,
   NOTIFICATION_TYPE,
@@ -12,15 +11,10 @@ import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
 import type { AccountInterventionsInterface } from "../account-intervention/types.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
-import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import { isLocked } from "../../utils/lock-helper.js";
 
 const TEMPLATE_NAME = "reset-password-2fa-sms/index.njk";
-const RESEND_CODE_LINK = pathWithQueryParam(
-  PATH_NAMES.RESEND_MFA_CODE,
-  "isResendCodeRequest",
-  "true"
-);
+const RESEND_CODE_LINK = "/journey/reset-password-2fa-sms/RESEND_SMS";
 
 export function resetPassword2FASmsGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
@@ -28,16 +22,12 @@ export function resetPassword2FASmsGet(): ExpressRouteFunc {
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
-          newCodeLink: PATH_NAMES.RESET_PASSWORD_2FA_SMS,
           show2HrScreen: true,
         }
       );
     }
     if (isLocked(req.session.user.codeRequestLock)) {
       return res.render("security-code-error/index-wait.njk", {
-        newCodeLink: getNewCodePath(
-          req.query.actionType as SecurityCodeErrorType
-        ),
         isAccountCreationJourney: false,
       });
     }

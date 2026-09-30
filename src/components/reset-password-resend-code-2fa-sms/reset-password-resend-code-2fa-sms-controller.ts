@@ -1,15 +1,24 @@
 import type { Request, Response } from "express";
-import type { ExpressRouteFunc, SmsMfaMethod } from "../../types.js";
-import { mfaService } from "../common/mfa/mfa-service.js";
-import type { MfaServiceInterface } from "../common/mfa/types.js";
-import { sendMfaGeneric } from "../common/mfa/send-mfa-controller.js";
-import { JOURNEY_TYPE, PATH_NAMES } from "../../app.constants.js";
-import { supportReauthentication } from "../../config.js";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
+import type { ExpressRouteFunc, SmsMfaMethod } from "../../types.js";
+import { supportReauthentication } from "../../config.js";
+import { JOURNEY_TYPE, PATH_NAMES } from "../../app.constants.js";
+import type { MfaServiceInterface } from "../common/mfa/types.js";
+import { mfaService } from "../common/mfa/mfa-service.js";
+import { sendMfaGeneric } from "../common/mfa/send-mfa-controller.js";
 import { renderLockoutPageIfLocked } from "../security-code-error/security-code-error-helper.js";
 
-export function resendMfaCodeGet(req: Request, res: Response): void {
-  if (renderLockoutPageIfLocked(req, res, PATH_NAMES.RESEND_MFA_CODE)) {
+export function resetPasswordResendCode2faSmsGet(
+  req: Request,
+  res: Response
+): void {
+  if (
+    renderLockoutPageIfLocked(
+      req,
+      res,
+      PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS
+    )
+  ) {
     return;
   }
 
@@ -21,14 +30,14 @@ export function resendMfaCodeGet(req: Request, res: Response): void {
     (mfaMethod) => mfaMethod.id === req.session.user.activeMfaMethodId
   ) as SmsMfaMethod | undefined;
 
-  res.render("resend-mfa-code/index.njk", {
+  res.render("reset-password-resend-code-2fa-sms/index.njk", {
     redactedPhoneNumber: activeMfaMethod?.redactedPhoneNumber,
     supportReauthentication: supportReauthentication(),
     isReauthJourney: journeyType === JOURNEY_TYPE.REAUTHENTICATION,
   });
 }
 
-export function resendMfaCodePost(
+export function resetPasswordResendCode2faSmsPost(
   service: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
   return sendMfaGeneric(service, true);

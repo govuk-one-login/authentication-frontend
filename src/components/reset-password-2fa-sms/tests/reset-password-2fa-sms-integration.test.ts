@@ -187,4 +187,11 @@ describe("Integration::2fa sms (in reset password flow)", () => {
       })
       .expect(400);
   });
+
+  it("should redirect to /reset-password-resend-code-2fa-sms if resend code is clicked", async () => {
+    await request(app)
+      .get("/journey/reset-password-2fa-sms/RESEND_SMS")
+      .expect("Location", PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS)
+      .expect(302);
+  });
 });

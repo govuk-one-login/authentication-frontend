@@ -5,5 +5,5 @@ import { sendMfaGeneric } from "../common/mfa/send-mfa-controller.js";
 export function upliftJourneyGet(
   service: MfaServiceInterface = mfaService()
 ): ExpressRouteFunc {
-  return sendMfaGeneric(service);
+  return sendMfaGeneric(service, false);
 }
