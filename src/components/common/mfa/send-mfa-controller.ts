@@ -9,9 +9,21 @@ import { ERROR_CODES, getErrorPathByCode } from "../constants.js";
 import { getNextPathAndUpdateJourney } from "../state-machine/state-machine-executor.js";
 import { BadRequestError } from "../../../utils/error.js";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine.js";
+import { PATH_NAMES } from "../../../app.constants.js";
+import { sanitize } from "../../../utils/strings.js";
 import xss from "xss";
 import { getJourneyTypeFromUserSession } from "../journey/journey.js";
 import { isReauth } from "../../../utils/request.js";
+function addGA(req: Request, redirectPath: string) {
+  if (req.query._ga) {
+    const queryParams = new URLSearchParams({
+      _ga: sanitize(req.query._ga as string),
+    }).toString();
+
+    redirectPath = redirectPath + "?" + queryParams;
+  }
+  return redirectPath;
+}
 
 async function handleErrors(
   mfaFailResponse: ApiResponseResult<DefaultApiResponse>,
@@ -34,12 +46,10 @@ async function handleErrors(
 
   const pathWithQueryParams = getErrorPathByCode(mfaFailResponse.data.code);
 
-  // NOTE: the resend and non-resend branches below deliberately sit on either
-  // side of the isReauth() check. A resend request redirects to the error page
-  // directly, whereas a non-resend reauth request is instead logged out
-  // (login_required).
   if (pathWithQueryParams && isResendCodeRequest) {
-    return res.redirect(pathWithQueryParams);
+    return pathWithQueryParams.includes("?")
+      ? res.redirect(pathWithQueryParams + "&isResendCodeRequest=true")
+      : res.redirect(pathWithQueryParams + "?isResendCodeRequest=true");
   }
 
   if (isReauth(req)) {
@@ -56,7 +66,7 @@ async function handleErrors(
   }
 
   if (pathWithQueryParams && !isResendCodeRequest) {
-    return res.redirect(pathWithQueryParams);
+    res.redirect(pathWithQueryParams);
   }
 
   throw new BadRequestError(
@@ -66,12 +76,12 @@ async function handleErrors(
 }
 
 export function sendMfaGeneric(
-  mfaCodeService: MfaServiceInterface,
-  isResendCodeRequest: boolean
+  mfaCodeService: MfaServiceInterface
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const { email, activeMfaMethodId } = req.session.user;
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
+    const isResendCodeRequest: boolean = req.body?.isResendCodeRequest ?? false;
 
     const result = await mfaCodeService.sendMfaCode(
       sessionId,
@@ -92,12 +102,22 @@ export function sendMfaGeneric(
       return handleErrors(result, isResendCodeRequest, res, req);
     }
 
-    return res.redirect(
-      await getNextPathAndUpdateJourney(
+    let redirectPath;
+
+    if (!isResendCodeRequest) {
+      redirectPath = await getNextPathAndUpdateJourney(
         req,
         res,
         USER_JOURNEY_EVENTS.VERIFY_MFA
-      )
-    );
+      );
+    }
+
+    if (isResendCodeRequest) {
+      redirectPath = PATH_NAMES.CHECK_YOUR_PHONE;
+    }
+
+    redirectPath = addGA(req, redirectPath);
+
+    return res.redirect(redirectPath);
   };
 }

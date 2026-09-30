@@ -92,7 +92,10 @@ describe("resend email controller", () => {
       await securityCodeCheckTimeLimit()(req as Request, res as Response);
 
       expect(res.render).to.have.been.calledWith(
-        "security-code-error/index-wait.njk"
+        "security-code-error/index-wait.njk",
+        {
+          newCodeLink: "/security-code-check-time-limit",
+        }
       );
     });
 

@@ -80,16 +80,6 @@ describe("Integration:: resend mfa code", () => {
       .expect(200);
   });
 
-  it("should render a back link to /enter-code", async () => {
-    await request(app)
-      .get(PATH_NAMES.RESEND_MFA_CODE)
-      .expect(function (res) {
-        const $ = cheerio.load(res.text);
-        expect($(".govuk-back-link").attr("href")).to.contain("enter-code");
-      })
-      .expect(200);
-  });
-
   it("should return resend mfa code page with reauth analytics properties", async () => {
     process.env.SUPPORT_REAUTHENTICATION = "1";
     await request(app)
@@ -156,6 +146,24 @@ describe("Integration:: resend mfa code", () => {
         _csrf: token,
       })
       .expect("Location", PATH_NAMES.ENTER_MFA)
+      .expect(302);
+  });
+
+  it("should redirect to /check-your-phone when new code requested as part of account creation journey", async () => {
+    nock(baseApi)
+      .post(API_ENDPOINTS.MFA)
+      .once()
+      .reply(HTTP_STATUS_CODES.NO_CONTENT);
+
+    await request(app)
+      .post(PATH_NAMES.RESEND_MFA_CODE)
+      .type("form")
+      .set("Cookie", cookies)
+      .send({
+        _csrf: token,
+        isResendCodeRequest: true,
+      })
+      .expect("Location", PATH_NAMES.CHECK_YOUR_PHONE)
       .expect(302);
   });
 

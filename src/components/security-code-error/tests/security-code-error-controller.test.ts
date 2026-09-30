@@ -171,7 +171,11 @@ describe("security code controller", () => {
         securityCodeInvalidGet(req, res);
 
         expect(res.render).to.have.calledWith("security-code-error/index.njk", {
-          newCodeLink: params.newCodeLink,
+          newCodeLink: pathWithQueryParam(
+            params.nextPath,
+            params.queryParam,
+            "true"
+          ),
           isAuthApp: false,
           isBlocked: params.isBlocked,
           show2HrScreen: false,
@@ -237,7 +241,11 @@ describe("security code controller", () => {
         req.session.user.isAccountCreationJourney = true;
         securityCodeInvalidGet(req as Request, res as Response);
         expect(res.render).to.have.calledWith("security-code-error/index.njk", {
-          newCodeLink: PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+          newCodeLink: pathWithQueryParam(
+            PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+            "isResendCodeRequest",
+            "true"
+          ),
           isAuthApp: false,
           isBlocked: true,
           show2HrScreen: false,
@@ -258,7 +266,11 @@ describe("security code controller", () => {
         req.session.user.isAccountRecoveryJourney = true;
         securityCodeInvalidGet(req as Request, res as Response);
         expect(res.render).to.have.calledWith("security-code-error/index.njk", {
-          newCodeLink: PATH_NAMES.RESEND_MFA_CODE,
+          newCodeLink: pathWithQueryParam(
+            PATH_NAMES.RESEND_MFA_CODE,
+            "isResendCodeRequest",
+            "true"
+          ),
           isAuthApp: false,
           isBlocked: true,
           show2HrScreen: false,
