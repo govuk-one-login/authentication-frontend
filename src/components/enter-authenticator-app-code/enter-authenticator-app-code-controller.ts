@@ -46,6 +46,8 @@ export function enterAuthenticatorAppCodeGet(
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
+          newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+          isAuthApp: true,
           show2HrScreen: true,
         }
       );

@@ -220,7 +220,9 @@ describe("enter phone number controller", () => {
         expect(res.render).to.have.calledWith(
           "security-code-error/index-wait.njk",
           {
+            newCodeLink: undefined,
             isAccountCreationJourney: true,
+            contentId: "",
           }
         );
       }
@@ -252,7 +254,9 @@ describe("enter phone number controller", () => {
         expect(res.render).to.have.calledWith(
           "security-code-error/index-wait.njk",
           {
+            newCodeLink: undefined,
             isAccountCreationJourney: true,
+            contentId: "",
           }
         );
       }

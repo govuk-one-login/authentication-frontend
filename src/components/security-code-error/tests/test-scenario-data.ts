@@ -48,7 +48,11 @@ export const SCENARIOS = {
     {
       actionType: SecurityCodeErrorType.OtpMaxRetries,
       expectedRenderOptions: {
-        newCodeLink: PATH_NAMES.RESEND_MFA_CODE,
+        newCodeLink: pathWithQueryParam(
+          PATH_NAMES.RESEND_MFA_CODE,
+          "isResendCodeRequest",
+          "true"
+        ),
         isAuthApp: false,
         isBlocked: true,
         show2HrScreen: false,
@@ -77,7 +81,11 @@ export const SCENARIOS = {
     },
     {
       actionType: SecurityCodeErrorType.OtpMaxRetries,
-      newCodeLink: PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+      newCodeLink: pathWithQueryParam(
+        PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+        "isResendCodeRequest",
+        "true"
+      ),
       isAccountCreationJourney: true,
     },
   ],
@@ -99,16 +107,14 @@ export const SCENARIOS = {
     {
       action: SecurityCodeErrorType.EmailMaxRetries,
       isBlocked: false,
-      newCodeLink: pathWithQueryParam(
-        PATH_NAMES.RESEND_EMAIL_CODE,
-        "requestNewCode",
-        "true"
-      ),
+      nextPath: PATH_NAMES.RESEND_EMAIL_CODE,
+      queryParam: "requestNewCode",
     },
     {
       action: SecurityCodeErrorType.OtpMaxRetries,
       isBlocked: true,
-      newCodeLink: PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+      nextPath: PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
+      queryParam: "isResendCodeRequest",
     },
   ],
 };

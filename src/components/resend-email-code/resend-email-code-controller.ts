@@ -15,7 +15,9 @@ export function resendEmailCodeGet(req: Request, res: Response): void {
     isLocked(req.session.user.wrongCodeEnteredAccountRecoveryLock) ||
     isLocked(req.session.user.wrongCodeEnteredPasswordResetLock)
   ) {
-    const newCodeLink = "/security-code-check-time-limit";
+    const newCodeLink = req.query?.isResendCodeRequest
+      ? "/security-code-check-time-limit?isResendCodeRequest=true"
+      : "/security-code-check-time-limit";
 
     let show2HrScreen = false;
     if (
@@ -97,7 +99,12 @@ export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const accountRecoveryJourney = isAccountRecoveryJourney(req);
     if (isLocked(req.session.user.codeRequestLock)) {
-      return res.render("security-code-error/index-wait.njk");
+      const newCodeLink = req.query?.isResendCodeRequest
+        ? "/security-code-check-time-limit?isResendCodeRequest=true"
+        : "/security-code-check-time-limit";
+      return res.render("security-code-error/index-wait.njk", {
+        newCodeLink,
+      });
     }
 
     if (accountRecoveryJourney) {

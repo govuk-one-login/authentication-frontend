@@ -117,10 +117,6 @@ const CONTENT_IDS: {
     "943b41f4-8262-417f-8866-c0639319ccf0",
   [PATH_NAMES.RESET_PASSWORD_2FA_SMS]: () =>
     "e626c94e-4454-4a63-b902-6a4e5820d7dd",
-  [PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS]: (req: Request) =>
-    isReauth(req)
-      ? "a2776ef7-9ef3-4d8d-bdbc-3f798b15e5d4"
-      : "f463a280-31f1-43c0-a2f5-6b46b1e2bb15",
   [PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL]: (req: Request) => {
     if (urlContains(req, "csrf")) {
       return "e48886d5-7be8-424d-8471-d9a9bf49d1b7";
