@@ -15,7 +15,6 @@ import { isReauth } from "../../../utils/request.js";
 
 async function handleErrors(
   mfaFailResponse: ApiResponseResult<DefaultApiResponse>,
-  isResendCodeRequest: boolean,
   res: Response<any, Record<string, any>>,
   req: Request
 ) {
@@ -32,30 +31,21 @@ async function handleErrors(
     );
   }
 
+  if (
+    isReauth(req) &&
+    (mfaFailResponse.data.code ===
+      ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||
+      mfaFailResponse.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES ||
+      mfaFailResponse.data.code === ERROR_CODES.MFA_SMS_MAX_CODES_SENT)
+  ) {
+    return res.redirect(
+      req.session.client.redirectUri.concat("?error=login_required")
+    );
+  }
+
   const pathWithQueryParams = getErrorPathByCode(mfaFailResponse.data.code);
 
-  // NOTE: the resend and non-resend branches below deliberately sit on either
-  // side of the isReauth() check. A resend request redirects to the error page
-  // directly, whereas a non-resend reauth request is instead logged out
-  // (login_required).
-  if (pathWithQueryParams && isResendCodeRequest) {
-    return res.redirect(pathWithQueryParams);
-  }
-
-  if (isReauth(req)) {
-    if (
-      mfaFailResponse.data.code ===
-        ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED ||
-      mfaFailResponse.data.code === ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES ||
-      mfaFailResponse.data.code === ERROR_CODES.MFA_SMS_MAX_CODES_SENT
-    ) {
-      return res.redirect(
-        req.session.client.redirectUri.concat("?error=login_required")
-      );
-    }
-  }
-
-  if (pathWithQueryParams && !isResendCodeRequest) {
+  if (pathWithQueryParams) {
     return res.redirect(pathWithQueryParams);
   }
 
@@ -89,7 +79,7 @@ export function sendMfaGeneric(
     );
 
     if (!result.success) {
-      return handleErrors(result, isResendCodeRequest, res, req);
+      return handleErrors(result, res, req);
     }
 
     return res.redirect(
