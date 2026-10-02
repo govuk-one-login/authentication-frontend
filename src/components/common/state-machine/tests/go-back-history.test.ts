@@ -11,7 +11,9 @@ import type { AuthState } from "../state-machine.js";
 describe("go-back-history", () => {
   describe("getGoBackHistoryForTransition", () => {
     function createNextState(
-      transitions: { meta?: { reversible?: boolean } }[]
+      transitions: {
+        meta?: { reversible?: boolean; clearGoBackHistory?: boolean };
+      }[]
     ): AuthState {
       return { transitions: transitions } as unknown as AuthState;
     }
@@ -197,6 +199,48 @@ describe("go-back-history", () => {
       );
 
       expect(result).to.deep.equal([]);
+    });
+
+    it("should clear existing goBackHistory when the transition is marked clearGoBackHistory", () => {
+      const req = createMockRequest("/reset-password-2fa-sms");
+      req.session.user = {
+        journey: {
+          nextPath: "/reset-password-resend-code-2fa-sms",
+          optionalPaths: [],
+          goBackHistory: ["/enter-email", "/enter-password"],
+        },
+      };
+      const res = mockResponse({ locals: { supportPasskeyUsage: true } });
+
+      const result = getGoBackHistoryForTransition(
+        req,
+        res,
+        "/reset-password-resend-code-2fa-sms",
+        createNextState([{ meta: { clearGoBackHistory: true } }])
+      );
+
+      expect(result).to.deep.equal([]);
+    });
+
+    it("should not clear goBackHistory when clearGoBackHistory is false", () => {
+      const req = createMockRequest("/enter-password");
+      req.session.user = {
+        journey: {
+          nextPath: "/enter-email",
+          optionalPaths: [],
+          goBackHistory: ["/sign-in-or-create"],
+        },
+      };
+      const res = mockResponse({ locals: { supportPasskeyUsage: true } });
+
+      const result = getGoBackHistoryForTransition(
+        req,
+        res,
+        "/enter-email",
+        createNextState([{ meta: { clearGoBackHistory: false } }])
+      );
+
+      expect(result).to.deep.equal(["/sign-in-or-create"]);
     });
   });
 

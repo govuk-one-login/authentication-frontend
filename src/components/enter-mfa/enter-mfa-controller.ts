@@ -4,14 +4,12 @@ import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
 import type { ExpressRouteFunc, SmsMfaMethod } from "../../types.js";
-import type { SecurityCodeErrorType } from "../common/constants.js";
 import { ERROR_CODES } from "../common/constants.js";
 import type { AccountRecoveryInterface } from "../common/account-recovery/types.js";
 import { accountRecoveryService } from "../common/account-recovery/account-recovery-service.js";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import type { AccountInterventionsInterface } from "../account-intervention/types.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
-import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import { isLocked } from "../../utils/lock-helper.js";
 import { isUpliftRequired } from "../../utils/request.js";
 import { isAccountRecoveryPermitted } from "../common/account-recovery/account-recovery-helper.js";
@@ -28,16 +26,12 @@ export function enterMfaGet(
       return res.render(
         "security-code-error/index-security-code-entered-exceeded.njk",
         {
-          newCodeLink: PATH_NAMES.ENTER_MFA,
           show2HrScreen: true,
         }
       );
     }
     if (isLocked(req.session.user.codeRequestLock)) {
       return res.render("security-code-error/index-wait.njk", {
-        newCodeLink: getNewCodePath(
-          req.query.actionType as SecurityCodeErrorType
-        ),
         isAccountCreationJourney: false,
       });
     }

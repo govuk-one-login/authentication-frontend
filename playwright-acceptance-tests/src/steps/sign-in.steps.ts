@@ -282,6 +282,24 @@ When(
 );
 
 When(
+  "the user chooses text message to get security codes",
+  async function (this: PlaywrightWorld): Promise<void> {
+    const page = requirePage(this);
+    await page.getByRole("radio", { name: /text message/i }).click();
+    await page.getByRole("button", { name: /continue/i }).click();
+  }
+);
+
+When(
+  "the user enters their mobile phone number",
+  async function (this: PlaywrightWorld): Promise<void> {
+    const page = requirePage(this);
+    await page.locator("#phoneNumber").fill("07700900000");
+    await page.getByRole("button", { name: /continue/i }).click();
+  }
+);
+
+When(
   "the user adds the secret key on the screen to their auth app",
   async function (this: PlaywrightWorld): Promise<void> {
     // No-op: we don't need to actually scan a QR code — we just

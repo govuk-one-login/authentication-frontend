@@ -1,0 +1,43 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% set pageTitleName = 'pages.resendMfaCode.title' | translate %}
+{% set showBack = true %}
+{% set hrefBack = 'reset-password-2fa-sms' %}
+
+{% set phoneNumberMessage %}
+  {{ 'pages.resendMfaCode.phoneNumber.isResendCodeRequest' | translate }} <span class='govuk-!-font-weight-bold'>{{ redactedPhoneNumber | returnLastCharacters({limit: 3}) }}</span>
+{% endset %}
+
+{% block content %}
+  <form action="/reset-password-resend-code-2fa-sms" method="post" novalidate="novalidate">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+
+    <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{'pages.resendMfaCode.header' | translate}}</h1>
+
+    {{ govukInsetText({
+      text: phoneNumberMessage | safe
+    }) }}
+
+    <p class="govuk-body">
+      {{'pages.resendMfaCode.paragraph1' | translate}}
+      {% if supportReauthentication and isReauthJourney %}
+        {{'pages.resendMfaCode.reauthAction' | translate}}
+      {% else %}
+        {{'pages.resendMfaCode.action' | translate}}
+      {% endif %}
+    </p>
+
+    <p class="govuk-body">{{'pages.resendMfaCode.message' | translate}}</p>
+    {{ govukButton({
+      "text": "pages.resendMfaCode.continue" | translate,
+      "type": "Submit",
+      "preventDoubleClick": true
+    }) }}
+
+  </form>
+
+  {% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
+  {%- include "ga4-opl/template.njk" -%}
+{% endblock %}

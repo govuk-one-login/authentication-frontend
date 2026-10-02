@@ -2,7 +2,11 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
 import nock from "nock";
 import request from "supertest";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
+import {
+  API_ENDPOINTS,
+  HTTP_STATUS_CODES,
+  PATH_NAMES,
+} from "../../../app.constants.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
@@ -61,6 +65,19 @@ describe("Integration::uplift journey", () => {
   after(() => {
     sinon.restore();
     app = undefined;
+  });
+
+  it("should redirect to /enter-code after successfully sending the MFA code", async () => {
+    nock(baseApi)
+      .post(API_ENDPOINTS.MFA)
+      .once()
+      .reply(HTTP_STATUS_CODES.NO_CONTENT);
+
+    await request(app)
+      .get(PATH_NAMES.UPLIFT_JOURNEY)
+      .set("Cookie", cookies)
+      .expect("Location", PATH_NAMES.ENTER_MFA)
+      .expect(302);
   });
 
   it("should redirect to cannot-use-security-code page when MFA returns indefinite international SMS block error", async () => {

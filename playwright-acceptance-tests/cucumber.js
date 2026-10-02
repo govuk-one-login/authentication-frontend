@@ -9,9 +9,13 @@ if (fs.existsSync(envPath)) {
 
 const tagExpression = process.env.CUCUMBER_FILTER_TAGS;
 
+const cliHasFeaturePath = process.argv.some(
+  (arg) => arg.endsWith(".feature") || arg.includes("features/")
+);
+
 module.exports = {
   default: {
-    paths: ["features/**/*.feature"],
+    ...(!cliHasFeaturePath ? { paths: ["features/**/*.feature"] } : {}),
     require: ["src/support/**/*.ts", "src/steps/**/*.ts"],
     requireModule: ["ts-node/register"],
     format: ["json:reports/json/cucumber-report.json"],

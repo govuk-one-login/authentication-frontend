@@ -4,11 +4,9 @@ import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
 import type { ExpressRouteFunc } from "../../types.js";
-import type { SecurityCodeErrorType } from "../common/constants.js";
 import { ERROR_CODES, getErrorPathByCode } from "../common/constants.js";
 import type { AccountInterventionsInterface } from "../account-intervention/types.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
-import { getNewCodePath } from "../security-code-error/security-code-error-controller.js";
 import { isLocked } from "../../utils/lock-helper.js";
 import type { CheckEmailFraudBlockInterface } from "../check-email-fraud-block/types.js";
 import { checkEmailFraudBlockService } from "../check-email-fraud-block/check-email-fraud-block-service.js";
@@ -21,9 +19,6 @@ export function checkYourEmailGet(req: Request, res: Response): void {
   req.session.user.isAccountCreationJourney = true;
   if (isLocked(req.session.user.codeRequestLock)) {
     return res.render("security-code-error/index-wait.njk", {
-      newCodeLink: getNewCodePath(
-        req.query.actionType as SecurityCodeErrorType
-      ),
       isAccountCreationJourney: true,
     });
   }
