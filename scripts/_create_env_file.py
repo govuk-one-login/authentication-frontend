@@ -171,10 +171,14 @@ def get_api_key_from_secrets_manager(deployment_name: str, aws_profile: str) -> 
 
     except subprocess.CalledProcessError as e:
         logger.error(f"Failed to fetch API key from Secrets Manager: {e.stderr}")
-        return "L1f6J7gHpv9U9J2tiMaAPjjcu8RIyeJ2gMpMTNOa"  # fallback
+        raise SystemExit(
+            "Could not fetch API key from Secrets Manager. Check your VPN connection and AWS profile credentials."
+        )
     except Exception as e:
         logger.error(f"Error fetching API key: {e}")
-        return "L1f6J7gHpv9U9J2tiMaAPjjcu8RIyeJ2gMpMTNOa"  # fallback
+        raise SystemExit(
+            "Could not fetch API key from Secrets Manager. Check your VPN connection and AWS profile credentials."
+        )
 
 
 def get_static_variables(deployment_name: str) -> list[EnvFileSection]:
