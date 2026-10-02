@@ -1,6 +1,6 @@
 import { INTERMEDIATE_STATES } from "di-auth/src/components/common/state-machine/state-machine.js";
 import { stringToUtf8Hex } from "./helpers/hex-helper.js";
-import { State, StateMachineConfig, Transition } from "./index.js";
+import { State, StateGroup, StateMachineConfig, Transition } from "./index.js";
 
 const getMermaidHeader = (graphDirection: "TD" | "LR"): string =>
   `flowchart ${graphDirection}
@@ -50,14 +50,73 @@ const renderClickHandler = ({ id }: State): string => {
   return `    click ${hexId} call onStateClick(${JSON.stringify(hexId)})`;
 };
 
+const escapeGroupTitle = (title: string): string =>
+  title.replace(/"/g, "&quot;");
+
+/**
+ * Renders the state node definitions, wrapping any states that belong to a
+ * group inside a Mermaid subgraph. States are matched to a group by their
+ * `name` (the PATH_NAMES value). Any state not assigned to a group is rendered
+ * outside of any subgraph.
+ */
+const renderGroupedStates = (states: State[], groups: StateGroup[]): string => {
+  // Map state name -> states (there may be more than one state sharing a name)
+  const statesByName = new Map<string, State[]>();
+  states.forEach((state) => {
+    const existing = statesByName.get(state.name);
+    if (existing) {
+      existing.push(state);
+    } else {
+      statesByName.set(state.name, [state]);
+    }
+  });
+
+  const assignedStateIds = new Set<string>();
+  const lines: string[] = [];
+
+  groups.forEach((group, index) => {
+    const groupStates = group.states
+      .flatMap((name) => statesByName.get(name) ?? [])
+      .filter((state) => !assignedStateIds.has(state.id));
+
+    if (groupStates.length === 0) {
+      return;
+    }
+
+    lines.push(
+      `    subgraph group${index}["${escapeGroupTitle(group.title)}"]`
+    );
+    groupStates.forEach((state) => {
+      assignedStateIds.add(state.id);
+      lines.push(renderState(state));
+    });
+    lines.push(`    end`);
+  });
+
+  // Render any states that were not assigned to a group
+  states
+    .filter((state) => !assignedStateIds.has(state.id))
+    .forEach((state) => {
+      assignedStateIds.add(state.id);
+      lines.push(renderState(state));
+    });
+
+  return lines.join("\n");
+};
+
 export const generateStateMachineMermaid = async (
   stateMachineConfig: StateMachineConfig
 ): Promise<string> => {
-  const { states, transitions } = stateMachineConfig;
+  const { states, transitions, groups } = stateMachineConfig;
+
+  const stateDefinitions =
+    groups && groups.length > 0
+      ? renderGroupedStates(states, groups)
+      : states.map((state) => renderState(state)).join("\n");
 
   return `
 ${getMermaidHeader("LR")}
-${states.map((state) => renderState(state)).join("\n")}
+${stateDefinitions}
 ${states.map(renderClickHandler).join("\n")}
 ${transitions.map(renderTransition).join("\n")}
   `;

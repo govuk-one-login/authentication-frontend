@@ -34,6 +34,13 @@ repos:
           - ts
         entry: npm run lint
         pass_filenames: true
+        exclude: ^journey-map/
+      - id: journey-map-eslint
+        name: Run journey-map ESLint
+        language: system
+        files: ^journey-map/.*\.(ts|js)$
+        pass_filenames: false
+        entry: npm run lint --prefix journey-map
       - id: prettier
         name: Run prettier
         language: system
