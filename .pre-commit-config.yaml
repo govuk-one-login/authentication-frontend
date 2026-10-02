@@ -34,6 +34,7 @@ repos:
           - ts
         entry: npm run lint
         pass_filenames: true
+        exclude: ^journey-map/
       - id: prettier
         name: Run prettier
         language: system
