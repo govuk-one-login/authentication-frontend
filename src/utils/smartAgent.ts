@@ -34,9 +34,6 @@ export class SmartAgentService {
       )
       .catch((error) => {
         logger.info(`Error posting to SmartAgent API`);
-        logger.info(`webformID is ${this.webformID}`);
-        logger.info(`apiKey is ${this.apiKey}`);
-        logger.info(`apiUrl is ${this.apiUrl}`);
 
         logger.error(error.toJSON());
         throw new Error(
