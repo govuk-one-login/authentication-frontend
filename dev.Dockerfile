@@ -8,7 +8,7 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN npm config get ignore-scripts | grep -q "true" || exit 1
 RUN --mount=type=secret,id=node_auth_token \
-    export NODE_AUTH_TOKEN=$(cat /run/secrets/node_auth_token) && \
+    if [ -s /run/secrets/node_auth_token ]; then export NODE_AUTH_TOKEN=$(cat /run/secrets/node_auth_token); fi && \
     npm ci --ignore-scripts
 
 COPY tsconfig.json ./

@@ -101,6 +101,12 @@ aws ecr get-login-password --region eu-west-2 |
 if [[ $BUILD == "1" ]]; then
     echo "Building image"
 
+    if [[ -z "${NODE_AUTH_TOKEN:-}" ]]; then
+        echo "Error: NODE_AUTH_TOKEN is not set. It is required to install private GitHub packages." >&2
+        echo "Create a classic GitHub PAT with read:packages and export it as NODE_AUTH_TOKEN." >&2
+        exit 1
+    fi
+
     PLATFORM_OPTION="--platform ${DOCKER_PLATFORM}"
     TAG_OPTION=""
     if [ "$PUSH_LATEST_TAG" == "true" ]; then
@@ -113,6 +119,7 @@ if [[ $BUILD == "1" ]]; then
         --tag "$ECR_REGISTRY/$ECR_REPO_NAME:$GITHUB_SHA" \
         $TAG_OPTION \
         $PLATFORM_OPTION \
+        --secret id=node_auth_token,env=NODE_AUTH_TOKEN \
         --file "$DOCKER_BUILD_PATH"/"$DOCKERFILE" \
         "$DOCKER_BUILD_PATH"
 
