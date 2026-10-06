@@ -1,6 +1,10 @@
 import type { Request, Response } from "express";
 import type { ExpressRouteFunc } from "../../types.js";
-import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../app.constants.js";
+import {
+  JOURNEY_TYPE,
+  NOTIFICATION_TYPE,
+  PATH_NAMES,
+} from "../../app.constants.js";
 import { getErrorPathByCode } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { BadRequestError } from "../../utils/error.js";
@@ -15,8 +19,6 @@ export function resendEmailCodeGet(req: Request, res: Response): void {
     isLocked(req.session.user.wrongCodeEnteredAccountRecoveryLock) ||
     isLocked(req.session.user.wrongCodeEnteredPasswordResetLock)
   ) {
-    const newCodeLink = "/security-code-check-time-limit";
-
     let show2HrScreen = false;
     if (
       req.session.user.isPasswordResetJourney ||
@@ -28,7 +30,7 @@ export function resendEmailCodeGet(req: Request, res: Response): void {
     return res.render(
       "security-code-error/index-security-code-entered-exceeded.njk",
       {
-        newCodeLink,
+        newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
         show2HrScreen: show2HrScreen,
       }
     );
