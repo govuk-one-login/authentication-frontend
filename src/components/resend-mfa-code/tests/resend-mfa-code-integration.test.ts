@@ -216,7 +216,7 @@ describe("Integration:: resend mfa code", () => {
       })
       .expect(
         "Location",
-        "/security-code-requested-too-many-times?actionType=mfaMaxCodesSent"
+        "/security-code-requested-too-many-times"
       )
       .expect(302);
   });

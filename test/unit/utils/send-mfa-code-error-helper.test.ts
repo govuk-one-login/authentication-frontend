@@ -81,7 +81,7 @@ describe("send mfa code error helper", () => {
     });
     await handleSendMfaCodeError(result, req, res);
     expect(res.redirect).to.have.calledWith(
-      "/security-code-requested-too-many-times?actionType=changeSecurityCodesEmailMaxCodesSent"
+      "/security-code-requested-too-many-times"
     );
   });
 

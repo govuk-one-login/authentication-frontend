@@ -437,7 +437,7 @@ describe("Integration:: enter mfa", () => {
       })
       .expect(
         "Location",
-        `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.MfaMaxCodesSent}`
+        PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED
       )
       .expect(302);
   });

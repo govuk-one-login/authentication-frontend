@@ -153,7 +153,7 @@ describe("Integration:: resend email code", () => {
       })
       .expect(
         "Location",
-        "/security-code-requested-too-many-times?actionType=emailBlocked"
+        "/security-code-requested-too-many-times"
       )
       .expect(302);
   });
