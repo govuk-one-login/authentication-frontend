@@ -131,10 +131,7 @@ describe("Integration:: resend email code", () => {
       .send({
         _csrf: token,
       })
-      .expect(
-        "Location",
-        "/security-code-invalid-request?actionType=emailMaxCodesSent"
-      )
+      .expect("Location", "/security-code-invalid-request")
       .expect(302);
   });
 
@@ -151,10 +148,7 @@ describe("Integration:: resend email code", () => {
       .send({
         _csrf: token,
       })
-      .expect(
-        "Location",
-        "/security-code-requested-too-many-times"
-      )
+      .expect("Location", "/security-code-requested-too-many-times")
       .expect(302);
   });
 });

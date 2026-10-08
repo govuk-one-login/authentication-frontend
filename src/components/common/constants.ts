@@ -59,11 +59,7 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
     PATH_NAMES["ACCOUNT_LOCKED"],
   [ERROR_CODES.MFA_SMS_MAX_CODES_SENT]:
     PATH_NAMES["SECURITY_CODE_REQUEST_EXCEEDED"],
-  [ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED]: pathWithQueryParam(
-    PATH_NAMES["SECURITY_CODE_WAIT"],
-    SECURITY_CODE_ERROR,
-    SecurityCodeErrorType.MfaBlocked
-  ),
+  [ERROR_CODES.MFA_CODE_REQUESTS_BLOCKED]: PATH_NAMES["SECURITY_CODE_WAIT"],
   [ERROR_CODES.ENTERED_INVALID_MFA_MAX_TIMES]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_INVALID"],
     SECURITY_CODE_ERROR,
@@ -92,11 +88,7 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
       SECURITY_CODE_ERROR,
       SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries
     ),
-  [ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT]: pathWithQueryParam(
-    PATH_NAMES["SECURITY_CODE_WAIT"],
-    SECURITY_CODE_ERROR,
-    SecurityCodeErrorType.EmailMaxCodesSent
-  ),
+  [ERROR_CODES.VERIFY_EMAIL_MAX_CODES_SENT]: PATH_NAMES["SECURITY_CODE_WAIT"],
   [ERROR_CODES.AUTH_APP_INVALID_CODE_MAX_ATTEMPTS_REACHED]: pathWithQueryParam(
     PATH_NAMES["SECURITY_CODE_INVALID"],
     SECURITY_CODE_ERROR,
@@ -111,11 +103,7 @@ export const ERROR_CODE_MAPPING: { [p: string]: string } = {
       SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries
     ),
   [ERROR_CODES.VERIFY_CHANGE_HOW_GET_SECURITY_CODES_CODE_REQUEST_BLOCKED]:
-    pathWithQueryParam(
-      PATH_NAMES["SECURITY_CODE_WAIT"],
-      SECURITY_CODE_ERROR,
-      SecurityCodeErrorType.ChangeSecurityCodesEmailBlocked
-    ),
+    PATH_NAMES["SECURITY_CODE_WAIT"],
 };
 
 export function getErrorPathByCode(errorCode: number): string | undefined {

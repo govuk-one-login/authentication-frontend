@@ -413,10 +413,7 @@ describe("Integration:: enter mfa", () => {
         _csrf: token,
         code: "123455",
       })
-      .expect(
-        "Location",
-        `${PATH_NAMES.SECURITY_CODE_WAIT}?actionType=${SecurityCodeErrorType.MfaBlocked}`
-      )
+      .expect("Location", PATH_NAMES.SECURITY_CODE_WAIT)
       .expect(302);
   });
 
@@ -435,10 +432,7 @@ describe("Integration:: enter mfa", () => {
         _csrf: token,
         code: "123455",
       })
-      .expect(
-        "Location",
-        PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED
-      )
+      .expect("Location", PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED)
       .expect(302);
   });
 
