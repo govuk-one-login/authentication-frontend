@@ -173,5 +173,58 @@ describe("reset password controller (in 6 digit code flow)", () => {
         expect(req.session.user.passwordResetTime).to.be.undefined;
       });
     });
+
+    it("should pass isCommonPasswordResetJourney and isPartiallyCreatedAccountJourney from the session to the reset service", async () => {
+      req.session.user.isCommonPasswordResetJourney = true;
+      req.session.user.isAccountPartCreated = true;
+
+      const fakeResetService = fakeResetServiceReturningSuccess(true);
+      const fakeLoginService = fakeLoginServiceReturning(
+        true,
+        false,
+        MFA_METHOD_TYPE.SMS
+      );
+
+      await resetPasswordPost(fakeResetService, fakeLoginService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeResetService.updatePassword).to.have.been.calledOnceWith(
+        newPassword,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        true,
+        true,
+        sinon.match.any
+      );
+    });
+
+    it("should default isCommonPasswordResetJourney and isPartiallyCreatedAccountJourney to false when not set on the session", async () => {
+      const fakeResetService = fakeResetServiceReturningSuccess(true);
+      const fakeLoginService = fakeLoginServiceReturning(
+        true,
+        false,
+        MFA_METHOD_TYPE.SMS
+      );
+
+      await resetPasswordPost(fakeResetService, fakeLoginService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(fakeResetService.updatePassword).to.have.been.calledOnceWith(
+        newPassword,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        sinon.match.any,
+        false,
+        false,
+        sinon.match.any
+      );
+    });
   });
 });

@@ -32,12 +32,19 @@ export function resetPasswordPost(
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
     const newPassword = req.body.password;
 
+    const isCommonPasswordResetJourney =
+      req.session.user.isCommonPasswordResetJourney ?? false;
+    const isPartiallyCreatedAccountJourney =
+      req.session.user.isAccountPartCreated ?? false;
+
     const updatePasswordResponse = await resetService.updatePassword(
       newPassword,
       sessionId,
       clientSessionId,
       persistentSessionId,
       withinForcedPasswordResetJourney,
+      isCommonPasswordResetJourney,
+      isPartiallyCreatedAccountJourney,
       req
     );
 

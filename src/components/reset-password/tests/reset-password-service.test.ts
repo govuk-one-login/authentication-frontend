@@ -45,6 +45,8 @@ describe("reset password service", () => {
       commonVariables;
     const newPassword = "abcdef";
     const isForcedPasswordReset = false;
+    const isCommonPasswordResetJourney = true;
+    const isPartiallyCreatedAccountJourney = true;
     const req = createMockRequest(PATH_NAMES.RESET_PASSWORD, {
       headers: requestHeadersWithIpAndAuditEncoded,
     });
@@ -55,6 +57,8 @@ describe("reset password service", () => {
       clientSessionId,
       diPersistentSessionId,
       isForcedPasswordReset,
+      isCommonPasswordResetJourney,
+      isPartiallyCreatedAccountJourney,
       req
     );
 
@@ -65,6 +69,8 @@ describe("reset password service", () => {
         password: newPassword,
         isForcedPasswordReset: isForcedPasswordReset,
         allowMfaResetAfterPasswordReset: true,
+        isCommonPasswordResetJourney: isCommonPasswordResetJourney,
+        isPartiallyCreatedAccountJourney: isPartiallyCreatedAccountJourney,
       },
     };
 

@@ -18,6 +18,8 @@ export function resetPasswordService(
     clientSessionId: string,
     persistentSessionId: string,
     isForcedPasswordReset: boolean,
+    isCommonPasswordResetJourney: boolean,
+    isPartiallyCreatedAccountJourney: boolean,
     req: Request
   ): Promise<ApiResponseResult<DefaultApiResponse>> {
     const response = await axios.client.post<DefaultApiResponse>(
@@ -26,6 +28,8 @@ export function resetPasswordService(
         password: newPassword,
         isForcedPasswordReset: isForcedPasswordReset,
         allowMfaResetAfterPasswordReset: true,
+        isCommonPasswordResetJourney: isCommonPasswordResetJourney,
+        isPartiallyCreatedAccountJourney: isPartiallyCreatedAccountJourney,
       },
       getInternalRequestConfigWithSecurityHeaders(
         {
