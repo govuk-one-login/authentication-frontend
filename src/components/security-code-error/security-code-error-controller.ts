@@ -31,11 +31,17 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
     isEmailCode
   );
 
+  const newCodeLink = getNewCodePath(
+    req.query.actionType as SecurityCodeErrorType,
+    req.session.user.isAccountCreationJourney
+  );
+
+  if (!newCodeLink) {
+    req.log.warn(`No newCodePath found for actionType ${req.query.actionType}`);
+  }
+
   return res.render("security-code-error/index.njk", {
-    newCodeLink: getNewCodePath(
-      req.query.actionType as SecurityCodeErrorType,
-      req.session.user.isAccountCreationJourney
-    ),
+    newCodeLink,
     isAuthApp: isAuthApp(req.query.actionType as SecurityCodeErrorType),
     isBlocked: actionType !== SecurityCodeErrorType.EmailMaxRetries,
     show2HrScreen: show2HrScreen,
@@ -74,39 +80,21 @@ export function securityCodeEnteredExceededGet(
   });
 }
 
-export function getNewCodePath(
+function getNewCodePath(
   actionType: SecurityCodeErrorType,
   isAccountCreationJourney?: boolean
-): string {
+) {
   switch (actionType) {
-    case SecurityCodeErrorType.MfaMaxCodesSent:
-    case SecurityCodeErrorType.MfaBlocked:
-      return PATH_NAMES.RESEND_MFA_CODE;
     case SecurityCodeErrorType.MfaMaxRetries:
       return pathWithQueryParam(
         PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
         SECURITY_CODE_ERROR,
         SecurityCodeErrorType.MfaMaxRetries
       );
-    case SecurityCodeErrorType.AuthAppMfaMaxRetries:
-      return pathWithQueryParam(
-        PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-        SECURITY_CODE_ERROR,
-        SecurityCodeErrorType.AuthAppMfaMaxRetries
-      );
-    case SecurityCodeErrorType.OtpMaxCodesSent:
-    case SecurityCodeErrorType.OtpBlocked:
-      return PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER;
     case SecurityCodeErrorType.OtpMaxRetries:
       return isAccountCreationJourney
         ? PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION
         : PATH_NAMES.RESEND_MFA_CODE;
-    case SecurityCodeErrorType.EmailMaxCodesSent:
-    case SecurityCodeErrorType.EmailBlocked:
-      return PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
-    case SecurityCodeErrorType.ChangeSecurityCodesEmailMaxCodesSent:
-    case SecurityCodeErrorType.ChangeSecurityCodesEmailBlocked:
-      return PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
     case SecurityCodeErrorType.EmailMaxRetries:
     case SecurityCodeErrorType.ChangeSecurityCodesEmailMaxRetries:
     case SecurityCodeErrorType.InvalidPasswordResetCodeMaxRetries:
@@ -114,6 +102,12 @@ export function getNewCodePath(
         PATH_NAMES.RESEND_EMAIL_CODE,
         "requestNewCode",
         "true"
+      );
+    case SecurityCodeErrorType.AuthAppMfaMaxRetries:
+      return pathWithQueryParam(
+        PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
+        SECURITY_CODE_ERROR,
+        SecurityCodeErrorType.AuthAppMfaMaxRetries
       );
   }
 }
