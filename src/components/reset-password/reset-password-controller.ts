@@ -34,8 +34,6 @@ export function resetPasswordPost(
 
     const isCommonPasswordResetJourney =
       req.session.user.isCommonPasswordResetJourney ?? false;
-    const isPartiallyCreatedAccountJourney =
-      req.session.user.isAccountPartCreated ?? false;
 
     const updatePasswordResponse = await resetService.updatePassword(
       newPassword,
@@ -44,7 +42,6 @@ export function resetPasswordPost(
       persistentSessionId,
       withinForcedPasswordResetJourney,
       isCommonPasswordResetJourney,
-      isPartiallyCreatedAccountJourney,
       req
     );
 
