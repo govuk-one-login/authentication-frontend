@@ -5,7 +5,7 @@ import { sinon } from "../../../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
 
 import {
-  securityCodeCannotRequestCodeGet,
+  securityCodeInvalidRequestGet,
   securityCodeInvalidGet,
   securityCodeTriesExceededGet,
   securityCodeEnteredExceededGet,
@@ -87,9 +87,9 @@ describe("security code controller", () => {
     });
   });
 
-  describe("securityCodeCannotRequestGet", () => {
+  describe("securityCodeInvalidRequestGet", () => {
     it("should render the too many requests page when user is blocked from requesting more OTPs", () => {
-      securityCodeCannotRequestCodeGet(req, res);
+      securityCodeInvalidRequestGet(req, res);
 
       expect(res.render).to.have.calledWith(
         "security-code-error/index-too-many-requests.njk"

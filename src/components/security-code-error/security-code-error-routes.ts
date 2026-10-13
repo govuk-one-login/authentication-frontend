@@ -2,7 +2,7 @@ import { PATH_NAMES } from "../../app.constants.js";
 import express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
 import {
-  securityCodeCannotRequestCodeGet,
+  securityCodeInvalidRequestGet,
   securityCodeInvalidGet,
   securityCodeTriesExceededGet,
   securityCodeEnteredExceededGet,
@@ -22,9 +22,9 @@ router.get(
 );
 
 router.get(
-  PATH_NAMES.SECURITY_CODE_WAIT,
+  PATH_NAMES.SECURITY_CODE_INVALID_REQUEST,
   validateSessionMiddleware,
-  securityCodeCannotRequestCodeGet
+  securityCodeInvalidRequestGet
 );
 
 router.get(

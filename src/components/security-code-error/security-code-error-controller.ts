@@ -61,7 +61,7 @@ export function securityCodeTriesExceededGet(
   return res.render("security-code-error/index-too-many-requests.njk");
 }
 
-export function securityCodeCannotRequestCodeGet(
+export function securityCodeInvalidRequestGet(
   req: Request,
   res: Response
 ): void {

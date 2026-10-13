@@ -568,7 +568,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED]: {
     template: "security-code-error/index-too-many-requests.njk",
   },
-  [PATH_NAMES.SECURITY_CODE_WAIT]: {
+  [PATH_NAMES.SECURITY_CODE_INVALID_REQUEST]: {
     template: "security-code-error/index-too-many-requests.njk",
   },
 
