@@ -387,10 +387,10 @@ describe("security code controller", () => {
     );
 
     it(
-      "should render index-too-many-requests.njk for OtpBlocked when max number of codes have been requested " +
+      "should render index-too-many-requests.njk for OtpMaxRetries when max number of codes have been requested " +
         "and user is in the 2FA SMS account recovery journey",
       () => {
-        req.query.actionType = SecurityCodeErrorType.OtpBlocked;
+        req.query.actionType = SecurityCodeErrorType.OtpMaxRetries;
         req.session.user.isAccountRecoveryJourney = true;
         securityCodeTriesExceededGet(req as Request, res as Response);
 

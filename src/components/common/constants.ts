@@ -4,19 +4,10 @@ import type { Request } from "express";
 export const SECURITY_CODE_ERROR = "actionType";
 
 export enum SecurityCodeErrorType {
-  MfaMaxCodesSent = "mfaMaxCodesSent",
-  MfaBlocked = "mfaBlocked",
   MfaMaxRetries = "mfaMaxRetries",
-  OtpMaxCodesSent = "otpMaxCodesSent",
-  OtpBlocked = "otpBlocked",
   OtpMaxRetries = "otpMaxRetries",
-  EmailMaxCodesSent = "emailMaxCodesSent",
-  EmailBlocked = "emailBlocked",
   EmailMaxRetries = "emailMaxRetries",
-  AuthAppMfaNoCodeValidator = "authAppMfaNoCodeValidator",
   AuthAppMfaMaxRetries = "authAppMfaMaxRetries",
-  ChangeSecurityCodesEmailMaxCodesSent = "changeSecurityCodesEmailMaxCodesSent",
-  ChangeSecurityCodesEmailBlocked = "changeSecurityCodesEmailBlocked",
   ChangeSecurityCodesEmailMaxRetries = "changeSecurityCodesEmailMaxRetries",
   InvalidPasswordResetCodeMaxRetries = "invalidPasswordResetCodeMaxRetries",
 }
