@@ -60,6 +60,10 @@ describe("security code controller", () => {
   });
 
   describe("securityCodeTriesExceededGet", () => {
+    after(() => {
+      delete process.env.CODE_REQUEST_BLOCKED_MINUTES;
+    });
+
     SCENARIOS.SECURITY_CODE_TRIES_EXCEEDED_GET.forEach(function (params) {
       it(`should render index-too-many-requests.njk for ${params.actionType} when max number of codes have been sent`, () => {
         securityCodeTriesExceededGet(req as Request, res as Response);
@@ -68,6 +72,32 @@ describe("security code controller", () => {
           "security-code-error/index-too-many-requests.njk"
         );
       });
+    });
+
+    it(
+      "should render index-too-many-requests.njk and set block on session for MfaMaxRetries when max number of " +
+        "codes have been sent and user is in the sign-in journey",
+      () => {
+        process.env.CODE_REQUEST_BLOCKED_MINUTES = "15";
+        securityCodeTriesExceededGet(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWith(
+          "security-code-error/index-too-many-requests.njk"
+        );
+        expect(req.session.user.codeRequestLock).to.eq(
+          "Mon, 01 Jan 2024 00:15:00 GMT"
+        );
+      }
+    );
+
+    it("should not extend a lock that already exists", () => {
+      const dateInTheFuture = new Date(date.getTime() + 1 * 1000).toUTCString();
+
+      req.session.user.codeRequestLock = dateInTheFuture;
+
+      securityCodeTriesExceededGet(req as Request, res as Response);
+
+      expect(req.session.user.codeRequestLock).to.eq(dateInTheFuture);
     });
   });
 
@@ -340,38 +370,6 @@ describe("security code controller", () => {
           expect(lock).to.eq(dateInTheFuture);
         });
       });
-    });
-  });
-
-  describe("securityCodeTriesExceededGet", () => {
-    after(() => {
-      delete process.env.CODE_REQUEST_BLOCKED_MINUTES;
-    });
-
-    it(
-      "should render index-too-many-requests.njk and set block on session for MfaMaxRetries when max number of " +
-        "codes have been sent and user is in the sign-in journey",
-      () => {
-        process.env.CODE_REQUEST_BLOCKED_MINUTES = "15";
-        securityCodeTriesExceededGet(req as Request, res as Response);
-
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk"
-        );
-        expect(req.session.user.codeRequestLock).to.eq(
-          "Mon, 01 Jan 2024 00:15:00 GMT"
-        );
-      }
-    );
-
-    it("should not extend a lock that already exists", () => {
-      const dateInTheFuture = new Date(date.getTime() + 1 * 1000).toUTCString();
-
-      req.session.user.codeRequestLock = dateInTheFuture;
-
-      securityCodeTriesExceededGet(req as Request, res as Response);
-
-      expect(req.session.user.codeRequestLock).to.eq(dateInTheFuture);
     });
   });
 });
