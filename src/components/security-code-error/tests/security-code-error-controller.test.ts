@@ -64,29 +64,17 @@ describe("security code controller", () => {
       delete process.env.CODE_REQUEST_BLOCKED_MINUTES;
     });
 
-    it("should render index-too-many-requests.njk when max number of codes have been sent", () => {
+    it("should render index-too-many-requests.njk and set block on session when max number of codes have been sent", () => {
+      process.env.CODE_REQUEST_BLOCKED_MINUTES = "15";
       securityCodeTriesExceededGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
         "security-code-error/index-too-many-requests.njk"
       );
+      expect(req.session.user.codeRequestLock).to.eq(
+        "Mon, 01 Jan 2024 00:15:00 GMT"
+      );
     });
-
-    it(
-      "should render index-too-many-requests.njk and set block on session for MfaMaxRetries when max number of " +
-        "codes have been sent and user is in the sign-in journey",
-      () => {
-        process.env.CODE_REQUEST_BLOCKED_MINUTES = "15";
-        securityCodeTriesExceededGet(req as Request, res as Response);
-
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk"
-        );
-        expect(req.session.user.codeRequestLock).to.eq(
-          "Mon, 01 Jan 2024 00:15:00 GMT"
-        );
-      }
-    );
 
     it("should not extend a lock that already exists", () => {
       const dateInTheFuture = new Date(date.getTime() + 1 * 1000).toUTCString();
