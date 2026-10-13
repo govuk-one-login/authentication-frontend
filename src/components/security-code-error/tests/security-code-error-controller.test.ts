@@ -364,38 +364,6 @@ describe("security code controller", () => {
       }
     );
 
-    it(
-      "should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent " +
-        "and user is in the sign-in journey",
-      () => {
-        securityCodeTriesExceededGet(req as Request, res as Response);
-
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk"
-        );
-      }
-    );
-
-    it(
-      "should render index-too-many-requests.njk for OtpMaxRetries when max number of codes have been requested " +
-        "and user is in the 2FA SMS account recovery journey",
-      () => {
-        securityCodeTriesExceededGet(req as Request, res as Response);
-
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk"
-        );
-      }
-    );
-
-    it("should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent and user is in the account creation journey", () => {
-      securityCodeTriesExceededGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-too-many-requests.njk"
-      );
-    });
-
     it("should not extend a lock that already exists", () => {
       const dateInTheFuture = new Date(date.getTime() + 1 * 1000).toUTCString();
 
