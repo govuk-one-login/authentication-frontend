@@ -64,14 +64,12 @@ describe("security code controller", () => {
       delete process.env.CODE_REQUEST_BLOCKED_MINUTES;
     });
 
-    SCENARIOS.SECURITY_CODE_TRIES_EXCEEDED_GET.forEach(function (params) {
-      it(`should render index-too-many-requests.njk for ${params.actionType} when max number of codes have been sent`, () => {
-        securityCodeTriesExceededGet(req as Request, res as Response);
+    it("should render index-too-many-requests.njk when max number of codes have been sent", () => {
+      securityCodeTriesExceededGet(req as Request, res as Response);
 
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk"
-        );
-      });
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-too-many-requests.njk"
+      );
     });
 
     it(
@@ -102,14 +100,12 @@ describe("security code controller", () => {
   });
 
   describe("securityCodeCannotRequestGet", () => {
-    SCENARIOS.SECURITY_CODE_CANNOT_REQUEST_GET.forEach(function (params) {
-      it(`should render the too many requests page for ${params.actionType} when user is blocked from requesting more OTPs`, () => {
-        securityCodeCannotRequestCodeGet(req, res);
+    it("should render the too many requests page when user is blocked from requesting more OTPs", () => {
+      securityCodeCannotRequestCodeGet(req, res);
 
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk"
-        );
-      });
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-too-many-requests.njk"
+      );
     });
   });
 
