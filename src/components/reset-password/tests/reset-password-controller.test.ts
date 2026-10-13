@@ -174,9 +174,8 @@ describe("reset password controller (in 6 digit code flow)", () => {
       });
     });
 
-    it("should pass isCommonPasswordResetJourney and isPartiallyCreatedAccountJourney from the session to the reset service", async () => {
+    it("should pass isCommonPasswordResetJourney from the session to the reset service", async () => {
       req.session.user.isCommonPasswordResetJourney = true;
-      req.session.user.isAccountPartCreated = true;
 
       const fakeResetService = fakeResetServiceReturningSuccess(true);
       const fakeLoginService = fakeLoginServiceReturning(
@@ -196,13 +195,12 @@ describe("reset password controller (in 6 digit code flow)", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        true,
         true,
         sinon.match.any
       );
     });
 
-    it("should default isCommonPasswordResetJourney and isPartiallyCreatedAccountJourney to false when not set on the session", async () => {
+    it("should default isCommonPasswordResetJourney to false when not set on the session", async () => {
       const fakeResetService = fakeResetServiceReturningSuccess(true);
       const fakeLoginService = fakeLoginServiceReturning(
         true,
@@ -221,7 +219,6 @@ describe("reset password controller (in 6 digit code flow)", () => {
         sinon.match.any,
         sinon.match.any,
         sinon.match.any,
-        false,
         false,
         sinon.match.any
       );
