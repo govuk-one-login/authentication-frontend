@@ -4,7 +4,7 @@ import { validateSessionMiddleware } from "../../middleware/session-middleware.j
 import {
   securityCodeInvalidRequestGet,
   securityCodeInvalidGet,
-  securityCodeTriesExceededGet,
+  securityCodeRequestedTooManyTimesGet,
   securityCodeEnteredExceededGet,
 } from "./security-code-error-controller.js";
 const router = express.Router();
@@ -16,9 +16,9 @@ router.get(
 );
 
 router.get(
-  PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+  PATH_NAMES.SECURITY_CODE_REQUESTED_TOO_MANY_TIMES,
   validateSessionMiddleware,
-  securityCodeTriesExceededGet
+  securityCodeRequestedTooManyTimesGet
 );
 
 router.get(

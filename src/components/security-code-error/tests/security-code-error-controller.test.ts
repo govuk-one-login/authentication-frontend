@@ -7,7 +7,7 @@ import type { Request, Response } from "express";
 import {
   securityCodeInvalidRequestGet,
   securityCodeInvalidGet,
-  securityCodeTriesExceededGet,
+  securityCodeRequestedTooManyTimesGet,
   securityCodeEnteredExceededGet,
 } from "../security-code-error-controller.js";
 import {
@@ -59,14 +59,14 @@ describe("security code controller", () => {
     );
   });
 
-  describe("securityCodeTriesExceededGet", () => {
+  describe("securityCodeRequestedTooManyTimesGet", () => {
     after(() => {
       delete process.env.CODE_REQUEST_BLOCKED_MINUTES;
     });
 
     it("should render index-too-many-requests.njk and set block on session when max number of codes have been sent", () => {
       process.env.CODE_REQUEST_BLOCKED_MINUTES = "15";
-      securityCodeTriesExceededGet(req as Request, res as Response);
+      securityCodeRequestedTooManyTimesGet(req as Request, res as Response);
 
       expect(res.render).to.have.calledWith(
         "security-code-error/index-too-many-requests.njk"
@@ -81,7 +81,7 @@ describe("security code controller", () => {
 
       req.session.user.codeRequestLock = dateInTheFuture;
 
-      securityCodeTriesExceededGet(req as Request, res as Response);
+      securityCodeRequestedTooManyTimesGet(req as Request, res as Response);
 
       expect(req.session.user.codeRequestLock).to.eq(dateInTheFuture);
     });

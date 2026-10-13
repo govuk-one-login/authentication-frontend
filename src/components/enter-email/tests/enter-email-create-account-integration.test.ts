@@ -225,7 +225,7 @@ describe("Integration::enter email (create account)", () => {
         _csrf: token,
         email: "test@test.com",
       })
-      .expect("Location", PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED)
+      .expect("Location", PATH_NAMES.SECURITY_CODE_REQUESTED_TOO_MANY_TIMES)
       .expect(302);
   });
 

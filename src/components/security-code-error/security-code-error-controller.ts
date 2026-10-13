@@ -48,7 +48,7 @@ export function securityCodeInvalidGet(req: Request, res: Response): void {
   });
 }
 
-export function securityCodeTriesExceededGet(
+export function securityCodeRequestedTooManyTimesGet(
   req: Request,
   res: Response
 ): void {
