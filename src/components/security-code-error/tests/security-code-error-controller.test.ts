@@ -39,7 +39,7 @@ describe("security code controller", () => {
     delete process.env.REDUCED_CODE_BLOCK_DURATION_MINUTES;
   });
 
-  describe("securityCodeExpiredGet", () => {
+  describe("securityCodeInvalidGet", () => {
     SCENARIOS.SECURITY_CODE_EXPIRED_GET.forEach(
       ({ actionType, expectedRenderOptions }) => {
         it(`should render invalid OTP code for ${actionType} error when email OTP code has been invalid max number of times`, () => {
@@ -57,77 +57,7 @@ describe("security code controller", () => {
         });
       }
     );
-  });
 
-  describe("securityCodeRequestedTooManyTimesGet", () => {
-    after(() => {
-      delete process.env.CODE_REQUEST_BLOCKED_MINUTES;
-    });
-
-    it("should render index-too-many-requests.njk and set block on session when max number of codes have been sent", () => {
-      process.env.CODE_REQUEST_BLOCKED_MINUTES = "15";
-      securityCodeRequestedTooManyTimesGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-too-many-requests.njk"
-      );
-      expect(req.session.user.codeRequestLock).to.eq(
-        "Mon, 01 Jan 2024 00:15:00 GMT"
-      );
-    });
-
-    it("should not extend a lock that already exists", () => {
-      const dateInTheFuture = new Date(date.getTime() + 1 * 1000).toUTCString();
-
-      req.session.user.codeRequestLock = dateInTheFuture;
-
-      securityCodeRequestedTooManyTimesGet(req as Request, res as Response);
-
-      expect(req.session.user.codeRequestLock).to.eq(dateInTheFuture);
-    });
-  });
-
-  describe("securityCodeInvalidRequestGet", () => {
-    it("should render the too many requests page when user is blocked from requesting more OTPs", () => {
-      securityCodeInvalidRequestGet(req, res);
-
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-too-many-requests.njk"
-      );
-    });
-  });
-
-  describe("securityCodeEnteredExceededGet", () => {
-    it("should render index-security-code-entered-exceeded.njk when SMS code has been used max number of times", () => {
-      req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
-
-      securityCodeEnteredExceededGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-security-code-entered-exceeded.njk",
-        {
-          newCodeLink: PATH_NAMES.RESEND_MFA_CODE,
-          isAuthApp: false,
-        }
-      );
-    });
-
-    it("should render index-security-code-entered-exceeded.njk when Auth App code has been used max number of times", () => {
-      req.query.actionType = SecurityCodeErrorType.AuthAppMfaMaxRetries;
-
-      securityCodeEnteredExceededGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-security-code-entered-exceeded.njk",
-        {
-          newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
-          isAuthApp: true,
-        }
-      );
-    });
-  });
-
-  describe("securityCodeInvalidGet", () => {
     it(
       "should render 2hr lockout page when email OTP code has been invalid max number of times" +
         "in the reset password journey",
@@ -354,6 +284,74 @@ describe("security code controller", () => {
           expect(lock).to.eq(dateInTheFuture);
         });
       });
+    });
+  });
+
+  describe("securityCodeRequestedTooManyTimesGet", () => {
+    after(() => {
+      delete process.env.CODE_REQUEST_BLOCKED_MINUTES;
+    });
+
+    it("should render index-too-many-requests.njk and set block on session when max number of codes have been sent", () => {
+      process.env.CODE_REQUEST_BLOCKED_MINUTES = "15";
+      securityCodeRequestedTooManyTimesGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-too-many-requests.njk"
+      );
+      expect(req.session.user.codeRequestLock).to.eq(
+        "Mon, 01 Jan 2024 00:15:00 GMT"
+      );
+    });
+
+    it("should not extend a lock that already exists", () => {
+      const dateInTheFuture = new Date(date.getTime() + 1 * 1000).toUTCString();
+
+      req.session.user.codeRequestLock = dateInTheFuture;
+
+      securityCodeRequestedTooManyTimesGet(req as Request, res as Response);
+
+      expect(req.session.user.codeRequestLock).to.eq(dateInTheFuture);
+    });
+  });
+
+  describe("securityCodeInvalidRequestGet", () => {
+    it("should render the too many requests page when user is blocked from requesting more OTPs", () => {
+      securityCodeInvalidRequestGet(req, res);
+
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-too-many-requests.njk"
+      );
+    });
+  });
+
+  describe("securityCodeEnteredExceededGet", () => {
+    it("should render index-security-code-entered-exceeded.njk when SMS code has been used max number of times", () => {
+      req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
+
+      securityCodeEnteredExceededGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        {
+          newCodeLink: PATH_NAMES.RESEND_MFA_CODE,
+          isAuthApp: false,
+        }
+      );
+    });
+
+    it("should render index-security-code-entered-exceeded.njk when Auth App code has been used max number of times", () => {
+      req.query.actionType = SecurityCodeErrorType.AuthAppMfaMaxRetries;
+
+      securityCodeEnteredExceededGet(req as Request, res as Response);
+
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-security-code-entered-exceeded.njk",
+        {
+          newCodeLink: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+          isAuthApp: true,
+        }
+      );
     });
   });
 });
