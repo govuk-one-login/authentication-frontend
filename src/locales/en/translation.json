@@ -346,8 +346,7 @@
       "paragraph2": "You’ll need to create a GOV.UK One Login to use this service.",
       "insetText1": "At the moment, there are separate accounts for signing in to different government services.",
       "createAccountButtonText": "Create a GOV.UK One Login",
-      "tryAnotherLinkText": "Try another email address",
-      "tryAnotherLinkHref": "/enter-email-existing-account"
+      "tryAnotherLinkText": "Try another email address"
     },
     "accountNotFoundOptional": {
       "title": "No GOV.UK One Login found",
