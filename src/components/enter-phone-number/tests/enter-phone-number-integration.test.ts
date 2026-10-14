@@ -2,7 +2,7 @@ import { describe } from "mocha";
 import { expect, sinon } from "../../../../test/utils/test-utils.js";
 import * as cheerio from "cheerio";
 import { HTTP_STATUS_CODES, PATH_NAMES } from "../../../app.constants.js";
-import { ERROR_CODES, pathWithQueryParam } from "../../common/constants.js";
+import { ERROR_CODES } from "../../common/constants.js";
 import nock from "nock";
 import request from "supertest";
 import type { NextFunction, Request, Response } from "express";
@@ -414,14 +414,7 @@ describe("Integration::enter phone number", () => {
       .expect((res) => {
         res.text.includes("Wait 2 hours");
       })
-      .expect(
-        "Location",
-        pathWithQueryParam(
-          PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
-          "actionType",
-          "otpBlocked"
-        )
-      )
+      .expect("Location", PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED)
       .expect(302);
   });
 

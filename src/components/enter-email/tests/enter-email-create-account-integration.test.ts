@@ -8,7 +8,7 @@ import {
   HTTP_STATUS_CODES,
   PATH_NAMES,
 } from "../../../app.constants.js";
-import { ERROR_CODES, SecurityCodeErrorType } from "../../common/constants.js";
+import { ERROR_CODES } from "../../common/constants.js";
 import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
@@ -225,10 +225,7 @@ describe("Integration::enter email (create account)", () => {
         _csrf: token,
         email: "test@test.com",
       })
-      .expect(
-        "Location",
-        `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.EmailBlocked}`
-      )
+      .expect("Location", PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED)
       .expect(302);
   });
 

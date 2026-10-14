@@ -55,46 +55,6 @@ export const SCENARIOS = {
       },
     },
   ],
-  SECURITY_CODE_TRIES_EXCEEDED_GET: [
-    {
-      actionType: SecurityCodeErrorType.EmailMaxCodesSent,
-      newCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
-      isAccountCreationJourney: undefined,
-    },
-    {
-      actionType: SecurityCodeErrorType.MfaMaxRetries,
-      newCodeLink: pathWithQueryParam(
-        PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED,
-        SECURITY_CODE_ERROR,
-        SecurityCodeErrorType.MfaMaxRetries
-      ),
-      isAccountCreationJourney: undefined,
-    },
-    {
-      actionType: SecurityCodeErrorType.OtpMaxCodesSent,
-      newCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
-      isAccountCreationJourney: undefined,
-    },
-    {
-      actionType: SecurityCodeErrorType.OtpMaxRetries,
-      newCodeLink: PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
-      isAccountCreationJourney: true,
-    },
-  ],
-  SECURITY_CODE_CANNOT_REQUEST_GET: [
-    {
-      actionType: SecurityCodeErrorType.OtpBlocked,
-      expectedCodeLink: PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
-    },
-    {
-      actionType: SecurityCodeErrorType.MfaBlocked,
-      expectedCodeLink: PATH_NAMES.RESEND_MFA_CODE,
-    },
-    {
-      actionType: SecurityCodeErrorType.EmailBlocked,
-      expectedCodeLink: PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
-    },
-  ],
   ACCOUNT_CREATION_JOURNEY: [
     {
       action: SecurityCodeErrorType.EmailMaxRetries,

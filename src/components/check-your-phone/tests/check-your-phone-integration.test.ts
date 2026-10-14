@@ -224,10 +224,7 @@ describe("Integration:: check your phone", () => {
         _csrf: token,
         code: "123455",
       })
-      .expect(
-        "Location",
-        `${PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED}?actionType=${SecurityCodeErrorType.OtpBlocked}`
-      )
+      .expect("Location", PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED)
       .expect(302);
 
     await request(app)

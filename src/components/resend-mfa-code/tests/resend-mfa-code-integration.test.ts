@@ -214,10 +214,7 @@ describe("Integration:: resend mfa code", () => {
       .send({
         _csrf: token,
       })
-      .expect(
-        "Location",
-        "/security-code-requested-too-many-times?actionType=mfaMaxCodesSent"
-      )
+      .expect("Location", "/security-code-requested-too-many-times")
       .expect(302);
   });
 
@@ -236,10 +233,7 @@ describe("Integration:: resend mfa code", () => {
       .send({
         _csrf: token,
       })
-      .expect(
-        "Location",
-        "/security-code-invalid-request?actionType=mfaBlocked"
-      )
+      .expect("Location", "/security-code-invalid-request")
       .expect(302);
   });
 

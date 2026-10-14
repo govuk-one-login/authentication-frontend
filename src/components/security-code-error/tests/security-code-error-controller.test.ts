@@ -60,31 +60,40 @@ describe("security code controller", () => {
   });
 
   describe("securityCodeTriesExceededGet", () => {
-    SCENARIOS.SECURITY_CODE_TRIES_EXCEEDED_GET.forEach(function (params) {
-      it(`should render index-too-many-requests.njk for ${params.actionType} when max number of codes have been sent`, () => {
-        req.query.actionType = params.actionType;
-        res.locals.strategicAppChannel = true;
+    after(() => {
+      delete process.env.CODE_REQUEST_BLOCKED_MINUTES;
+    });
 
-        securityCodeTriesExceededGet(req as Request, res as Response);
+    it("should render index-too-many-requests.njk and set block on session when max number of codes have been sent", () => {
+      process.env.CODE_REQUEST_BLOCKED_MINUTES = "15";
+      securityCodeTriesExceededGet(req as Request, res as Response);
 
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk"
-        );
-      });
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-too-many-requests.njk"
+      );
+      expect(req.session.user.codeRequestLock).to.eq(
+        "Mon, 01 Jan 2024 00:15:00 GMT"
+      );
+    });
+
+    it("should not extend a lock that already exists", () => {
+      const dateInTheFuture = new Date(date.getTime() + 1 * 1000).toUTCString();
+
+      req.session.user.codeRequestLock = dateInTheFuture;
+
+      securityCodeTriesExceededGet(req as Request, res as Response);
+
+      expect(req.session.user.codeRequestLock).to.eq(dateInTheFuture);
     });
   });
 
   describe("securityCodeCannotRequestGet", () => {
-    SCENARIOS.SECURITY_CODE_CANNOT_REQUEST_GET.forEach(function (params) {
-      it(`should render the too many requests page for ${params.actionType} when user is blocked from requesting more OTPs`, () => {
-        req.query.actionType = params.actionType;
+    it("should render the too many requests page when user is blocked from requesting more OTPs", () => {
+      securityCodeCannotRequestCodeGet(req, res);
 
-        securityCodeCannotRequestCodeGet(req, res);
-
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk"
-        );
-      });
+      expect(res.render).to.have.calledWith(
+        "security-code-error/index-too-many-requests.njk"
+      );
     });
   });
 
@@ -345,81 +354,6 @@ describe("security code controller", () => {
           expect(lock).to.eq(dateInTheFuture);
         });
       });
-    });
-  });
-
-  describe("securityCodeTriesExceededGet", () => {
-    after(() => {
-      delete process.env.CODE_REQUEST_BLOCKED_MINUTES;
-    });
-
-    it(
-      "should render index-too-many-requests.njk and set block on session for MfaMaxRetries when max number of " +
-        "codes have been sent and user is in the sign-in journey",
-      () => {
-        process.env.CODE_REQUEST_BLOCKED_MINUTES = "15";
-        req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
-        req.session.user.isSignInJourney = true;
-        securityCodeTriesExceededGet(req as Request, res as Response);
-
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk"
-        );
-        expect(req.session.user.codeRequestLock).to.eq(
-          "Mon, 01 Jan 2024 00:15:00 GMT"
-        );
-      }
-    );
-
-    it(
-      "should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent " +
-        "and user is in the sign-in journey",
-      () => {
-        req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
-        req.session.user.isPasswordResetJourney = true;
-
-        securityCodeTriesExceededGet(req as Request, res as Response);
-
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk"
-        );
-      }
-    );
-
-    it(
-      "should render index-too-many-requests.njk for OtpBlocked when max number of codes have been requested " +
-        "and user is in the 2FA SMS account recovery journey",
-      () => {
-        req.query.actionType = SecurityCodeErrorType.OtpBlocked;
-        req.session.user.isAccountRecoveryJourney = true;
-        securityCodeTriesExceededGet(req as Request, res as Response);
-
-        expect(res.render).to.have.calledWith(
-          "security-code-error/index-too-many-requests.njk"
-        );
-      }
-    );
-
-    it("should render index-too-many-requests.njk for MfaMaxRetries when max number of codes have been sent and user is in the account creation journey", () => {
-      req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
-      req.session.user.isAccountCreationJourney = true;
-      securityCodeTriesExceededGet(req as Request, res as Response);
-
-      expect(res.render).to.have.calledWith(
-        "security-code-error/index-too-many-requests.njk"
-      );
-    });
-
-    it("should not extend a lock that already exists", () => {
-      req.query.actionType = SecurityCodeErrorType.MfaMaxRetries;
-
-      const dateInTheFuture = new Date(date.getTime() + 1 * 1000).toUTCString();
-
-      req.session.user.codeRequestLock = dateInTheFuture;
-
-      securityCodeTriesExceededGet(req as Request, res as Response);
-
-      expect(req.session.user.codeRequestLock).to.eq(dateInTheFuture);
     });
   });
 });
