@@ -346,7 +346,6 @@
       "paragraph2": "Bydd angen i chi greu GOV.UK One Login i ddefnyddio’r gwasanaeth hwn.",
       "insetText1": "Ar hyn o bryd, mae cyfrifon ar wahân ar gyfer mewngofnodi i wahanol wasanaethau’r llywodraeth.",
       "createAccountButtonText": "Creu GOV.UK One Login",
-      "createAccountButtonHref": "/enter-email",
       "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
       "tryAnotherLinkHref": "/enter-email-existing-account"
     },
