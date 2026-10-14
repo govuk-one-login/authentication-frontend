@@ -356,8 +356,7 @@
       "insetText2": "The GOV.UK account is separate from these other government accounts.",
       "insetText3": "You need to create a GOV.UK One Login even if you already have an account for another government service.",
       "createAccountButtonText": "Create a GOV.UK One Login",
-      "tryAnotherLinkText": "Try another email address",
-      "tryAnotherLinkHref": "/enter-email-existing-account"
+      "tryAnotherLinkText": "Try another email address"
     },
     "signInWithPasskey": {
       "title": "Sign in with your face, fingerprint or passcode",

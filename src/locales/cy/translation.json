@@ -356,8 +356,7 @@
       "insetText2": "Mae’r cyfrif GOV.UK ar wahân i’r cyfrifon eraill hyn gan y llywodraeth.",
       "insetText3": "Mae angen i chi greu GOV.UK One Login, hyd yn oed os oes gennych gyfrif llywodraeth arall.",
       "createAccountButtonText": "Creu GOV.UK One Login",
-      "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
-      "tryAnotherLinkHref": "/enter-email-existing-account"
+      "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall"
     },
     "signInWithPasskey": {
       "title": "Mewngofnodi gyda’ch wyneb, olion bysedd neu god mynediad",
