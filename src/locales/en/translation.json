@@ -556,8 +556,7 @@
         "sendCodeLinkText": "send the code again",
         "text 2": " or you can ",
         "changePhoneNumberLinkText": "use a different phone number",
-        "changeMfaChoiceLinkText": "Choose another way to get security codes",
-        "changeMfaChoiceLinkHref": "/get-security-codes"
+        "changeMfaChoiceLinkText": "Choose another way to get security codes"
       }
     },
     "securityCodeInvalid": {

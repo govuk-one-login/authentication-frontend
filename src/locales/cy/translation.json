@@ -556,8 +556,7 @@
         "sendCodeLinkText": "anfon y cod eto",
         "text 2": " neu gallwch ",
         "changePhoneNumberLinkText": "ddefnyddio rhif ffôn gwahanol",
-        "changeMfaChoiceLinkText": "Dewiswch ffordd arall o gael codau diogelwch",
-        "changeMfaChoiceLinkHref": "/get-security-codes"
+        "changeMfaChoiceLinkText": "Dewiswch ffordd arall o gael codau diogelwch"
       }
     },
     "securityCodeInvalid": {
