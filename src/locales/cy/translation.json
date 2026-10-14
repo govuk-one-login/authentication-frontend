@@ -538,8 +538,7 @@
         "text1": "Gallwn ",
         "sendCodeLinkText": "anfon y cod eto",
         "text2": " neu gallwch ",
-        "changeEmailLinkText": "ddefnyddio cyfeiriad e-bost gwahanol",
-        "changeEmailLinkHref": "/enter-email-create"
+        "changeEmailLinkText": "ddefnyddio cyfeiriad e-bost gwahanol"
       }
     },
     "checkYourPhone": {

@@ -538,8 +538,7 @@
         "text1": "We can ",
         "sendCodeLinkText": "send the code again",
         "text2": " or you can ",
-        "changeEmailLinkText": "use a different email address",
-        "changeEmailLinkHref": "/enter-email-create"
+        "changeEmailLinkText": "use a different email address"
       }
     },
     "checkYourPhone": {
