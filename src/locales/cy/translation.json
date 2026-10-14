@@ -337,8 +337,7 @@
       "insetText1": "Mae GOV.UK One Login yn newydd. Nid yw yn gweithio gyda phob cyfrif neu wasanaeth y llywodraeth hyd yma.",
       "paragraph2": "Os ydych yn ceisio cael mynediad at wasanaeth y llywodraeth, fel Credyd Cynhwysol, bydd angen i chi fynd i’r gwasanaeth hwnnw i fewngofnodi.",
       "signInToServiceButtonText": "Mewngofnodi i wasanaeth",
-      "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
-      "tryAnotherLinkHref": "/enter-email-existing-account"
+      "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall"
     },
     "accountNotFoundMandatory": {
       "title": "Nid oes gennych GOV.UK One Login",

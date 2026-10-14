@@ -337,8 +337,7 @@
       "insetText1": "GOV.UK One Login is new. You cannot use it to access all government accounts or services yet.",
       "paragraph2": "If you’re trying to access a government service, such as Universal Credit, you’ll need to go to that service to sign in.",
       "signInToServiceButtonText": "Sign in to a service",
-      "tryAnotherLinkText": "Try another email address",
-      "tryAnotherLinkHref": "/enter-email-existing-account"
+      "tryAnotherLinkText": "Try another email address"
     },
     "accountNotFoundMandatory": {
       "title": "You do not have a GOV.UK One Login",
