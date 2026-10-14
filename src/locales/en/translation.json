@@ -495,7 +495,6 @@
         "summaryText": "I do not have a UK mobile phone number",
         "text1": "You need to ",
         "changeMfaChoiceLinkText": "choose another way to get security codes",
-        "changeMfaChoiceLinkHref": "/get-security-codes",
         "text2": "."
       }
     },
