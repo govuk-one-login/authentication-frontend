@@ -472,7 +472,6 @@
         "header": "Agree to the GOV.UK One Login terms and conditions",
         "paragraph1": {
           "text1": "By continuing, you confirm that you agree to our ",
-          "termsAndConditionsHref": "/terms-and-conditions",
           "termsAndConditionsText": "terms and conditions (opens in a new tab)",
           "termsAndConditionsTextApp": "terms and conditions",
           "text2": "."
