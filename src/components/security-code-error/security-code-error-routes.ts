@@ -2,9 +2,9 @@ import { PATH_NAMES } from "../../app.constants.js";
 import express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
 import {
-  securityCodeCannotRequestCodeGet,
+  securityCodeInvalidRequestGet,
   securityCodeInvalidGet,
-  securityCodeTriesExceededGet,
+  securityCodeRequestedTooManyTimesGet,
   securityCodeEnteredExceededGet,
 } from "./security-code-error-controller.js";
 const router = express.Router();
@@ -16,15 +16,15 @@ router.get(
 );
 
 router.get(
-  PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+  PATH_NAMES.SECURITY_CODE_REQUESTED_TOO_MANY_TIMES,
   validateSessionMiddleware,
-  securityCodeTriesExceededGet
+  securityCodeRequestedTooManyTimesGet
 );
 
 router.get(
-  PATH_NAMES.SECURITY_CODE_WAIT,
+  PATH_NAMES.SECURITY_CODE_INVALID_REQUEST,
   validateSessionMiddleware,
-  securityCodeCannotRequestCodeGet
+  securityCodeInvalidRequestGet
 );
 
 router.get(

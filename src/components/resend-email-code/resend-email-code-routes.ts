@@ -3,7 +3,7 @@ import { validateSessionMiddleware } from "../../middleware/session-middleware.j
 import {
   resendEmailCodeGet,
   resendEmailCodePost,
-  securityCodeCheckTimeLimit,
+  securityCodeCheckTimeLimitGet,
 } from "./resend-email-code-controller.js";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
 import express from "express";
@@ -27,7 +27,7 @@ router.post(
 router.get(
   PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT,
   validateSessionMiddleware,
-  securityCodeCheckTimeLimit()
+  securityCodeCheckTimeLimitGet()
 );
 
 export { router as resendEmailCodeRouter };

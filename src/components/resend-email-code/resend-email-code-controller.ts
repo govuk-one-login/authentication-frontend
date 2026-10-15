@@ -95,7 +95,7 @@ export function resendEmailCodePost(
   };
 }
 
-export function securityCodeCheckTimeLimit(): ExpressRouteFunc {
+export function securityCodeCheckTimeLimitGet(): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const accountRecoveryJourney = isAccountRecoveryJourney(req);
     if (isLocked(req.session.user.codeRequestLock)) {

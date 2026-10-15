@@ -161,9 +161,9 @@ const authStateMachine = createMachine<AuthStateContext>(
           optionalPaths: [
             PATH_NAMES.ENTER_EMAIL_SIGN_IN,
             PATH_NAMES.SIGN_IN_OR_CREATE,
-            PATH_NAMES.SECURITY_CODE_WAIT,
+            PATH_NAMES.SECURITY_CODE_INVALID_REQUEST,
             PATH_NAMES.SECURITY_CODE_INVALID,
-            PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+            PATH_NAMES.SECURITY_CODE_REQUESTED_TOO_MANY_TIMES,
           ],
         },
       },
@@ -245,9 +245,9 @@ const authStateMachine = createMachine<AuthStateContext>(
           optionalPaths: [
             PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
             PATH_NAMES.RESEND_EMAIL_CODE,
-            PATH_NAMES.SECURITY_CODE_WAIT,
+            PATH_NAMES.SECURITY_CODE_INVALID_REQUEST,
             PATH_NAMES.SECURITY_CODE_INVALID,
-            PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+            PATH_NAMES.SECURITY_CODE_REQUESTED_TOO_MANY_TIMES,
             PATH_NAMES.SIGN_IN_OR_CREATE,
           ],
         },
@@ -314,9 +314,9 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
         meta: {
           optionalPaths: [
-            PATH_NAMES.SECURITY_CODE_WAIT,
+            PATH_NAMES.SECURITY_CODE_INVALID_REQUEST,
             PATH_NAMES.SECURITY_CODE_INVALID,
-            PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+            PATH_NAMES.SECURITY_CODE_REQUESTED_TOO_MANY_TIMES,
             PATH_NAMES.GET_SECURITY_CODES,
           ],
         },
@@ -337,9 +337,9 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
         meta: {
           optionalPaths: [
-            PATH_NAMES.SECURITY_CODE_WAIT,
+            PATH_NAMES.SECURITY_CODE_INVALID_REQUEST,
             PATH_NAMES.SECURITY_CODE_INVALID,
-            PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+            PATH_NAMES.SECURITY_CODE_REQUESTED_TOO_MANY_TIMES,
             PATH_NAMES.CREATE_ACCOUNT_ENTER_PHONE_NUMBER,
             PATH_NAMES.RESEND_MFA_CODE_ACCOUNT_CREATION,
             PATH_NAMES.GET_SECURITY_CODES,
@@ -455,9 +455,9 @@ const authStateMachine = createMachine<AuthStateContext>(
         meta: {
           optionalPaths: [
             PATH_NAMES.RESEND_MFA_CODE,
-            PATH_NAMES.SECURITY_CODE_WAIT,
+            PATH_NAMES.SECURITY_CODE_INVALID_REQUEST,
             PATH_NAMES.SECURITY_CODE_INVALID,
-            PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED,
+            PATH_NAMES.SECURITY_CODE_REQUESTED_TOO_MANY_TIMES,
             PATH_NAMES.MFA_RESET_WITH_IPV,
             PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES,
             PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,

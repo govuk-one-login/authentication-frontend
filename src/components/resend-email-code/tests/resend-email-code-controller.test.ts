@@ -7,7 +7,7 @@ import type { Request, Response } from "express";
 import {
   resendEmailCodePost,
   resendEmailCodeGet,
-  securityCodeCheckTimeLimit,
+  securityCodeCheckTimeLimitGet,
 } from "../resend-email-code-controller.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
@@ -81,7 +81,7 @@ describe("resend email controller", () => {
     });
   });
 
-  describe("securityCodeCheckTimeLimit", () => {
+  describe("securityCodeCheckTimeLimitGet", () => {
     it("should render security-code-error/index-wait.njk if codeRequestLock is set in the future", async () => {
       req.session.user = {
         email: "test@test.com",
@@ -89,7 +89,7 @@ describe("resend email controller", () => {
       };
       req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
 
-      await securityCodeCheckTimeLimit()(req as Request, res as Response);
+      await securityCodeCheckTimeLimitGet()(req as Request, res as Response);
 
       expect(res.render).to.have.been.calledWith(
         "security-code-error/index-wait.njk"
@@ -103,7 +103,7 @@ describe("resend email controller", () => {
       };
       req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
 
-      await securityCodeCheckTimeLimit()(req as Request, res as Response);
+      await securityCodeCheckTimeLimitGet()(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith("/resend-email-code");
     });
@@ -114,7 +114,7 @@ describe("resend email controller", () => {
       };
       req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
 
-      await securityCodeCheckTimeLimit()(req as Request, res as Response);
+      await securityCodeCheckTimeLimitGet()(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith("/resend-email-code");
     });

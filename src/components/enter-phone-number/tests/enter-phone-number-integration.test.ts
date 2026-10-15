@@ -394,7 +394,7 @@ describe("Integration::enter phone number", () => {
       .expect(200);
   });
 
-  it('should redirect to SECURITY_CODE_REQUEST_EXCEEDED and render the 2hr lockout "you cannot create" error page when user has exceeded the OTP request limit', async () => {
+  it('should redirect to SECURITY_CODE_REQUESTED_TOO_MANY_TIMES and render the 2hr lockout "you cannot create" error page when user has exceeded the OTP request limit', async () => {
     nock(baseApi).post("/send-notification").once().reply(400, {
       code: ERROR_CODES.VERIFY_PHONE_NUMBER_CODE_REQUEST_BLOCKED,
       success: false,
@@ -414,7 +414,7 @@ describe("Integration::enter phone number", () => {
       .expect((res) => {
         res.text.includes("Wait 2 hours");
       })
-      .expect("Location", PATH_NAMES.SECURITY_CODE_REQUEST_EXCEEDED)
+      .expect("Location", PATH_NAMES.SECURITY_CODE_REQUESTED_TOO_MANY_TIMES)
       .expect(302);
   });
 
