@@ -5,7 +5,6 @@ import {
   enterEmailGet,
   enterEmailCreatePost,
   enterEmailCreateGet,
-  enterEmailCreateRequestGet,
 } from "./enter-email-controller.js";
 import * as express from "express";
 import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
@@ -26,12 +25,6 @@ router.get(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   enterEmailCreateGet
-);
-router.get(
-  PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST,
-  validateSessionMiddleware,
-  allowUserJourneyMiddleware,
-  enterEmailCreateRequestGet
 );
 
 router.post(

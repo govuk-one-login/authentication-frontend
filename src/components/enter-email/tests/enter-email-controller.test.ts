@@ -6,7 +6,6 @@ import type { Request, Response } from "express";
 import {
   enterEmailCreateGet,
   enterEmailCreatePost,
-  enterEmailCreateRequestGet,
   enterEmailGet,
   enterEmailPost,
 } from "../enter-email-controller.js";
@@ -136,16 +135,6 @@ describe("enter email controller", () => {
 
       expect(res.render).to.have.calledWith(
         "enter-email/index-existing-account.njk"
-      );
-    });
-  });
-
-  describe("enterEmailCreateRequestGet", () => {
-    it(`should redirect to ${PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT} when accessed`, async () => {
-      req = createMockRequest(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST);
-      await enterEmailCreateRequestGet(req as Request, res as Response);
-      expect(res.redirect).to.have.calledWith(
-        PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT
       );
     });
   });
