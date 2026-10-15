@@ -386,6 +386,53 @@ describe("enter password controller", () => {
         ]);
       });
 
+      it("should set isPasswordResetJourney to false when the password is correct", async () => {
+        req.session.user.activeMfaMethodId = DEFAULT_MFA_METHOD_ID;
+        req.session.user.isPasswordResetJourney = true;
+        const fakeService: EnterPasswordServiceInterface = {
+          loginUser: sinon.fake.returns({
+            data: {
+              redactedPhoneNumber: "3456",
+              latestTermsAndConditionsAccepted: true,
+              mfaMethodVerified: true,
+              mfaMethodType: "SMS",
+              mfaMethods: buildMfaMethods({
+                id: DEFAULT_MFA_METHOD_ID,
+                phoneNumber: "07123456789",
+              }),
+            },
+            success: true,
+          }),
+        } as unknown as EnterPasswordServiceInterface;
+
+        await enterPasswordPost(
+          false,
+          fakeService,
+          fakeMfaService
+        )(req as Request, res as Response);
+
+        expect(req.session.user.isPasswordResetJourney).to.be.eq(false);
+      });
+
+      it("should not set isPasswordResetJourney to false when the backend login response is not successful", async () => {
+        req.session.user.isPasswordResetJourney = true;
+        const fakeService: EnterPasswordServiceInterface = {
+          loginUser: sinon.fake.returns({
+            success: false,
+            data: {},
+          }),
+        } as unknown as EnterPasswordServiceInterface;
+
+        await enterPasswordPost(
+          false,
+          fakeService,
+          fakeMfaService
+        )(req as Request, res as Response);
+
+        expect(res.render).to.have.calledWith("enter-password/index.njk");
+        expect(req.session.user.isPasswordResetJourney).to.be.eq(true);
+      });
+
       it("should redirect to account locked page when max password attempts exceeded", async () => {
         const fakeService: EnterPasswordServiceInterface = {
           loginUser: sinon.fake.returns({
