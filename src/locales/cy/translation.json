@@ -337,8 +337,7 @@
       "insetText1": "Mae GOV.UK One Login yn newydd. Nid yw yn gweithio gyda phob cyfrif neu wasanaeth y llywodraeth hyd yma.",
       "paragraph2": "Os ydych yn ceisio cael mynediad at wasanaeth y llywodraeth, fel Credyd Cynhwysol, bydd angen i chi fynd i’r gwasanaeth hwnnw i fewngofnodi.",
       "signInToServiceButtonText": "Mewngofnodi i wasanaeth",
-      "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
-      "tryAnotherLinkHref": "/enter-email-existing-account"
+      "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall"
     },
     "accountNotFoundMandatory": {
       "title": "Nid oes gennych GOV.UK One Login",
@@ -347,9 +346,7 @@
       "paragraph2": "Bydd angen i chi greu GOV.UK One Login i ddefnyddio’r gwasanaeth hwn.",
       "insetText1": "Ar hyn o bryd, mae cyfrifon ar wahân ar gyfer mewngofnodi i wahanol wasanaethau’r llywodraeth.",
       "createAccountButtonText": "Creu GOV.UK One Login",
-      "createAccountButtonHref": "/enter-email",
-      "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
-      "tryAnotherLinkHref": "/enter-email-existing-account"
+      "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall"
     },
     "accountNotFoundOptional": {
       "title": "Ni ddarganfyddwyd GOV.UK One Login",
@@ -359,9 +356,7 @@
       "insetText2": "Mae’r cyfrif GOV.UK ar wahân i’r cyfrifon eraill hyn gan y llywodraeth.",
       "insetText3": "Mae angen i chi greu GOV.UK One Login, hyd yn oed os oes gennych gyfrif llywodraeth arall.",
       "createAccountButtonText": "Creu GOV.UK One Login",
-      "createAccountButtonHref": "/enter-email",
-      "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall",
-      "tryAnotherLinkHref": "/enter-email-existing-account"
+      "tryAnotherLinkText": "Rhowch gynnig ar gyfeiriad e-bost arall"
     },
     "signInWithPasskey": {
       "title": "Mewngofnodi gyda’ch wyneb, olion bysedd neu god mynediad",
@@ -477,14 +472,12 @@
         "header": "Cytuno â thelerau ac amodau GOV.UK One Login",
         "paragraph1": {
           "text1": "Drwy barhau, rydych yn cadarnhau eich bod yn cytuno â’n ",
-          "termsAndConditionsHref": "/terms-and-conditions",
           "termsAndConditionsText": "telerau ac amodau (agor mewn tab newydd)",
           "termsAndConditionsTextApp": "telerau ac amodau",
           "text2": "."
         },
         "paragraph2": {
           "text1": "I ddarganfod sut rydym yn defnyddio eich gwybodaeth bersonol, gweler ein ",
-          "privacyNoticeHref": "/govuk-one-login-privacy-notice",
           "privacyNoticeText": "hysbysiad preifatrwydd (agor mewn tab newydd)",
           "privacyNoticeTextApp": "hysbysiad preifatrwydd",
           "text2": "."
@@ -502,7 +495,6 @@
         "summaryText": "Nid oes gennyf rif ffôn symudol y DU",
         "text1": "Mae angen i chi ",
         "changeMfaChoiceLinkText": "dewiswch ffordd arall o gael codau diogelwch",
-        "changeMfaChoiceLinkHref": "/get-security-codes",
         "text2": "."
       }
     },
@@ -537,10 +529,8 @@
         "summaryText": "Problemau gyda’r cod?",
         "text1": "Gallwn ",
         "sendCodeLinkText": "anfon y cod eto",
-        "sendCodeLinkHref": "/resend-email-code",
         "text2": " neu gallwch ",
-        "changeEmailLinkText": "ddefnyddio cyfeiriad e-bost gwahanol",
-        "changeEmailLinkHref": "/enter-email-create"
+        "changeEmailLinkText": "ddefnyddio cyfeiriad e-bost gwahanol"
       }
     },
     "checkYourPhone": {
@@ -566,9 +556,7 @@
         "sendCodeLinkText": "anfon y cod eto",
         "text 2": " neu gallwch ",
         "changePhoneNumberLinkText": "ddefnyddio rhif ffôn gwahanol",
-        "changePhoneNumberLinkHref": "/enter-phone-number",
-        "changeMfaChoiceLinkText": "Dewiswch ffordd arall o gael codau diogelwch",
-        "changeMfaChoiceLinkHref": "/get-security-codes"
+        "changeMfaChoiceLinkText": "Dewiswch ffordd arall o gael codau diogelwch"
       }
     },
     "securityCodeInvalid": {
@@ -646,7 +634,6 @@
         "summaryText": "Problemau gyda’r cod?",
         "text1": "Gallwn ",
         "sendCodeLinkText": "anfon y cod eto",
-        "sendCodeLinkHref": "/resend-code",
         "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn.",
         "changeGetSecurityCodesTextWithIpv": "Os nad oes gennych fynediad i’ch ap dilysu mwyach, ",
         "changeGetSecurityCodesWithIpvLinkText": "gwiriwch a allwch newid sut rydych yn cael codau diogelwch",
@@ -686,7 +673,6 @@
         "summaryText": "Problemau gyda’r cod?",
         "text1": "Gallwn ",
         "sendCodeLinkText": "anfon y cod eto",
-        "sendCodeLinkHref": "/resend-code",
         "text 2": " os nad yw’r cod yn gweithio neu ni wnaethoch ei dderbyn.",
         "chooseMfaMethodText": "Os na allwch gael cod i’r rhif ffôn hwn gallwch ",
         "chooseMfaMethodLinkText": "roi cynnig ar ffordd arall o gael cod diogelwch"
@@ -794,7 +780,6 @@
       "subHeader": "Beth allwch chi ei wneud",
       "whatYouCanDo": {
         "text1": "Mae angen i chi",
-        "changeEmailLinkHref": "/cannot-use-email-address-continue",
         "changeEmailLinkText": "geisio defnyddio cyfeiriad e-bost arall",
         "text2": "i greu GOV.UK One Login."
       }
@@ -822,13 +807,11 @@
       "header": "Rydym wedi diweddaru ein telerau defnyddio",
       "paragraph1": {
         "text": "Drwy barhau rydych yn cytuno i ",
-        "termsAndConditionsHref": "terms-and-conditions",
         "termsAndConditionsText": "delerau ac amodau",
         "text2": " GOV.UK One Login."
       },
       "paragraph2": {
         "text": "I ddarganfod sut rydym yn defnyddio eich gwybodaeth bersonol, gweler ein ",
-        "privacyNoticeHref": "/govuk-one-login-privacy-notice",
         "privacyNoticeText": "hysbysiad preifatrwydd",
         "text2": "."
       },
@@ -1402,13 +1385,6 @@
         "first": "ailosod eich cyfrinair",
         "second": "arhoswch 2 awr, yna ewch yn ôl i’r gwasanaeth roeddech yn ceisio ei ddefnyddio a dechrau eto. Gallwch chwilio am y gwasanaeth gan ddefnyddio’ch peiriant chwilio neu ddod o hyd iddo o hafan GOV.UK"
       }
-    },
-    "browserBackButtonError": {
-      "title": "Mae’n ddrwg gennym, ni allwch fynd yn ôl o’r dudalen honno",
-      "header": "Mae’n ddrwg gennym, ni allwch fynd yn ôl o’r dudalen honno",
-      "paragraph1": "Bydd angen i chi ddechrau eto i greu eich GOV.UK One Login neu fewngofnodi.",
-      "returnToAccountCreationButtonText": "Yn ôl i greu eich GOV.UK One Login neu fewngofnodi.",
-      "returnToAccountCreationButtonLink": "/sign-in-or-create"
     },
     "support": {
       "title": "Cymorth",

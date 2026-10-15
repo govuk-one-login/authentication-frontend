@@ -6,7 +6,7 @@
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% set pageTitleName = 'pages.checkYourPhone.title' | translate %}
 {% set showBack = true %}
-{% set hrefBack = 'pages.checkYourPhone.details.changePhoneNumberLinkHref' | translate %}
+{% set hrefBack = '/enter-phone-number' %}
 
 {% block content %}
 
@@ -49,7 +49,7 @@
       {{'pages.checkYourPhone.details.text1' | translate}}
       <a href="{{resendCodeLink}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.sendCodeLinkText'| translate}}</a>
       {{'pages.checkYourPhone.details.text 2' | translate}}
-      <a href="{{'pages.checkYourPhone.details.changePhoneNumberLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.changePhoneNumberLinkText'| translate}}</a>.
+      <a href="/enter-phone-number" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.changePhoneNumberLinkText'| translate}}</a>.
     </p>
     {% endset %}
 
@@ -58,7 +58,7 @@
       {{detailsHTML | safe}}
 
       <p class="govuk-body">
-        <a href="{{'pages.checkYourPhone.details.changeMfaChoiceLinkHref' | translate}}" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.changeMfaChoiceLinkText'| translate}}</a>.
+        <a href="/get-security-codes" class="govuk-link" rel="noreferrer noopener">{{'pages.checkYourPhone.details.changeMfaChoiceLinkText'| translate}}</a>.
       </p>
 
     {% endset %}

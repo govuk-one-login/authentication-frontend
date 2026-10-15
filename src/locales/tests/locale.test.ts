@@ -40,12 +40,33 @@ export function testExpectation(key: string, value: string): void {
   );
 }
 
+export function testForInternalPathValue(key: string, value?: string): void {
+  if (typeof value !== "string") {
+    return;
+  }
+  expect(
+    value.startsWith("/"),
+    `Translation key '${key}' has value '${value}', which defines an internal link path. ` +
+      "Internal hrefs must be hard-coded in the .njk template, not stored in translation files, " +
+      "so that the English and Welsh versions cannot point at different paths."
+  ).to.equal(false);
+}
+
 describe("locale files", () => {
   it("should not contain any typographically incorrect quotes (aka 'straight quotes') in Welsh translations", () => {
     traverseObjectProperties(welshTranslations, testExpectation);
   });
   it("should not contain any typographically incorrect quotes (aka 'straight quotes') in English translations", () => {
     traverseObjectProperties(englishTranslations, testExpectation);
+  });
+});
+
+describe("internal link paths", () => {
+  it("should not define internal link paths (values starting with '/') in English translations", () => {
+    traverseObjectProperties(englishTranslations, testForInternalPathValue);
+  });
+  it("should not define internal link paths (values starting with '/') in Welsh translations", () => {
+    traverseObjectProperties(welshTranslations, testForInternalPathValue);
   });
 });
 

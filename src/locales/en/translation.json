@@ -337,8 +337,7 @@
       "insetText1": "GOV.UK One Login is new. You cannot use it to access all government accounts or services yet.",
       "paragraph2": "If you’re trying to access a government service, such as Universal Credit, you’ll need to go to that service to sign in.",
       "signInToServiceButtonText": "Sign in to a service",
-      "tryAnotherLinkText": "Try another email address",
-      "tryAnotherLinkHref": "/enter-email-existing-account"
+      "tryAnotherLinkText": "Try another email address"
     },
     "accountNotFoundMandatory": {
       "title": "You do not have a GOV.UK One Login",
@@ -347,9 +346,7 @@
       "paragraph2": "You’ll need to create a GOV.UK One Login to use this service.",
       "insetText1": "At the moment, there are separate accounts for signing in to different government services.",
       "createAccountButtonText": "Create a GOV.UK One Login",
-      "createAccountButtonHref": "/enter-email",
-      "tryAnotherLinkText": "Try another email address",
-      "tryAnotherLinkHref": "/enter-email-existing-account"
+      "tryAnotherLinkText": "Try another email address"
     },
     "accountNotFoundOptional": {
       "title": "No GOV.UK One Login found",
@@ -359,9 +356,7 @@
       "insetText2": "The GOV.UK account is separate from these other government accounts.",
       "insetText3": "You need to create a GOV.UK One Login even if you already have an account for another government service.",
       "createAccountButtonText": "Create a GOV.UK One Login",
-      "createAccountButtonHref": "/enter-email",
-      "tryAnotherLinkText": "Try another email address",
-      "tryAnotherLinkHref": "/enter-email-existing-account"
+      "tryAnotherLinkText": "Try another email address"
     },
     "signInWithPasskey": {
       "title": "Sign in with your face, fingerprint or passcode",
@@ -477,14 +472,12 @@
         "header": "Agree to the GOV.UK One Login terms and conditions",
         "paragraph1": {
           "text1": "By continuing, you confirm that you agree to our ",
-          "termsAndConditionsHref": "/terms-and-conditions",
           "termsAndConditionsText": "terms and conditions (opens in a new tab)",
           "termsAndConditionsTextApp": "terms and conditions",
           "text2": "."
         },
         "paragraph2": {
           "text1": "To find out how we use your personal information, see our ",
-          "privacyNoticeHref": "/govuk-one-login-privacy-notice",
           "privacyNoticeText": "privacy notice (opens in a new tab)",
           "privacyNoticeTextApp": "privacy notice",
           "text2": "."
@@ -502,7 +495,6 @@
         "summaryText": "I do not have a UK mobile phone number",
         "text1": "You need to ",
         "changeMfaChoiceLinkText": "choose another way to get security codes",
-        "changeMfaChoiceLinkHref": "/get-security-codes",
         "text2": "."
       }
     },
@@ -537,10 +529,8 @@
         "summaryText": "Problems with the code?",
         "text1": "We can ",
         "sendCodeLinkText": "send the code again",
-        "sendCodeLinkHref": "/resend-email-code",
         "text2": " or you can ",
-        "changeEmailLinkText": "use a different email address",
-        "changeEmailLinkHref": "/enter-email-create"
+        "changeEmailLinkText": "use a different email address"
       }
     },
     "checkYourPhone": {
@@ -566,9 +556,7 @@
         "sendCodeLinkText": "send the code again",
         "text 2": " or you can ",
         "changePhoneNumberLinkText": "use a different phone number",
-        "changePhoneNumberLinkHref": "/enter-phone-number",
-        "changeMfaChoiceLinkText": "Choose another way to get security codes",
-        "changeMfaChoiceLinkHref": "/get-security-codes"
+        "changeMfaChoiceLinkText": "Choose another way to get security codes"
       }
     },
     "securityCodeInvalid": {
@@ -646,7 +634,6 @@
         "summaryText": "Problems with the code?",
         "text1": "We can ",
         "sendCodeLinkText": "send the code again",
-        "sendCodeLinkHref": "/resend-code",
         "text 2": " if the code is not working or you did not receive it.",
         "changeGetSecurityCodesTextWithIpv": "If you no longer have access to this phone number,  ",
         "changeGetSecurityCodesWithIpvLinkText": "check if you can change how you get security codes",
@@ -686,7 +673,6 @@
         "summaryText": "Problems with the code?",
         "text1": "We can ",
         "sendCodeLinkText": "send the code again",
-        "sendCodeLinkHref": "/resend-code",
         "text 2": " if the code is not working or you did not receive it.",
         "chooseMfaMethodText": "If you cannot get a code to this phone number you can ",
         "chooseMfaMethodLinkText": "try another way to get a security code"
@@ -794,7 +780,6 @@
       "subHeader": "What you can do",
       "whatYouCanDo": {
         "text1": "You need to",
-        "changeEmailLinkHref": "/cannot-use-email-address-continue",
         "changeEmailLinkText": "try another email address",
         "text2": "to create a GOV.UK One Login."
       }
@@ -822,13 +807,11 @@
       "header": "We’ve updated our terms of use",
       "paragraph1": {
         "text": "By continuing you agree to the GOV.UK One Login ",
-        "termsAndConditionsHref": "/terms-and-conditions",
         "termsAndConditionsText": "terms and conditions",
         "text2": "."
       },
       "paragraph2": {
         "text": "To find out how we use your personal information, see our ",
-        "privacyNoticeHref": "/govuk-one-login-privacy-notice",
         "privacyNoticeText": "privacy notice",
         "text2": "."
       },
@@ -1402,13 +1385,6 @@
         "first": "reset your password",
         "second": "wait 2 hours, then go back to the service you were trying to use and start again. You can look for the service using your search engine or find it from the GOV.UK homepage"
       }
-    },
-    "browserBackButtonError": {
-      "title": "Sorry, you cannot go back from that page",
-      "header": "Sorry, you cannot go back from that page",
-      "paragraph1": "You’ll need to start again to create your GOV.UK One Login or sign in.",
-      "returnToAccountCreationButtonText": "Back to create your GOV.UK One Login or sign in.",
-      "returnToAccountCreationButtonLink": "/sign-in-or-create"
     },
     "support": {
       "title": "Support",
