@@ -130,6 +130,9 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
         meta: {
           optionalPaths: [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST],
+          permittedJourneyRouteEvents: [
+            USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT,
+          ],
         },
       },
       [PATH_NAMES.ENTER_EMAIL_SIGN_IN]: {
