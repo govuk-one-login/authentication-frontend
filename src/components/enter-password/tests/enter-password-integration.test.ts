@@ -189,7 +189,7 @@ describe("Integration::enter password", () => {
       .expect(302);
   });
 
-  it("should redirect to /reset-password-2fa-sms when password is correct and user's MFA is set to SMS when 2FA is not required", async () => {
+  it("should redirect to /reset-password when password is correct and password change is required when 2FA is not required", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.LOG_IN_USER)
       .once()
@@ -218,7 +218,7 @@ describe("Integration::enter password", () => {
       .expect(302);
   });
 
-  it("should redirect to /reset-password-2fa-sms when password is correct and user's MFA is set to SMS when 2FA is required", async () => {
+  it("should redirect to /reset-password-2fa-sms when password change is required and 2FA is required", async () => {
     process.env.TEST_MFA_JOURNEY = "1";
     nock(baseApi)
       .post(API_ENDPOINTS.LOG_IN_USER)
