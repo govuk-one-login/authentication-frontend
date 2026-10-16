@@ -129,7 +129,7 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
         meta: {
-          optionalPaths: [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST],
+          permittedJourneyRouteEvents: [USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT],
         },
       },
       [PATH_NAMES.ENTER_EMAIL_SIGN_IN]: {
@@ -179,13 +179,6 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
         meta: {
           optionalPaths: [PATH_NAMES.SIGN_IN_OR_CREATE],
-        },
-      },
-      [PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST]: {
-        on: {
-          [USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT]: [
-            PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT,
-          ],
         },
       },
       [PATH_NAMES.RESEND_EMAIL_CODE]: {

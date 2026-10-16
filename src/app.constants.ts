@@ -15,7 +15,6 @@ export const PATH_NAMES = {
   SIGN_IN_WITH_PASSKEY: "/sign-in-passkey",
   CANNOT_SIGN_IN_PASSKEY: "/cannot-sign-in-passkey",
   ENTER_EMAIL_CREATE_ACCOUNT: "/enter-email-create",
-  ENTER_EMAIL_CREATE_ACCOUNT_REQUEST: "/enter-email-create-request",
   ENTER_EMAIL_SIGN_IN: "/enter-email",
   ACCOUNT_NOT_FOUND: "/account-not-found",
   CHECK_YOUR_EMAIL: "/check-your-email",
