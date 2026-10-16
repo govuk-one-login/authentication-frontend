@@ -90,6 +90,10 @@ import { csrfMissingHandler } from "./handlers/csrf-missing-handler.js";
 import { channelMiddleware } from "./middleware/channel-middleware.js";
 import { applyOverloadProtection } from "./middleware/overload-protection-middleware.js";
 import { frontendVitalSignsInit } from "@govuk-one-login/frontend-vital-signs";
+import {
+  startEventLoopDiagnostics,
+  trackInFlightRequestsMiddleware,
+} from "./utils/event-loop-diagnostics.js";
 import type { Server } from "node:http";
 import { getAnalyticsPropertiesMiddleware } from "./middleware/get-analytics-properties-middleware.js";
 import { ipvCallbackRouter } from "./components/ipv-callback/ipv-callback-routes.js";
@@ -207,6 +211,7 @@ async function createApp(): Promise<express.Application> {
   app.enable("trust proxy");
 
   app.use(loggerMiddleware);
+  app.use(trackInFlightRequestsMiddleware);
   app.use(healthcheckRouter);
   if (
     [
@@ -370,12 +375,14 @@ async function startServer(app: Application): Promise<{
     staticPaths: [/^\/assets\/.*/, /^\/public\/.*/],
     interval: getVitalSignsIntervalSeconds() * 1000,
   });
+  const stopEventLoopDiagnostics = startEventLoopDiagnostics();
 
   const closeServer = async () => {
     if (stopVitalSigns) {
       stopVitalSigns();
       logger.info(`vital-signs stopped`);
     }
+    stopEventLoopDiagnostics();
     await new Promise<void>((res, rej) =>
       server.close((err) => (err ? rej(err) : res()))
     );
