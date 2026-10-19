@@ -257,34 +257,3 @@ describe("Integration::enter email (create account)", () => {
       .expect(200);
   });
 });
-
-describe("Integration::enter email (create account request)", () => {
-  it(`should redirect to ${PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT} when ${PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST} is accessed`, async () => {
-    const { createApp } = await esmock(
-      "../../../app.js",
-      {},
-      {
-        "../../../middleware/session-middleware.js": {
-          validateSessionMiddleware: sinon.fake(function (
-            req: Request,
-            res: Response,
-            next: NextFunction
-          ): void {
-            res.locals.sessionId = "tDy103saszhcxbQq0-mjdzU854";
-            req.session.user = {
-              journey: getPermittedJourneyForPath(PATH_NAMES.SIGN_IN_OR_CREATE),
-            };
-            next();
-          }),
-        },
-      }
-    );
-
-    const app = await createApp();
-
-    await request(app)
-      .get(PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST)
-      .expect("Location", PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT)
-      .expect(302);
-  });
-});

@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { describe } from "mocha";
 import { pages } from "./pages.js";
 import { PATH_NAMES } from "../../app.constants.js";
 
@@ -11,7 +12,6 @@ const NON_TEMPLATE_PATHS = [
   PATH_NAMES.CONTACT_US_FURTHER_INFORMATION,
   PATH_NAMES.CONTACT_US_QUESTIONS,
   PATH_NAMES.CONTACT_US_SUBMIT_SUCCESS,
-  PATH_NAMES.ENTER_EMAIL_CREATE_ACCOUNT_REQUEST,
   PATH_NAMES.IPV_CALLBACK,
   PATH_NAMES.HEALTHCHECK,
   PATH_NAMES.MFA_RESET_WITH_IPV,

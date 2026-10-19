@@ -54,19 +54,6 @@ export function enterEmailCreateGet(req: Request, res: Response): void {
   return res.render("enter-email/index-create-account.njk");
 }
 
-export async function enterEmailCreateRequestGet(
-  req: Request,
-  res: Response
-): Promise<void> {
-  return res.redirect(
-    await getNextPathAndUpdateJourney(
-      req,
-      res,
-      USER_JOURNEY_EVENTS.CREATE_NEW_ACCOUNT
-    )
-  );
-}
-
 async function getExistingUserAndPopulateSessionData(
   enterEmailService: EnterEmailServiceInterface,
   req: Request,
