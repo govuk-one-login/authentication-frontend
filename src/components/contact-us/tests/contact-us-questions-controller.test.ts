@@ -46,6 +46,51 @@ describe("contact us questions controller", () => {
     sandbox.restore();
   });
 
+  describe("getGA4DataVariablesContactUsQuestions", () => {
+    function buildRequest(theme: string, subtheme?: string): Partial<Request> {
+      return {
+        query: {
+          theme,
+          ...(subtheme ? { subtheme } : {}),
+        },
+      };
+    }
+
+    [
+      {
+        theme: CONTACT_US_THEMES.PROVING_IDENTITY,
+        subtheme: CONTACT_US_THEMES.PROVING_IDENTITY_PROBLEM_WITH_ADDRESS,
+        expectedContentId: "6ad29260-2108-47a3-89ae-e67692f400a6",
+      },
+      {
+        theme: CONTACT_US_THEMES.PROVING_IDENTITY,
+        subtheme: CONTACT_US_THEMES.PROVING_IDENTITY_TECHNICAL_PROBLEM,
+        expectedContentId: "68683b0d-41e2-4cb8-89f9-62f74a276144",
+      },
+      {
+        theme: CONTACT_US_THEMES.PROVING_IDENTITY,
+        subtheme: CONTACT_US_THEMES.PROVING_IDENTITY_SOMETHING_ELSE,
+        expectedContentId: "13d10aee-0611-4e23-a6a9-ee385f362345",
+      },
+      {
+        theme: CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK,
+        subtheme: undefined,
+        expectedContentId: "5c2a5db5-c4b2-44ff-8946-c35e689ba7ea",
+      },
+      {
+        theme: CONTACT_US_THEMES.WALLET,
+        subtheme: CONTACT_US_THEMES.WALLET_TECHNICAL_PROBLEM,
+        expectedContentId: "68c8aa90-0e32-4372-adf0-6e656936bc03",
+      },
+    ].forEach(({ theme, subtheme, expectedContentId }) => {
+      it(`should return ${expectedContentId} for theme ${theme} and subtheme ${subtheme}`, () => {
+        const req = buildRequest(theme, subtheme);
+        const result = getGA4DataVariablesContactUsQuestions(req as Request);
+        expect(result.contentId).to.equal(expectedContentId);
+      });
+    });
+  });
+
   describe("GET /contact-us-questions", () => {
     describe("from /contact-us", () => {
       [
