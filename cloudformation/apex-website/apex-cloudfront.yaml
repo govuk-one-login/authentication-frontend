@@ -52,12 +52,6 @@ Conditions:
 
   UseApexStaticPage: !Equals [!Ref DeployApexStaticPage, "true"]
 
-  EnableAlias: !Or
-    - !Equals [!Ref Environment, dev]
-    - !Equals [!Ref Environment, build]
-    - !Equals [!Ref Environment, staging]
-    - !Equals [!Ref Environment, integration]
-
 Globals:
   Function:
     CodeSigningConfigArn:
@@ -504,21 +498,19 @@ Resources:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
-        Aliases: !If
-          - EnableAlias
-          - - !If
-              - UseSubEnvironment
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref SubEnvironment,
-                  ServiceDomain,
-                ]
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref Environment,
-                  ServiceDomain,
-                ]
-          - !Ref AWS::NoValue
+        Aliases:
+          - !If
+            - UseSubEnvironment
+            - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref SubEnvironment,
+                ServiceDomain,
+              ]
+            - !FindInMap [
+                EnvironmentConfiguration,
+                !Ref Environment,
+                ServiceDomain,
+              ]
         Enabled: true
         IPV6Enabled: true
         DefaultRootObject: index.html
@@ -624,15 +616,13 @@ Resources:
         Restrictions:
           GeoRestriction:
             RestrictionType: none
-        ViewerCertificate: !If
-          - EnableAlias
-          - AcmCertificateArn: !Sub
-              - "{{resolve:ssm:/deploy/${Env}/apex-certificate-arn}}"
-              - Env:
-                  !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
-            SslSupportMethod: sni-only
-            MinimumProtocolVersion: TLSv1.2_2019
-          - !Ref AWS::NoValue
+        ViewerCertificate:
+          AcmCertificateArn: !Sub
+            - "{{resolve:ssm:/deploy/${Env}/apex-certificate-arn}}"
+            - Env:
+                !If [UseSubEnvironment, !Ref SubEnvironment, !Ref Environment]
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2019
       Tags:
         - Key: Service
           Value: apex-website
