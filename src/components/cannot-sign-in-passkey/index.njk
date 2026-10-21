@@ -16,6 +16,7 @@
     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
     <input type="hidden" name="authenticationResponse" value="" />
     <input type="hidden" name="authenticationError" value="JavaScriptNotEnabled" />
+    <input type="hidden" name="authenticationErrorMessage" value="" />
 
     {{ govukRadios({
       name: "cannot-sign-in-passkey-action",
@@ -69,10 +70,14 @@
 
           const authenticationErrorField = cannotSignInPasskeyForm.querySelector("input[name=\"authenticationError\"]");
           authenticationErrorField.parentNode.removeChild(authenticationErrorField);
+
+          const authenticationErrorMessageField = cannotSignInPasskeyForm.querySelector("input[name=\"authenticationErrorMessage\"]");
+          authenticationErrorMessageField.parentNode.removeChild(authenticationErrorMessageField);
         }
       } catch (error) {
         console.error(error.message);
-        cannotSignInPasskeyForm.querySelector("input[name=\"authenticationError\"]").value = `${error.name} - ${error.message}`;
+        cannotSignInPasskeyForm.querySelector("input[name=\"authenticationError\"]").value = error.name;
+        cannotSignInPasskeyForm.querySelector("input[name=\"authenticationErrorMessage\"]").value = error.message;
       }
     }
 
