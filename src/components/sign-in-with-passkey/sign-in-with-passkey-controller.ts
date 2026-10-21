@@ -41,16 +41,23 @@ export function signInWithPasskeyPost(
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response) {
     const authenticationError = req.body.authenticationError;
+    const authenticationErrorMessage = req.body.authenticationErrorMessage;
     if (!!authenticationError) {
-      req.log.warn("Passkey usage failed with error: %s", authenticationError);
+      req.log.warn(
+        "Passkey usage failed with error: %s",
+        authenticationErrorMessage
+          ? `${authenticationError} - ${authenticationErrorMessage}`
+          : authenticationError
+      );
       const nextPath = await getNextPathAndUpdateJourney(
         req,
         res,
         USER_JOURNEY_EVENTS.PASSKEY_AUTHENTICATION_FAILED
       );
-      return res.redirect(
-        `${nextPath}?passkeySignInWebauthnError=${authenticationError}`
-      );
+      const queryParams = new URLSearchParams({
+        passkeySignInWebauthnError: authenticationError,
+      });
+      return res.redirect(`${nextPath}?${queryParams.toString()}`);
     }
 
     const authenticationResponse: AuthenticationResponseJSON =
