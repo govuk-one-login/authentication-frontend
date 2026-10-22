@@ -1,5 +1,5 @@
 # In general changes should be synced with `dev.Dockerfile` (excluding the Dynatrace layer)
-FROM node:24.15.0-alpine3.22@sha256:b689d4005875ae167178471a7a622ec2909459a3bbb32277260be1971af7a99f AS builder
+FROM node:24.22.1-alpine3.24@sha256:06d7adf3e0ef61a13f1d28682726366f97a15aa1888c934d3ecec86c33918b53 AS builder
 
 WORKDIR /app
 COPY .npmrc ./
@@ -15,7 +15,7 @@ COPY ./@types ./@types
 COPY ./src ./src
 RUN npm run build && npm ci --ignore-scripts --omit=dev
 
-FROM node:24.15.0-alpine3.22@sha256:b689d4005875ae167178471a7a622ec2909459a3bbb32277260be1971af7a99f AS journey_map_builder
+FROM node:24.22.1-alpine3.24@sha256:06d7adf3e0ef61a13f1d28682726366f97a15aa1888c934d3ecec86c33918b53 AS journey_map_builder
 
 WORKDIR /app/journey-map
 COPY .npmrc ./
@@ -29,7 +29,7 @@ COPY journey-map/src ./src
 COPY journey-map/public ./public
 RUN npm run build
 
-FROM node:24.15.0-alpine3.22@sha256:b689d4005875ae167178471a7a622ec2909459a3bbb32277260be1971af7a99f AS final
+FROM node:24.22.1-alpine3.24@sha256:06d7adf3e0ef61a13f1d28682726366f97a15aa1888c934d3ecec86c33918b53 AS final
 
 RUN apk add --no-cache tini
 
