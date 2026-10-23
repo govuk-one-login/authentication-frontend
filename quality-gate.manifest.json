@@ -148,6 +148,13 @@
           "file": ".github/workflows/require-pinned-github-actions.yml",
           "path": "$.jobs.check-actions-sha"
         }
+      ],
+      "notApplicable": [
+        {
+          "checks": [
+            {"name": "contract", "details": ["Not a Phase 1 API"]}
+          ]
+        }
       ]
     }
   ]
