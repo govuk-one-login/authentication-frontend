@@ -253,6 +253,26 @@ describe("Integration:: cannot sign in passkey", () => {
             `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=NotAllowedError`
           );
       });
+
+      it("should redirect to cannot-sign-in-passkey with only the error name in the passkeySignInWebauthnError query param when authenticationErrorMessage exists", async () => {
+        await request(app)
+          .post(PATH_NAMES.CANNOT_SIGN_IN_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            authenticationError: "NotAllowedError",
+            authenticationErrorMessage:
+              "The operation either timed out or was not allowed.",
+            "cannot-sign-in-passkey-action":
+              CANNOT_SIGN_IN_PASSKEY_ACTION.RETRY_PASSKEY,
+          })
+          .expect(302)
+          .expect(
+            "Location",
+            `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=NotAllowedError`
+          );
+      });
     });
   });
 });

@@ -157,6 +157,24 @@ describe("Integration:: sign in with passkey", () => {
           );
       });
 
+      it("should redirect to cannot sign in passkey with only the error name in the query param when authenticationErrorMessage is present", async () => {
+        await request(app)
+          .post(PATH_NAMES.SIGN_IN_WITH_PASSKEY)
+          .type("form")
+          .set("Cookie", cookies)
+          .send({
+            _csrf: token,
+            authenticationError: "NotAllowedError",
+            authenticationErrorMessage:
+              "The operation either timed out or was not allowed.",
+          })
+          .expect(302)
+          .expect(
+            "Location",
+            `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=NotAllowedError`
+          );
+      });
+
       it("should redirect to cannot sign in passkey when parsing pkc error", async () => {
         nock(baseApi)
           .post(API_ENDPOINTS.FINISH_PASSKEY_ASSERTION)

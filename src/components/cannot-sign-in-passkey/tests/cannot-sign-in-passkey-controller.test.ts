@@ -282,6 +282,69 @@ describe("cannot sign in passkey controller", () => {
           `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=NotAllowedError`
         );
       });
+
+      it("should log the error name and message but only pass the error name in the query param when authenticationErrorMessage exists", async () => {
+        req.body.authenticationError = "NotAllowedError";
+        req.body.authenticationErrorMessage =
+          "The operation either timed out or was not allowed. See: https://www.w3.org/TR/webauthn-2/#sctn-privacy-considerations-client.";
+        const fakePasskeyService = {
+          finishPasskeyAssertion: sinon.fake.returns({
+            success: true,
+          }),
+        } as unknown as PasskeyServiceInterface;
+
+        await cannotSignInPasskeyPost(fakePasskeyService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(req.log.warn).to.have.been.calledWith(
+          "Passkey usage failed with error: %s",
+          "NotAllowedError - The operation either timed out or was not allowed. See: https://www.w3.org/TR/webauthn-2/#sctn-privacy-considerations-client."
+        );
+        expect(res.redirect).to.have.been.calledWith(
+          `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=NotAllowedError`
+        );
+      });
+
+      it("should log only the error name when authenticationErrorMessage is empty", async () => {
+        req.body.authenticationError = "JavaScriptNotEnabled";
+        req.body.authenticationErrorMessage = "";
+        const fakePasskeyService = {
+          finishPasskeyAssertion: sinon.fake.returns({
+            success: true,
+          }),
+        } as unknown as PasskeyServiceInterface;
+
+        await cannotSignInPasskeyPost(fakePasskeyService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(req.log.warn).to.have.been.calledWith(
+          "Passkey usage failed with error: %s",
+          "JavaScriptNotEnabled"
+        );
+      });
+
+      it("should encode the passkeySignInWebauthnError query param when authenticationError contains the error name and message", async () => {
+        req.body.authenticationError =
+          "NotAllowedError - The operation either timed out or was not allowed. See: https://www.w3.org/TR/webauthn-2/#sctn-privacy-considerations-client.";
+        const fakePasskeyService = {
+          finishPasskeyAssertion: sinon.fake.returns({
+            success: true,
+          }),
+        } as unknown as PasskeyServiceInterface;
+
+        await cannotSignInPasskeyPost(fakePasskeyService)(
+          req as Request,
+          res as Response
+        );
+
+        expect(res.redirect).to.have.been.calledWith(
+          `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=NotAllowedError+-+The+operation+either+timed+out+or+was+not+allowed.+See%3A+https%3A%2F%2Fwww.w3.org%2FTR%2Fwebauthn-2%2F%23sctn-privacy-considerations-client.`
+        );
+      });
     });
   });
 });

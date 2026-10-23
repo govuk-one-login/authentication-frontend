@@ -33,6 +33,7 @@
     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
     <input type="hidden" name="authenticationResponse" value="" />
     <input type="hidden" name="authenticationError" value="JavaScriptNotEnabled" />
+    <input type="hidden" name="authenticationErrorMessage" value="" />
 
     {{ govukButton({
       text: 'general.continue.label' | translate,
@@ -69,10 +70,14 @@
 
           const authenticationErrorField = signInWithPasskeyForm.querySelector('input[name="authenticationError"]');
           authenticationErrorField.parentNode.removeChild(authenticationErrorField)
+
+          const authenticationErrorMessageField = signInWithPasskeyForm.querySelector('input[name="authenticationErrorMessage"]');
+          authenticationErrorMessageField.parentNode.removeChild(authenticationErrorMessageField)
         }
       } catch (error) {
         console.error(error.message);
         signInWithPasskeyForm.querySelector('input[name="authenticationError"]').value = error.name
+        signInWithPasskeyForm.querySelector('input[name="authenticationErrorMessage"]').value = error.message
       }
 
       document.body.inert = true;

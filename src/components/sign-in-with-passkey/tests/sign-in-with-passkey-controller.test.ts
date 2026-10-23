@@ -211,5 +211,64 @@ describe("sign in with passkey controller", () => {
       );
       expect(fakePasskeyService.finishPasskeyAssertion).to.not.have.been.called;
     });
+
+    it("should log the error name and message but only pass the error name in the query param when authenticationErrorMessage is present", async () => {
+      req.body.authenticationError = "NotAllowedError";
+      req.body.authenticationErrorMessage =
+        "The operation either timed out or was not allowed. See: https://www.w3.org/TR/webauthn-2/#sctn-privacy-considerations-client.";
+
+      const fakePasskeyService = {
+        finishPasskeyAssertion: sinon.fake(),
+      } as unknown as PasskeyServiceInterface;
+
+      await signInWithPasskeyPost(fakePasskeyService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(req.log.warn).to.have.been.calledWith(
+        "Passkey usage failed with error: %s",
+        "NotAllowedError - The operation either timed out or was not allowed. See: https://www.w3.org/TR/webauthn-2/#sctn-privacy-considerations-client."
+      );
+      expect(res.redirect).to.have.been.calledWith(
+        `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=NotAllowedError`
+      );
+    });
+
+    it("should log only the error name when authenticationErrorMessage is empty", async () => {
+      req.body.authenticationError = "JavaScriptNotEnabled";
+      req.body.authenticationErrorMessage = "";
+
+      const fakePasskeyService = {
+        finishPasskeyAssertion: sinon.fake(),
+      } as unknown as PasskeyServiceInterface;
+
+      await signInWithPasskeyPost(fakePasskeyService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(req.log.warn).to.have.been.calledWith(
+        "Passkey usage failed with error: %s",
+        "JavaScriptNotEnabled"
+      );
+    });
+
+    it("should encode the passkeySignInWebauthnError query param", async () => {
+      req.body.authenticationError = "Not Allowed#Error";
+
+      const fakePasskeyService = {
+        finishPasskeyAssertion: sinon.fake(),
+      } as unknown as PasskeyServiceInterface;
+
+      await signInWithPasskeyPost(fakePasskeyService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.been.calledWith(
+        `${PATH_NAMES.CANNOT_SIGN_IN_PASSKEY}?passkeySignInWebauthnError=Not+Allowed%23Error`
+      );
+    });
   });
 });
