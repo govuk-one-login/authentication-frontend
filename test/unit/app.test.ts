@@ -3,6 +3,8 @@ import { expect, sinon } from "../utils/test-utils.js";
 import { shutdownProcess, startServer } from "../../src/app.js";
 import express from "express";
 import esmock from "esmock";
+import request from "supertest";
+import type { Request, Response } from "express";
 
 describe("app", () => {
   describe("startServer", () => {
@@ -169,6 +171,29 @@ describe("app", () => {
       await createApp();
 
       expect(fakeApplyOverloadProtection).to.have.been.calledOnce;
+    });
+
+    it("should serve static assets without applying overload protection", async () => {
+      process.env.APP_ENV = "production";
+
+      const rejectAllRequests = (_req: Request, res: Response) => {
+        res.status(503).end();
+      };
+      const { createApp } = await esmock("../../src/app.js", {
+        "../../src/middleware/overload-protection-middleware.js": {
+          applyOverloadProtection: () => rejectAllRequests,
+        },
+      });
+
+      const app = await createApp();
+
+      const staticResponse = await request(app).get(
+        "/assets/images/govuk-crest.svg"
+      );
+      const pageResponse = await request(app).get("/sign-in-or-create");
+
+      expect(staticResponse.status).to.equal(200);
+      expect(pageResponse.status).to.equal(503);
     });
   });
 });

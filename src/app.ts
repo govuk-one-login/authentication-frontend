@@ -209,20 +209,6 @@ async function createApp(): Promise<express.Application> {
 
   app.use(loggerMiddleware);
   app.use(healthcheckRouter);
-  if (
-    [
-      APP_ENV_NAME.BUILD,
-      APP_ENV_NAME.STAGING,
-      APP_ENV_NAME.INT,
-      APP_ENV_NAME.PROD,
-    ].includes(getAppEnv())
-  ) {
-    logger.info(`applyOverloadProtection`);
-    app.use(applyOverloadProtection(isProduction));
-  }
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
-  app.disable("x-powered-by");
 
   const staticAssetOptions: serveStatic.ServeStaticOptions<express.Response> = {
     cacheControl: true,
@@ -254,6 +240,21 @@ async function createApp(): Promise<express.Application> {
     "/public",
     express.static(path.join(directory_name, "public"), staticAssetOptions)
   );
+
+  if (
+    [
+      APP_ENV_NAME.BUILD,
+      APP_ENV_NAME.STAGING,
+      APP_ENV_NAME.INT,
+      APP_ENV_NAME.PROD,
+    ].includes(getAppEnv())
+  ) {
+    logger.info(`applyOverloadProtection`);
+    app.use(applyOverloadProtection(isProduction));
+  }
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.disable("x-powered-by");
   app.use(noCacheMiddleware);
   app.set("view engine", configureNunjucks(app, APP_VIEWS));
   app.use(setLocalVarsMiddleware);
