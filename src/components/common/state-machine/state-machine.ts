@@ -700,11 +700,6 @@ const authStateMachine = createMachine<AuthStateContext>(
           optionalPaths: [PATH_NAMES.PROVE_IDENTITY_CALLBACK],
         },
       },
-      [PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT]: {
-        on: {
-          [USER_JOURNEY_EVENTS.SEND_EMAIL_CODE]: [PATH_NAMES.RESEND_EMAIL_CODE],
-        },
-      },
       [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]: {
         on: {
           [USER_JOURNEY_EVENTS.CHANGE_SECURITY_CODES_COMPLETED]: [
