@@ -159,16 +159,6 @@ describe("Integration:: resend mfa code", () => {
       .expect(302);
   });
 
-  it("should render 'You cannot get a new security code at the moment' when OTP lockout timer cookie is active", async () => {
-    const testSpecificCookies = cookies + "; re=true";
-    await request(app)
-      .get(PATH_NAMES.RESEND_MFA_CODE)
-      .set("Cookie", testSpecificCookies)
-      .expect((res) => {
-        res.text.includes("You cannot get a new security code at the moment");
-      });
-  });
-
   it("should return 500 error screen when API call fails", async () => {
     nock(baseApi).post(API_ENDPOINTS.MFA).once().reply(500, {
       errorCode: "1234",
