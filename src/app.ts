@@ -209,26 +209,16 @@ async function createApp(): Promise<express.Application> {
 
   app.use(loggerMiddleware);
   app.use(healthcheckRouter);
-  if (
-    [
-      APP_ENV_NAME.BUILD,
-      APP_ENV_NAME.STAGING,
-      APP_ENV_NAME.INT,
-      APP_ENV_NAME.PROD,
-    ].includes(getAppEnv())
-  ) {
-    logger.info(`applyOverloadProtection`);
-    app.use(applyOverloadProtection(isProduction));
-  }
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
-  app.disable("x-powered-by");
 
   const staticAssetOptions: serveStatic.ServeStaticOptions<express.Response> = {
     cacheControl: true,
     immutable: false,
     maxAge: "60s",
   };
+
+  // Serve static assets before overload protection so that cheap, cacheable
+  // requests (CSS, JS, fonts, images) are not shed with a 503 when the event
+  // loop is under load. Overload protection should only guard dynamic routes.
 
   // The journey map is not secret (this is a public repo)
   // but we don't want to display it in external-facing environments
@@ -254,6 +244,22 @@ async function createApp(): Promise<express.Application> {
     "/public",
     express.static(path.join(directory_name, "public"), staticAssetOptions)
   );
+
+  if (
+    [
+      APP_ENV_NAME.BUILD,
+      APP_ENV_NAME.STAGING,
+      APP_ENV_NAME.INT,
+      APP_ENV_NAME.PROD,
+    ].includes(getAppEnv())
+  ) {
+    logger.info(`applyOverloadProtection`);
+    app.use(applyOverloadProtection(isProduction));
+  }
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.disable("x-powered-by");
+
   app.use(noCacheMiddleware);
   app.set("view engine", configureNunjucks(app, APP_VIEWS));
   app.use(setLocalVarsMiddleware);
