@@ -7,7 +7,6 @@ import type { Request, Response } from "express";
 import {
   resendEmailCodePost,
   resendEmailCodeGet,
-  securityCodeCheckTimeLimitGet,
 } from "../resend-email-code-controller.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
@@ -78,45 +77,6 @@ describe("resend email controller", () => {
       expect(req.session.user.isVerifyEmailCodeResendRequired).to.be.undefined;
       expect(res.redirect).to.have.been.calledWith(PATH_NAMES.CHECK_YOUR_EMAIL);
       expect(fakeNotificationService.sendNotification).to.have.been.calledOnce;
-    });
-  });
-
-  describe("securityCodeCheckTimeLimitGet", () => {
-    it("should render security-code-error/index-wait.njk if codeRequestLock is set in the future", async () => {
-      req.session.user = {
-        email: "test@test.com",
-        codeRequestLock: new Date(Date.now() + 15 * 60000).toUTCString(),
-      };
-      req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
-
-      await securityCodeCheckTimeLimitGet()(req as Request, res as Response);
-
-      expect(res.render).to.have.been.calledWith(
-        "security-code-error/index-wait.njk"
-      );
-    });
-
-    it("should redirect to /resend-email-code if codeRequestLock is set in the past", async () => {
-      req.session.user = {
-        email: "test@test.com",
-        codeRequestLock: new Date(Date.now() - 15 * 60000).toUTCString(),
-      };
-      req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
-
-      await securityCodeCheckTimeLimitGet()(req as Request, res as Response);
-
-      expect(res.redirect).to.have.been.calledWith("/resend-email-code");
-    });
-
-    it("should redirect to /resend-email-code if codeRequestLock is not set", async () => {
-      req.session.user = {
-        email: "test@test.com",
-      };
-      req.path = PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT;
-
-      await securityCodeCheckTimeLimitGet()(req as Request, res as Response);
-
-      expect(res.redirect).to.have.been.calledWith("/resend-email-code");
     });
   });
 });

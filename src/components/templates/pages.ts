@@ -543,10 +543,6 @@ export const pages: Record<string, Page | PageVariant[]> = {
       },
     },
   ],
-  [PATH_NAMES.SECURITY_CODE_CHECK_TIME_LIMIT]: {
-    template: "security-code-error/index-wait.njk",
-    options: {},
-  },
   [PATH_NAMES.SECURITY_CODE_ENTERED_EXCEEDED]: [
     {
       name: "sms/email",
