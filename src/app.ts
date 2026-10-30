@@ -90,7 +90,6 @@ import { csrfMissingHandler } from "./handlers/csrf-missing-handler.js";
 import { channelMiddleware } from "./middleware/channel-middleware.js";
 import { applyOverloadProtection } from "./middleware/overload-protection-middleware.js";
 import { frontendVitalSignsInit } from "@govuk-one-login/frontend-vital-signs";
-import { startPauseProfiler } from "./utils/pause-profiler.js";
 import type { Server } from "node:http";
 import { getAnalyticsPropertiesMiddleware } from "./middleware/get-analytics-properties-middleware.js";
 import { ipvCallbackRouter } from "./components/ipv-callback/ipv-callback-routes.js";
@@ -373,16 +372,10 @@ async function startServer(app: Application): Promise<{
     interval: getVitalSignsIntervalSeconds() * 1000,
   });
 
-  const stopPauseProfiler =
-    getAppEnv() === APP_ENV_NAME.STAGING ? startPauseProfiler() : undefined;
-
   const closeServer = async () => {
     if (stopVitalSigns) {
       stopVitalSigns();
       logger.info(`vital-signs stopped`);
-    }
-    if (stopPauseProfiler) {
-      stopPauseProfiler();
     }
     await new Promise<void>((res, rej) =>
       server.close((err) => (err ? rej(err) : res()))
