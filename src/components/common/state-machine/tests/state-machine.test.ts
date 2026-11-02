@@ -404,10 +404,10 @@ describe("state-machine", () => {
       expect(nextState.value).to.equal(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
     });
 
-    it(`should move to ${PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES} on IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE even when self-serve account deletion should be offered`, () => {
+    it(`should move to ${PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES} on IPV_REVERIFICATION_INCOMPLETE even when self-serve account deletion should be offered`, () => {
       const nextState = getNextState(
         PATH_NAMES.IPV_CALLBACK,
-        USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE,
+        USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INCOMPLETE,
         { ...DEFAULT_CONTEXT, shouldOfferSelfServeAccountDeletion: true }
       );
       expect(nextState.value).to.equal(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
