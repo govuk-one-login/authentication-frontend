@@ -89,6 +89,9 @@ describe("Integration:: ipv callback", () => {
           expect(
             $("#cannotChangeHowGetSecurityCodeAction-error").text()
           ).to.contains("Select what you would like to do");
+          expect($(".govuk-error-summary__list").text()).to.contains(
+            "Select what you would like to do"
+          );
         })
         .expect(400);
     });

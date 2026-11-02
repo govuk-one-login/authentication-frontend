@@ -9,7 +9,7 @@ export function validateCannotChangeHowGetSecurityCodesActionRequest(): Validati
       .notEmpty()
       .withMessage((value, { req }) => {
         return req.t(
-          "pages.cannotChangeHowGetSecurityCodeMfaReset.radios.radioValidationError",
+          "pages.cannotChangeHowGetSecurityCodeMfaReset.allOptions.radios.radioValidationError",
           {
             value,
           }
