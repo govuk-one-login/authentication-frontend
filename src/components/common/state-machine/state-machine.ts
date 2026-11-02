@@ -781,6 +781,17 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
+      [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY]: {
+        on: {
+          [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
+          [USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE]: [
+            PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+          ],
+          [USER_JOURNEY_EVENTS.INITIATE_SELF_SERVE_ACCOUNT_DELETION]: [
+            PATH_NAMES.SSAD_AUTHORIZE,
+          ],
+        },
+      },
       [PATH_NAMES.SSAD_AUTHORIZE]: {
         type: "final",
         meta: {

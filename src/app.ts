@@ -106,6 +106,7 @@ import { changeSecurityCodesSignInRouter } from "./components/change-security-co
 import { wellKnownRouter } from "./components/well-known/well-known-routes.js";
 import { ssadAuthorizeRouter } from "./components/ssad-authorize/ssad-authorize-routes.js";
 import { ssadCallbackRouter } from "./components/ssad-callback/ssad-callback-routes.js";
+import { cannotChangeSecurityCodesNoIdentityRouter } from "./components/cannot-change-security-codes-no-identity/cannot-change-security-codes-no-identity-routes.js";
 import { createPasskeyRouter } from "./components/create-passkey/create-passkey-routes.js";
 import { createPasskeyCallbackRouter } from "./components/create-passkey-callback/create-passkey-callback-routes.js";
 import { sessionEndedRouter } from "./components/session-ended/session-ended-routes.js";
@@ -175,6 +176,7 @@ function registerRoutes(app: express.Application) {
   app.use(changeSecurityCodesSignInRouter);
   app.use(wellKnownRouter);
   if (supportSelfServeAccountDeletion()) {
+    app.use(cannotChangeSecurityCodesNoIdentityRouter);
     app.use(ssadAuthorizeRouter);
     // Using amc callback route in this feature flag for now for simplicity
     // in initial implementation. Must create a new broader AMC feature flag

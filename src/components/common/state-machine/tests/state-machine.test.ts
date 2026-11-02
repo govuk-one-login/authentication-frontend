@@ -381,4 +381,30 @@ describe("state-machine", () => {
       expect(nextState.value).to.equal(PATH_NAMES.GET_SECURITY_CODES);
     });
   });
+
+  describe(`getNextState - ${PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY}`, () => {
+    [
+      {
+        event: USER_JOURNEY_EVENTS.INITIATE_SELF_SERVE_ACCOUNT_DELETION,
+        expectedPath: PATH_NAMES.SSAD_AUTHORIZE,
+      },
+      {
+        event: USER_JOURNEY_EVENTS.VERIFY_MFA,
+        expectedPath: PATH_NAMES.ENTER_MFA,
+      },
+      {
+        event: USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE,
+        expectedPath: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+      },
+    ].forEach(({ event, expectedPath }) => {
+      it(`should move from ${PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY} to ${expectedPath} on ${event}`, () => {
+        const nextState = getNextState(
+          PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY,
+          event,
+          DEFAULT_CONTEXT
+        );
+        expect(nextState.value).to.equal(expectedPath);
+      });
+    });
+  });
 });
