@@ -26,7 +26,7 @@ import {
   supportAuthorizeController,
   supportPasskeyRegistration,
   supportPasskeyUsage,
-  supportSingleFactorAccountDeletion,
+  supportSelfServeAccountDeletion,
 } from "./config.js";
 import { logErrorMiddleware } from "./middleware/log-error-middleware.js";
 import { getCookieLanguageMiddleware } from "./middleware/cookie-lang-middleware.js";
@@ -174,7 +174,7 @@ function registerRoutes(app: express.Application) {
   app.use(cannotUseSecurityCodeRouter);
   app.use(changeSecurityCodesSignInRouter);
   app.use(wellKnownRouter);
-  if (supportSingleFactorAccountDeletion()) {
+  if (supportSelfServeAccountDeletion()) {
     app.use(sfadAuthorizeRouter);
     // Using amc callback route in this feature flag for now for simplicity
     // in initial implementation. Must create a new broader AMC feature flag

@@ -12,7 +12,7 @@ describe("Integration:: sfad callback", () => {
   let baseApi: string;
 
   before(async () => {
-    process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION = "1";
+    process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION = "1";
     baseApi = process.env.FRONTEND_API_BASE_URL;
     app = await stubMiddlewareAndCreateApp();
   });

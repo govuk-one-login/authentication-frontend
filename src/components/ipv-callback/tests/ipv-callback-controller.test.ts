@@ -255,30 +255,30 @@ describe("ipv callback controller", () => {
         expect(renderCall.args[1].onlyDeleteAccount).to.equal(false);
       });
 
-      it("should render with supportSingleFactorAccountDeletion true when supportSingleFactorAccountDeletion() returns true", () => {
-        process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION = "1";
+      it("should render with supportSelfServeAccountDeletion true when supportSelfServeAccountDeletion() returns true", () => {
+        process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION = "1";
 
         cannotChangeSecurityCodesGet(req as Request, res as Response);
 
         const renderCall = res.render.getCall(0);
-        expect(renderCall.args[1].supportSingleFactorAccountDeletion).to.equal(
+        expect(renderCall.args[1].supportSelfServeAccountDeletion).to.equal(
           true
         );
 
-        delete process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION;
+        delete process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION;
       });
 
-      it("should render with supportSingleFactorAccountDeletion false when supportSingleFactorAccountDeletion() returns false", () => {
-        process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION = "0";
+      it("should render with supportSelfServeAccountDeletion false when supportSelfServeAccountDeletion() returns false", () => {
+        process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION = "0";
 
         cannotChangeSecurityCodesGet(req as Request, res as Response);
 
         const renderCall = res.render.getCall(0);
-        expect(renderCall.args[1].supportSingleFactorAccountDeletion).to.equal(
+        expect(renderCall.args[1].supportSelfServeAccountDeletion).to.equal(
           false
         );
 
-        delete process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION;
+        delete process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION;
       });
     });
 

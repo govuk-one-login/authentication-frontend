@@ -14,7 +14,7 @@ import {
   MFA_METHOD_TYPE,
   PATH_NAMES,
 } from "../../app.constants.js";
-import { supportSingleFactorAccountDeletion } from "../../config.js";
+import { supportSelfServeAccountDeletion } from "../../config.js";
 import { needsForcedMFAReset } from "../../utils/request.js";
 const ERROR_TO_EVENT_MAP = new Map<string, string>();
 ERROR_TO_EVENT_MAP.set(
@@ -101,7 +101,7 @@ export function cannotChangeSecurityCodesGet(
     formPostPath: req.path,
     identityFailed:
       req.path === PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
-    supportSingleFactorAccountDeletion: supportSingleFactorAccountDeletion(),
+    supportSelfServeAccountDeletion: supportSelfServeAccountDeletion(),
     onlyDeleteAccount: needsForcedMFAReset(req),
   });
 }

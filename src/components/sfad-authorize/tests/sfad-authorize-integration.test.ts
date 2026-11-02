@@ -77,7 +77,7 @@ describe("SFAD authorize", () => {
             }),
           },
           "../../../config.js": {
-            supportSingleFactorAccountDeletion: () => true,
+            supportSelfServeAccountDeletion: () => true,
           },
         }
       );
