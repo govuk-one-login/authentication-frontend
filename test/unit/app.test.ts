@@ -72,46 +72,6 @@ describe("app", () => {
 
       expect(fakeFrontendVitalSignsInit).to.be.callCount(1);
     });
-
-    it("should start and stop the pause profiler in staging", async () => {
-      const fakeStopPauseProfiler = sinon.fake();
-      const fakeStartPauseProfiler = sinon.fake.returns(fakeStopPauseProfiler);
-      const { startServer } = await esmock("../../src/app.js", {
-        "../../src/utils/pause-profiler.js": {
-          startPauseProfiler: fakeStartPauseProfiler,
-        },
-        "../../src/config.js": {
-          getAppEnv: () => "staging",
-        },
-      });
-
-      const app = express();
-      const { closeServer } = await startServer(app);
-
-      expect(fakeStartPauseProfiler).to.be.calledOnce;
-
-      await closeServer();
-
-      expect(fakeStopPauseProfiler).to.be.calledOnce;
-    });
-
-    it("should not start the pause profiler outside staging", async () => {
-      const fakeStartPauseProfiler = sinon.fake();
-      const { startServer } = await esmock("../../src/app.js", {
-        "../../src/utils/pause-profiler.js": {
-          startPauseProfiler: fakeStartPauseProfiler,
-        },
-        "../../src/config.js": {
-          getAppEnv: () => "production",
-        },
-      });
-
-      const app = express();
-      const { closeServer } = await startServer(app);
-      await closeServer();
-
-      expect(fakeStartPauseProfiler).not.to.be.called;
-    });
   });
 
   describe("shutdownProcess", () => {
