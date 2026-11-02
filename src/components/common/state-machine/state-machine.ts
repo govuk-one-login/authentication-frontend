@@ -779,9 +779,6 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE]: [
             PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           ],
-          [USER_JOURNEY_EVENTS.INITIATE_SELF_SERVE_ACCOUNT_DELETION]: [
-            PATH_NAMES.SSAD_AUTHORIZE,
-          ],
         },
       },
       [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: {

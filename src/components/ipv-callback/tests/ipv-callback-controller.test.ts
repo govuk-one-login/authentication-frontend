@@ -283,32 +283,6 @@ describe("ipv callback controller", () => {
         const renderCall = res.render.getCall(0);
         expect(renderCall.args[1].onlyDeleteAccount).to.equal(false);
       });
-
-      it("should render with supportSelfServeAccountDeletion true when supportSelfServeAccountDeletion() returns true", () => {
-        process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION = "1";
-
-        cannotChangeSecurityCodesGet(req as Request, res as Response);
-
-        const renderCall = res.render.getCall(0);
-        expect(renderCall.args[1].supportSelfServeAccountDeletion).to.equal(
-          true
-        );
-
-        delete process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION;
-      });
-
-      it("should render with supportSelfServeAccountDeletion false when supportSelfServeAccountDeletion() returns false", () => {
-        process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION = "0";
-
-        cannotChangeSecurityCodesGet(req as Request, res as Response);
-
-        const renderCall = res.render.getCall(0);
-        expect(renderCall.args[1].supportSelfServeAccountDeletion).to.equal(
-          false
-        );
-
-        delete process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION;
-      });
     });
 
     describe("cannotChangeSecurityCodePost", () => {
@@ -359,16 +333,6 @@ describe("ipv callback controller", () => {
           }
         );
         expect(res.redirect).not.to.have.been.called;
-      });
-
-      it("should redirect to ssad authorize controller when user selects initiate ssad radio button", async () => {
-        req = createMockRequest(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
-        req.body.cannotChangeHowGetSecurityCodeAction =
-          CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.INITIATE_SELF_SERVE_ACCOUNT_DELETION;
-
-        await cannotChangeSecurityCodesPost(req as Request, res as Response);
-
-        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.SSAD_AUTHORIZE);
       });
     });
   });
