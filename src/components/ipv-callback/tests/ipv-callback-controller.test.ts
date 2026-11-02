@@ -163,6 +163,35 @@ describe("ipv callback controller", () => {
       }
     );
 
+    describe("when self-serve account deletion is supported", () => {
+      beforeEach(() => {
+        process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION = "1";
+      });
+
+      afterEach(() => {
+        delete process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION;
+      });
+
+      [
+        [
+          "no_identity_available",
+          PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY,
+        ],
+        ["identity_check_incomplete", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
+      ].forEach(([errorCode, expectedPath]) => {
+        it(`get should redirect you to the ${expectedPath} page when failure code is ${errorCode}`, async () => {
+          const fakeService = reverificationResultService(
+            200,
+            reverificationResultFailureData(errorCode)
+          );
+
+          await ipvCallbackGet(fakeService)(req as Request, res as Response);
+
+          expect(res.redirect).to.be.calledWith(expectedPath);
+        });
+      });
+    });
+
     it(`get should raise error when result is successful but failure code is invalid`, async () => {
       const fakeService = reverificationResultService(
         200,

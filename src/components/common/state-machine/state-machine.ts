@@ -60,6 +60,8 @@ const USER_JOURNEY_EVENTS = {
   IPV_REVERIFICATION_COMPLETED: "IPV_REVERIFICATION_COMPLETED",
   IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE:
     "IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE",
+  IPV_REVERIFICATION_NO_IDENTITY_AVAILABLE:
+    "IPV_REVERIFICATION_NO_IDENTITY_AVAILABLE",
   IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH:
     "IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH",
   MFA_RESET_ATTEMPTED_VIA_APP: "MFA_RESET_ATTEMPTED_VIA_APP",
@@ -97,6 +99,7 @@ export interface AuthStateContext {
   shouldPromptToRegisterPasskey: boolean;
   shouldPromptToSignInWithPasskey: boolean;
   needsForcedMFAReset: boolean;
+  shouldOfferSelfServeAccountDeletion: boolean;
 }
 
 const authStateMachine = createMachine<AuthStateContext>(
@@ -748,6 +751,15 @@ const authStateMachine = createMachine<AuthStateContext>(
               target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
             },
           ],
+          [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_NO_IDENTITY_AVAILABLE]: [
+            {
+              target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY],
+              cond: "shouldOfferSelfServeAccountDeletion",
+            },
+            {
+              target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
+            },
+          ],
           [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH]: [
             {
               target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL],
@@ -855,6 +867,8 @@ const authStateMachine = createMachine<AuthStateContext>(
         context.shouldPromptToRegisterPasskey,
       shouldPromptToSignInWithPasskey: (context) =>
         context.shouldPromptToSignInWithPasskey,
+      shouldOfferSelfServeAccountDeletion: (context) =>
+        context.shouldOfferSelfServeAccountDeletion,
     },
   }
 );

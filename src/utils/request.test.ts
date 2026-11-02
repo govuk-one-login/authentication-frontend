@@ -12,6 +12,7 @@ import {
   urlContains,
   isPasswordChangeRequired,
   needsForcedMFAReset as needsForcedMFAResetFunc,
+  shouldOfferSelfServeAccountDeletion,
   isSecondFactorCheckRequired,
 } from "./request.js";
 import {
@@ -336,6 +337,61 @@ describe("request utilities", () => {
                 },
               },
             } as Request)
+          ).to.equal(expectedValue);
+        });
+      }
+    );
+  });
+
+  describe("shouldOfferSelfServeAccountDeletion", () => {
+    afterEach(() => {
+      delete process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION;
+      delete process.env.SUPPORT_REAUTHENTICATION;
+    });
+
+    [
+      {
+        flagEnabled: true,
+        reauthenticate: undefined,
+        needsForcedMFAReset: false,
+        expectedValue: true,
+      },
+      {
+        flagEnabled: false,
+        reauthenticate: undefined,
+        needsForcedMFAReset: false,
+        expectedValue: false,
+      },
+      {
+        flagEnabled: true,
+        reauthenticate: "test-rp",
+        needsForcedMFAReset: false,
+        expectedValue: false,
+      },
+      {
+        flagEnabled: true,
+        reauthenticate: undefined,
+        needsForcedMFAReset: true,
+        expectedValue: false,
+      },
+    ].forEach(
+      ({ flagEnabled, reauthenticate, needsForcedMFAReset, expectedValue }) => {
+        it(`returns ${expectedValue} when the flag is ${flagEnabled ? "on" : "off"}, the user is ${reauthenticate ? "" : "not "}reauthenticating and ${needsForcedMFAReset ? "needs" : "does not need"} a forced MFA reset`, () => {
+          process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION = flagEnabled
+            ? "1"
+            : "0";
+          process.env.SUPPORT_REAUTHENTICATION = "1";
+
+          expect(
+            shouldOfferSelfServeAccountDeletion({
+              session: {
+                user: {
+                  reauthenticate,
+                  needsForcedMFAReset,
+                  isMfaRequired: true,
+                },
+              },
+            } as any as Request)
           ).to.equal(expectedValue);
         });
       }

@@ -9,7 +9,10 @@ import {
   shouldPromptToRegisterPasskey,
   shouldPromptToSignInWithPasskey,
 } from "../../../utils/passkeys-helper.js";
-import { needsForcedMFAReset } from "../../../utils/request.js";
+import {
+  needsForcedMFAReset,
+  shouldOfferSelfServeAccountDeletion,
+} from "../../../utils/request.js";
 import { getGoBackHistoryForTransition } from "./go-back-history.js";
 
 export async function getNextPathAndUpdateJourney(
@@ -37,6 +40,8 @@ export async function getNextPathAndUpdateJourney(
     shouldPromptToRegisterPasskey: shouldPromptToRegisterPasskey(req, res),
     shouldPromptToSignInWithPasskey: shouldPromptToSignInWithPasskey(req, res),
     needsForcedMFAReset: needsForcedMFAReset(req),
+    shouldOfferSelfServeAccountDeletion:
+      shouldOfferSelfServeAccountDeletion(req),
   };
 
   const nextState = getNextState(currentState, event, context);
