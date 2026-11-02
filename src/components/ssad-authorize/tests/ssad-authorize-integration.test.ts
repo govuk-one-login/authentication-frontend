@@ -10,12 +10,12 @@ import request from "supertest";
 import type { NextFunction, Request, Response } from "express";
 import esmock from "esmock";
 
-const SFAD_REDIRECT_URL = "https://test-amc-url.com/authorize?state=test-state";
+const SSAD_REDIRECT_URL = "https://test-amc-url.com/authorize?state=test-state";
 
-describe("SFAD authorize", () => {
-  const REQUEST_PATH = PATH_NAMES.SFAD_AUTHORIZE;
+describe("SSAD authorize", () => {
+  const REQUEST_PATH = PATH_NAMES.SSAD_AUTHORIZE;
 
-  describe("SFAD authorize get", () => {
+  describe("SSAD authorize get", () => {
     beforeEach(() => {
       nock.cleanAll();
     });
@@ -24,22 +24,22 @@ describe("SFAD authorize", () => {
       sinon.restore();
     });
 
-    it("should redirect to the SFAD URL when request is successful", async () => {
+    it("should redirect to the SSAD URL when request is successful", async () => {
       const app = await setupAppWithSessionMiddleware(REQUEST_PATH);
-      allowCallToSfadAuthorizeEndpointReturningRedirectUrl(SFAD_REDIRECT_URL);
+      allowCallToSsadAuthorizeEndpointReturningRedirectUrl(SSAD_REDIRECT_URL);
 
       await request(app)
         .get(REQUEST_PATH)
         .expect(302)
-        .expect("Location", SFAD_REDIRECT_URL);
+        .expect("Location", SSAD_REDIRECT_URL);
     });
 
-    function allowCallToSfadAuthorizeEndpointReturningRedirectUrl(url: string) {
+    function allowCallToSsadAuthorizeEndpointReturningRedirectUrl(url: string) {
       const baseApi = process.env.FRONTEND_API_BASE_URL;
 
       nock(baseApi)
         .post(API_ENDPOINTS.AMC_AUTHORIZE, {
-          journeyType: AMC_JOURNEY_TYPES.SINGLE_FACTOR_ACCOUNT_DELETION,
+          journeyType: AMC_JOURNEY_TYPES.SELF_SERVE_ACCOUNT_DELETION,
         })
         .once()
         .reply(200, {

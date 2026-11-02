@@ -104,8 +104,8 @@ import { cannotUseEmailAddressRouter } from "./components/cannot-use-email-addre
 import { cannotUseSecurityCodeRouter } from "./components/cannot-use-security-code/cannot-use-security-code-routes.js";
 import { changeSecurityCodesSignInRouter } from "./components/change-security-codes-sign-in/change-security-codes-sign-in-routes.js";
 import { wellKnownRouter } from "./components/well-known/well-known-routes.js";
-import { sfadAuthorizeRouter } from "./components/sfad-authorize/sfad-authorize-routes.js";
-import { sfadCallbackRouter } from "./components/sfad-callback/sfad-callback-routes.js";
+import { ssadAuthorizeRouter } from "./components/ssad-authorize/ssad-authorize-routes.js";
+import { ssadCallbackRouter } from "./components/ssad-callback/ssad-callback-routes.js";
 import { createPasskeyRouter } from "./components/create-passkey/create-passkey-routes.js";
 import { createPasskeyCallbackRouter } from "./components/create-passkey-callback/create-passkey-callback-routes.js";
 import { sessionEndedRouter } from "./components/session-ended/session-ended-routes.js";
@@ -175,11 +175,11 @@ function registerRoutes(app: express.Application) {
   app.use(changeSecurityCodesSignInRouter);
   app.use(wellKnownRouter);
   if (supportSelfServeAccountDeletion()) {
-    app.use(sfadAuthorizeRouter);
+    app.use(ssadAuthorizeRouter);
     // Using amc callback route in this feature flag for now for simplicity
     // in initial implementation. Must create a new broader AMC feature flag
     // when more services are using AMC
-    app.use(sfadCallbackRouter);
+    app.use(ssadCallbackRouter);
   }
   if (supportPasskeyRegistration()) {
     app.use(createPasskeyRouter);

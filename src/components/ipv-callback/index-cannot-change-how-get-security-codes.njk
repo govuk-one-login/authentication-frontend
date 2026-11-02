@@ -63,9 +63,9 @@
 
       {% if supportSelfServeAccountDeletion %}
         {% set radioItems = (radioItems.push({
-            value: "initiate-sfad",
+            value: "initiate-ssad",
             text: 'pages.cannotChangeHowGetSecurityCodeMfaReset.allOptions.radios.option3Text' | translate,
-            id: "initiate-sfad",
+            id: "initiate-ssad",
             checked: false
         }), radioItems) %}
       {% endif %}

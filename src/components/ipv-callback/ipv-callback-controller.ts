@@ -126,12 +126,12 @@ export async function cannotChangeSecurityCodesPost(
             : USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE
         )
       );
-    case CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION:
+    case CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.INITIATE_SELF_SERVE_ACCOUNT_DELETION:
       return res.redirect(
         await getNextPathAndUpdateJourney(
           req,
           res,
-          USER_JOURNEY_EVENTS.INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION
+          USER_JOURNEY_EVENTS.INITIATE_SELF_SERVE_ACCOUNT_DELETION
         )
       );
   }

@@ -318,14 +318,14 @@ describe("ipv callback controller", () => {
         );
       });
 
-      it("should redirect to sfad authorize controller when user selects initiate sfad radio button", async () => {
+      it("should redirect to ssad authorize controller when user selects initiate ssad radio button", async () => {
         req = createMockRequest(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
         req.body.cannotChangeHowGetSecurityCodeAction =
-          CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION;
+          CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.INITIATE_SELF_SERVE_ACCOUNT_DELETION;
 
         await cannotChangeSecurityCodesPost(req as Request, res as Response);
 
-        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.SFAD_AUTHORIZE);
+        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.SSAD_AUTHORIZE);
       });
     });
   });

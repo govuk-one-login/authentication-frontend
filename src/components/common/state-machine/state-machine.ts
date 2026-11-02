@@ -68,8 +68,7 @@ const USER_JOURNEY_EVENTS = {
   CANNOT_USE_EMAIL_ADDRESS: "CANNOT_USE_EMAIL_ADDRESS",
   ENTER_EMAIL_ADDRESS_AFTER_EXPERIAN_CHECK:
     "ENTER_EMAIL_ADDRESS_AFTER_EXPERIAN_CHECK",
-  INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION:
-    "INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION",
+  INITIATE_SELF_SERVE_ACCOUNT_DELETION: "INITIATE_SELF_SERVE_ACCOUNT_DELETION",
   MFA_INDEFINITELY_BLOCKED: "MFA_INDEFINITELY_BLOCKED",
   CREATE_PASSKEY_INIT: "CREATE_PASSKEY_INIT",
   SKIP_CREATE_PASSKEY: "SKIP_CREATE_PASSKEY",
@@ -616,7 +615,7 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
-      [PATH_NAMES.SFAD_CALLBACK]: {
+      [PATH_NAMES.SSAD_CALLBACK]: {
         type: "final",
       },
       [PATH_NAMES.CREATE_PASSKEY]: {
@@ -769,8 +768,8 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE]: [
             PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           ],
-          [USER_JOURNEY_EVENTS.INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION]: [
-            PATH_NAMES.SFAD_AUTHORIZE,
+          [USER_JOURNEY_EVENTS.INITIATE_SELF_SERVE_ACCOUNT_DELETION]: [
+            PATH_NAMES.SSAD_AUTHORIZE,
           ],
         },
       },
@@ -782,10 +781,10 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
-      [PATH_NAMES.SFAD_AUTHORIZE]: {
+      [PATH_NAMES.SSAD_AUTHORIZE]: {
         type: "final",
         meta: {
-          optionalPaths: [PATH_NAMES.SFAD_CALLBACK],
+          optionalPaths: [PATH_NAMES.SSAD_CALLBACK],
         },
       },
       [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES]: {

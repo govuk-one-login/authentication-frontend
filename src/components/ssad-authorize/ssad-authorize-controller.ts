@@ -5,7 +5,7 @@ import type { Request, Response } from "express";
 import { BadRequestError } from "../../utils/error.js";
 import { AMC_JOURNEY_TYPES } from "../../app.constants.js";
 
-export function sfadAuthorizeGet(
+export function ssadAuthorizeGet(
   service: AmcAuthorizeInterface = amcAuthorizeService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response): Promise<void> {
@@ -16,7 +16,7 @@ export function sfadAuthorizeGet(
       clientSessionId,
       persistentSessionId,
       req,
-      AMC_JOURNEY_TYPES.SINGLE_FACTOR_ACCOUNT_DELETION
+      AMC_JOURNEY_TYPES.SELF_SERVE_ACCOUNT_DELETION
     );
 
     if (!result.success) {

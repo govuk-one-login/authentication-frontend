@@ -77,8 +77,8 @@ export const PATH_NAMES = {
   CANNOT_USE_SECURITY_CODE: "/cannot-use-security-code",
   CHANGE_SECURITY_CODES_SIGN_IN: "/change-security-codes-sign-in",
   WELL_KNOWN_APPLE_ASSOCIATION: "/.well-known/apple-app-site-association",
-  SFAD_AUTHORIZE: "/sfad-authorize",
-  SFAD_CALLBACK: "/sfad-callback",
+  SSAD_AUTHORIZE: "/ssad-authorize",
+  SSAD_CALLBACK: "/sfad-callback",
   CREATE_PASSKEY: "/create-passkey",
   CREATE_PASSKEY_CALLBACK: "/create-passkey-callback",
   SESSION_ENDED: "/session-ended",
@@ -342,10 +342,10 @@ export const WEB_TO_MOBILE_ERROR_MESSAGE_MAPPINGS: Record<string, string> = {
 export const CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION = {
   HELP_DELETE_ACCOUNT: "help-to-delete-account",
   RETRY_SECURITY_CODE: "retry-security-code",
-  INITIATE_SINGLE_FACTOR_ACCOUNT_DELETION: "initiate-sfad",
+  INITIATE_SELF_SERVE_ACCOUNT_DELETION: "initiate-ssad",
 };
 
 export const AMC_JOURNEY_TYPES = {
-  SINGLE_FACTOR_ACCOUNT_DELETION: "SSAD",
+  SELF_SERVE_ACCOUNT_DELETION: "SSAD",
   PASSKEY_CREATE: "PASSKEY_CREATE",
 };

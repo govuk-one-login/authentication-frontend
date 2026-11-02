@@ -1,16 +1,16 @@
-import { Router } from "express";
+import express from "express";
 import { PATH_NAMES } from "../../app.constants.js";
 import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
-import { sfadCallbackGet } from "./sfad-callback-controller.js";
+import { ssadAuthorizeGet } from "./ssad-authorize-controller.js";
 
-const router = Router();
+const router = express.Router();
 
 router.get(
-  PATH_NAMES.SFAD_CALLBACK,
+  PATH_NAMES.SSAD_AUTHORIZE,
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
-  sfadCallbackGet()
+  ssadAuthorizeGet()
 );
 
-export { router as sfadCallbackRouter };
+export { router as ssadAuthorizeRouter };

@@ -46,7 +46,7 @@ describe("amc authorize service", () => {
   });
 
   const JOURNEY_TYPES = [
-    AMC_JOURNEY_TYPES.SINGLE_FACTOR_ACCOUNT_DELETION,
+    AMC_JOURNEY_TYPES.SELF_SERVE_ACCOUNT_DELETION,
     AMC_JOURNEY_TYPES.PASSKEY_CREATE,
   ];
   for (const journeyType of JOURNEY_TYPES) {

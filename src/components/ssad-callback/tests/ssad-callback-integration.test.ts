@@ -7,7 +7,7 @@ import { getPermittedJourneyForPath } from "../../../../test/helpers/session-hel
 import esmock from "esmock";
 import request from "supertest";
 
-describe("Integration:: sfad callback", () => {
+describe("Integration:: ssad callback", () => {
   let app: Application;
   let baseApi: string;
 
@@ -23,14 +23,14 @@ describe("Integration:: sfad callback", () => {
     sinon.restore();
   });
 
-  it("should return 200 with success message when SFAD callback is successful", async () => {
+  it("should return 200 with success message when SSAD callback is successful", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.AMC_CALLBACK)
       .once()
       .reply(200, "Success message");
 
     const requestPath =
-      PATH_NAMES.SFAD_CALLBACK + "?code=test-code&state=test-state";
+      PATH_NAMES.SSAD_CALLBACK + "?code=test-code&state=test-state";
 
     await request(app)
       .get(requestPath)
@@ -40,26 +40,26 @@ describe("Integration:: sfad callback", () => {
       });
   });
 
-  it("should return 400 when SFAD callback fails", async () => {
+  it("should return 400 when SSAD callback fails", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.AMC_CALLBACK)
       .once()
       .reply(400, "Error message");
 
     const requestPath =
-      PATH_NAMES.SFAD_CALLBACK + "?code=test-code&state=test-state";
+      PATH_NAMES.SSAD_CALLBACK + "?code=test-code&state=test-state";
 
     await request(app).get(requestPath).expect(400);
   });
 
   it("should return 400 when code parameter is missing", async () => {
-    const requestPath = PATH_NAMES.SFAD_CALLBACK + "?state=test-state";
+    const requestPath = PATH_NAMES.SSAD_CALLBACK + "?state=test-state";
 
     await request(app).get(requestPath).expect(400);
   });
 
   it("should return 400 when state parameter is missing", async () => {
-    const requestPath = PATH_NAMES.SFAD_CALLBACK + "?code=test-code";
+    const requestPath = PATH_NAMES.SSAD_CALLBACK + "?code=test-code";
 
     await request(app).get(requestPath).expect(400);
   });
@@ -83,7 +83,7 @@ const stubMiddlewareAndCreateApp = async (): Promise<Application> => {
 
           req.session.user = {
             email: "test@test.com",
-            journey: getPermittedJourneyForPath(PATH_NAMES.SFAD_CALLBACK),
+            journey: getPermittedJourneyForPath(PATH_NAMES.SSAD_CALLBACK),
           };
 
           next();
