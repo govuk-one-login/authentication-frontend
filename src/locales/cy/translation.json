@@ -755,6 +755,16 @@
         }
       }
     },
+    "cannotChangeSecurityCodesNoIdentity": {
+      "paragraph1": "You can only get security codes to sign in using a method you have already set up.",
+      "radios": {
+        "header": "Choose an option",
+        "cannotUseMethodText": "You cannot use your current method anymore",
+        "cannotUseMethodHint": "For example, if you’ve permanently lost access to your phone",
+        "tryAgainText": "You want to try using your current method again",
+        "radioValidationError": "You must select an option to continue"
+      }
+    },
     "changeSecurityCodesConfirmation": {
       "title": "Rydych wedi newid sut rydych yn cael codau diogelwch",
       "header": "Rydych wedi newid sut rydych yn cael codau diogelwch",
