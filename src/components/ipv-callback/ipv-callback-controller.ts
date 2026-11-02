@@ -134,5 +134,9 @@ export async function cannotChangeSecurityCodesPost(
           USER_JOURNEY_EVENTS.INITIATE_SELF_SERVE_ACCOUNT_DELETION
         )
       );
+    default:
+      throw new Error(
+        `Invalid cannotChangeHowGetSecurityCodeAction: ${cannotChangeHowGetSecurityCodeAction}`
+      );
   }
 }

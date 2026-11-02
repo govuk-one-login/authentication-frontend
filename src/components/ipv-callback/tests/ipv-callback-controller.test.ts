@@ -347,6 +347,20 @@ describe("ipv callback controller", () => {
         );
       });
 
+      it("should throw when the action is not one of this page's options", async () => {
+        req.body.cannotChangeHowGetSecurityCodeAction = "not-a-real-option";
+
+        await assert.rejects(
+          async () =>
+            cannotChangeSecurityCodesPost(req as Request, res as Response),
+          {
+            message:
+              "Invalid cannotChangeHowGetSecurityCodeAction: not-a-real-option",
+          }
+        );
+        expect(res.redirect).not.to.have.been.called;
+      });
+
       it("should redirect to ssad authorize controller when user selects initiate ssad radio button", async () => {
         req = createMockRequest(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
         req.body.cannotChangeHowGetSecurityCodeAction =
