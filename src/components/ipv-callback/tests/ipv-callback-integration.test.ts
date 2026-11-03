@@ -89,6 +89,36 @@ describe("Integration:: ipv callback", () => {
           expect(
             $("#cannotChangeHowGetSecurityCodeAction-error").text()
           ).to.contains("Select what you would like to do");
+          expect($(".govuk-error-summary__list").text()).to.contains(
+            "Select what you would like to do"
+          );
+        })
+        .expect(400);
+    });
+
+    it("keeps the identity failed content when there is a validation error on the identity fail page", async () => {
+      const app = await stubMiddlewareAndCreateApp(
+        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL
+      );
+      const { token, cookies } = extractCsrfTokenAndCookies(
+        await request(app).get(
+          PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL
+        )
+      );
+
+      await request(app)
+        .post(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL)
+        .type("form")
+        .set("Cookie", cookies)
+        .send({
+          _csrf: token,
+          cannotChangeHowGetSecurityCodeAction: "",
+        })
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("main").text()).to.contains(
+            "This is because there was a problem confirming your identity."
+          );
         })
         .expect(400);
     });

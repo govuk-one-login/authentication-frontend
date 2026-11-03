@@ -9,7 +9,7 @@ export function validateCannotChangeHowGetSecurityCodesActionRequest(): Validati
       .notEmpty()
       .withMessage((value, { req }) => {
         return req.t(
-          "pages.cannotChangeHowGetSecurityCodeMfaReset.radios.radioValidationError",
+          "pages.cannotChangeHowGetSecurityCodeMfaReset.allOptions.radios.radioValidationError",
           {
             value,
           }
@@ -18,10 +18,8 @@ export function validateCannotChangeHowGetSecurityCodesActionRequest(): Validati
     validateBodyMiddleware(
       "ipv-callback/index-cannot-change-how-get-security-codes.njk",
       (req) => ({
-        variant:
-          req.path === PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL
-            ? "identityFailed"
-            : "incomplete",
+        identityFailed:
+          req.path === PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
         formPostPath: req.path,
       })
     ),
