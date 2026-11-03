@@ -5,7 +5,7 @@ import type { ExpressRouteFunc } from "../../types.js";
 import xss from "xss";
 import type { AMCResultInterface } from "../amc-service/types.js";
 
-export function sfadCallbackGet(
+export function ssadCallbackGet(
   service: AMCResultInterface<boolean> = amcResultService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response): Promise<void> {

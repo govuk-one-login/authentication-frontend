@@ -13,7 +13,7 @@ import {
   supportPasskeyUsage,
   supportPasskeyRegistration,
   supportNewInternationalSms,
-  supportSingleFactorAccountDeletion,
+  supportSelfServeAccountDeletion,
   getDefaultChannel,
   showTestBanner,
   getAccountDomain,
@@ -38,7 +38,7 @@ describe("config", () => {
     delete process.env.SUPPORT_PASSKEY_USAGE;
     delete process.env.SUPPORT_PASSKEY_REGISTRATION;
     delete process.env.SUPPORT_NEW_INTERNATIONAL_SMS;
-    delete process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION;
+    delete process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION;
     delete process.env.DEFAULT_CHANNEL;
     delete process.env.APP_ENV;
     delete process.env.SERVICE_DOMAIN;
@@ -113,9 +113,9 @@ describe("config", () => {
         fn: supportNewInternationalSms,
       },
       {
-        name: "supportSingleFactorAccountDeletion",
-        envVar: "SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION",
-        fn: supportSingleFactorAccountDeletion,
+        name: "supportSelfServeAccountDeletion",
+        envVar: "SUPPORT_SELF_SERVE_ACCOUNT_DELETION",
+        fn: supportSelfServeAccountDeletion,
       },
     ];
 

@@ -207,8 +207,8 @@ export function supportNewInternationalSms(): boolean {
   return process.env.SUPPORT_NEW_INTERNATIONAL_SMS === "1";
 }
 
-export function supportSingleFactorAccountDeletion(): boolean {
-  return process.env.SUPPORT_SINGLE_FACTOR_ACCOUNT_DELETION === "1";
+export function supportSelfServeAccountDeletion(): boolean {
+  return process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION === "1";
 }
 
 export function getAuthJwksUrl(): string {

@@ -4,7 +4,7 @@ import { mockResponse } from "mock-req-res";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
 import { PATH_NAMES } from "../../../app.constants.js";
-import { sfadCallbackGet } from "../sfad-callback-controller.js";
+import { ssadCallbackGet } from "../ssad-callback-controller.js";
 import { BadRequestError } from "../../../utils/error.js";
 import sinon from "sinon";
 import type { Request, Response } from "express";
@@ -20,7 +20,7 @@ const createMockService = (success: boolean, data: string) => {
   };
 };
 
-describe("sfad-callback-controller", () => {
+describe("ssad-callback-controller", () => {
   let req: RequestOutput;
   let res: ResponseOutput;
 
@@ -31,7 +31,7 @@ describe("sfad-callback-controller", () => {
   const USED_REDIRECT_URL = "https://www.test.com/amc-callback";
 
   beforeEach(() => {
-    req = createMockRequest(PATH_NAMES.SFAD_CALLBACK);
+    req = createMockRequest(PATH_NAMES.SSAD_CALLBACK);
     req.query = { code: AUTH_CODE, state: STATE };
     req.cookies = { lng: LANGUAGE };
     res = mockResponse();
@@ -51,7 +51,7 @@ describe("sfad-callback-controller", () => {
     const expectedResult = "Great success";
     const fakeService = createMockService(true, expectedResult);
 
-    await sfadCallbackGet(fakeService)(req as Request, res as Response);
+    await ssadCallbackGet(fakeService)(req as Request, res as Response);
 
     expect(fakeService.getAMCResult).to.have.been.calledWith(
       sessionId,
@@ -72,7 +72,7 @@ describe("sfad-callback-controller", () => {
     const fakeService = createMockService(false, expectedErrorMessage);
 
     await assert.rejects(
-      async () => sfadCallbackGet(fakeService)(req as Request, res as Response),
+      async () => ssadCallbackGet(fakeService)(req as Request, res as Response),
       (error: Error) => {
         expect(error).to.be.instanceOf(BadRequestError);
         expect(error.message).to.equal(
@@ -109,7 +109,7 @@ describe("sfad-callback-controller", () => {
       req.query = testCase.query;
 
       await assert.rejects(
-        async () => sfadCallbackGet()(req as Request, res as Response),
+        async () => ssadCallbackGet()(req as Request, res as Response),
         (error: Error) => {
           expect(error).to.be.instanceOf(BadRequestError);
           expect(error.message).to.equal(testCase.expectedMessage);
