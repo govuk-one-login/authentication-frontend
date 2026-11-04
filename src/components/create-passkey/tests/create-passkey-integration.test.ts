@@ -203,4 +203,22 @@ describe("Integration:: create passkey", () => {
       })
       .expect(500);
   });
+
+  it("should handle a back button press when the session expects the user to be on /create-passkey-callback", async () => {
+    setupAccountInterventionsResponse(baseApi, noInterventions);
+    sessionUserOverrides = {
+      journey: {
+        nextPath: PATH_NAMES.CREATE_PASSKEY_CALLBACK,
+        optionalPaths: [],
+        goBackHistory: [PATH_NAMES.CREATE_PASSKEY],
+      },
+    };
+
+    await request(app).get(PATH_NAMES.CREATE_PASSKEY).expect(200);
+
+    expect(capturedUserSession.journey.nextPath).to.equal(
+      PATH_NAMES.CREATE_PASSKEY
+    );
+    expect(capturedUserSession.journey.goBackHistory).to.deep.eq([]);
+  });
 });

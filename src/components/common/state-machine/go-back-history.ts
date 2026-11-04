@@ -7,6 +7,7 @@ export const goBackHistoryAllowList = [
   PATH_NAMES.ENTER_PASSWORD,
   PATH_NAMES.SIGN_IN_WITH_PASSKEY,
   PATH_NAMES.RESET_PASSWORD_RESEND_CODE_2FA_SMS,
+  PATH_NAMES.CREATE_PASSKEY_CALLBACK,
 ];
 
 export function getGoBackHistoryForTransition(

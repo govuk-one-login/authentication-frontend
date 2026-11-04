@@ -12,11 +12,13 @@ import nock from "nock";
 import request from "supertest";
 import { AMC_SCOPE } from "../types.js";
 import type { UserSession } from "../../../types.js";
+import { expect } from "../../../../test/utils/test-utils";
 
 describe("Integration:: create passkey callback", () => {
   let app: Application;
   let baseApi: string;
   let sessionUserOverrides: Partial<UserSession> = {};
+  let capturedUserSession: UserSession;
 
   before(async () => {
     process.env.SUPPORT_PASSKEY_REGISTRATION = "1";
@@ -45,6 +47,8 @@ describe("Integration:: create passkey callback", () => {
               ),
               ...sessionUserOverrides,
             };
+
+            capturedUserSession = req.session.user;
 
             next();
           }),
@@ -132,6 +136,13 @@ describe("Integration:: create passkey callback", () => {
   });
 
   it("should redirect to create-passkey when user clicked back in amc", async () => {
+    sessionUserOverrides = {
+      journey: {
+        goBackHistory: [PATH_NAMES.CREATE_PASSKEY],
+        nextPath: PATH_NAMES.CREATE_PASSKEY_CALLBACK,
+        optionalPaths: [],
+      },
+    };
     nock(baseApi)
       .post(API_ENDPOINTS.AMC_CALLBACK)
       .once()
@@ -158,5 +169,7 @@ describe("Integration:: create passkey callback", () => {
       .get(requestPath)
       .expect(302)
       .expect("Location", PATH_NAMES.CREATE_PASSKEY);
+
+    expect(capturedUserSession.journey.goBackHistory).to.deep.eq([]);
   });
 });
