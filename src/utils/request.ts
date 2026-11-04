@@ -1,5 +1,8 @@
 import type { Request } from "express";
-import { supportReauthentication } from "../config.js";
+import {
+  supportReauthentication,
+  supportSelfServeAccountDeletion,
+} from "../config.js";
 import {
   CONTACT_US_THEMES,
   SERVICE_TYPE,
@@ -50,3 +53,8 @@ export const needsForcedMFAReset = (req: Request): boolean =>
   Boolean(
     req.session?.user?.needsForcedMFAReset && isSecondFactorCheckRequired(req)
   );
+
+export const shouldOfferSelfServeAccountDeletion = (req: Request): boolean =>
+  supportSelfServeAccountDeletion() &&
+  !isReauth(req) &&
+  !needsForcedMFAReset(req);

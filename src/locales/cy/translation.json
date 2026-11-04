@@ -750,9 +750,18 @@
           "option1Text": "Cael help i ddileu eich GOV.UK One Login gan y tîm cymorth",
           "option1Hint": "Ffoniwch neu defnyddiwch gwe-sgwrs i gysylltu â’r tîm GOV.UK One Login",
           "option2Text": "Ceisiwch roi cod diogelwch i mewn eto gyda’r dull rydych eisoes wedi’i sefydlu",
-          "option3Text": "Initiate SFAD (this is placeholder content to initiate the journey, not in upper envs)",
           "radioValidationError": "Dewiswch beth hoffech chi ei wneud"
         }
+      }
+    },
+    "cannotChangeSecurityCodesNoIdentity": {
+      "paragraph1": "You can only get security codes to sign in using a method you have already set up.",
+      "radios": {
+        "header": "Choose an option",
+        "cannotUseMethodText": "You cannot use your current method anymore",
+        "cannotUseMethodHint": "For example, if you’ve permanently lost access to your phone",
+        "tryAgainText": "You want to try using your current method again",
+        "radioValidationError": "You must select an option to continue"
       }
     },
     "changeSecurityCodesConfirmation": {

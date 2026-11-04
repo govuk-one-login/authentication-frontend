@@ -163,6 +163,35 @@ describe("ipv callback controller", () => {
       }
     );
 
+    describe("when self-serve account deletion is supported", () => {
+      beforeEach(() => {
+        process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION = "1";
+      });
+
+      afterEach(() => {
+        delete process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION;
+      });
+
+      [
+        [
+          "no_identity_available",
+          PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY,
+        ],
+        ["identity_check_incomplete", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
+      ].forEach(([errorCode, expectedPath]) => {
+        it(`get should redirect you to the ${expectedPath} page when failure code is ${errorCode}`, async () => {
+          const fakeService = reverificationResultService(
+            200,
+            reverificationResultFailureData(errorCode)
+          );
+
+          await ipvCallbackGet(fakeService)(req as Request, res as Response);
+
+          expect(res.redirect).to.be.calledWith(expectedPath);
+        });
+      });
+    });
+
     it(`get should raise error when result is successful but failure code is invalid`, async () => {
       const fakeService = reverificationResultService(
         200,
@@ -254,32 +283,6 @@ describe("ipv callback controller", () => {
         const renderCall = res.render.getCall(0);
         expect(renderCall.args[1].onlyDeleteAccount).to.equal(false);
       });
-
-      it("should render with supportSelfServeAccountDeletion true when supportSelfServeAccountDeletion() returns true", () => {
-        process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION = "1";
-
-        cannotChangeSecurityCodesGet(req as Request, res as Response);
-
-        const renderCall = res.render.getCall(0);
-        expect(renderCall.args[1].supportSelfServeAccountDeletion).to.equal(
-          true
-        );
-
-        delete process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION;
-      });
-
-      it("should render with supportSelfServeAccountDeletion false when supportSelfServeAccountDeletion() returns false", () => {
-        process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION = "0";
-
-        cannotChangeSecurityCodesGet(req as Request, res as Response);
-
-        const renderCall = res.render.getCall(0);
-        expect(renderCall.args[1].supportSelfServeAccountDeletion).to.equal(
-          false
-        );
-
-        delete process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION;
-      });
     });
 
     describe("cannotChangeSecurityCodePost", () => {
@@ -318,14 +321,18 @@ describe("ipv callback controller", () => {
         );
       });
 
-      it("should redirect to ssad authorize controller when user selects initiate ssad radio button", async () => {
-        req = createMockRequest(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
-        req.body.cannotChangeHowGetSecurityCodeAction =
-          CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.INITIATE_SELF_SERVE_ACCOUNT_DELETION;
+      it("should throw when the action is not one of this page's options", async () => {
+        req.body.cannotChangeHowGetSecurityCodeAction = "not-a-real-option";
 
-        await cannotChangeSecurityCodesPost(req as Request, res as Response);
-
-        expect(res.redirect).to.have.been.calledWith(PATH_NAMES.SSAD_AUTHORIZE);
+        await assert.rejects(
+          async () =>
+            cannotChangeSecurityCodesPost(req as Request, res as Response),
+          {
+            message:
+              "Invalid cannotChangeHowGetSecurityCodeAction: not-a-real-option",
+          }
+        );
+        expect(res.redirect).not.to.have.been.called;
       });
     });
   });

@@ -466,6 +466,9 @@ export const pages: Record<string, Page | PageVariant[]> = {
       },
     },
   ],
+  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY]: {
+    template: "cannot-change-security-codes-no-identity/index.njk",
+  },
   [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]: [
     {
       name: "sms",

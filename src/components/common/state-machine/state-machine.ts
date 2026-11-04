@@ -58,8 +58,9 @@ const USER_JOURNEY_EVENTS = {
   COMMON_PASSWORD_AND_AIS_STATUS: "COMMON_PASSWORD_AND_AIS_STATUS",
   IPV_REVERIFICATION_INIT: "IPV_REVERIFICATION_INIT",
   IPV_REVERIFICATION_COMPLETED: "IPV_REVERIFICATION_COMPLETED",
-  IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE:
-    "IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE",
+  IPV_REVERIFICATION_INCOMPLETE: "IPV_REVERIFICATION_INCOMPLETE",
+  IPV_REVERIFICATION_NO_IDENTITY_AVAILABLE:
+    "IPV_REVERIFICATION_NO_IDENTITY_AVAILABLE",
   IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH:
     "IPV_REVERIFICATION_FAILED_OR_DID_NOT_MATCH",
   MFA_RESET_ATTEMPTED_VIA_APP: "MFA_RESET_ATTEMPTED_VIA_APP",
@@ -97,6 +98,7 @@ export interface AuthStateContext {
   shouldPromptToRegisterPasskey: boolean;
   shouldPromptToSignInWithPasskey: boolean;
   needsForcedMFAReset: boolean;
+  shouldOfferSelfServeAccountDeletion: boolean;
 }
 
 const authStateMachine = createMachine<AuthStateContext>(
@@ -743,7 +745,16 @@ const authStateMachine = createMachine<AuthStateContext>(
               target: [PATH_NAMES.GET_SECURITY_CODES],
             },
           ],
-          [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INCOMPLETE_OR_UNAVAILABLE]: [
+          [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INCOMPLETE]: [
+            {
+              target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
+            },
+          ],
+          [USER_JOURNEY_EVENTS.IPV_REVERIFICATION_NO_IDENTITY_AVAILABLE]: [
+            {
+              target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY],
+              cond: "shouldOfferSelfServeAccountDeletion",
+            },
             {
               target: [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES],
             },
@@ -768,9 +779,6 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE]: [
             PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
           ],
-          [USER_JOURNEY_EVENTS.INITIATE_SELF_SERVE_ACCOUNT_DELETION]: [
-            PATH_NAMES.SSAD_AUTHORIZE,
-          ],
         },
       },
       [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: {
@@ -778,6 +786,17 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
           [USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE]: [
             PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+          ],
+        },
+      },
+      [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY]: {
+        on: {
+          [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
+          [USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE]: [
+            PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+          ],
+          [USER_JOURNEY_EVENTS.INITIATE_SELF_SERVE_ACCOUNT_DELETION]: [
+            PATH_NAMES.SSAD_AUTHORIZE,
           ],
         },
       },
@@ -844,6 +863,8 @@ const authStateMachine = createMachine<AuthStateContext>(
         context.shouldPromptToRegisterPasskey,
       shouldPromptToSignInWithPasskey: (context) =>
         context.shouldPromptToSignInWithPasskey,
+      shouldOfferSelfServeAccountDeletion: (context) =>
+        context.shouldOfferSelfServeAccountDeletion,
     },
   }
 );

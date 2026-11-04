@@ -16,6 +16,7 @@ const DEFAULT_CONTEXT = {
   shouldPromptToRegisterPasskey: false,
   shouldPromptToSignInWithPasskey: false,
   needsForcedMFAReset: false,
+  shouldOfferSelfServeAccountDeletion: false,
 };
 
 describe("state-machine", () => {
@@ -379,6 +380,63 @@ describe("state-machine", () => {
         DEFAULT_CONTEXT
       );
       expect(nextState.value).to.equal(PATH_NAMES.GET_SECURITY_CODES);
+    });
+  });
+
+  describe(`getNextState - ${PATH_NAMES.IPV_CALLBACK}`, () => {
+    it(`should move to ${PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY} on IPV_REVERIFICATION_NO_IDENTITY_AVAILABLE when self-serve account deletion should be offered`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.IPV_CALLBACK,
+        USER_JOURNEY_EVENTS.IPV_REVERIFICATION_NO_IDENTITY_AVAILABLE,
+        { ...DEFAULT_CONTEXT, shouldOfferSelfServeAccountDeletion: true }
+      );
+      expect(nextState.value).to.equal(
+        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY
+      );
+    });
+
+    it(`should move to ${PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES} on IPV_REVERIFICATION_NO_IDENTITY_AVAILABLE when self-serve account deletion should not be offered`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.IPV_CALLBACK,
+        USER_JOURNEY_EVENTS.IPV_REVERIFICATION_NO_IDENTITY_AVAILABLE,
+        { ...DEFAULT_CONTEXT, shouldOfferSelfServeAccountDeletion: false }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
+    });
+
+    it(`should move to ${PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES} on IPV_REVERIFICATION_INCOMPLETE even when self-serve account deletion should be offered`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.IPV_CALLBACK,
+        USER_JOURNEY_EVENTS.IPV_REVERIFICATION_INCOMPLETE,
+        { ...DEFAULT_CONTEXT, shouldOfferSelfServeAccountDeletion: true }
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
+    });
+  });
+
+  describe(`getNextState - ${PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY}`, () => {
+    [
+      {
+        event: USER_JOURNEY_EVENTS.INITIATE_SELF_SERVE_ACCOUNT_DELETION,
+        expectedPath: PATH_NAMES.SSAD_AUTHORIZE,
+      },
+      {
+        event: USER_JOURNEY_EVENTS.VERIFY_MFA,
+        expectedPath: PATH_NAMES.ENTER_MFA,
+      },
+      {
+        event: USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE,
+        expectedPath: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+      },
+    ].forEach(({ event, expectedPath }) => {
+      it(`should move from ${PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY} to ${expectedPath} on ${event}`, () => {
+        const nextState = getNextState(
+          PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY,
+          event,
+          DEFAULT_CONTEXT
+        );
+        expect(nextState.value).to.equal(expectedPath);
+      });
     });
   });
 });

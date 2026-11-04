@@ -1,0 +1,59 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitleName = 'pages.cannotChangeHowGetSecurityCodeMfaReset.title' | translate %}
+
+{% block content %}
+  {% include "common/errors/errorSummary.njk" %}
+
+  <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.cannotChangeHowGetSecurityCodeMfaReset.header' | translate }}</h1>
+
+  <p class="govuk-body">{{ 'pages.cannotChangeSecurityCodesNoIdentity.paragraph1' | translate }}</p>
+
+  <form method="post" novalidate>
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+    {{ govukRadios({
+      name: "cannotChangeHowGetSecurityCodeAction",
+      attributes: {
+        "id": "radio-cannot-change-how-get-security-code-action"
+      },
+      fieldset: {
+        legend: {
+          text: 'pages.cannotChangeSecurityCodesNoIdentity.radios.header' | translate,
+          classes: "govuk-fieldset__legend--m"
+        }
+      },
+      items: [
+        {
+          value: "initiate-ssad",
+          text: 'pages.cannotChangeSecurityCodesNoIdentity.radios.cannotUseMethodText' | translate,
+          id: "initiate-ssad",
+          hint: {
+            text: 'pages.cannotChangeSecurityCodesNoIdentity.radios.cannotUseMethodHint' | translate
+          }
+        },
+        {
+          value: "retry-security-code",
+          text: 'pages.cannotChangeSecurityCodesNoIdentity.radios.tryAgainText' | translate,
+          id: "retry-security-code"
+        }
+      ],
+      errorMessage: {
+        text: errors["cannotChangeHowGetSecurityCodeAction"].text
+      } if errors["cannotChangeHowGetSecurityCodeAction"]
+    }) }}
+
+    {{ govukButton({
+      "text": "general.continue.label" | translate,
+      "type": "Submit",
+      "preventDoubleClick": true
+    }) }}
+  </form>
+
+{% set isPageDataSensitive = false %}
+{% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
+{%- include "ga4-opl/template.njk" -%}
+
+{% endblock %}

@@ -750,9 +750,18 @@
           "option1Text": "Get help to delete your GOV.UK One Login from the support team",
           "option1Hint": "Call or use webchat to contact the GOV.UK One Login team",
           "option2Text": "Try entering a security code again with the method you already have set up",
-          "option3Text": "Initiate SFAD (this is placeholder content to initiate the journey, not in upper envs)",
           "radioValidationError": "Select what you would like to do"
         }
+      }
+    },
+    "cannotChangeSecurityCodesNoIdentity": {
+      "paragraph1": "You can only get security codes to sign in using a method you have already set up.",
+      "radios": {
+        "header": "Choose an option",
+        "cannotUseMethodText": "You cannot use your current method anymore",
+        "cannotUseMethodHint": "For example, if you’ve permanently lost access to your phone",
+        "tryAgainText": "You want to try using your current method again",
+        "radioValidationError": "You must select an option to continue"
       }
     },
     "changeSecurityCodesConfirmation": {

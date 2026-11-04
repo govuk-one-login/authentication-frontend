@@ -32,6 +32,7 @@ describe("Integration:: ipv callback", () => {
       app = undefined;
       nock.cleanAll();
       sinon.restore();
+      delete process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION;
     });
 
     it("should redirect to GET_SECURITY_CODES when the reverification result is successful", async () => {
@@ -60,6 +61,24 @@ describe("Integration:: ipv callback", () => {
         .get(requestPath)
         .expect(302)
         .expect("Location", PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES);
+    });
+
+    it("should redirect to CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY when no identity is available and self-serve account deletion is supported", async () => {
+      process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION = "1";
+      nock(baseApi)
+        .post(API_ENDPOINTS.REVERIFICATION_RESULT)
+        .once()
+        .reply(200, { success: false, failure_code: "no_identity_available" });
+
+      const requestPath = PATH_NAMES.IPV_CALLBACK + "?code=12345&state=abcde";
+
+      await request(app)
+        .get(requestPath)
+        .expect(302)
+        .expect(
+          "Location",
+          PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY
+        );
     });
   });
 
