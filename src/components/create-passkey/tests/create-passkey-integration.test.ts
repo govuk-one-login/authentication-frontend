@@ -135,6 +135,9 @@ describe("Integration:: create passkey", () => {
     expect(capturedUserSession.journey.nextPath).to.equal(
       PATH_NAMES.CREATE_PASSKEY_CALLBACK
     );
+    expect(capturedUserSession.journey.goBackHistory).to.deep.eq([
+      PATH_NAMES.CREATE_PASSKEY,
+    ]);
   });
 
   const testValues = [

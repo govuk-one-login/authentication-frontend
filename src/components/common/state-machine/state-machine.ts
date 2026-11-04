@@ -624,7 +624,10 @@ const authStateMachine = createMachine<AuthStateContext>(
             INTERMEDIATE_STATES.SIGN_IN_END,
           ],
           [USER_JOURNEY_EVENTS.CREATE_PASSKEY_INIT]: [
-            PATH_NAMES.CREATE_PASSKEY_CALLBACK,
+            {
+              target: [PATH_NAMES.CREATE_PASSKEY_CALLBACK],
+              meta: { reversible: true },
+            },
           ],
           [USER_JOURNEY_EVENTS.PERMANENTLY_BLOCKED_INTERVENTION]: [
             INTERMEDIATE_STATES.SIGN_IN_END,
