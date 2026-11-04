@@ -267,23 +267,32 @@ using mocha.
 
 ### Integration tests
 
-The application stack must be started before the integration tests can be run, either with frontend running in a docker container or on the local machine (./startup -l).
+The integration tests start the app themselves, so frontend does not need to be running. They need the AWS emulator in `docker-compose.integration.yml` and the environment variables set in the `env` block of `.github/workflows/pre-merge-checks.yml`.
 
-In either case the command to run the integration tests is the same, but the tests usually run faster when frontend is started outside of docker.
+> To set the environment variables, create a `.env` file in the project root (it is gitignored) using the values from `pre-merge-checks.yml`
 
-In both cases frontend must have started successfully with the message 'Server listening on port 3000' before the tests can be run. If running frontend in a container check the actual container logs in docker desktop to make sure that frontend has started correctly, otherwise the test run will be invalid.
+```shell script
+ENVIRONMENT=development
+API_BASE_URL=http://localhost:6000/api
+FRONTEND_API_BASE_URL=http://localhost:6060/api
+SESSION_SECRET=secret
+API_KEY=test-key
+SMARTAGENT_API_URL=https://uat.smartagent.app/
+```
 
 > To run the integration tests
 
 ```shell script
+docker compose -f docker-compose.integration.yml up -d --wait
 npm run test:integration
+docker compose -f docker-compose.integration.yml down
 ```
 
 #### Running integration tests in IntelliJ
 
-**To run all the tests in the project:** Select the "Integration Tests" run configuration in the top-right and click the play button.
+**To run all the tests in the project:** Select the "Integration Tests" run configuration in the top-right and click the play button. This starts the AWS emulator first.
 
-**To run some of the tests (e.g. within a file):** Click the play button next to the tests, or by right-clicking the file.
+**To run some of the tests (e.g. within a file):** Start the AWS emulator with the "Integration Test Setup" run configuration, then click the play button next to the tests, or right-click the file.
 
 Extra Mocha configuration is required to make the integration tests run. This is set up in the project already within the `.run/Template Mocha.run.xml` file.
 
