@@ -31,6 +31,8 @@ const CONTENT_IDS: {
     needsForcedMFAReset(req)
       ? "e003e6dd-7d1f-4d64-b019-d3f1423e99cf"
       : "d1b7cd24-f508-49ce-bf0d-ac1fe980c09c",
+  [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY]: () =>
+    "1ad15f94-db08-45bc-910f-c794ca6b3c8d",
   [PATH_NAMES.CANNOT_USE_SECURITY_CODE]: () =>
     "f31eb32b-c0b3-4d94-a09d-826c8d4e28a3",
   [PATH_NAMES.CHANGE_SECURITY_CODES_CONFIRMATION]: () =>
