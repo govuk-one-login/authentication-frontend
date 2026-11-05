@@ -653,15 +653,13 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.AMC_RETURNED_CREATE_PASSKEY_SKIPPED]: [
             INTERMEDIATE_STATES.SIGN_IN_END,
           ],
-          [USER_JOURNEY_EVENTS.AMC_RETURNED_CREATE_PASSKEY_BACK]: [
-            PATH_NAMES.CREATE_PASSKEY,
-          ],
+          [USER_JOURNEY_EVENTS.AMC_RETURNED_CREATE_PASSKEY_BACK]: {
+            target: PATH_NAMES.CREATE_PASSKEY,
+            meta: { clearGoBackHistory: true },
+          },
           [USER_JOURNEY_EVENTS.AMC_RETURNED_ACCOUNT_INTERVENTIONS]: [
             INTERMEDIATE_STATES.SIGN_IN_END,
           ],
-        },
-        meta: {
-          optionalPaths: [PATH_NAMES.CREATE_PASSKEY],
         },
       },
       [PATH_NAMES.PASSKEY_CREATED]: {
