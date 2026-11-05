@@ -34,9 +34,9 @@ function createFreshState(): State {
     registered: {},
     accountInterventions: {
       blocked: false,
-      suspended: false,
+      temporarilySuspended: false,
       reproveIdentity: false,
-      resetPassword: false,
+      passwordResetRequired: false,
     },
     latestTermsAndConditionsAccepted: true,
   };
