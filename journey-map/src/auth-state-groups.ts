@@ -101,7 +101,11 @@ export const AUTH_STATE_GROUPS: StateGroup[] = [
   },
   {
     title: "SSAD",
-    states: [PATH_NAMES.SSAD_AUTHORIZE, PATH_NAMES.SSAD_CALLBACK],
+    states: [
+      PATH_NAMES.SSAD_AUTHORIZE,
+      PATH_NAMES.SSAD_CALLBACK,
+      PATH_NAMES.SSAD_CALLBACK_LEGACY,
+    ],
   },
 
   // Sign-in end

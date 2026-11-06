@@ -40,6 +40,23 @@ describe("Integration:: ssad callback", () => {
       });
   });
 
+  it("should return 200 with success message when AMC returns to the legacy callback path", async () => {
+    nock(baseApi)
+      .post(API_ENDPOINTS.AMC_CALLBACK)
+      .once()
+      .reply(200, "Success message");
+
+    const requestPath =
+      PATH_NAMES.SSAD_CALLBACK_LEGACY + "?code=test-code&state=test-state";
+
+    await request(app)
+      .get(requestPath)
+      .expect(200)
+      .expect(function (res) {
+        expect(res.body.message).to.equal("Success message");
+      });
+  });
+
   it("should return 400 when SSAD callback fails", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.AMC_CALLBACK)
@@ -83,7 +100,7 @@ const stubMiddlewareAndCreateApp = async (): Promise<Application> => {
 
           req.session.user = {
             email: "test@test.com",
-            journey: getPermittedJourneyForPath(PATH_NAMES.SSAD_CALLBACK),
+            journey: getPermittedJourneyForPath(PATH_NAMES.SSAD_AUTHORIZE),
           };
 
           next();

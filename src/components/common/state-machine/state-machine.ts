@@ -620,6 +620,9 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.SSAD_CALLBACK]: {
         type: "final",
       },
+      [PATH_NAMES.SSAD_CALLBACK_LEGACY]: {
+        type: "final",
+      },
       [PATH_NAMES.CREATE_PASSKEY]: {
         on: {
           [USER_JOURNEY_EVENTS.SKIP_CREATE_PASSKEY]: [
@@ -804,7 +807,10 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.SSAD_AUTHORIZE]: {
         type: "final",
         meta: {
-          optionalPaths: [PATH_NAMES.SSAD_CALLBACK],
+          optionalPaths: [
+            PATH_NAMES.SSAD_CALLBACK,
+            PATH_NAMES.SSAD_CALLBACK_LEGACY,
+          ],
         },
       },
       [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES]: {
