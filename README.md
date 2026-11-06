@@ -328,9 +328,12 @@ Checks if the code conforms the linting standards.
 
 We use Playwright to do our snapshot tests.
 
+Note that these are a different set of tests to the acceptance tests which also use playwright - refer to the README in
+the /playwright-acceptance-tests repo for instructions if you instead want to run these tests.
+
 All snapshot test files are suffixed `.snapshot.test.ts`
 
-### Running all the Playwright tests
+### Running all the snapshot tests
 
 This will run the tests in the same way as in the build pipeline. From the root of the project
 
