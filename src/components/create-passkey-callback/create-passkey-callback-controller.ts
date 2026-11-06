@@ -3,22 +3,22 @@ import { amcResultService } from "../amc-service/amc-result-service.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import { BadRequestError } from "../../utils/error.js";
 import xss from "xss";
-import {
-  AMC_ERROR_DESCRIPTION,
-  AMC_SCOPE,
-  type CreatePasskeyResultSuccessResponse,
-} from "./types.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 import { saveSessionState } from "../common/constants.js";
-import type { AMCResultInterface } from "../amc-service/types.js";
+import {
+  AMC_ERROR_DESCRIPTION,
+  AMC_SCOPE,
+  type AMCOutcome,
+  type AMCResultInterface,
+} from "../amc-service/types.js";
 import {
   type UpdateProfileServiceInterface,
   UpdateType,
 } from "../common/update-profile/types.js";
 import { updateProfileService } from "../common/update-profile/update-profile-service.js";
 
-function getErrorDescription(result: CreatePasskeyResultSuccessResponse) {
+function getErrorDescription(result: AMCOutcome) {
   const createPasskeyJourney = result.actions.find(
     (journey) => journey.action === AMC_SCOPE.PASSKEY_CREATE
   );
@@ -30,7 +30,7 @@ function getErrorDescription(result: CreatePasskeyResultSuccessResponse) {
 }
 
 export function createPasskeyCallbackGet(
-  service: AMCResultInterface<CreatePasskeyResultSuccessResponse> = amcResultService(),
+  service: AMCResultInterface<AMCOutcome> = amcResultService(),
   updateUserProfileService: UpdateProfileServiceInterface = updateProfileService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response): Promise<void> {
