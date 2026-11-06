@@ -10,7 +10,7 @@ import { sinon } from "../../../../test/utils/test-utils.js";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import nock from "nock";
 import request from "supertest";
-import { AMC_SCOPE } from "../types.js";
+import { AMC_SCOPE } from "../../amc-service/types.js";
 import type { UserSession } from "../../../types.js";
 import { expect } from "../../../../test/utils/test-utils";
 

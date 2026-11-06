@@ -70,6 +70,8 @@ const USER_JOURNEY_EVENTS = {
   ENTER_EMAIL_ADDRESS_AFTER_EXPERIAN_CHECK:
     "ENTER_EMAIL_ADDRESS_AFTER_EXPERIAN_CHECK",
   INITIATE_SELF_SERVE_ACCOUNT_DELETION: "INITIATE_SELF_SERVE_ACCOUNT_DELETION",
+  SELF_SERVE_ACCOUNT_DELETION_COMPLETED:
+    "SELF_SERVE_ACCOUNT_DELETION_COMPLETED",
   MFA_INDEFINITELY_BLOCKED: "MFA_INDEFINITELY_BLOCKED",
   CREATE_PASSKEY_INIT: "CREATE_PASSKEY_INIT",
   SKIP_CREATE_PASSKEY: "SKIP_CREATE_PASSKEY",
@@ -618,6 +620,20 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
       },
       [PATH_NAMES.SSAD_CALLBACK]: {
+        on: {
+          [USER_JOURNEY_EVENTS.SELF_SERVE_ACCOUNT_DELETION_COMPLETED]: [
+            PATH_NAMES.ACCOUNT_DELETED,
+          ],
+        },
+      },
+      [PATH_NAMES.SSAD_CALLBACK_LEGACY]: {
+        on: {
+          [USER_JOURNEY_EVENTS.SELF_SERVE_ACCOUNT_DELETION_COMPLETED]: [
+            PATH_NAMES.ACCOUNT_DELETED,
+          ],
+        },
+      },
+      [PATH_NAMES.ACCOUNT_DELETED]: {
         type: "final",
       },
       [PATH_NAMES.CREATE_PASSKEY]: {
@@ -804,7 +820,10 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.SSAD_AUTHORIZE]: {
         type: "final",
         meta: {
-          optionalPaths: [PATH_NAMES.SSAD_CALLBACK],
+          optionalPaths: [
+            PATH_NAMES.SSAD_CALLBACK,
+            PATH_NAMES.SSAD_CALLBACK_LEGACY,
+          ],
         },
       },
       [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES]: {

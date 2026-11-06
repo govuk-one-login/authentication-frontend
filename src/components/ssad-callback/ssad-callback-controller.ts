@@ -3,10 +3,16 @@ import { BadRequestError } from "../../utils/error.js";
 import { amcResultService } from "../amc-service/amc-result-service.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import xss from "xss";
-import type { AMCResultInterface } from "../amc-service/types.js";
+import {
+  AMC_SCOPE,
+  type AMCOutcome,
+  type AMCResultInterface,
+} from "../amc-service/types.js";
+import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
+import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
 
 export function ssadCallbackGet(
-  service: AMCResultInterface<boolean> = amcResultService()
+  service: AMCResultInterface<AMCOutcome> = amcResultService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response): Promise<void> {
     const { code, state } = req.query;
@@ -44,6 +50,22 @@ export function ssadCallbackGet(
       throw new BadRequestError(`AMC callback failed: ${result.data}`, 400);
     }
 
-    res.status(200).json({ message: result.data });
+    if (result.data.scope !== AMC_SCOPE.ACCOUNT_DELETE) {
+      throw new BadRequestError("Scope should be account-delete", 502);
+    }
+
+    if (result.data.success) {
+      req.log.info(`Account deletion completed for session id ${sessionId}`);
+
+      res.redirect(
+        await getNextPathAndUpdateJourney(
+          req,
+          res,
+          USER_JOURNEY_EVENTS.SELF_SERVE_ACCOUNT_DELETION_COMPLETED
+        )
+      );
+    } else {
+      res.status(200).json({ message: result.data });
+    }
   };
 }
