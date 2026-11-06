@@ -506,6 +506,12 @@
       "youCanNowSaveYourProgress": "Gallwch nawr arbed eich cynnydd.",
       "saveYourProgress": "Arbed eich cynnydd"
     },
+    "accountDeleted": {
+      "title": "You’ve deleted your GOV.UK One Login",
+      "header": "You’ve deleted your GOV.UK One Login",
+      "paragraph1": "Next, you can create a new GOV.UK One Login. You can use the same email address.",
+      "createNewAccountButton": "Create a new GOV.UK One Login"
+    },
     "checkYourEmail": {
       "title": "Gwiriwch eich e-bost",
       "header": "Gwiriwch eich e-bost",

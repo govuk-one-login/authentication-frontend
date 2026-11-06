@@ -41,6 +41,10 @@
   color: #ffffff;
 }
 
+.govuk-panel--dark-grey {
+  background-color: govuk-colour("dark-grey");
+}
+
 .govuk-blue-text {
   color: #1d70b8;
   font-weight: bold;
