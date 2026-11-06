@@ -7,6 +7,15 @@ import { getPermittedJourneyForPath } from "../../../../test/helpers/session-hel
 import esmock from "esmock";
 import request from "supertest";
 
+const accountDeleteOutcome = (success: boolean) => ({
+  sub: "test-sub",
+  outcome_id: "test-outcome-id",
+  email: "test@test.com",
+  scope: "account-delete",
+  success,
+  actions: [],
+});
+
 describe("Integration:: ssad callback", () => {
   let app: Application;
   let baseApi: string;
@@ -23,11 +32,26 @@ describe("Integration:: ssad callback", () => {
     sinon.restore();
   });
 
-  it("should return 200 with success message when SSAD callback is successful", async () => {
+  it("should redirect to the account deleted page when AMC deleted the account", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.AMC_CALLBACK)
       .once()
-      .reply(200, "Success message");
+      .reply(200, accountDeleteOutcome(true));
+
+    const requestPath =
+      PATH_NAMES.SSAD_CALLBACK + "?code=test-code&state=test-state";
+
+    await request(app)
+      .get(requestPath)
+      .expect(302)
+      .expect("Location", PATH_NAMES.ACCOUNT_DELETED);
+  });
+
+  it("should return the outcome when AMC did not delete the account", async () => {
+    nock(baseApi)
+      .post(API_ENDPOINTS.AMC_CALLBACK)
+      .once()
+      .reply(200, accountDeleteOutcome(false));
 
     const requestPath =
       PATH_NAMES.SSAD_CALLBACK + "?code=test-code&state=test-state";
@@ -36,25 +60,23 @@ describe("Integration:: ssad callback", () => {
       .get(requestPath)
       .expect(200)
       .expect(function (res) {
-        expect(res.body.message).to.equal("Success message");
+        expect(res.body.message.success).to.equal(false);
       });
   });
 
-  it("should return 200 with success message when AMC returns to the legacy callback path", async () => {
+  it("should redirect to the account deleted page from the legacy callback path", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.AMC_CALLBACK)
       .once()
-      .reply(200, "Success message");
+      .reply(200, accountDeleteOutcome(true));
 
     const requestPath =
       PATH_NAMES.SSAD_CALLBACK_LEGACY + "?code=test-code&state=test-state";
 
     await request(app)
       .get(requestPath)
-      .expect(200)
-      .expect(function (res) {
-        expect(res.body.message).to.equal("Success message");
-      });
+      .expect(302)
+      .expect("Location", PATH_NAMES.ACCOUNT_DELETED);
   });
 
   it("should return 400 when SSAD callback fails", async () => {

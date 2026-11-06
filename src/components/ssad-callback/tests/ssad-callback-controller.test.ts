@@ -11,7 +11,16 @@ import type { Request, Response } from "express";
 import { strict as assert } from "assert";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 
-const createMockService = (success: boolean, data: string) => {
+const amcOutcome = (scope: string, success: boolean) => ({
+  sub: "test-sub",
+  outcome_id: "test-outcome-id",
+  email: "test@test.com",
+  scope,
+  success,
+  actions: [],
+});
+
+const createMockService = (success: boolean, data: unknown) => {
   return {
     getAMCResult: sinon.fake.resolves({
       success,
@@ -47,9 +56,11 @@ describe("ssad-callback-controller", () => {
     sinon.restore();
   });
 
-  it("should successfully return message when service call succeeds", async () => {
-    const expectedResult = "Great success";
-    const fakeService = createMockService(true, expectedResult);
+  it("should redirect to the account deleted page when the account was deleted", async () => {
+    const fakeService = createMockService(
+      true,
+      amcOutcome("account-delete", true)
+    );
 
     await ssadCallbackGet(fakeService)(req as Request, res as Response);
 
@@ -63,8 +74,34 @@ describe("ssad-callback-controller", () => {
       USED_REDIRECT_URL,
       LANGUAGE
     );
+    expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ACCOUNT_DELETED);
+  });
+
+  it("should return the outcome when the account was not deleted", async () => {
+    const outcome = amcOutcome("account-delete", false);
+    const fakeService = createMockService(true, outcome);
+
+    await ssadCallbackGet(fakeService)(req as Request, res as Response);
+
     expect(res.status).to.have.been.calledWith(200);
-    expect(res.json).to.have.been.calledWith({ message: expectedResult });
+    expect(res.json).to.have.been.calledWith({ message: outcome });
+    expect(res.redirect).not.to.have.been.called;
+  });
+
+  it("should raise error when the scope is not account-delete", async () => {
+    const fakeService = createMockService(
+      true,
+      amcOutcome("passkey-create", true)
+    );
+
+    await assert.rejects(
+      async () => ssadCallbackGet(fakeService)(req as Request, res as Response),
+      (error: Error) => {
+        expect(error).to.be.instanceOf(BadRequestError);
+        expect(error.message).to.equal("502:Scope should be account-delete");
+        return true;
+      }
+    );
   });
 
   it("should raise error when service call fails", async () => {
