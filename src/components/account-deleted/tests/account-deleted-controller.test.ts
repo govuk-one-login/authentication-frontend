@@ -4,7 +4,10 @@ import { describe } from "mocha";
 import { sinon } from "../../../../test/utils/test-utils.js";
 import type { Request, Response } from "express";
 
-import { accountDeletedGet } from "../account-deleted-controller.js";
+import {
+  accountDeletedGet,
+  accountDeletedPost,
+} from "../account-deleted-controller.js";
 import { PATH_NAMES } from "../../../app.constants.js";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
@@ -28,6 +31,18 @@ describe("account deleted controller", () => {
       accountDeletedGet(req as Request, res as Response);
 
       expect(res.render).to.have.been.calledWith("account-deleted/index.njk");
+    });
+  });
+
+  describe("accountDeletedPost", () => {
+    it("should redirect to orchestration with the SFAD error", () => {
+      req.session.client.redirectUri = "https://orchestration.test/callback";
+
+      accountDeletedPost(req as Request, res as Response);
+
+      expect(res.redirect).to.have.been.calledWith(
+        "https://orchestration.test/callback?error=SFAD_ERROR"
+      );
     });
   });
 });

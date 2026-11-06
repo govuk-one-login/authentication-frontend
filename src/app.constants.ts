@@ -302,6 +302,10 @@ export const OIDC_ERRORS = {
   ACCESS_DENIED: "access_denied",
 };
 
+export const ORCHESTRATION_ERROR_CODES = {
+  SFAD_ERROR: "SFAD_ERROR",
+};
+
 export const IPV_ERROR_CODES = {
   ACCOUNT_NOT_CREATED: "Account not created",
   IDENTITY_PROCESSING_TIMEOUT: "Identity check timeout",

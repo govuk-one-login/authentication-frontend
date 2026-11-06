@@ -1,6 +1,9 @@
 import { PATH_NAMES } from "../../app.constants.js";
 import * as express from "express";
-import { accountDeletedGet } from "./account-deleted-controller.js";
+import {
+  accountDeletedGet,
+  accountDeletedPost,
+} from "./account-deleted-controller.js";
 import { validateSessionMiddleware } from "../../middleware/session-middleware.js";
 import { allowUserJourneyMiddleware } from "../../middleware/allow-user-journey-middleware.js";
 
@@ -11,6 +14,13 @@ router.get(
   validateSessionMiddleware,
   allowUserJourneyMiddleware,
   accountDeletedGet
+);
+
+router.post(
+  PATH_NAMES.ACCOUNT_DELETED,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
+  accountDeletedPost
 );
 
 export { router as accountDeletedRouter };
