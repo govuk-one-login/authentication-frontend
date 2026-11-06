@@ -95,7 +95,7 @@ export interface AuthStateContext {
   isPasswordChangeRequired: boolean;
   isPasswordResetJourney: boolean;
   mfaMethodType: MFA_METHOD_TYPE | undefined;
-  shouldPromptToRegisterPasskey: boolean;
+  shouldPromptToRegisterPasskey: () => boolean;
   shouldPromptToSignInWithPasskey: boolean;
   needsForcedMFAReset: boolean;
   shouldOfferSelfServeAccountDeletion: boolean;
@@ -861,7 +861,7 @@ const authStateMachine = createMachine<AuthStateContext>(
       isAccountRecoveryJourney: (context) => context.isAccountRecoveryJourney,
       isPasswordResetJourney: (context) => context.isPasswordResetJourney,
       shouldPromptToRegisterPasskey: (context) =>
-        context.shouldPromptToRegisterPasskey,
+        context.shouldPromptToRegisterPasskey(),
       shouldPromptToSignInWithPasskey: (context) =>
         context.shouldPromptToSignInWithPasskey,
       shouldOfferSelfServeAccountDeletion: (context) =>

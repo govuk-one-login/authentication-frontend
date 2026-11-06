@@ -13,7 +13,7 @@ const DEFAULT_CONTEXT = {
   isPasswordChangeRequired: false,
   isPasswordResetJourney: false,
   mfaMethodType: MFA_METHOD_TYPE.SMS,
-  shouldPromptToRegisterPasskey: false,
+  shouldPromptToRegisterPasskey: () => false,
   shouldPromptToSignInWithPasskey: false,
   needsForcedMFAReset: false,
   shouldOfferSelfServeAccountDeletion: false,
@@ -320,7 +320,7 @@ describe("state-machine", () => {
           isMfaRequired: false,
           needsForcedMFAReset: false,
           isLatestTermsAndConditionsAccepted: true,
-          shouldPromptToRegisterPasskey: true,
+          shouldPromptToRegisterPasskey: () => true,
         }
       );
       expect(nextState.value).to.equal(PATH_NAMES.CREATE_PASSKEY);
@@ -348,7 +348,7 @@ describe("state-machine", () => {
           isMfaRequired: false,
           needsForcedMFAReset: true,
           isLatestTermsAndConditionsAccepted: false,
-          shouldPromptToRegisterPasskey: true,
+          shouldPromptToRegisterPasskey: () => true,
         }
       );
       expect(nextState.value).to.equal(
@@ -365,7 +365,7 @@ describe("state-machine", () => {
           isMfaRequired: false,
           needsForcedMFAReset: false,
           isLatestTermsAndConditionsAccepted: false,
-          shouldPromptToRegisterPasskey: true,
+          shouldPromptToRegisterPasskey: () => true,
         }
       );
       expect(nextState.value).to.equal(PATH_NAMES.CREATE_PASSKEY);
