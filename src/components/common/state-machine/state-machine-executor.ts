@@ -37,7 +37,8 @@ export async function getNextPathAndUpdateJourney(
     isPasswordChangeRequired: !!req.session.user?.isPasswordChangeRequired,
     isPasswordResetJourney: !!req.session.user?.isPasswordResetJourney,
     mfaMethodType: req.session.user?.mfaMethodType,
-    shouldPromptToRegisterPasskey: shouldPromptToRegisterPasskey(req, res),
+    shouldPromptToRegisterPasskey: () =>
+      shouldPromptToRegisterPasskey(req, res),
     shouldPromptToSignInWithPasskey: shouldPromptToSignInWithPasskey(req, res),
     needsForcedMFAReset: needsForcedMFAReset(req),
     shouldOfferSelfServeAccountDeletion:
