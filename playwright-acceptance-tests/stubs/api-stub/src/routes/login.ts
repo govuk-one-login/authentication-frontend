@@ -21,6 +21,12 @@ interface LoginRequest {
 }
 
 export function loginHandler(req: Request, res: Response): void {
+  const stubbed = state.stubbedApiResponses.loginResponse;
+  if (stubbed) {
+    res.status(stubbed.status).json(stubbed.body);
+    return;
+  }
+
   const { email = TEST_EMAIL.SMS_USER, password } = req.body as LoginRequest;
   const mfaLockReason = state.lockedOutMfa[email];
   const isAuthAppUser = AUTH_APP_EMAILS.includes(email);

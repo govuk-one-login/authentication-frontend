@@ -47,4 +47,6 @@ export const stub = {
     setResponse("startResponse", response),
   setUserExistsResponse: (response: StubResponse): Promise<void> =>
     setResponse("userExistsResponse", response),
+  setCorrectPasswordResponse: (response: StubResponse): Promise<void> =>
+    setResponse("loginResponse", response),
 };

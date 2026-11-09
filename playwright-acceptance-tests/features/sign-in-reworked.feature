@@ -16,8 +16,8 @@ Feature: Login Journey
     Then the user is taken to the "Enter your email" page
     When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
-#    When the user enters a correct password
-#    Then the user is taken to the "Check your phone" page
+    When the user enters a correct password and has sms mfa
+    Then the user is taken to the "Check your phone" page
 #    When the user enters the six digit security code from their phone
 #    And the user dismisses the passkey registration page if present
 #    Then the user is returned to the service
