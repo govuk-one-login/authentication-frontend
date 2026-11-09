@@ -9,7 +9,7 @@
 
 export interface StubResponse {
   status: number;
-  body: unknown;
+  body?: unknown;
 }
 
 /** API calls whose responses can be stubbed. Mirrors StubbedApiResponses in the stub. */
@@ -49,4 +49,6 @@ export const stub = {
     setResponse("userExistsResponse", response),
   setCorrectPasswordResponse: (response: StubResponse): Promise<void> =>
     setResponse("loginResponse", response),
+  setVerifyMfaCodeResponse: (response: StubResponse): Promise<void> =>
+    setResponse("verifyMfaCodeResponse", response),
 };
