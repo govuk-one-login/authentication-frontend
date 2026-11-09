@@ -14,6 +14,8 @@ import {
   shouldOfferSelfServeAccountDeletion,
 } from "../../../utils/request.js";
 import { getGoBackHistoryForTransition } from "./go-back-history.js";
+import { metricScope, Unit } from "aws-embedded-metrics";
+import { getAppEnv } from "../../../config.js";
 
 export async function getNextPathAndUpdateJourney(
   req: Request,
@@ -65,19 +67,23 @@ export async function getNextPathAndUpdateJourney(
 
   await saveSessionState(req);
 
+  const transition: Transition = {
+    from: currentState,
+    to: nextState.value,
+    event: event,
+    sessionState,
+  };
+
   req.log.info(
     {
-      transition: {
-        from: currentState,
-        to: nextState.value,
-        event: event,
-        sessionState,
-      },
+      transition,
       sessionId,
       goBackHistory,
     },
     `User journey transition`
   );
+
+  await emitMetricIfRequired(transition)
 
   // If an invalid/unexpected event is supplied Stately will return the same state, likely indicating a bug
   if (currentState === nextState.value) {
@@ -88,3 +94,33 @@ export async function getNextPathAndUpdateJourney(
 
   return nextState.value;
 }
+
+interface Transition {
+  from: string;
+  to: string;
+  event: string;
+  sessionState?: string;
+}
+
+async function emitMetricIfRequired(transition: Transition) {
+  if (
+    transition.from === "/sign-in-or-create" &&
+    transition.to === "/enter-email"
+  ) {
+    await incrementCounter("EnteringEmailToSignIn");
+  }
+}
+
+const incrementCounter = async (metricName: string) => {
+  await emitMetric(metricName, 1);
+};
+
+const emitMetric = metricScope(
+  (metrics) => async (metricName: string, value: number) => {
+    metrics.setNamespace("Authentication");
+    metrics.setDimensions({
+      Environment: getAppEnv(),
+    });
+    metrics.putMetric(metricName, value, Unit.None);
+  }
+);
