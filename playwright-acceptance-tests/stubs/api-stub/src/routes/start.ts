@@ -8,6 +8,12 @@ interface StartRequest {
 }
 
 export function startHandler(req: Request, res: Response): void {
+  const stubbed = state.stubbedApiResponses.startResponse;
+  if (stubbed) {
+    res.status(stubbed.status).json(stubbed.body);
+    return;
+  }
+
   const { requested_credential_strength, authenticated } =
     req.body as StartRequest;
   const credStrength =

@@ -1,5 +1,6 @@
 import type { CredentialStrength, MfaLockReason } from "./constants.js";
 import { MfaMethodType } from "./constants.js";
+import type { StubbedApiResponses } from "./stubbed-api-responses.js";
 
 export interface State {
   loginAttempts: Record<string, number>;
@@ -15,6 +16,7 @@ export interface State {
   registered: Record<string, boolean>;
   accountInterventions: Record<string, boolean>;
   latestTermsAndConditionsAccepted: boolean;
+  stubbedApiResponses: StubbedApiResponses;
 }
 
 export const state: State = createFreshState();
@@ -39,6 +41,7 @@ function createFreshState(): State {
       passwordResetRequired: false,
     },
     latestTermsAndConditionsAccepted: true,
+    stubbedApiResponses: {},
   };
 }
 
