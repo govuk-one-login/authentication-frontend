@@ -21,3 +21,19 @@ Feature: Login Journey
     When the user enters the correct six digit security code from their phone
     And the user dismisses the passkey registration page if present
     Then the user is returned to the service
+
+  Scenario: Existing user switches content to Welsh
+    Given a user does not have an authenticated session
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user switches to "Welsh" language
+    Then the user is taken to the Identity Provider Welsh Login Page
+    When the user selects sign in
+    Then the user is taken to the Welsh enter your email page
+    When the user enters an email address of an existing account in Welsh
+    Then the user is prompted for their password in Welsh
+    When the user clicks link "Yn ôl"
+    Then the user is taken to the Welsh enter your email page
+    When the user clicks link "Yn ôl"
+    Then the user is taken to the Identity Provider Welsh Login Page
+    When the user switches to "English" language
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
