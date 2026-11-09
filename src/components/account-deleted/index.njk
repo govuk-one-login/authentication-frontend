@@ -1,0 +1,33 @@
+{% extends "common/layout/base.njk" %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitleName = 'pages.accountDeleted.title' | translate %}
+
+{% block content %}
+  {{ govukPanel({
+    titleText: 'pages.accountDeleted.header' | translate,
+    classes: "govuk-panel--dark-grey"
+  }) }}
+
+  <p class="govuk-body">{{ 'pages.accountDeleted.paragraph1' | translate }}</p>
+
+  <form id="form-tracking" method="post" novalidate>
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+    {{ govukButton({
+      "text": "pages.accountDeleted.createNewAccountButton" | translate,
+      "type": "Submit",
+      "preventDoubleClick": true
+    }) }}
+  </form>
+
+{% set isPageDataSensitive = false %}
+{% set ga4Params = { nonce: scriptNonce, englishPageTitle: pageTitleName, loggedInStatus: false, dynamic: false } %}
+{%- include "ga4-opl/template.njk" -%}
+
+{% endblock %}
+
+{% block scripts %}
+  <script defer type="text/javascript" src="/public/scripts/prevent-double-form-submit.js"></script>
+{% endblock %}

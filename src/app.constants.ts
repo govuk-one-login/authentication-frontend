@@ -80,7 +80,9 @@ export const PATH_NAMES = {
   CHANGE_SECURITY_CODES_SIGN_IN: "/change-security-codes-sign-in",
   WELL_KNOWN_APPLE_ASSOCIATION: "/.well-known/apple-app-site-association",
   SSAD_AUTHORIZE: "/ssad-authorize",
-  SSAD_CALLBACK: "/sfad-callback",
+  SSAD_CALLBACK: "/ssad-callback",
+  SSAD_CALLBACK_LEGACY: "/sfad-callback",
+  ACCOUNT_DELETED: "/account-deleted",
   CREATE_PASSKEY: "/create-passkey",
   CREATE_PASSKEY_CALLBACK: "/create-passkey-callback",
   SESSION_ENDED: "/session-ended",
@@ -298,6 +300,10 @@ export const EXTERNAL_LINKS = {
 
 export const OIDC_ERRORS = {
   ACCESS_DENIED: "access_denied",
+};
+
+export const ORCHESTRATION_ERROR_CODES = {
+  SFAD_ERROR: "SFAD_ERROR",
 };
 
 export const IPV_ERROR_CODES = {

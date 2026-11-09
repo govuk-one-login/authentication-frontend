@@ -7,7 +7,7 @@ import { expect } from "chai";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { mockResponse } from "mock-req-res";
 import { createPasskeyCallbackGet } from "../create-passkey-callback-controller.js";
-import { AMC_SCOPE } from "../types.js";
+import { AMC_SCOPE } from "../../amc-service/types.js";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 import { strict as assert } from "assert";
 import { BadRequestError } from "../../../utils/error.js";

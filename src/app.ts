@@ -111,6 +111,7 @@ import { createPasskeyRouter } from "./components/create-passkey/create-passkey-
 import { createPasskeyCallbackRouter } from "./components/create-passkey-callback/create-passkey-callback-routes.js";
 import { sessionEndedRouter } from "./components/session-ended/session-ended-routes.js";
 import { passkeyCreatedRouter } from "./components/passkey-created/passkey-created-routes.js";
+import { accountDeletedRouter } from "./components/account-deleted/account-deleted-routes.js";
 import { setGoBackHistoryMiddleware } from "./middleware/set-go-back-history-middleware.js";
 import { accountExistsWithPasskeyRouter } from "./components/account-exists-with-passkey/account-exists-with-passkey-routes.js";
 import { cannotSignInPasskeyRouter } from "./components/cannot-sign-in-passkey/cannot-sign-in-passkey-routes.js";
@@ -182,6 +183,7 @@ function registerRoutes(app: express.Application) {
     // in initial implementation. Must create a new broader AMC feature flag
     // when more services are using AMC
     app.use(ssadCallbackRouter);
+    app.use(accountDeletedRouter);
   }
   if (supportPasskeyRegistration()) {
     app.use(createPasskeyRouter);
