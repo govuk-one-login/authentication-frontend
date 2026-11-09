@@ -1,6 +1,7 @@
-import { Given, When } from "@cucumber/cucumber";
+import { Given } from "@cucumber/cucumber";
 import { stub } from "../support/stub";
 import {
+  authenticatedStartResponse,
   authenticatedStartResponseRequiringUpliftWithSMSMFA,
   unauthenticatedStartResponse,
   unauthenticatedStartResponseForSmsUserWithMfaNotRequired,
@@ -30,3 +31,7 @@ Given(
     );
   }
 );
+
+Given("a user has an authenticated session", async function (): Promise<void> {
+  await stub.setStartResponse(authenticatedStartResponse);
+});

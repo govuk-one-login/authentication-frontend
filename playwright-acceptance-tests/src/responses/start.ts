@@ -45,3 +45,19 @@ export const authenticatedStartResponseRequiringUpliftWithSMSMFA = {
     featureFlags: {},
   },
 };
+
+export const authenticatedStartResponse = {
+  status: 200,
+  body: {
+    sessionId: "session-123",
+    user: {
+      upliftRequired: false,
+      identityRequired: false,
+      authenticated: true,
+      mfaMethodType: "SMS",
+      mfaRequired: true,
+      isBlockedForReauth: false,
+    },
+    featureFlags: {},
+  },
+};
