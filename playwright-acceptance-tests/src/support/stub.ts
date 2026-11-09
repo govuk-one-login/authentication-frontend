@@ -45,4 +45,6 @@ async function setResponse(
 export const stub = {
   setStartResponse: (response: StubResponse): Promise<void> =>
     setResponse("startResponse", response),
+  setUserExistsResponse: (response: StubResponse): Promise<void> =>
+    setResponse("userExistsResponse", response),
 };

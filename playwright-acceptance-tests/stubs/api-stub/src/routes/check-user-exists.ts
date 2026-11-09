@@ -7,6 +7,12 @@ interface UserExistsRequest {
 }
 
 export function checkUserExistsHandler(req: Request, res: Response): void {
+  const stubbed = state.stubbedApiResponses.userExistsResponse;
+  if (stubbed) {
+    res.status(stubbed.status).json(stubbed.body);
+    return;
+  }
+
   const { email = TEST_EMAIL.SMS_USER } = req.body as UserExistsRequest;
 
   if (state.lockedOutPassword[email]) {
