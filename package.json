@@ -100,7 +100,7 @@
     "xstate": "4.26.1"
   },
   "devDependencies": {
-    "@axe-core/playwright": "4.12.1",
+    "@axe-core/playwright": "4.14.0",
     "@eslint/eslintrc": "3.3.5",
     "@eslint/js": "9.39.4",
     "@govuk-one-login/event-catalogue": "46.0.0",
