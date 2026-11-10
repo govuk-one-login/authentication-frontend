@@ -264,15 +264,6 @@ When(
 );
 
 When(
-  "the user creates a password",
-  async function (this: PlaywrightWorld): Promise<void> {
-    await new CreatePasswordPage(requirePage(this)).createPasswordAndContinue(
-      "ValidPassword1!"
-    );
-  }
-);
-
-When(
   "the user chooses auth app to get security codes",
   async function (this: PlaywrightWorld): Promise<void> {
     const page = requirePage(this);
