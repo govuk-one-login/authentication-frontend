@@ -82,6 +82,11 @@ describe("contact us questions controller", () => {
         subtheme: CONTACT_US_THEMES.WALLET_TECHNICAL_PROBLEM,
         expectedContentId: "68c8aa90-0e32-4372-adf0-6e656936bc03",
       },
+      {
+        theme: CONTACT_US_THEMES.SIGNING_IN,
+        subtheme: CONTACT_US_THEMES.SIGNING_IN_PROBLEM_WITH_A_PASSKEY,
+        expectedContentId: "d59a2d80-3d2c-4491-8612-081b7468b16b",
+      },
     ].forEach(({ theme, subtheme, expectedContentId }) => {
       it(`should return ${expectedContentId} for theme ${theme} and subtheme ${subtheme}`, () => {
         const req = buildRequest(theme, subtheme);

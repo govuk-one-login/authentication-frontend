@@ -291,6 +291,10 @@ export const ga4DataSetterContactUsQuestions: {
   [CONTACT_US_THEMES.SIGNING_IN + CONTACT_US_THEMES.TECHNICAL_ERROR]: {
     contentId: "6e999447-8bed-4c3d-abde-9e7c9f1c1222",
   },
+  [CONTACT_US_THEMES.SIGNING_IN +
+  CONTACT_US_THEMES.SIGNING_IN_PROBLEM_WITH_A_PASSKEY]: {
+    contentId: "d59a2d80-3d2c-4491-8612-081b7468b16b",
+  },
   [CONTACT_US_THEMES.SUGGESTIONS_FEEDBACK]: {
     contentId: "5c2a5db5-c4b2-44ff-8946-c35e689ba7ea",
   },
