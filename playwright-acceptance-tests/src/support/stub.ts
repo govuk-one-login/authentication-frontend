@@ -52,6 +52,8 @@ export const stub = {
     setResponse("loginResponse", response),
   setVerifyMfaCodeResponse: (response: StubResponse): Promise<void> =>
     setResponse("verifyMfaCodeResponse", response),
+  setVerifyCodeResponse: (response: StubResponse): Promise<void> =>
+    setResponse("verifyCodeResponse", response),
   setResetPasswordRequestResponse: (response: StubResponse): Promise<void> =>
     setResponse("resetPasswordRequestResponse", response),
 };

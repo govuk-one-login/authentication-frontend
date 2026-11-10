@@ -83,7 +83,7 @@ Feature: Resend security code
     Then the user is taken to the "Enter your password" page
     When the user clicks the forgotten password link and a password reset is permitted via SMS
     Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
+    When the user enters the correct six digit security code from their email
     Then the user is taken to the "Check your phone" page
     And the current page path is "/reset-password-2fa-sms"
     When the user chooses to resend the security code
@@ -102,7 +102,7 @@ Feature: Resend security code
     Then the user is taken to the "Enter your password" page
     When the user clicks the forgotten password link and a password reset is permitted via SMS
     Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
+    When the user enters the correct six digit security code from their email
     Then the user is taken to the "Check your phone" page
     And the current page path is "/reset-password-2fa-sms"
     When the user chooses to resend the security code
@@ -119,7 +119,7 @@ Feature: Resend security code
     Then the user is taken to the "Enter your email" page
     When the user enters an email address of an account that does not exist
     Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
+    When the user enters the correct six digit security code from their email
     Then the user is taken to the "Create your password" page
     When the user creates a password
     Then the user is taken to the "Choose how to get security codes" page
@@ -142,7 +142,7 @@ Feature: Resend security code
     Then the user is taken to the "Enter your email" page
     When the user enters an email address of an account that does not exist
     Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
+    When the user enters the correct six digit security code from their email
     Then the user is taken to the "Create your password" page
     When the user creates a password
     Then the user is taken to the "Choose how to get security codes" page
