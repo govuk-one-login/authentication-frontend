@@ -440,18 +440,14 @@ describe("state-machine", () => {
     });
   });
 
-  [PATH_NAMES.SSAD_CALLBACK, PATH_NAMES.SSAD_CALLBACK_LEGACY].forEach(
-    (callbackPath) => {
-      describe(`getNextState - ${callbackPath}`, () => {
-        it(`should move to ${PATH_NAMES.ACCOUNT_DELETED} on SELF_SERVE_ACCOUNT_DELETION_COMPLETED`, () => {
-          const nextState = getNextState(
-            callbackPath,
-            USER_JOURNEY_EVENTS.SELF_SERVE_ACCOUNT_DELETION_COMPLETED,
-            DEFAULT_CONTEXT
-          );
-          expect(nextState.value).to.equal(PATH_NAMES.ACCOUNT_DELETED);
-        });
-      });
-    }
-  );
+  describe(`getNextState - ${PATH_NAMES.SSAD_CALLBACK}`, () => {
+    it(`should move to ${PATH_NAMES.ACCOUNT_DELETED} on SELF_SERVE_ACCOUNT_DELETION_COMPLETED`, () => {
+      const nextState = getNextState(
+        PATH_NAMES.SSAD_CALLBACK,
+        USER_JOURNEY_EVENTS.SELF_SERVE_ACCOUNT_DELETION_COMPLETED,
+        DEFAULT_CONTEXT
+      );
+      expect(nextState.value).to.equal(PATH_NAMES.ACCOUNT_DELETED);
+    });
+  });
 });

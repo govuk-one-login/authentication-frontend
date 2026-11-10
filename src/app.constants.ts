@@ -81,7 +81,6 @@ export const PATH_NAMES = {
   WELL_KNOWN_APPLE_ASSOCIATION: "/.well-known/apple-app-site-association",
   SSAD_AUTHORIZE: "/ssad-authorize",
   SSAD_CALLBACK: "/ssad-callback",
-  SSAD_CALLBACK_LEGACY: "/sfad-callback",
   ACCOUNT_DELETED: "/account-deleted",
   CREATE_PASSKEY: "/create-passkey",
   CREATE_PASSKEY_CALLBACK: "/create-passkey-callback",

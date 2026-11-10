@@ -626,13 +626,6 @@ const authStateMachine = createMachine<AuthStateContext>(
           ],
         },
       },
-      [PATH_NAMES.SSAD_CALLBACK_LEGACY]: {
-        on: {
-          [USER_JOURNEY_EVENTS.SELF_SERVE_ACCOUNT_DELETION_COMPLETED]: [
-            PATH_NAMES.ACCOUNT_DELETED,
-          ],
-        },
-      },
       [PATH_NAMES.ACCOUNT_DELETED]: {
         type: "final",
       },
@@ -820,10 +813,7 @@ const authStateMachine = createMachine<AuthStateContext>(
       [PATH_NAMES.SSAD_AUTHORIZE]: {
         type: "final",
         meta: {
-          optionalPaths: [
-            PATH_NAMES.SSAD_CALLBACK,
-            PATH_NAMES.SSAD_CALLBACK_LEGACY,
-          ],
+          optionalPaths: [PATH_NAMES.SSAD_CALLBACK],
         },
       },
       [PATH_NAMES.HOW_DO_YOU_WANT_SECURITY_CODES]: {

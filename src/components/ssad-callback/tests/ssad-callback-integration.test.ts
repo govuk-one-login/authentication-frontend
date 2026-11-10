@@ -64,21 +64,6 @@ describe("Integration:: ssad callback", () => {
       });
   });
 
-  it("should redirect to the account deleted page from the legacy callback path", async () => {
-    nock(baseApi)
-      .post(API_ENDPOINTS.AMC_CALLBACK)
-      .once()
-      .reply(200, accountDeleteOutcome(true));
-
-    const requestPath =
-      PATH_NAMES.SSAD_CALLBACK_LEGACY + "?code=test-code&state=test-state";
-
-    await request(app)
-      .get(requestPath)
-      .expect(302)
-      .expect("Location", PATH_NAMES.ACCOUNT_DELETED);
-  });
-
   it("should return 400 when SSAD callback fails", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.AMC_CALLBACK)
