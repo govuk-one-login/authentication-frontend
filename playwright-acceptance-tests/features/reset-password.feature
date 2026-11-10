@@ -7,7 +7,7 @@ Feature: Reset password
     Then the user is taken to the "Enter your email" page
     When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
-    When the user clicks the forgotten password link
+    When the user clicks the forgotten password link and a password reset is permitted via SMS
     Then the user is taken to the "Check your email" page
     When the user clicks details with text "Problems with the code?"
     Then the user clicks link "send the code again"

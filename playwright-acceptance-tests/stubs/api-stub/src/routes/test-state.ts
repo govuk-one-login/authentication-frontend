@@ -46,6 +46,7 @@ const VALID_CALLS: ReadonlySet<keyof StubbedApiResponses> = new Set([
   "verifyMfaCodeResponse",
   "authenticationAuthCodeResponse",
   "accountInterventionsResponse",
+  "resetPasswordRequestResponse",
 ]);
 
 function isValidCall(call: string): call is keyof StubbedApiResponses {
