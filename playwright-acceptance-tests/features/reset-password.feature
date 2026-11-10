@@ -1,11 +1,11 @@
 Feature: Reset password
 
   Scenario: User can go back from reset-password-resend-code to reset-password-check-email
-    Given a user with SMS MFA exists
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
