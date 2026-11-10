@@ -4,9 +4,11 @@ import { MfaMethodPriority } from "../types.js";
 import { MFA_METHOD_TYPE } from "../app.constants.js";
 import {
   getDefaultSmsMfaMethod,
+  getMfaEntryEvent,
   removeDefaultSmsMfaMethod,
   upsertDefaultSmsMfaMethod,
 } from "./mfa.js";
+import { USER_JOURNEY_EVENTS } from "../components/common/state-machine/state-machine.js";
 
 describe("mfa", () => {
   describe("upsertDefaultSmsMfaMethod", () => {
@@ -205,5 +207,28 @@ describe("mfa", () => {
         });
       }
     );
+  });
+
+  describe("getMfaEntryEvent", () => {
+    [
+      {
+        mfaMethodType: MFA_METHOD_TYPE.SMS,
+        expectedEvent: USER_JOURNEY_EVENTS.VERIFY_MFA,
+      },
+      {
+        mfaMethodType: MFA_METHOD_TYPE.AUTH_APP,
+        expectedEvent: USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE,
+      },
+    ].forEach(({ mfaMethodType, expectedEvent }) => {
+      it(`should return ${expectedEvent} for ${mfaMethodType}`, () => {
+        expect(getMfaEntryEvent(mfaMethodType)).to.equal(expectedEvent);
+      });
+    });
+
+    it("should throw when the MFA method type is not set", () => {
+      expect(() => getMfaEntryEvent(undefined)).to.throw(
+        "Invalid mfaMethodType: undefined"
+      );
+    });
   });
 });
