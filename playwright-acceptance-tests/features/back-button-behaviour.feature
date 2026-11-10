@@ -16,7 +16,6 @@ Feature: Back Button Behaviour
     When the user clicks the Back link
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
 
-  @PasskeyUsageEnabled
   Scenario: User can go back to cannot sign in with a passkey page from enter-password
     Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -31,7 +30,6 @@ Feature: Back Button Behaviour
     When the user clicks the Back link
     Then the user is taken to the "We could not sign you in" page
 
-  @PasskeyUsageEnabled
   Scenario: User can go back to sign in with a passkey from enter-password
     Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -44,7 +42,6 @@ Feature: Back Button Behaviour
     When the user clicks the Back link
     Then the user is taken to the "Sign in with your face, fingerprint or passcode" page
 
-  @PasskeyUsageEnabled
   Scenario: User with a passkey can go back from sign in with a passkey to enter-email
     Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -57,7 +54,6 @@ Feature: Back Button Behaviour
     When the user clicks the Back link
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
 
-  @PasskeyUsageEnabled
   Scenario: User with a passkey can back from sign in with a passkey to account-exists if they go through create account
     Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
