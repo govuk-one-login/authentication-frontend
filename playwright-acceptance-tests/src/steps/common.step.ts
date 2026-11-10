@@ -29,16 +29,6 @@ Given(
   }
 );
 
-Given(
-  "the user has not yet accepted the latest terms and conditions",
-  async function () {
-    const stubUrl = process.env.API_STUB_URL || "http://api-stub:8080";
-    await fetch(`${stubUrl}/test/state/terms-and-conditions-not-accepted`, {
-      method: "PUT",
-    });
-  }
-);
-
 When(
   "the user agrees to the updated terms and conditions",
   async function (this: PlaywrightWorld): Promise<void> {

@@ -20,11 +20,6 @@ testStateRouter.put("/account-interventions", (req, res) => {
   res.sendStatus(201);
 });
 
-testStateRouter.put("/terms-and-conditions-not-accepted", (_req, res) => {
-  state.latestTermsAndConditionsAccepted = false;
-  res.sendStatus(201);
-});
-
 /**
  * Router for setting API-call responses from tests. Mounted at
  * /test/responses.
