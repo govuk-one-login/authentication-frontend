@@ -113,11 +113,11 @@ Feature: Resend security code
     And the current page path is "/reset-password-2fa-sms"
 
   Scenario: Account creation user can resend their security code and return to enter the code
-    Given a user does not yet exist
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an account that does not exist
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "Create your password" page
@@ -136,11 +136,11 @@ Feature: Resend security code
     And the current page path is "/check-your-phone"
 
   Scenario: Account creation user can go back from the resend security code page to enter the code
-    Given a user does not yet exist
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an account that does not exist
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "Create your password" page

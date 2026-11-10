@@ -7,12 +7,23 @@ import { EMAIL } from "../support/constants";
 import {
   existingAccountUserExistsResponse,
   existingAccountWithPasskeyUserExistsResponse,
+  nonExistingAccountUserExistsResponse,
 } from "../responses/user-exists";
 
 When(
   "the user enters an email address of an existing account",
   async function (this: PlaywrightWorld): Promise<void> {
     await stub.setUserExistsResponse(existingAccountUserExistsResponse);
+    const page = new EnterEmailPage(requirePage(this));
+    await page.enterEmail(EMAIL);
+    await page.clickContinue();
+  }
+);
+
+When(
+  "the user enters an email address of an account that does not exist",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await stub.setUserExistsResponse(nonExistingAccountUserExistsResponse);
     const page = new EnterEmailPage(requirePage(this));
     await page.enterEmail(EMAIL);
     await page.clickContinue();
