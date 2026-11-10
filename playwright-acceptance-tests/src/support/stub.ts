@@ -22,7 +22,8 @@ type ApiCall =
   | "verifyCodeResponse"
   | "verifyMfaCodeResponse"
   | "authenticationAuthCodeResponse"
-  | "accountInterventionsResponse";
+  | "accountInterventionsResponse"
+  | "resetPasswordRequestResponse";
 
 function stubUrl(): string {
   return process.env.API_STUB_URL || "http://api-stub:8080";
@@ -51,4 +52,10 @@ export const stub = {
     setResponse("loginResponse", response),
   setVerifyMfaCodeResponse: (response: StubResponse): Promise<void> =>
     setResponse("verifyMfaCodeResponse", response),
+  setVerifyCodeResponse: (response: StubResponse): Promise<void> =>
+    setResponse("verifyCodeResponse", response),
+  setResetPasswordRequestResponse: (response: StubResponse): Promise<void> =>
+    setResponse("resetPasswordRequestResponse", response),
+  setAccountInterventionsResponse: (response: StubResponse): Promise<void> =>
+    setResponse("accountInterventionsResponse", response),
 };

@@ -1,4 +1,12 @@
 import { defineParameterType, Given } from "@cucumber/cucumber";
+import { stub } from "../support/stub";
+import type { StubResponse } from "../support/stub";
+import {
+  temporarilySuspendedInterventionResponse,
+  permanentlyLockedInterventionResponse,
+  passwordResetInterventionResponse,
+  reproveIdentityInterventionResponse,
+} from "../responses/account-interventions";
 
 defineParameterType({
   name: "intervention",
@@ -7,36 +15,18 @@ defineParameterType({
   transformer: (s) => s,
 });
 
+const interventionResponses: Record<string, StubResponse> = {
+  "temporarily suspended": temporarilySuspendedInterventionResponse,
+  "permanently locked": permanentlyLockedInterventionResponse,
+  "password reset": passwordResetInterventionResponse,
+  "reprove identity": reproveIdentityInterventionResponse,
+};
+
 Given(
   "the user has a {intervention} intervention",
-  async function (intervention: string) {
-    const baseIntervention = {
-      reproveIdentity: false,
-      blocked: false,
-      temporarilySuspended: false,
-      passwordResetRequired: false,
-    };
-
-    switch (intervention) {
-      case "temporarily suspended":
-        baseIntervention.temporarilySuspended = true;
-        break;
-      case "permanently locked":
-        baseIntervention.blocked = true;
-        break;
-      case "password reset":
-        baseIntervention.passwordResetRequired = true;
-        break;
-      case "reprove identity":
-        baseIntervention.reproveIdentity = true;
-        break;
-    }
-
-    const stubUrl = process.env.API_STUB_URL || "http://api-stub:8080";
-    await fetch(`${stubUrl}/test/state/account-interventions`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(baseIntervention),
-    }).catch(() => {});
+  async function (intervention: string): Promise<void> {
+    await stub.setAccountInterventionsResponse(
+      interventionResponses[intervention]
+    );
   }
 );

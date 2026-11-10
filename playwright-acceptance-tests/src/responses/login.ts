@@ -16,3 +16,11 @@ export const correctPasswordSmsResponse = {
     ],
   },
 };
+
+export const correctPasswordSmsResponseWithOutdatedTerms = {
+  status: 200,
+  body: {
+    ...correctPasswordSmsResponse.body,
+    latestTermsAndConditionsAccepted: false,
+  },
+};

@@ -9,6 +9,15 @@ export const existingAccountUserExistsResponse = {
   },
 };
 
+export const nonExistingAccountUserExistsResponse = {
+  status: 200,
+  body: {
+    email: EMAIL,
+    doesUserExist: false,
+    hasActivePasskey: false,
+  },
+};
+
 export const existingAccountWithPasskeyUserExistsResponse = {
   status: 200,
   body: {

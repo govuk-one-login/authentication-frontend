@@ -15,16 +15,6 @@ testStateRouter.delete("/session", (_req, res) => {
   res.sendStatus(204);
 });
 
-testStateRouter.put("/account-interventions", (req, res) => {
-  state.accountInterventions = req.body;
-  res.sendStatus(201);
-});
-
-testStateRouter.put("/terms-and-conditions-not-accepted", (_req, res) => {
-  state.latestTermsAndConditionsAccepted = false;
-  res.sendStatus(201);
-});
-
 /**
  * Router for setting API-call responses from tests. Mounted at
  * /test/responses.
@@ -46,6 +36,7 @@ const VALID_CALLS: ReadonlySet<keyof StubbedApiResponses> = new Set([
   "verifyMfaCodeResponse",
   "authenticationAuthCodeResponse",
   "accountInterventionsResponse",
+  "resetPasswordRequestResponse",
 ]);
 
 function isValidCall(call: string): call is keyof StubbedApiResponses {
