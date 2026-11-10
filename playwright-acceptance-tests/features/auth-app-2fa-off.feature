@@ -10,7 +10,7 @@ Feature: Authentication App Journeys
     Then the user is taken to the "Check your email" page
     When the user enters the correct six digit security code from their email
     Then the user is taken to the "Create your password" page
-    When the user creates a password
+    When the user successfully creates a password
     Then the user is taken to the "Choose how to get security codes" page
     When the user chooses auth app to get security codes
     Then the user is taken to the "Set up an authenticator app" page

@@ -5,12 +5,13 @@ import type { VerifyMfaCodeResponse } from "./responses/verify-mfa-code-response
 import type { VerifyCodeResponse } from "./responses/verify-code-response.type.js";
 import type { ResetPasswordRequestResponse } from "./responses/reset-password-request-response.type.js";
 import type { AccountInterventionsResponse } from "./responses/account-interventions-response.type.js";
+import type { SignUpResponse } from "./responses/sign-up-response.type.js";
 
 export interface StubbedApiResponses {
   startResponse?: StartResponse;
   loginResponse?: LoginResponse;
   userExistsResponse?: UserExistsResponse;
-  signUpResponse?: object;
+  signUpResponse?: SignUpResponse;
   mfaResponse?: object;
   verifyCodeResponse?: VerifyCodeResponse;
   verifyMfaCodeResponse?: VerifyMfaCodeResponse;
