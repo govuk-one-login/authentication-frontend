@@ -624,6 +624,10 @@ const authStateMachine = createMachine<AuthStateContext>(
           [USER_JOURNEY_EVENTS.SELF_SERVE_ACCOUNT_DELETION_COMPLETED]: [
             PATH_NAMES.ACCOUNT_DELETED,
           ],
+          [USER_JOURNEY_EVENTS.VERIFY_MFA]: [PATH_NAMES.ENTER_MFA],
+          [USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE]: [
+            PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+          ],
         },
       },
       [PATH_NAMES.ACCOUNT_DELETED]: {
