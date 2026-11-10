@@ -10,6 +10,16 @@ interface VerifyCodeRequest {
 }
 
 export function verifyCodeHandler(req: Request, res: Response): void {
+  const stubbed = state.stubbedApiResponses.verifyCodeResponse;
+  if (stubbed) {
+    if (stubbed.body) {
+      res.status(stubbed.status).json(stubbed.body);
+    } else {
+      res.sendStatus(stubbed.status);
+    }
+    return;
+  }
+
   const { code } = req.body as VerifyCodeRequest;
 
   if (code === VALID_CODE) {
