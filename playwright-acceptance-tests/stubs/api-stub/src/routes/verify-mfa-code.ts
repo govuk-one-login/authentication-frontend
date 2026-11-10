@@ -17,6 +17,16 @@ interface VerifyMfaRequest {
 }
 
 export function verifyMfaCodeHandler(req: Request, res: Response): void {
+  const stubbed = state.stubbedApiResponses.verifyMfaCodeResponse;
+  if (stubbed) {
+    if (stubbed.body) {
+      res.status(stubbed.status).json(stubbed.body);
+    } else {
+      res.sendStatus(stubbed.status);
+    }
+    return;
+  }
+
   const { code, mfaMethodType } = req.body as VerifyMfaRequest;
   const isAuthApp = mfaMethodType === MfaMethodType.AUTH_APP;
 
