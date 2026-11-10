@@ -1,13 +1,13 @@
 Feature: Back Button Behaviour
 
   Scenario: User can navigate to reset-password-check-email and navigate back through each page
-    Given a user with SMS MFA exists
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
-    When the user clicks the forgotten password link
+    When the user clicks the forgotten password link and a password reset is permitted via SMS
     Then the user is taken to the "Check your email" page
     When the user clicks the Back link
     Then the user is taken to the "Enter your password" page
@@ -18,11 +18,11 @@ Feature: Back Button Behaviour
 
   @PasskeyUsageEnabled
   Scenario: User can go back to cannot sign in with a passkey page from enter-password
-    Given a user exists with a passkey
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email address" page
-    When the user enters their email address
+    When the user enters an email address of an existing account with a passkey
     Then the user is taken to the "Sign in with your face, fingerprint or passcode" page
     When the user clicks the continue button
     Then the user is taken to the "We could not sign you in" page
@@ -33,11 +33,11 @@ Feature: Back Button Behaviour
 
   @PasskeyUsageEnabled
   Scenario: User can go back to sign in with a passkey from enter-password
-    Given a user exists with a passkey
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email address" page
-    When the user enters their email address
+    When the user enters an email address of an existing account with a passkey
     Then the user is taken to the "Sign in with your face, fingerprint or passcode" page
     When the user clicks link "Sign in another way"
     Then the user is taken to the "Enter your password" page
@@ -46,11 +46,11 @@ Feature: Back Button Behaviour
 
   @PasskeyUsageEnabled
   Scenario: User with a passkey can go back from sign in with a passkey to enter-email
-    Given a user exists with a passkey
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email address" page
-    When the user enters their email address
+    When the user enters an email address of an existing account with a passkey
     Then the user is taken to the "Sign in with your face, fingerprint or passcode" page
     When the user clicks the Back link
     Then the user is taken to the "Enter your email address" page
@@ -59,11 +59,11 @@ Feature: Back Button Behaviour
 
   @PasskeyUsageEnabled
   Scenario: User with a passkey can back from sign in with a passkey to account-exists if they go through create account
-    Given a user exists with a passkey
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an existing account with a passkey
     Then the user is taken to the "You have a GOV.UK One Login" page
     When the user clicks the continue button
     Then the user is taken to the "Sign in with your face, fingerprint or passcode" page
