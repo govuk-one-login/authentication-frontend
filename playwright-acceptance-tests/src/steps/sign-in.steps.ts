@@ -234,15 +234,6 @@ When(
   }
 );
 
-When(
-  "the user enters the security code from the auth app",
-  async function (this: PlaywrightWorld): Promise<void> {
-    await new EnterAuthenticatorAppCodePage(
-      requirePage(this)
-    ).enterCodeAndContinue("123456");
-  }
-);
-
 Then(
   "the user is returned to the service",
   async function (this: PlaywrightWorld): Promise<void> {
