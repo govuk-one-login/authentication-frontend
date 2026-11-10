@@ -1,4 +1,3 @@
-@UI
 Feature: Resend security code
 
   Scenario: Sign-in user can resend their security code and return to enter the code

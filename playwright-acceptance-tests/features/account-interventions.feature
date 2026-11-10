@@ -1,4 +1,3 @@
-@UI
 Feature: Account interventions
 
   Scenario: User will not be prompted to add a passkey if they have a temporary intervention on their account

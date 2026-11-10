@@ -1,4 +1,3 @@
-@UI
 Feature: Back Button Behaviour
 
   Scenario: User can navigate to reset-password-check-email and navigate back through each page

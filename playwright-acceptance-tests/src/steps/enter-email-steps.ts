@@ -22,6 +22,9 @@ When(
 When(
   "the user enters an email address of an existing account with a passkey",
   async function (this: PlaywrightWorld): Promise<void> {
+    await requirePage(this)
+      .locator("#browserSupportsWebAuthn")
+      .evaluate((el: HTMLInputElement) => (el.value = "true"));
     await stub.setUserExistsResponse(
       existingAccountWithPasskeyUserExistsResponse
     );

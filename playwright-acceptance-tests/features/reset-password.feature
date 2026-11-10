@@ -1,4 +1,3 @@
-@UI
 Feature: Reset password
 
   Scenario: User can go back from reset-password-resend-code to reset-password-check-email
