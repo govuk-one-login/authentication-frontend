@@ -18,20 +18,6 @@ export function registerStaticRoutes(app: Express): void {
   app.post("/reset-password", (_, res) => res.sendStatus(204));
   app.post("/check-reauth-user", (_, res) => res.sendStatus(200));
 
-  app.post("/reset-password-request", (_, res) =>
-    res.json({
-      mfaMethodType: "SMS",
-      phoneNumberLastThree: "890",
-      mfaMethods: [
-        {
-          id: "stub-mfa-id",
-          mfaMethodType: "SMS",
-          priority: "DEFAULT",
-          phoneNumber: "07000000000",
-        },
-      ],
-    })
-  );
   app.post("/account-recovery", (_, res) =>
     res.json({ accountRecoveryPermitted: true })
   );
