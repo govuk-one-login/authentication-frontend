@@ -7,6 +7,7 @@ import { VALID_PASSWORD } from "../support/constants";
 import {
   correctPasswordSmsResponse,
   correctPasswordSmsResponseWithOutdatedTerms,
+  correctPasswordAuthAppResponse,
 } from "../responses/login";
 
 When(
@@ -25,6 +26,16 @@ When(
     await stub.setCorrectPasswordResponse(
       correctPasswordSmsResponseWithOutdatedTerms
     );
+    await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
+      VALID_PASSWORD
+    );
+  }
+);
+
+When(
+  "the user enters a correct password and has auth app mfa",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await stub.setCorrectPasswordResponse(correctPasswordAuthAppResponse);
     await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
       VALID_PASSWORD
     );

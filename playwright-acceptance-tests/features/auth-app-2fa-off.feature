@@ -2,13 +2,13 @@ Feature: Authentication App Journeys
   New user creates an account and logs in using an auth app
 
   Scenario: User successfully registers with auth app 2FA and login with 2fa-on
-    Given a user does not yet exist
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an account that does not exist
     Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
+    When the user enters the correct six digit security code from their email
     Then the user is taken to the "Create your password" page
     When the user creates a password
     Then the user is taken to the "Choose how to get security codes" page
@@ -25,22 +25,22 @@ Feature: Authentication App Journeys
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
-    When the user enters their password
+    When the user enters a correct password and has auth app mfa
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters the security code from the auth app
     And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: User successfully login without 2FA
-    Given a user with App MFA exists
+    Given a user does not have an authenticated session and does not require 2fa
     When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
-    When the user enters their password
+    When the user enters a correct password and has auth app mfa
     And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
@@ -49,7 +49,7 @@ Feature: Authentication App Journeys
     When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     And the user dismisses the passkey registration page if present

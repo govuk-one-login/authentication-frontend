@@ -24,3 +24,20 @@ export const correctPasswordSmsResponseWithOutdatedTerms = {
     latestTermsAndConditionsAccepted: false,
   },
 };
+
+export const correctPasswordAuthAppResponse = {
+  status: 200,
+  body: {
+    mfaMethodType: "AUTH_APP",
+    latestTermsAndConditionsAccepted: true,
+    mfaMethodVerified: true,
+    passwordChangeRequired: false,
+    mfaMethods: [
+      {
+        id: "stub-mfa-method-id",
+        type: "AUTH_APP",
+        priority: "DEFAULT",
+      },
+    ],
+  },
+};
