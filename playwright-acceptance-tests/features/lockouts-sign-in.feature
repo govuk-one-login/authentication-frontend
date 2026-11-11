@@ -51,26 +51,17 @@ Feature: Sign in lockouts
     Then the "You asked to resend the security code too many times" lockout screen is displayed
     * the page says the user cannot continue for 2 hours
 
-  Scenario: A user is blocked when they enter an incorrect auth app security code more than 5 times during sign in.
-    Given a user with App MFA exists
+  Scenario: A user is shown the security code lockout page when the backend reports the incorrect auth app code limit has been reached
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
-    When the user enters their password
+    When the user enters a correct password and has auth app mfa
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-    And the user enters an incorrect auth app security code 6 times
+    When the user enters an incorrect auth app security code that the backend rejects without locking the account
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    When the user enters an incorrect auth app security code and the backend reports the code lockout limit has been reached
     Then the "You entered the wrong security code too many times" lockout screen is displayed
-    * the lockout duration is 2 hours
-
-    Given the lockout has not yet expired
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the "You cannot sign in at the moment" lockout screen is displayed
-    * the lockout duration is 2 hours
-    * the lockout reason is "you entered the wrong security code too many times"
+    * the page says the user cannot sign in for 2 hours

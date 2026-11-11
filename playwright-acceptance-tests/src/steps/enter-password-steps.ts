@@ -21,11 +21,9 @@ When(
 );
 
 When(
-  "the user enters a correct password and has sms mfa but has not accepted the latest terms and conditions",
+  "the user enters a correct password and has auth app mfa",
   async function (this: PlaywrightWorld): Promise<void> {
-    await stub.setCorrectPasswordResponse(
-      correctPasswordSmsResponseWithOutdatedTerms
-    );
+    await stub.setCorrectPasswordResponse(correctPasswordAuthAppResponse);
     await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
       VALID_PASSWORD
     );
@@ -33,9 +31,11 @@ When(
 );
 
 When(
-  "the user enters a correct password and has auth app mfa",
+  "the user enters a correct password and has sms mfa but has not accepted the latest terms and conditions",
   async function (this: PlaywrightWorld): Promise<void> {
-    await stub.setCorrectPasswordResponse(correctPasswordAuthAppResponse);
+    await stub.setCorrectPasswordResponse(
+      correctPasswordSmsResponseWithOutdatedTerms
+    );
     await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
       VALID_PASSWORD
     );
