@@ -70,6 +70,14 @@ export interface VerifyMfaCodeResponse {
   };
 }
 
+export interface MfaResponse {
+  status: number;
+  body?: {
+    code: number;
+    message: string;
+  };
+}
+
 export interface AccountInterventionsResponse {
   status: number;
   body: {

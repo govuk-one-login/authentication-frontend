@@ -4,6 +4,7 @@ import type {
   LoginResponse,
   VerifyMfaCodeResponse,
   VerifyCodeResponse,
+  MfaResponse,
   ResetPasswordRequestResponse,
   AccountInterventionsResponse,
   SignUpResponse,
@@ -14,7 +15,7 @@ export interface StubbedApiResponses {
   loginResponse?: LoginResponse;
   userExistsResponse?: UserExistsResponse;
   signUpResponse?: SignUpResponse;
-  mfaResponse?: object;
+  mfaResponse?: MfaResponse;
   verifyCodeResponse?: VerifyCodeResponse;
   verifyMfaCodeResponse?: VerifyMfaCodeResponse;
   authenticationAuthCodeResponse?: object;

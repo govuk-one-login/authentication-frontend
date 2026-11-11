@@ -9,11 +9,14 @@ import {
   correctPasswordSmsResponseWithOutdatedTerms,
   correctPasswordAuthAppResponse,
 } from "../responses/login";
+import { mfaCodeSentResponse } from "../responses/mfa";
+import { correctMfaCodeResponse } from "../responses/verify-mfa-code";
 
 When(
   "the user enters a correct password and has sms mfa",
   async function (this: PlaywrightWorld): Promise<void> {
     await stub.setCorrectPasswordResponse(correctPasswordSmsResponse);
+    await stub.setMfaResponse(mfaCodeSentResponse);
     await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
       VALID_PASSWORD
     );
@@ -36,6 +39,7 @@ When(
     await stub.setCorrectPasswordResponse(
       correctPasswordSmsResponseWithOutdatedTerms
     );
+    await stub.setMfaResponse(mfaCodeSentResponse);
     await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
       VALID_PASSWORD
     );
