@@ -1,6 +1,5 @@
 Feature: Sign in lockouts
 
-  # ENTER INCORRECT PASSWORD TOO MANY TIMES DURING SIGN IN - 2060
   Scenario: A user is blocked when they enter too many incorrect passwords during sign in.
     Given a user exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -22,14 +21,6 @@ Feature: Sign in lockouts
     * the lockout duration is 2 hours
     * the lockout reason is "you entered the wrong password"
 
-  # USER BLOCKED FOR TOO MANY INCORRECT PASSWORDS CAN RESET THEIR PASSWORD AND BLOCK IS LIFTED
-  # Temporarily commented due to flakiness
-#  Scenario: When a user is blocked due to entering too many incorrect passwords during sign in they can reset their password.
-#    Given the user "SIGN_IN_INCORRECT_PASSWORD_LOCKOUT_RESET_PW" is on the blocked page for entering too many incorrect passwords
-#    When the user resets their password
-#    Then the block is lifted and the user "SIGN_IN_INCORRECT_PASSWORD_LOCKOUT_RESET_PW" can login
-
-  # ENTER INCORRECT SMS SECURITY CODE TOO MANY TIMES DURING SIGN IN - 2064
   Scenario: A user is blocked when they enter too many incorrect sms codes during sign in.
     Given a user with SMS MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -54,7 +45,6 @@ Feature: Sign in lockouts
     * the lockout duration is 2 hours
     * the lockout reason is "you entered the wrong security code too many times"
 
-  # REQUEST TOO MANY SMS SECURITY CODE TOO MANY TIMES DURING SIGN IN - 2378
   Scenario: A user is blocked when they request too many sms codes during sign in
     Given a user with SMS MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -79,7 +69,6 @@ Feature: Sign in lockouts
     * the lockout duration is 2 hours
     * the lockout reason is "you asked to resend the security code too many times"
 
-  # ENTER TOO MANY INCORRECT AUTH APP CODES TOO MANY TIMES DURING SIGN IN - 2061
   Scenario: A user is blocked when they enter an incorrect auth app security code more than 5 times during sign in.
     Given a user with App MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
