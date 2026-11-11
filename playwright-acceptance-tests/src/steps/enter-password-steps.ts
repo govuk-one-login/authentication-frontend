@@ -10,7 +10,6 @@ import {
   correctPasswordAuthAppResponse,
 } from "../responses/login";
 import { mfaCodeSentResponse } from "../responses/mfa";
-import { correctMfaCodeResponse } from "../responses/verify-mfa-code";
 
 When(
   "the user enters a correct password and has sms mfa",
