@@ -11,6 +11,12 @@ import { EnterAuthenticatorAppCodePage } from "../pages/EnterAuthenticatorAppCod
 import { LockoutPage } from "../pages/LockoutPage";
 import { TEST_EMAIL, VALID_PASSWORD } from "../support/constants";
 import { requirePage } from "../support/utils";
+import { stub } from "../support/stub";
+import {
+  incorrectPasswordLockoutResponse,
+  incorrectPasswordResponse,
+} from "../responses/login";
+import { accountLockedUserExistsResponse } from "../responses/user-exists";
 
 /* ---- Given: user setup (no-ops with stub) ---- */
 
@@ -263,6 +269,54 @@ Then(
 );
 
 /* ---- Lockout retry loops ---- */
+
+When(
+  "the user enters an incorrect password",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await stub.setCorrectPasswordResponse(incorrectPasswordResponse);
+    await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
+      "wrong-password"
+    );
+  }
+);
+
+When(
+  "the user enters an incorrect password and the backend reports the password lockout limit has been reached",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await stub.setCorrectPasswordResponse(incorrectPasswordLockoutResponse);
+    await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
+      "wrong-password"
+    );
+  }
+);
+
+When(
+  "the user enters their email address and the backend reports the account is still locked",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await stub.setUserExistsResponse(accountLockedUserExistsResponse);
+    const page = new EnterEmailPage(requirePage(this));
+    await page.enterEmail(TEST_EMAIL.SMS_USER);
+    await page.clickContinue();
+  }
+);
+
+Then(
+  "the page says the user cannot sign in for 2 hours",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await new LockoutPage(requirePage(this)).assertBodyContains(
+      "You will not be able to sign in for 2 hours"
+    );
+  }
+);
+
+Then(
+  "the page says it is because they entered the wrong password more than 5 times",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await new LockoutPage(requirePage(this)).assertBodyContains(
+      "you entered the wrong password more than 5 times"
+    );
+  }
+);
 
 When(
   "the user enters an incorrect password {int} times",

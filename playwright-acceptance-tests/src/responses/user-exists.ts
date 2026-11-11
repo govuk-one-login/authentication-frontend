@@ -26,3 +26,11 @@ export const existingAccountWithPasskeyUserExistsResponse = {
     hasActivePasskey: true,
   },
 };
+
+export const accountLockedUserExistsResponse = {
+  status: 400,
+  body: {
+    code: 1045,
+    message: "Account locked",
+  },
+};

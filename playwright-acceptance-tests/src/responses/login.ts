@@ -41,3 +41,19 @@ export const correctPasswordAuthAppResponse = {
     ],
   },
 };
+
+export const incorrectPasswordResponse = {
+  status: 400,
+  body: {
+    code: 1008,
+    message: "Invalid password",
+  },
+};
+
+export const incorrectPasswordLockoutResponse = {
+  status: 400,
+  body: {
+    code: 1028,
+    message: "Invalid password max attempts reached",
+  },
+};
