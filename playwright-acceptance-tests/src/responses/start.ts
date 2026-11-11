@@ -47,19 +47,19 @@ export const authenticatedStartResponseRequiringUpliftWithSMSMFA = {
 };
 
 export const authenticatedStartResponseRequiringUpliftWithAuthApp = {
-    status: 200,
-    body: {
-        sessionId: "session-123",
-        user: {
-            upliftRequired: true,
-            identityRequired: false,
-            authenticated: true,
-            mfaMethodType: "AUTH_APP",
-            mfaRequired: true,
-            isBlockedForReauth: false,
-        },
-        featureFlags: {},
+  status: 200,
+  body: {
+    sessionId: "session-123",
+    user: {
+      upliftRequired: true,
+      identityRequired: false,
+      authenticated: true,
+      mfaMethodType: "AUTH_APP",
+      mfaRequired: true,
+      isBlockedForReauth: false,
     },
+    featureFlags: {},
+  },
 };
 
 export const authenticatedStartResponse = {

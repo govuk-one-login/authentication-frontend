@@ -33,12 +33,12 @@ Given(
 );
 
 Given(
-    "a user has an authenticated session that requires uplift with auth app",
-    async function (): Promise<void> {
-        await stub.setStartResponse(
-            authenticatedStartResponseRequiringUpliftWithSMSMFA
-        );
-    }
+  "a user has an authenticated session that requires uplift with auth app",
+  async function (): Promise<void> {
+    await stub.setStartResponse(
+      authenticatedStartResponseRequiringUpliftWithSMSMFA
+    );
+  }
 );
 
 Given("a user has an authenticated session", async function (): Promise<void> {
