@@ -143,9 +143,17 @@ When(
 When(
   "the user selects create an account",
   async function (this: PlaywrightWorld): Promise<void> {
-    await requirePage(this)
-      .getByRole("button", { name: /create your gov\.uk one login/i })
-      .click();
+    const page = requirePage(this);
+    const createAccountBtn = page.getByRole("button", {
+      name: /create (your|a) gov\.uk one login/i,
+    });
+    const welshBtn = page.getByRole("button", {
+      name: /creu gov\.uk one login/i,
+    });
+    const btn = (await welshBtn.isVisible().catch(() => false))
+      ? welshBtn
+      : createAccountBtn;
+    await btn.click();
   }
 );
 
