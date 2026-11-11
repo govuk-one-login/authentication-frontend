@@ -24,3 +24,36 @@ export const correctPasswordSmsResponseWithOutdatedTerms = {
     latestTermsAndConditionsAccepted: false,
   },
 };
+
+export const correctPasswordAuthAppResponse = {
+  status: 200,
+  body: {
+    mfaMethodType: "AUTH_APP",
+    latestTermsAndConditionsAccepted: true,
+    mfaMethodVerified: true,
+    passwordChangeRequired: false,
+    mfaMethods: [
+      {
+        id: "stub-mfa-method-id",
+        type: "AUTH_APP",
+        priority: "DEFAULT",
+      },
+    ],
+  },
+};
+
+export const incorrectPasswordResponse = {
+  status: 400,
+  body: {
+    code: 1008,
+    message: "Invalid password",
+  },
+};
+
+export const incorrectPasswordLockoutResponse = {
+  status: 400,
+  body: {
+    code: 1028,
+    message: "Invalid password max attempts reached",
+  },
+};
