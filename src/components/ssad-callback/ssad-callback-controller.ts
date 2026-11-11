@@ -4,12 +4,15 @@ import { amcResultService } from "../amc-service/amc-result-service.js";
 import type { ExpressRouteFunc } from "../../types.js";
 import xss from "xss";
 import {
+  AMC_ERROR_DESCRIPTION,
   AMC_SCOPE,
   type AMCOutcome,
   type AMCResultInterface,
 } from "../amc-service/types.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
+import type { MFA_METHOD_TYPE } from "../../app.constants.js";
+import { getMfaEntryEvent } from "../../utils/mfa.js";
 
 export function ssadCallbackGet(
   service: AMCResultInterface<AMCOutcome> = amcResultService()
@@ -65,7 +68,46 @@ export function ssadCallbackGet(
         )
       );
     } else {
-      res.status(200).json({ message: result.data });
+      const errorDescription = getErrorDescription(result.data);
+
+      req.log.info(
+        `Account deletion not completed for session id ${sessionId} with error ${errorDescription}`
+      );
+
+      res.redirect(
+        await getNextPathAndUpdateJourney(
+          req,
+          res,
+          getJourneyEventForError(
+            errorDescription,
+            req.session.user.mfaMethodType
+          )
+        )
+      );
     }
   };
+}
+
+function getErrorDescription(result: AMCOutcome) {
+  const accountDeleteAction = result.actions.find(
+    (action) => action.action === AMC_SCOPE.ACCOUNT_DELETE
+  );
+
+  return accountDeleteAction?.details?.error?.description;
+}
+
+function getJourneyEventForError(
+  amcErrorDescription: AMC_ERROR_DESCRIPTION,
+  mfaMethodType: MFA_METHOD_TYPE
+) {
+  switch (amcErrorDescription) {
+    case AMC_ERROR_DESCRIPTION.USER_BACKED_OUT_OF_JOURNEY:
+    case AMC_ERROR_DESCRIPTION.USER_ABORTED_JOURNEY:
+      return getMfaEntryEvent(mfaMethodType);
+    default:
+      throw new BadRequestError(
+        `Unexpected error description: ${amcErrorDescription}`,
+        500
+      );
+  }
 }

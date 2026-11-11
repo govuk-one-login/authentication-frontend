@@ -1,10 +1,8 @@
 import type { Request, Response } from "express";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
 import { USER_JOURNEY_EVENTS } from "../common/state-machine/state-machine.js";
-import {
-  CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION,
-  MFA_METHOD_TYPE,
-} from "../../app.constants.js";
+import { CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION } from "../../app.constants.js";
+import { getMfaEntryEvent } from "../../utils/mfa.js";
 
 export function cannotChangeSecurityCodesNoIdentityGet(
   req: Request,
@@ -18,7 +16,6 @@ export async function cannotChangeSecurityCodesNoIdentityPost(
   res: Response
 ): Promise<void> {
   const action = req.body.cannotChangeHowGetSecurityCodeAction;
-  const mfaMethodType = req.session.user.mfaMethodType;
   let userJourneyEvent;
   if (
     action ===
@@ -28,13 +25,7 @@ export async function cannotChangeSecurityCodesNoIdentityPost(
   } else if (
     action === CANNOT_CHANGE_HOW_GET_SECURITY_CODES_ACTION.RETRY_SECURITY_CODE
   ) {
-    if (mfaMethodType === MFA_METHOD_TYPE.SMS) {
-      userJourneyEvent = USER_JOURNEY_EVENTS.VERIFY_MFA;
-    } else if (mfaMethodType === MFA_METHOD_TYPE.AUTH_APP) {
-      userJourneyEvent = USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE;
-    } else {
-      throw new Error(`Invalid mfaMethodType: ${mfaMethodType}`);
-    }
+    userJourneyEvent = getMfaEntryEvent(req.session.user.mfaMethodType);
   } else {
     throw new Error(`Invalid cannotChangeHowGetSecurityCodeAction: ${action}`);
   }

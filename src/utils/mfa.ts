@@ -11,6 +11,7 @@ import { APP_ENV_NAME, MFA_METHOD_TYPE } from "../app.constants.js";
 import { getAppEnv } from "../config.js";
 import type { MfaMethod, SmsMfaMethod } from "../types.js";
 import { isSmsMfaMethod, MfaMethodPriority } from "../types.js";
+import { USER_JOURNEY_EVENTS } from "../components/common/state-machine/state-machine.js";
 
 function createRandomBytes(size: number, encoding: KeyEncodings): string {
   return crypto.randomBytes(size).toString(encoding);
@@ -97,4 +98,15 @@ export function removeDefaultSmsMfaMethod(
         isSmsMfaMethod(mfaMethod)
       )
   );
+}
+
+export function getMfaEntryEvent(mfaMethodType: MFA_METHOD_TYPE): string {
+  switch (mfaMethodType) {
+    case MFA_METHOD_TYPE.SMS:
+      return USER_JOURNEY_EVENTS.VERIFY_MFA;
+    case MFA_METHOD_TYPE.AUTH_APP:
+      return USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE;
+    default:
+      throw new Error(`Invalid mfaMethodType: ${mfaMethodType}`);
+  }
 }

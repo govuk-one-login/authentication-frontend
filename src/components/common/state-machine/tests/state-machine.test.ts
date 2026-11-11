@@ -441,13 +441,28 @@ describe("state-machine", () => {
   });
 
   describe(`getNextState - ${PATH_NAMES.SSAD_CALLBACK}`, () => {
-    it(`should move to ${PATH_NAMES.ACCOUNT_DELETED} on SELF_SERVE_ACCOUNT_DELETION_COMPLETED`, () => {
-      const nextState = getNextState(
-        PATH_NAMES.SSAD_CALLBACK,
-        USER_JOURNEY_EVENTS.SELF_SERVE_ACCOUNT_DELETION_COMPLETED,
-        DEFAULT_CONTEXT
-      );
-      expect(nextState.value).to.equal(PATH_NAMES.ACCOUNT_DELETED);
+    [
+      {
+        event: USER_JOURNEY_EVENTS.SELF_SERVE_ACCOUNT_DELETION_COMPLETED,
+        expectedPath: PATH_NAMES.ACCOUNT_DELETED,
+      },
+      {
+        event: USER_JOURNEY_EVENTS.VERIFY_MFA,
+        expectedPath: PATH_NAMES.ENTER_MFA,
+      },
+      {
+        event: USER_JOURNEY_EVENTS.VERIFY_AUTH_APP_CODE,
+        expectedPath: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+      },
+    ].forEach(({ event, expectedPath }) => {
+      it(`should move from ${PATH_NAMES.SSAD_CALLBACK} to ${expectedPath} on ${event}`, () => {
+        const nextState = getNextState(
+          PATH_NAMES.SSAD_CALLBACK,
+          event,
+          DEFAULT_CONTEXT
+        );
+        expect(nextState.value).to.equal(expectedPath);
+      });
     });
   });
 });
