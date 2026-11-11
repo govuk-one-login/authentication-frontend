@@ -6,8 +6,6 @@ import { TestUserType } from "../support/world";
 import { EnterEmailPage } from "../pages/EnterEmailPage";
 import { EnterPasswordPage } from "../pages/EnterPasswordPage";
 import { CheckYourPhonePage } from "../pages/CheckYourPhonePage";
-import { CheckYourEmailPage } from "../pages/CheckYourEmailPage";
-import { CreatePasswordPage } from "../pages/CreatePasswordPage";
 import { YouHaveOneLoginPage } from "../pages/YouHaveOneLoginPage";
 import { EnterAuthenticatorAppCodePage } from "../pages/EnterAuthenticatorAppCodePage";
 import { LockoutPage } from "../pages/LockoutPage";
@@ -24,14 +22,6 @@ Given(
   "a user with SMS MFA exists",
   async function (this: PlaywrightWorld): Promise<void> {
     // No-op: API stub default user has SMS MFA
-  }
-);
-
-Given(
-  "a user exists with a passkey",
-  async function (this: PlaywrightWorld): Promise<void> {
-    // Sets email context to passkey user for subsequent steps
-    this.testUserType = TestUserType.PASSKEY;
   }
 );
 
@@ -218,31 +208,6 @@ When(
   }
 );
 
-When(
-  "the user clicks the forgotten password link",
-  async function (this: PlaywrightWorld): Promise<void> {
-    await new EnterPasswordPage(requirePage(this)).clickForgottenPasswordLink();
-  }
-);
-
-When(
-  "the user enters the six digit security code from their phone",
-  async function (this: PlaywrightWorld): Promise<void> {
-    await new CheckYourPhonePage(requirePage(this)).enterCodeAndContinue(
-      "123456"
-    );
-  }
-);
-
-When(
-  "the user enters the security code from the auth app",
-  async function (this: PlaywrightWorld): Promise<void> {
-    await new EnterAuthenticatorAppCodePage(
-      requirePage(this)
-    ).enterCodeAndContinue("123456");
-  }
-);
-
 Then(
   "the user is returned to the service",
   async function (this: PlaywrightWorld): Promise<void> {
@@ -253,24 +218,6 @@ Then(
 );
 
 /* ---- Registration steps ---- */
-
-When(
-  "the user enters the six digit security code from their email",
-  async function (this: PlaywrightWorld): Promise<void> {
-    await new CheckYourEmailPage(requirePage(this)).enterCodeAndContinue(
-      "123456"
-    );
-  }
-);
-
-When(
-  "the user creates a password",
-  async function (this: PlaywrightWorld): Promise<void> {
-    await new CreatePasswordPage(requirePage(this)).createPasswordAndContinue(
-      "ValidPassword1!"
-    );
-  }
-);
 
 When(
   "the user chooses auth app to get security codes",
@@ -445,15 +392,6 @@ Then(
       requirePage(this),
       /Rhowch eich cyfeiriad e-bost i fewngofnodi/i
     );
-  }
-);
-
-When(
-  "the user enters their email address in Welsh",
-  async function (this: PlaywrightWorld): Promise<void> {
-    const page = requirePage(this);
-    await page.getByRole("textbox").fill(TEST_EMAIL.SMS_USER);
-    await page.getByRole("button", { name: /parhau/i }).click();
   }
 );
 

@@ -1,13 +1,19 @@
 import type { Request, Response } from "express";
-import { TEST_EMAIL } from "../constants.js";
 import { state } from "../state.js";
 
-interface SignupRequest {
-  email?: string;
-}
+export function signUpHandler(_req: Request, res: Response): void {
+  const stubbed = state.stubbedApiResponses.signUpResponse;
+  if (!stubbed) {
+    res.status(500).json({
+      message:
+        "No signUpResponse stubbed. The step must stub this response before triggering /signup.",
+    });
+    return;
+  }
 
-export function signUpHandler(req: Request, res: Response): void {
-  const { email = TEST_EMAIL.NEW_USER } = req.body as SignupRequest;
-  state.registered[email] = true;
-  res.json({ email: TEST_EMAIL.SMS_USER, consentRequired: false });
+  if (stubbed.body) {
+    res.status(stubbed.status).json(stubbed.body);
+  } else {
+    res.sendStatus(stubbed.status);
+  }
 }
