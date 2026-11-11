@@ -14,7 +14,7 @@ import { mfaResendLockoutResponse } from "../responses/mfa";
 When(
   "the user enters the correct six digit security code from their phone",
   async function (this: PlaywrightWorld): Promise<void> {
-    await stub.setVerifyMfaCodeResponse(correctMfaCodeResponse);
+    await stub.setVerifyCodeResponse(correctMfaCodeResponse);
     await new CheckYourPhonePage(requirePage(this)).enterCodeAndContinue(
       "123456"
     );
