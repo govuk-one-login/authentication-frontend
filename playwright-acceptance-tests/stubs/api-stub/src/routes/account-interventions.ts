@@ -1,6 +1,13 @@
 import type { Request, Response } from "express";
 import { state } from "../state";
 
+const NO_INTERVENTIONS = {
+  blocked: false,
+  temporarilySuspended: false,
+  reproveIdentity: false,
+  passwordResetRequired: false,
+};
+
 export function accountInterventionsHandler(
   _req: Request,
   res: Response
@@ -11,5 +18,5 @@ export function accountInterventionsHandler(
     return;
   }
 
-  res.status(200).json(state.accountInterventions);
+  res.status(200).json(NO_INTERVENTIONS);
 }
