@@ -8,7 +8,6 @@ export interface State {
   credentialStrength: CredentialStrength | "";
   userMfaMethodType: MfaMethodType;
   registered: Record<string, boolean>;
-  accountInterventions: Record<string, boolean>;
   stubbedApiResponses: StubbedApiResponses;
 }
 
@@ -21,12 +20,6 @@ function createFreshState(): State {
     credentialStrength: "",
     userMfaMethodType: MfaMethodType.SMS,
     registered: {},
-    accountInterventions: {
-      blocked: false,
-      temporarilySuspended: false,
-      reproveIdentity: false,
-      passwordResetRequired: false,
-    },
     stubbedApiResponses: {},
   };
 }

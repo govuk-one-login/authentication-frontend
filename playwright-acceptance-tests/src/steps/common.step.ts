@@ -1,7 +1,8 @@
-import { Given, When } from "@cucumber/cucumber";
+import { Given, When, Then } from "@cucumber/cucumber";
 import type { PlaywrightWorld } from "../support/world";
 import { BasePage } from "../pages/BasePage";
 import { requirePage } from "../support/utils";
+import { expect } from "../support/expect";
 import { TermsAndConditionsPage } from "../pages/TermsAndConditionsPage";
 
 When(
@@ -51,5 +52,14 @@ When(
       .locator(".govuk-details__summary")
       .filter({ hasText: detailsText })
       .click();
+  }
+);
+
+Then(
+  "an error summary is shown containing {string}",
+  async function (this: PlaywrightWorld, expectedText: string): Promise<void> {
+    const errorSummary = requirePage(this).locator(".govuk-error-summary");
+    await expect(errorSummary).toBeVisible();
+    await expect(errorSummary).toContainText(expectedText);
   }
 );

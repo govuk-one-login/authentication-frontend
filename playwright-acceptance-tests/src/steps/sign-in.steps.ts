@@ -9,7 +9,7 @@ import { CheckYourPhonePage } from "../pages/CheckYourPhonePage";
 import { YouHaveOneLoginPage } from "../pages/YouHaveOneLoginPage";
 import { EnterAuthenticatorAppCodePage } from "../pages/EnterAuthenticatorAppCodePage";
 import { LockoutPage } from "../pages/LockoutPage";
-import { TEST_EMAIL, VALID_PASSWORD } from "../support/constants";
+import { TEST_EMAIL } from "../support/constants";
 import { requirePage } from "../support/utils";
 import { stub } from "../support/stub";
 import {
@@ -19,17 +19,6 @@ import {
 import { accountLockedUserExistsResponse } from "../responses/user-exists";
 
 /* ---- Given: user setup (no-ops with stub) ---- */
-
-Given("a user exists", async function (this: PlaywrightWorld): Promise<void> {
-  // No-op: API stub always behaves as if user exists
-});
-
-Given(
-  "a user with SMS MFA exists",
-  async function (this: PlaywrightWorld): Promise<void> {
-    // No-op: API stub default user has SMS MFA
-  }
-);
 
 Given(
   "a user with App MFA exists",
@@ -205,15 +194,6 @@ When(
   }
 );
 
-When(
-  "the user enters their password",
-  async function (this: PlaywrightWorld): Promise<void> {
-    await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
-      VALID_PASSWORD
-    );
-  }
-);
-
 Then(
   "the user is returned to the service",
   async function (this: PlaywrightWorld): Promise<void> {
@@ -318,94 +298,12 @@ Then(
   }
 );
 
-When(
-  "the user enters an incorrect password {int} times",
-  async function (this: PlaywrightWorld, count: number): Promise<void> {
-    const page = new EnterPasswordPage(requirePage(this));
-    const isLastAttempt = (i: number) => i === count - 1;
-    for (let i = 0; i < count; i++) {
-      await page.enterPasswordAndContinue("wrong-password");
-      if (!isLastAttempt(i)) {
-        await page.assertLoaded();
-        await page.assertInlineError();
-      }
-    }
-  }
-);
-
-When(
-  "the user enters an incorrect phone security code {int} times",
-  async function (this: PlaywrightWorld, count: number): Promise<void> {
-    const page = new CheckYourPhonePage(requirePage(this));
-    const isLastAttempt = (i: number) => i === count - 1;
-    for (let i = 0; i < count; i++) {
-      await page.enterCodeAndContinue("000000");
-      if (!isLastAttempt(i)) {
-        await page.assertLoaded();
-        await page.assertInlineError();
-      }
-    }
-  }
-);
-
-When(
-  "the user enters an incorrect auth app security code {int} times",
-  async function (this: PlaywrightWorld, count: number): Promise<void> {
-    const page = new EnterAuthenticatorAppCodePage(requirePage(this));
-    const isLastAttempt = (i: number) => i === count - 1;
-    for (let i = 0; i < count; i++) {
-      await page.enterCodeAndContinue("000000");
-      if (!isLastAttempt(i)) {
-        await page.assertLoaded();
-        await page.assertInlineError();
-      }
-    }
-  }
-);
-
-When(
-  "the user requests the phone otp code a further {int} times",
-  async function (this: PlaywrightWorld, count: number): Promise<void> {
-    const page = requirePage(this);
-    const isLastAttempt = (i: number) => i === count - 1;
-    for (let i = 0; i < count; i++) {
-      await page.getByText(/problems with the code/i).click();
-      await page.getByRole("link", { name: /send the code again/i }).click();
-      await page.getByRole("button", { name: /get security code/i }).click();
-      if (!isLastAttempt(i)) {
-        await new CheckYourPhonePage(page).assertLoaded();
-      }
-    }
-  }
-);
-
 /* ---- Lockout assertions ---- */
 
 Then(
   "the {string} lockout screen is displayed",
   async function (this: PlaywrightWorld, heading: string): Promise<void> {
     await new LockoutPage(requirePage(this)).assertHeading(heading);
-  }
-);
-
-Then(
-  "the lockout duration is {int} hours",
-  async function (this: PlaywrightWorld, hours: number): Promise<void> {
-    await new LockoutPage(requirePage(this)).assertDuration(`${hours} hours`);
-  }
-);
-
-Then(
-  "the lockout reason is {string}",
-  async function (this: PlaywrightWorld, reason: string): Promise<void> {
-    await new LockoutPage(requirePage(this)).assertReason(reason);
-  }
-);
-
-Given(
-  "the lockout has not yet expired",
-  async function (this: PlaywrightWorld): Promise<void> {
-    // No-op — lockout state persists in API stub across browser sessions
   }
 );
 

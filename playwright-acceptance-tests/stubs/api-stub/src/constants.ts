@@ -8,11 +8,6 @@ export enum CredentialStrength {
   PASSWORD_AND_MFA = "Cl.Cm",
 }
 
-export enum MfaLockReason {
-  INVALID_CODE = "code",
-  MAX_RESENDS = "resend",
-}
-
 /**
  * API error codes — subset matching src/components/common/constants.ts in the
  * main frontend codebase.
