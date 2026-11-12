@@ -19,4 +19,8 @@ export class LockoutPage extends BasePage {
   async assertReason(reason: string): Promise<void> {
     await expect(this.page.getByText(reason).first()).toBeVisible();
   }
+
+  async assertBodyContains(text: string): Promise<void> {
+    await expect(this.page.getByText(text).first()).toBeVisible();
+  }
 }

@@ -2,10 +2,12 @@ import { Given } from "@cucumber/cucumber";
 import { stub } from "../support/stub";
 import {
   authenticatedStartResponse,
+  authenticatedStartResponseRequiringUpliftWithAuthApp,
   authenticatedStartResponseRequiringUpliftWithSMSMFA,
   unauthenticatedStartResponse,
   unauthenticatedStartResponseForSmsUserWithMfaNotRequired,
 } from "../responses/start";
+import { mfaCodeSentResponse } from "../responses/mfa";
 
 Given(
   "a user does not have an authenticated session",
@@ -28,6 +30,16 @@ Given(
   async function (): Promise<void> {
     await stub.setStartResponse(
       authenticatedStartResponseRequiringUpliftWithSMSMFA
+    );
+    await stub.setMfaResponse(mfaCodeSentResponse);
+  }
+);
+
+Given(
+  "a user has an authenticated session that requires uplift with auth app",
+  async function (): Promise<void> {
+    await stub.setStartResponse(
+      authenticatedStartResponseRequiringUpliftWithAuthApp
     );
   }
 );
