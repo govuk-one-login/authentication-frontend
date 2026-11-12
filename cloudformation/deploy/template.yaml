@@ -391,6 +391,29 @@ Conditions:
               ]
               - "Yes"
 
+  EnableCloudwatchMetrics:
+    Fn::Or:
+      - Fn::And:
+          - !Condition UseSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref SubEnvironment,
+                  EnableCloudwatchMetrics,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+      - Fn::And:
+          - !Condition NotSubEnvironment
+          - Fn::Equals:
+              - !FindInMap [
+                  EnvironmentConfiguration,
+                  !Ref Environment,
+                  EnableCloudwatchMetrics,
+                  DefaultValue: "No",
+                ]
+              - "Yes"
+
   HasAcceptanceTests:
     Fn::Or:
       - Fn::And:
@@ -421,6 +444,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "Yes"
       SupportSelfServeAccountDeletion: "Yes"
+      EnableCloudwatchMetrics: "Yes"
       PasskeyPromptClientAllowList: "skwdHH2y6ERjJWTPSoAFbSt8lX04OgtI"
       PasskeyRolloutPercentage: 100
       PasskeyPromptClientDenyList: ""
@@ -443,6 +467,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "Yes"
       SupportSelfServeAccountDeletion: "Yes"
+      EnableCloudwatchMetrics: "Yes"
       PasskeyPromptClientAllowList: "rPEUe0hRrHqf0i0es1gYjKxE5ceGN7VK"
       PasskeyRolloutPercentage: 100
       PasskeyPromptClientDenyList: ""
@@ -460,6 +485,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "Yes"
       SupportSelfServeAccountDeletion: "Yes"
+      EnableCloudwatchMetrics: "Yes"
       PasskeyPromptClientAllowList: ""
       PasskeyRolloutPercentage: 100
       PasskeyPromptClientDenyList: ""
@@ -490,6 +516,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "Yes"
       SupportSelfServeAccountDeletion: "Yes"
+      EnableCloudwatchMetrics: "Yes"
       PasskeyPromptClientAllowList: "J3tedNRsfssnsf4STuc2NNIV1C1gdxBB"
       PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-w62weogzsdkb"
@@ -521,6 +548,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "Yes"
       SupportSelfServeAccountDeletion: "No"
+      EnableCloudwatchMetrics: "Yes"
       PasskeyPromptClientAllowList: "Ykg9fGyY76On4e8tPvFabK5BIl65EkGH"
       PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
@@ -559,6 +587,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "Yes"
       SupportSelfServeAccountDeletion: "No"
+      EnableCloudwatchMetrics: "Yes"
       PasskeyPromptClientAllowList: "EB2EC91OpyzuhI7C2nw1aiEK2q8,3NKFv679oYlMdyrhKErrTGbzBy2h8rrd,nsR2wZ7EebJ2VOzE1LUa9iAVadunWQP3,EMGmY82k-92QSakDl_9keKDFmZY" # mobile sts, rp-stub, perf-test client, home client
       PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
@@ -591,6 +620,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "Yes"
+      EnableCloudwatchMetrics: "No"
       PasskeyPromptClientAllowList: ""
       PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
@@ -626,6 +656,7 @@ Mappings:
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "Yes"
       SupportSelfServeAccountDeletion: "No"
+      EnableCloudwatchMetrics: "No"
       PasskeyPromptClientAllowList: ""
       PasskeyPromptClientDenyList: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
@@ -1186,6 +1217,8 @@ Resources:
               Value: !If [SupportNewInternationalSms, "1", "0"]
             - Name: SUPPORT_SELF_SERVE_ACCOUNT_DELETION
               Value: !If [SupportSelfServeAccountDeletion, "1", "0"]
+            - Name: ENABLE_CLOUDWATCH_METRICS
+              Value: !If [EnableCloudwatchMetrics, "1", "0"]
             - Name: PASSKEY_ROLLOUT_PERCENTAGE
               Value:
                 !FindInMap [

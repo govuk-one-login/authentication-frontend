@@ -92,6 +92,7 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             "SUPPORT_PASSKEY_REGISTRATION": 1,
             "ENABLE_PASSKEY_CONTACT_FORM": 1,
             "SUPPORT_NEW_INTERNATIONAL_SMS": 1,
+            "ENABLE_CLOUDWATCH_METRICS": 1,
         },
     },
     {
