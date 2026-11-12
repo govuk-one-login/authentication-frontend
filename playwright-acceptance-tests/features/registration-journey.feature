@@ -10,6 +10,7 @@ Feature: Registration Journey
     Then the user is taken to the "You do not have a GOV.UK One Login" page
     When the user clicks link "Try another email address"
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
+
   Scenario: User is taken to Check your email page from You do not have a GOV.UK One Login page when Create selected
     Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -26,19 +27,19 @@ Feature: Registration Journey
     When the user selects create an account
     Then the user is taken to the "Enter your email address" page
     When the user enters an invalid email address and clicks continue
-    Then the user is shown an error summary
+    Then an error summary is shown containing "Enter an email address in the correct format"
     When the user enters an email address of an account that does not exist
     Then the user is taken to the "Check your email" page
     When the user enters the correct six digit security code from their email
     Then the user is taken to the "Create your password" page
     And the user creates and enters an invalid password and clicks continue
-    Then the user is shown an error summary
+    Then an error summary is shown containing "Your password must be at least 8 characters long and must include letters and numbers"
     When the user creates and enters a weak password and clicks continue
-    Then the user is shown an error summary
+    Then an error summary is shown containing "Enter a stronger password"
     When the user creates and enters a short digit only password and clicks continue
-    Then the user is shown an error summary
+    Then an error summary is shown containing "Your password must be at least 8 characters long and must include letters and numbers"
     When the user creates and enters a sequence of numbers password and clicks continue
-    Then the user is shown an error summary
+    Then an error summary is shown containing "Your password must be at least 8 characters long and must include letters and numbers"
 
   Scenario: User successfully registers using sms
     Given a user does not have an authenticated session

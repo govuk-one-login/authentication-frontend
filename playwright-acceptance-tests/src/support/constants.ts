@@ -6,10 +6,8 @@ export const INVALID_PASSWORD = "invalid-password";
 // reaches the backend, which rejects it as a common password.
 export const WEAK_PASSWORD = "Password1";
 
-// Fails the local "digits only" / minimum-length rules.
 export const SHORT_NUMERIC_PASSWORD = "1234";
 
-// Digits only, so rejected by local validation.
 export const SEQUENTIAL_NUMBERS_PASSWORD = "12345678";
 
 export const EMAIL = "user@example.com";

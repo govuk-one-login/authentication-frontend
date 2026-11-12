@@ -51,8 +51,9 @@ Feature: Authentication App Journeys
     Then the user is taken to the "Enter your email" page
     When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
-    When the user enters their password
+    When the user enters a correct password and has auth app mfa
     And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
+    Given a user has an authenticated session that requires uplift with auth app
     Then the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Enter a security code to continue" page

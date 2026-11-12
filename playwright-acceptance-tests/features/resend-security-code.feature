@@ -83,7 +83,7 @@ Feature: Resend security code
     Then the user is taken to the "Enter your password" page
     When the user clicks the forgotten password link and a password reset is permitted via SMS
     Then the user is taken to the "Check your email" page
-    When the user enters the correct six digit security code from their email
+    When the user enters the correct six digit security code from their email for password reset with sms
     Then the user is taken to the "Check your phone" page
     And the current page path is "/reset-password-2fa-sms"
     When the user chooses to resend the security code

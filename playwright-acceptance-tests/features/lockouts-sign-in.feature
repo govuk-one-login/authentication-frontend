@@ -1,105 +1,70 @@
 Feature: Sign in lockouts
 
-  # ENTER INCORRECT PASSWORD TOO MANY TIMES DURING SIGN IN - 2060
-  Scenario: A user is blocked when they enter too many incorrect passwords during sign in.
-    Given a user exists
+  Scenario: A user is shown the account locked page when the backend reports the password lockout limit has been reached
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
-    When the user enters an incorrect password 6 times
+    When the user enters an incorrect password
+    Then the user is taken to the "Enter your password" page
+    And an error summary is shown containing "The password you entered is not correct"
+    When the user enters an incorrect password and the backend reports the password lockout limit has been reached
     Then the "You entered the wrong password too many times" lockout screen is displayed
-    * the lockout duration is 2 hours
-    * the lockout reason is "you entered the wrong password"
+    * the page says the user cannot sign in for 2 hours
+    * the page says it is because they entered the wrong password more than 5 times
 
-    Given the lockout has not yet expired
+  Scenario: A returning user is shown the sign in blocked page when the backend reports their account is still locked
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters their email address and the backend reports the account is still locked
     Then the "You cannot sign in at the moment" lockout screen is displayed
-    * the lockout duration is 2 hours
-    * the lockout reason is "you entered the wrong password"
+    * the page says it is because they entered the wrong password more than 5 times
 
-  # USER BLOCKED FOR TOO MANY INCORRECT PASSWORDS CAN RESET THEIR PASSWORD AND BLOCK IS LIFTED
-  # Temporarily commented due to flakiness
-#  Scenario: When a user is blocked due to entering too many incorrect passwords during sign in they can reset their password.
-#    Given the user "SIGN_IN_INCORRECT_PASSWORD_LOCKOUT_RESET_PW" is on the blocked page for entering too many incorrect passwords
-#    When the user resets their password
-#    Then the block is lifted and the user "SIGN_IN_INCORRECT_PASSWORD_LOCKOUT_RESET_PW" can login
-
-  # ENTER INCORRECT SMS SECURITY CODE TOO MANY TIMES DURING SIGN IN - 2064
-  Scenario: A user is blocked when they enter too many incorrect sms codes during sign in.
-    Given a user with SMS MFA exists
+  Scenario: A user is shown the security code lockout page when the an incorrect code entry triggers a lockout
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
-    When the user enters their password
+    When the user enters a correct password and has sms mfa
     Then the user is taken to the "Check your phone" page
-    When the user enters an incorrect phone security code 6 times
+    When the user enters an incorrect phone security code
+    Then the user is taken to the "Check your phone" page
+    And an error summary is shown containing "The code you entered is not correct"
+    When the user enters an incorrect phone security code and the backend reports the code lockout limit has been reached
     Then the "You entered the wrong security code too many times" lockout screen is displayed
-    * the lockout duration is 2 hours
+    * the page says the user cannot sign in for 2 hours
 
-    Given the lockout has not yet expired
+  Scenario: A user is shown the resend lockout page when the user cannot request any more codes
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the "You cannot sign in at the moment" lockout screen is displayed
-    * the lockout duration is 2 hours
-    * the lockout reason is "you entered the wrong security code too many times"
-
-  # REQUEST TOO MANY SMS SECURITY CODE TOO MANY TIMES DURING SIGN IN - 2378
-  Scenario: A user is blocked when they request too many sms codes during sign in
-    Given a user with SMS MFA exists
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
+    When the user enters a correct password and has sms mfa
     Then the user is taken to the "Check your phone" page
-    When the user requests the phone otp code a further 5 times
+    When the user requests a new phone security code and the backend reports the resend limit has been reached
     Then the "You asked to resend the security code too many times" lockout screen is displayed
-    * the lockout duration is 2 hours
+    * the page says the user cannot continue for 2 hours
 
-    Given the lockout has not yet expired
+  Scenario: A user is shown the security code lockout page when the backend reports the incorrect auth app code limit has been reached
+    Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When the user enters their email address
+    When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the "You cannot sign in at the moment" lockout screen is displayed
-    * the lockout duration is 2 hours
-    * the lockout reason is "you asked to resend the security code too many times"
-
-  # ENTER TOO MANY INCORRECT AUTH APP CODES TOO MANY TIMES DURING SIGN IN - 2061
-  Scenario: A user is blocked when they enter an incorrect auth app security code more than 5 times during sign in.
-    Given a user with App MFA exists
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
+    When the user enters a correct password and has auth app mfa
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-    And the user enters an incorrect auth app security code 6 times
+    When the user enters an incorrect auth app security code that the backend rejects without locking the account
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    And an error summary is shown containing "The code you entered is not correct"
+    When the user enters an incorrect auth app security code and the backend reports the code lockout limit has been reached
     Then the "You entered the wrong security code too many times" lockout screen is displayed
-    * the lockout duration is 2 hours
-
-    Given the lockout has not yet expired
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the "You cannot sign in at the moment" lockout screen is displayed
-    * the lockout duration is 2 hours
-    * the lockout reason is "you entered the wrong security code too many times"
+    * the page says the user cannot sign in for 2 hours

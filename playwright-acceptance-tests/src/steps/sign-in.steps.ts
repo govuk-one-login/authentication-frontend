@@ -16,19 +16,14 @@ import {
   UK_PHONE_NUMBER_INTERNATIONAL,
 } from "../support/constants";
 import { requirePage } from "../support/utils";
+import { stub } from "../support/stub";
+import {
+  incorrectPasswordLockoutResponse,
+  incorrectPasswordResponse,
+} from "../responses/login";
+import { accountLockedUserExistsResponse } from "../responses/user-exists";
 
 /* ---- Given: user setup (no-ops with stub) ---- */
-
-Given("a user exists", async function (this: PlaywrightWorld): Promise<void> {
-  // No-op: API stub always behaves as if user exists
-});
-
-Given(
-  "a user with SMS MFA exists",
-  async function (this: PlaywrightWorld): Promise<void> {
-    // No-op: API stub default user has SMS MFA
-  }
-);
 
 Given(
   "a user with App MFA exists",
@@ -212,15 +207,6 @@ When(
   }
 );
 
-When(
-  "the user enters their password",
-  async function (this: PlaywrightWorld): Promise<void> {
-    await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
-      VALID_PASSWORD
-    );
-  }
-);
-
 Then(
   "the user is returned to the service",
   async function (this: PlaywrightWorld): Promise<void> {
@@ -289,63 +275,50 @@ Then(
 /* ---- Lockout retry loops ---- */
 
 When(
-  "the user enters an incorrect password {int} times",
-  async function (this: PlaywrightWorld, count: number): Promise<void> {
-    const page = new EnterPasswordPage(requirePage(this));
-    const isLastAttempt = (i: number) => i === count - 1;
-    for (let i = 0; i < count; i++) {
-      await page.enterPasswordAndContinue("wrong-password");
-      if (!isLastAttempt(i)) {
-        await page.assertLoaded();
-        await page.assertInlineError();
-      }
-    }
+  "the user enters an incorrect password",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await stub.setCorrectPasswordResponse(incorrectPasswordResponse);
+    await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
+      "wrong-password"
+    );
   }
 );
 
 When(
-  "the user enters an incorrect phone security code {int} times",
-  async function (this: PlaywrightWorld, count: number): Promise<void> {
-    const page = new CheckYourPhonePage(requirePage(this));
-    const isLastAttempt = (i: number) => i === count - 1;
-    for (let i = 0; i < count; i++) {
-      await page.enterCodeAndContinue("000000");
-      if (!isLastAttempt(i)) {
-        await page.assertLoaded();
-        await page.assertInlineError();
-      }
-    }
+  "the user enters an incorrect password and the backend reports the password lockout limit has been reached",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await stub.setCorrectPasswordResponse(incorrectPasswordLockoutResponse);
+    await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
+      "wrong-password"
+    );
   }
 );
 
 When(
-  "the user enters an incorrect auth app security code {int} times",
-  async function (this: PlaywrightWorld, count: number): Promise<void> {
-    const page = new EnterAuthenticatorAppCodePage(requirePage(this));
-    const isLastAttempt = (i: number) => i === count - 1;
-    for (let i = 0; i < count; i++) {
-      await page.enterCodeAndContinue("000000");
-      if (!isLastAttempt(i)) {
-        await page.assertLoaded();
-        await page.assertInlineError();
-      }
-    }
+  "the user enters their email address and the backend reports the account is still locked",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await stub.setUserExistsResponse(accountLockedUserExistsResponse);
+    const page = new EnterEmailPage(requirePage(this));
+    await page.enterEmail(TEST_EMAIL.SMS_USER);
+    await page.clickContinue();
   }
 );
 
-When(
-  "the user requests the phone otp code a further {int} times",
-  async function (this: PlaywrightWorld, count: number): Promise<void> {
-    const page = requirePage(this);
-    const isLastAttempt = (i: number) => i === count - 1;
-    for (let i = 0; i < count; i++) {
-      await page.getByText(/problems with the code/i).click();
-      await page.getByRole("link", { name: /send the code again/i }).click();
-      await page.getByRole("button", { name: /get security code/i }).click();
-      if (!isLastAttempt(i)) {
-        await new CheckYourPhonePage(page).assertLoaded();
-      }
-    }
+Then(
+  "the page says the user cannot sign in for 2 hours",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await new LockoutPage(requirePage(this)).assertBodyContains(
+      "You will not be able to sign in for 2 hours"
+    );
+  }
+);
+
+Then(
+  "the page says it is because they entered the wrong password more than 5 times",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await new LockoutPage(requirePage(this)).assertBodyContains(
+      "you entered the wrong password more than 5 times"
+    );
   }
 );
 
@@ -355,27 +328,6 @@ Then(
   "the {string} lockout screen is displayed",
   async function (this: PlaywrightWorld, heading: string): Promise<void> {
     await new LockoutPage(requirePage(this)).assertHeading(heading);
-  }
-);
-
-Then(
-  "the lockout duration is {int} hours",
-  async function (this: PlaywrightWorld, hours: number): Promise<void> {
-    await new LockoutPage(requirePage(this)).assertDuration(`${hours} hours`);
-  }
-);
-
-Then(
-  "the lockout reason is {string}",
-  async function (this: PlaywrightWorld, reason: string): Promise<void> {
-    await new LockoutPage(requirePage(this)).assertReason(reason);
-  }
-);
-
-Given(
-  "the lockout has not yet expired",
-  async function (this: PlaywrightWorld): Promise<void> {
-    // No-op — lockout state persists in API stub across browser sessions
   }
 );
 

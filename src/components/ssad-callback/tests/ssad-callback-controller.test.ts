@@ -3,7 +3,7 @@ import { describe } from "mocha";
 import { mockResponse } from "mock-req-res";
 import type { RequestOutput, ResponseOutput } from "mock-req-res";
 import { createMockRequest } from "../../../../test/helpers/mock-request-helper.js";
-import { PATH_NAMES } from "../../../app.constants.js";
+import { MFA_METHOD_TYPE, PATH_NAMES } from "../../../app.constants.js";
 import { ssadCallbackGet } from "../ssad-callback-controller.js";
 import { BadRequestError } from "../../../utils/error.js";
 import sinon from "sinon";
@@ -11,14 +11,29 @@ import type { Request, Response } from "express";
 import { strict as assert } from "assert";
 import { commonVariables } from "../../../../test/helpers/common-test-variables.js";
 
-const amcOutcome = (scope: string, success: boolean) => ({
+const amcOutcome = (
+  scope: string,
+  success: boolean,
+  actions: unknown[] = []
+) => ({
   sub: "test-sub",
   outcome_id: "test-outcome-id",
   email: "test@test.com",
   scope,
   success,
-  actions: [],
+  actions,
 });
+
+const accountDeleteFailure = (description: string) =>
+  amcOutcome("account-delete", false, [
+    {
+      action: "account-delete",
+      startedAt: 1,
+      completedAt: 1,
+      success: false,
+      details: { error: { code: 1001, description } },
+    },
+  ]);
 
 const createMockService = (success: boolean, data: unknown) => {
   return {
@@ -77,14 +92,94 @@ describe("ssad-callback-controller", () => {
     expect(res.redirect).to.have.been.calledWith(PATH_NAMES.ACCOUNT_DELETED);
   });
 
-  it("should return the outcome when the account was not deleted", async () => {
-    const outcome = amcOutcome("account-delete", false);
-    const fakeService = createMockService(true, outcome);
+  [
+    {
+      description: "UserBackedOutOfJourney",
+      mfaMethodType: MFA_METHOD_TYPE.SMS,
+      expectedPath: PATH_NAMES.ENTER_MFA,
+    },
+    {
+      description: "UserAbortedJourney",
+      mfaMethodType: MFA_METHOD_TYPE.SMS,
+      expectedPath: PATH_NAMES.ENTER_MFA,
+    },
+    {
+      description: "UserBackedOutOfJourney",
+      mfaMethodType: MFA_METHOD_TYPE.AUTH_APP,
+      expectedPath: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+    },
+    {
+      description: "UserAbortedJourney",
+      mfaMethodType: MFA_METHOD_TYPE.AUTH_APP,
+      expectedPath: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+    },
+  ].forEach(({ description, mfaMethodType, expectedPath }) => {
+    it(`should redirect an ${mfaMethodType} user to ${expectedPath} when AMC returns ${description}`, async () => {
+      req.session.user.mfaMethodType = mfaMethodType;
+      const fakeService = createMockService(
+        true,
+        accountDeleteFailure(description)
+      );
 
-    await ssadCallbackGet(fakeService)(req as Request, res as Response);
+      await ssadCallbackGet(fakeService)(req as Request, res as Response);
 
-    expect(res.status).to.have.been.calledWith(200);
-    expect(res.json).to.have.been.calledWith({ message: outcome });
+      expect(res.redirect).to.have.been.calledWith(expectedPath);
+    });
+  });
+
+  it("should raise error when AMC returns an unexpected error description", async () => {
+    req.session.user.mfaMethodType = MFA_METHOD_TYPE.SMS;
+    const fakeService = createMockService(
+      true,
+      accountDeleteFailure("JourneyFailed")
+    );
+
+    await assert.rejects(
+      async () => ssadCallbackGet(fakeService)(req as Request, res as Response),
+      (error: Error) => {
+        expect(error).to.be.instanceOf(BadRequestError);
+        expect(error.message).to.equal(
+          "500:Unexpected error description: JourneyFailed"
+        );
+        return true;
+      }
+    );
+    expect(res.redirect).not.to.have.been.called;
+  });
+
+  it("should raise error when AMC returns no account-delete action", async () => {
+    req.session.user.mfaMethodType = MFA_METHOD_TYPE.SMS;
+    const fakeService = createMockService(
+      true,
+      amcOutcome("account-delete", false)
+    );
+
+    await assert.rejects(
+      async () => ssadCallbackGet(fakeService)(req as Request, res as Response),
+      (error: Error) => {
+        expect(error).to.be.instanceOf(BadRequestError);
+        expect(error.message).to.equal(
+          "500:Unexpected error description: undefined"
+        );
+        return true;
+      }
+    );
+    expect(res.redirect).not.to.have.been.called;
+  });
+
+  it("should raise error when the user has no mfaMethodType", async () => {
+    const fakeService = createMockService(
+      true,
+      accountDeleteFailure("UserBackedOutOfJourney")
+    );
+
+    await assert.rejects(
+      async () => ssadCallbackGet(fakeService)(req as Request, res as Response),
+      (error: Error) => {
+        expect(error.message).to.equal("Invalid mfaMethodType: undefined");
+        return true;
+      }
+    );
     expect(res.redirect).not.to.have.been.called;
   });
 

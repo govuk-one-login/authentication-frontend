@@ -1,20 +1,38 @@
 import { describe } from "mocha";
-import { expect, sinon } from "../../../../test/utils/test-utils.js";
-import { API_ENDPOINTS, PATH_NAMES } from "../../../app.constants.js";
+import { sinon } from "../../../../test/utils/test-utils.js";
+import {
+  API_ENDPOINTS,
+  MFA_METHOD_TYPE,
+  PATH_NAMES,
+} from "../../../app.constants.js";
 import type { NextFunction, Request, Response, Application } from "express";
 import nock from "nock";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import esmock from "esmock";
 import request from "supertest";
 
-const accountDeleteOutcome = (success: boolean) => ({
+const accountDeleteOutcome = (success: boolean, actions: unknown[] = []) => ({
   sub: "test-sub",
   outcome_id: "test-outcome-id",
   email: "test@test.com",
   scope: "account-delete",
   success,
-  actions: [],
+  actions,
 });
+
+const accountDeleteFailure = (description: string) =>
+  accountDeleteOutcome(false, [
+    {
+      action: "account-delete",
+      startedAt: 1,
+      completedAt: 1,
+      success: false,
+      details: { error: { code: 1001, description } },
+    },
+  ]);
+
+const REQUEST_PATH =
+  PATH_NAMES.SSAD_CALLBACK + "?code=test-code&state=test-state";
 
 describe("Integration:: ssad callback", () => {
   let app: Application;
@@ -23,7 +41,7 @@ describe("Integration:: ssad callback", () => {
   before(async () => {
     process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION = "1";
     baseApi = process.env.FRONTEND_API_BASE_URL;
-    app = await stubMiddlewareAndCreateApp();
+    app = await stubMiddlewareAndCreateApp(MFA_METHOD_TYPE.SMS);
   });
 
   after(() => {
@@ -47,21 +65,39 @@ describe("Integration:: ssad callback", () => {
       .expect("Location", PATH_NAMES.ACCOUNT_DELETED);
   });
 
-  it("should return the outcome when AMC did not delete the account", async () => {
+  [
+    {
+      mfaMethodType: MFA_METHOD_TYPE.SMS,
+      expectedPath: PATH_NAMES.ENTER_MFA,
+    },
+    {
+      mfaMethodType: MFA_METHOD_TYPE.AUTH_APP,
+      expectedPath: PATH_NAMES.ENTER_AUTHENTICATOR_APP_CODE,
+    },
+  ].forEach(({ mfaMethodType, expectedPath }) => {
+    ["UserBackedOutOfJourney", "UserAbortedJourney"].forEach((description) => {
+      it(`should redirect an ${mfaMethodType} user to ${expectedPath} when AMC returns ${description}`, async () => {
+        const mfaApp = await stubMiddlewareAndCreateApp(mfaMethodType);
+        nock(baseApi)
+          .post(API_ENDPOINTS.AMC_CALLBACK)
+          .once()
+          .reply(200, accountDeleteFailure(description));
+
+        await request(mfaApp)
+          .get(REQUEST_PATH)
+          .expect(302)
+          .expect("Location", expectedPath);
+      });
+    });
+  });
+
+  it("should return 400 when AMC returns an unexpected error description", async () => {
     nock(baseApi)
       .post(API_ENDPOINTS.AMC_CALLBACK)
       .once()
-      .reply(200, accountDeleteOutcome(false));
+      .reply(200, accountDeleteFailure("JourneyFailed"));
 
-    const requestPath =
-      PATH_NAMES.SSAD_CALLBACK + "?code=test-code&state=test-state";
-
-    await request(app)
-      .get(requestPath)
-      .expect(200)
-      .expect(function (res) {
-        expect(res.body.message.success).to.equal(false);
-      });
+    await request(app).get(REQUEST_PATH).expect(400);
   });
 
   it("should return 400 when SSAD callback fails", async () => {
@@ -89,7 +125,9 @@ describe("Integration:: ssad callback", () => {
   });
 });
 
-const stubMiddlewareAndCreateApp = async (): Promise<Application> => {
+const stubMiddlewareAndCreateApp = async (
+  mfaMethodType: MFA_METHOD_TYPE
+): Promise<Application> => {
   const { createApp } = await esmock(
     "../../../app.js",
     {},
@@ -108,6 +146,7 @@ const stubMiddlewareAndCreateApp = async (): Promise<Application> => {
           req.session.user = {
             email: "test@test.com",
             journey: getPermittedJourneyForPath(PATH_NAMES.SSAD_AUTHORIZE),
+            mfaMethodType,
           };
 
           next();
