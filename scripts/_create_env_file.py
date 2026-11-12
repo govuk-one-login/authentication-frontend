@@ -297,6 +297,7 @@ def get_static_variables(deployment_name: str) -> list[EnvFileSection]:
                     else f"https://oidc.{deployment_name}.account.gov.uk",
                 ),
                 "FRONTEND_API_BASE_URL": "http://localhost:8888",
+                "AWS_EMF_ENVIRONMENT": "Local",
             },
         },
         {
