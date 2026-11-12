@@ -9,6 +9,7 @@ Feature: Sign in lockouts
     Then the user is taken to the "Enter your password" page
     When the user enters an incorrect password
     Then the user is taken to the "Enter your password" page
+    And an error summary is shown containing "The password you entered is not correct"
     When the user enters an incorrect password and the backend reports the password lockout limit has been reached
     Then the "You entered the wrong password too many times" lockout screen is displayed
     * the page says the user cannot sign in for 2 hours
@@ -34,6 +35,7 @@ Feature: Sign in lockouts
     Then the user is taken to the "Check your phone" page
     When the user enters an incorrect phone security code
     Then the user is taken to the "Check your phone" page
+    And an error summary is shown containing "The code you entered is not correct"
     When the user enters an incorrect phone security code and the backend reports the code lockout limit has been reached
     Then the "You entered the wrong security code too many times" lockout screen is displayed
     * the page says the user cannot sign in for 2 hours
@@ -62,6 +64,7 @@ Feature: Sign in lockouts
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters an incorrect auth app security code that the backend rejects without locking the account
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    And an error summary is shown containing "The code you entered is not correct"
     When the user enters an incorrect auth app security code and the backend reports the code lockout limit has been reached
     Then the "You entered the wrong security code too many times" lockout screen is displayed
     * the page says the user cannot sign in for 2 hours

@@ -20,10 +20,4 @@ export class CheckYourPhonePage extends BasePage {
     await this.enterSecurityCode(code);
     await this.clickContinue();
   }
-
-  async assertInlineError(): Promise<void> {
-    await super.assertInlineError(
-      /the code you entered is not correct|enter the code/i
-    );
-  }
 }

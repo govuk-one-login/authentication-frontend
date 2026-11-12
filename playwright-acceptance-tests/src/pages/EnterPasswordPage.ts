@@ -30,8 +30,4 @@ export class EnterPasswordPage extends BasePage {
     await this.enterPassword(password);
     await this.clickContinue();
   }
-
-  async assertInlineError(): Promise<void> {
-    await super.assertInlineError(/enter your password|incorrect password/i);
-  }
 }

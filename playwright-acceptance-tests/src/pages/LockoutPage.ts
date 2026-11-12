@@ -12,14 +12,6 @@ export class LockoutPage extends BasePage {
     await this.runAccessibilityCheck();
   }
 
-  async assertDuration(duration: string): Promise<void> {
-    await expect(this.page.getByText(duration).first()).toBeVisible();
-  }
-
-  async assertReason(reason: string): Promise<void> {
-    await expect(this.page.getByText(reason).first()).toBeVisible();
-  }
-
   async assertBodyContains(text: string): Promise<void> {
     await expect(this.page.getByText(text).first()).toBeVisible();
   }
