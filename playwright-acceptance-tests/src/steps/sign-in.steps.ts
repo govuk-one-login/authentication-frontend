@@ -9,7 +9,7 @@ import { CheckYourPhonePage } from "../pages/CheckYourPhonePage";
 import { YouHaveOneLoginPage } from "../pages/YouHaveOneLoginPage";
 import { EnterAuthenticatorAppCodePage } from "../pages/EnterAuthenticatorAppCodePage";
 import { LockoutPage } from "../pages/LockoutPage";
-import { TEST_EMAIL, VALID_PASSWORD } from "../support/constants";
+import { TEST_EMAIL } from "../support/constants";
 import { requirePage } from "../support/utils";
 import { stub } from "../support/stub";
 import {
@@ -19,17 +19,6 @@ import {
 import { accountLockedUserExistsResponse } from "../responses/user-exists";
 
 /* ---- Given: user setup (no-ops with stub) ---- */
-
-Given("a user exists", async function (this: PlaywrightWorld): Promise<void> {
-  // No-op: API stub always behaves as if user exists
-});
-
-Given(
-  "a user with SMS MFA exists",
-  async function (this: PlaywrightWorld): Promise<void> {
-    // No-op: API stub default user has SMS MFA
-  }
-);
 
 Given(
   "a user with App MFA exists",
@@ -202,15 +191,6 @@ When(
         .evaluate((el: HTMLInputElement) => (el.value = "true"));
     }
     await page.clickContinue();
-  }
-);
-
-When(
-  "the user enters their password",
-  async function (this: PlaywrightWorld): Promise<void> {
-    await new EnterPasswordPage(requirePage(this)).enterPasswordAndContinue(
-      VALID_PASSWORD
-    );
   }
 );
 
