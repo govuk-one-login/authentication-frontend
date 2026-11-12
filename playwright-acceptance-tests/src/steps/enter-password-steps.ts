@@ -3,7 +3,7 @@ import type { PlaywrightWorld } from "../support/world";
 import { requirePage } from "../support/utils";
 import { stub } from "../support/stub";
 import { EnterPasswordPage } from "../pages/EnterPasswordPage";
-import { VALID_PASSWORD } from "../support/constants";
+import { VALID_PASSWORD, INVALID_PASSWORD } from "../support/constants";
 import {
   correctPasswordSmsResponse,
   correctPasswordSmsResponseWithOutdatedTerms,

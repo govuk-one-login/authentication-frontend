@@ -9,7 +9,12 @@ import { CheckYourPhonePage } from "../pages/CheckYourPhonePage";
 import { YouHaveOneLoginPage } from "../pages/YouHaveOneLoginPage";
 import { EnterAuthenticatorAppCodePage } from "../pages/EnterAuthenticatorAppCodePage";
 import { LockoutPage } from "../pages/LockoutPage";
-import { TEST_EMAIL, VALID_PASSWORD } from "../support/constants";
+import {
+  TEST_EMAIL,
+  VALID_PASSWORD,
+  UK_PHONE_NUMBER,
+  UK_PHONE_NUMBER_INTERNATIONAL,
+} from "../support/constants";
 import { requirePage } from "../support/utils";
 
 /* ---- Given: user setup (no-ops with stub) ---- */
@@ -219,9 +224,11 @@ When(
 Then(
   "the user is returned to the service",
   async function (this: PlaywrightWorld): Promise<void> {
-    await expect(requirePage(this).getByText(/session id/i)).toBeVisible({
-      timeout: 15_000,
-    });
+    const page = requirePage(this);
+    const baseUrl = process.env.BASE_URL;
+    if (!baseUrl) throw new Error("BASE_URL not set");
+    await page.waitForURL((url) => url.href.startsWith(baseUrl));
+    await expect(page.getByText(/session id/i)).toBeVisible();
   }
 );
 
@@ -249,7 +256,16 @@ When(
   "the user enters their mobile phone number",
   async function (this: PlaywrightWorld): Promise<void> {
     const page = requirePage(this);
-    await page.locator("#phoneNumber").fill("07700900000");
+    await page.locator("#phoneNumber").fill(UK_PHONE_NUMBER);
+    await page.getByRole("button", { name: /continue/i }).click();
+  }
+);
+
+When(
+  "the user enters their mobile phone number using an international dialling code",
+  async function (this: PlaywrightWorld): Promise<void> {
+    const page = requirePage(this);
+    await page.locator("#phoneNumber").fill(UK_PHONE_NUMBER_INTERNATIONAL);
     await page.getByRole("button", { name: /continue/i }).click();
   }
 );
