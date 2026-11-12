@@ -15,7 +15,7 @@ import {
   UK_PHONE_NUMBER,
   UK_PHONE_NUMBER_INTERNATIONAL,
 } from "../support/constants";
-import { requirePage } from "../support/utils";
+import { requirePage, endSession } from "../support/utils";
 import { stub } from "../support/stub";
 import {
   incorrectPasswordLockoutResponse,
@@ -408,12 +408,13 @@ When(
 When(
   "the user clicks logout",
   async function (this: PlaywrightWorld): Promise<void> {
-    const page = requirePage(this);
-    await page.context().clearCookies();
-    const stubUrl = process.env.API_STUB_URL || "http://api-stub:8080";
-    // Clear session auth state but preserve registration state
-    await fetch(`${stubUrl}/test/state/session`, { method: "DELETE" }).catch(
-      () => {}
-    );
+    await endSession(requirePage(this));
+  }
+);
+
+Given(
+  "the user's session has ended",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await endSession(requirePage(this));
   }
 );
