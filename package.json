@@ -91,7 +91,7 @@
     "libphonenumber-js": "1.13.8",
     "nunjucks": "3.2.4",
     "overload-protection": "1.2.3",
-    "pino": "10.3.1",
+    "pino": "10.4.0",
     "pino-http": "11.0.0",
     "qrcode": "1.5.4",
     "uglify-js": "3.19.3",
