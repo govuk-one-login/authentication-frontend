@@ -45,7 +45,7 @@ Feature: Authentication App Journeys
     Then the user is returned to the service
 
   Scenario: User signs in auth app without 2FA, then uplifts
-    Given a user with App MFA exists
+    Given a user does not have an authenticated session and does not require 2fa
     When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
