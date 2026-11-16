@@ -645,7 +645,7 @@ Mappings:
         or @SelfServeAccountDeletionEnabled)
     staging:
       tags: >-
-        @UI and not (@under-development or @AccountInterventions or @new-mfa-reset-with-ipv or
+        @UI and not (@under-development or @AccountInterventions or @EnvironmentWithIpvStubDeployed or
         @AcceptInternationalNumbers or @InternationalSmsSendingDisabled
         or @EnvironmentWithAMCStubDeployed or @SelfServeAccountDeletionEnabled)
 
