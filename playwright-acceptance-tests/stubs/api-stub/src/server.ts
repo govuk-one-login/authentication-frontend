@@ -8,6 +8,7 @@ import { verifyCodeHandler } from "./routes/verify-code.js";
 import { verifyMfaCodeHandler } from "./routes/verify-mfa-code.js";
 import { authenticationAuthCodeHandler } from "./routes/authentication-auth-code.js";
 import { resetPasswordRequestHandler } from "./routes/reset-password-request.js";
+import { resetPasswordHandler } from "./routes/reset-password.js";
 import { registerStaticRoutes } from "./routes/static.js";
 import { accountInterventionsHandler } from "./routes/account-interventions";
 import { testStateRouter, testResponsesRouter } from "./routes/test-state";
@@ -25,6 +26,7 @@ app.post("/verify-mfa-code", verifyMfaCodeHandler);
 app.post("/orch-auth-code", authenticationAuthCodeHandler);
 app.post("/account-interventions", accountInterventionsHandler);
 app.post("/reset-password-request", resetPasswordRequestHandler);
+app.post("/reset-password", resetPasswordHandler);
 app.use("/test/state", testStateRouter);
 app.use("/test/responses", testResponsesRouter);
 

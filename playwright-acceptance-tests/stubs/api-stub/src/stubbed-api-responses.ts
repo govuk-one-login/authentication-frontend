@@ -6,6 +6,7 @@ import type {
   VerifyCodeResponse,
   MfaResponse,
   ResetPasswordRequestResponse,
+  ResetPasswordResponse,
   AccountInterventionsResponse,
   SignUpResponse,
 } from "./responses/api-responses.type.js";
@@ -21,4 +22,5 @@ export interface StubbedApiResponses {
   authenticationAuthCodeResponse?: object;
   accountInterventionsResponse?: AccountInterventionsResponse;
   resetPasswordRequestResponse?: ResetPasswordRequestResponse;
+  resetPasswordResponse?: ResetPasswordResponse;
 }

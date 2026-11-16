@@ -88,6 +88,14 @@ export interface AccountInterventionsResponse {
   };
 }
 
+export interface ResetPasswordResponse {
+  status: number;
+  body?: {
+    code: number;
+    message: string;
+  };
+}
+
 export interface ResetPasswordRequestResponse {
   status: number;
   body: {
