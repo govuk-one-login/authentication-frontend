@@ -77,9 +77,18 @@ Feature: Registration Journey
     When the user successfully creates a password
     Then the user is taken to the "Choose how to get security codes" page
     Given the user's session has ended
-#    When the user attempts to re-sign-in after partial registration and selects forgotten password link
-#    Then the user is taken to the "Finish creating your GOV.UK One Login" page
-#    When the user chooses text message to get security codes and progress to set it up
-#    Then the user is taken to the "You’ve created your GOV.UK One Login" page
-#    When the user clicks the continue button
-#    Then the user is returned to the service
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
+    When the user enters an email address of an existing account
+    Then the user is taken to the "Enter your password" page
+    When the user resets their password using the forgotten password link
+    Then the user is taken to the "Finish creating your GOV.UK One Login" page
+    When the user chooses text message to get security codes
+    Then the user is taken to the "Enter your mobile phone number" page
+    When the user enters their mobile phone number
+    Then the user is taken to the "Check your phone" page
+    When the user enters the correct six digit security code from their phone for account creation
+    Then the user is taken to the "You’ve created your GOV.UK One Login" page
+    When the user clicks the continue button
+    Then the user is returned to the service
