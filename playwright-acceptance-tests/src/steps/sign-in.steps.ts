@@ -11,7 +11,6 @@ import { EnterAuthenticatorAppCodePage } from "../pages/EnterAuthenticatorAppCod
 import { LockoutPage } from "../pages/LockoutPage";
 import {
   TEST_EMAIL,
-  VALID_PASSWORD,
   UK_PHONE_NUMBER,
   UK_PHONE_NUMBER_INTERNATIONAL,
 } from "../support/constants";

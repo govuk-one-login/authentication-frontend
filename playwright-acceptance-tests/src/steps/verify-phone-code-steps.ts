@@ -15,7 +15,6 @@ When(
   "the user enters the correct six digit security code from their phone",
   async function (this: PlaywrightWorld): Promise<void> {
     await stub.setVerifyCodeResponse(correctMfaCodeResponse);
-    // await stub.setVerifyMfaCodeResponse(correctMfaCodeResponse);
     await new CheckYourPhonePage(requirePage(this)).enterCodeAndContinue(
       "123456"
     );
