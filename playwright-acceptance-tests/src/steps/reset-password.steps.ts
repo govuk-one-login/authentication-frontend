@@ -10,7 +10,6 @@ import {
   resetPasswordNoMfaResponse,
   successfulResetPasswordResponse,
 } from "../responses/reset-password";
-import { correctEmailCodeResponse } from "../responses/verify-code";
 import { partiallyRegisteredUserLoginResponse } from "../responses/login";
 
 When(
@@ -23,7 +22,7 @@ When(
 
 When(
   "the user clicks the forgotten password link and a password reset is permitted but the user has not set up mfa",
-  async function (this:PlaywrightWorld): Promise<void> {
+  async function (this: PlaywrightWorld): Promise<void> {
     const page = requirePage(this);
     await stub.setResetPasswordRequestResponse(resetPasswordNoMfaResponse);
     await new EnterPasswordPage(page).clickForgottenPasswordLink();
@@ -32,7 +31,7 @@ When(
 
 When(
   "the partially registered user successfully resets their password",
-  async function (this:PlaywrightWorld): Promise<void> {
+  async function (this: PlaywrightWorld): Promise<void> {
     const resetPasswordPage = new ResetPasswordPage(requirePage(this));
     await resetPasswordPage.assertLoaded();
     await stub.setResetPasswordResponse(successfulResetPasswordResponse);
