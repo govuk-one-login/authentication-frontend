@@ -1,7 +1,6 @@
 import { Given, When, Then } from "@cucumber/cucumber";
 import { expect, expectHeading } from "../support/expect";
 import type { PlaywrightWorld } from "../support/world";
-import { TestUserType } from "../support/world";
 
 import { EnterEmailPage } from "../pages/EnterEmailPage";
 import { EnterPasswordPage } from "../pages/EnterPasswordPage";
@@ -9,32 +8,18 @@ import { CheckYourPhonePage } from "../pages/CheckYourPhonePage";
 import { YouHaveOneLoginPage } from "../pages/YouHaveOneLoginPage";
 import { EnterAuthenticatorAppCodePage } from "../pages/EnterAuthenticatorAppCodePage";
 import { LockoutPage } from "../pages/LockoutPage";
-import { TEST_EMAIL } from "../support/constants";
-import { requirePage } from "../support/utils";
+import {
+  TEST_EMAIL,
+  UK_PHONE_NUMBER,
+  UK_PHONE_NUMBER_INTERNATIONAL,
+} from "../support/constants";
+import { requirePage, endSession } from "../support/utils";
 import { stub } from "../support/stub";
 import {
   incorrectPasswordLockoutResponse,
   incorrectPasswordResponse,
 } from "../responses/login";
 import { accountLockedUserExistsResponse } from "../responses/user-exists";
-
-/* ---- Given: user setup (no-ops with stub) ---- */
-
-Given(
-  "a user with App MFA exists",
-  async function (this: PlaywrightWorld): Promise<void> {
-    // Sets email context to auth app user for subsequent steps
-    this.testUserType = TestUserType.AUTH_APP;
-  }
-);
-
-Given(
-  "a user does not yet exist",
-  async function (this: PlaywrightWorld): Promise<void> {
-    // Use new user email so user-exists returns doesUserExist: false
-    this.testUserType = TestUserType.NEW_USER;
-  }
-);
 
 /* ---- Stub relying party navigation ---- */
 
@@ -138,9 +123,17 @@ When(
 When(
   "the user selects create an account",
   async function (this: PlaywrightWorld): Promise<void> {
-    await requirePage(this)
-      .getByRole("button", { name: /create your gov\.uk one login/i })
-      .click();
+    const page = requirePage(this);
+    const createAccountBtn = page.getByRole("button", {
+      name: /create (your|a) gov\.uk one login/i,
+    });
+    const welshBtn = page.getByRole("button", {
+      name: /creu gov\.uk one login/i,
+    });
+    const btn = (await welshBtn.isVisible().catch(() => false))
+      ? welshBtn
+      : createAccountBtn;
+    await btn.click();
   }
 );
 
@@ -173,33 +166,14 @@ Then(
 
 /* ---- User actions ---- */
 
-When(
-  "the user enters their email address",
-  async function (this: PlaywrightWorld): Promise<void> {
-    const emailByTestUserType: Record<TestUserType, string> = {
-      [TestUserType.NEW_USER]: TEST_EMAIL.NEW_USER,
-      [TestUserType.PASSKEY]: TEST_EMAIL.PASSKEY_USER,
-      [TestUserType.AUTH_APP]: TEST_EMAIL.AUTH_APP_USER,
-      [TestUserType.SMS]: TEST_EMAIL.SMS_USER,
-    };
-    const email = emailByTestUserType[this.testUserType];
-    const page = new EnterEmailPage(requirePage(this));
-    await page.enterEmail(email);
-    if (this.testUserType === TestUserType.PASSKEY) {
-      await requirePage(this)
-        .locator("#browserSupportsWebAuthn")
-        .evaluate((el: HTMLInputElement) => (el.value = "true"));
-    }
-    await page.clickContinue();
-  }
-);
-
 Then(
   "the user is returned to the service",
   async function (this: PlaywrightWorld): Promise<void> {
-    await expect(requirePage(this).getByText(/session id/i)).toBeVisible({
-      timeout: 15_000,
-    });
+    const page = requirePage(this);
+    const baseUrl = process.env.BASE_URL;
+    if (!baseUrl) throw new Error("BASE_URL not set");
+    await page.waitForURL((url) => url.href.startsWith(baseUrl));
+    await expect(page.getByText(/session id/i)).toBeVisible();
   }
 );
 
@@ -227,7 +201,16 @@ When(
   "the user enters their mobile phone number",
   async function (this: PlaywrightWorld): Promise<void> {
     const page = requirePage(this);
-    await page.locator("#phoneNumber").fill("07700900000");
+    await page.locator("#phoneNumber").fill(UK_PHONE_NUMBER);
+    await page.getByRole("button", { name: /continue/i }).click();
+  }
+);
+
+When(
+  "the user enters their mobile phone number using an international dialling code",
+  async function (this: PlaywrightWorld): Promise<void> {
+    const page = requirePage(this);
+    await page.locator("#phoneNumber").fill(UK_PHONE_NUMBER_INTERNATIONAL);
     await page.getByRole("button", { name: /continue/i }).click();
   }
 );
@@ -384,12 +367,13 @@ When(
 When(
   "the user clicks logout",
   async function (this: PlaywrightWorld): Promise<void> {
-    const page = requirePage(this);
-    await page.context().clearCookies();
-    const stubUrl = process.env.API_STUB_URL || "http://api-stub:8080";
-    // Clear session auth state but preserve registration state
-    await fetch(`${stubUrl}/test/state/session`, { method: "DELETE" }).catch(
-      () => {}
-    );
+    await endSession(requirePage(this));
+  }
+);
+
+Given(
+  "the user's session has ended",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await endSession(requirePage(this));
   }
 );

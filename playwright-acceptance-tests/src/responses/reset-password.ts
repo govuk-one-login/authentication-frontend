@@ -13,3 +13,14 @@ export const resetPasswordSmsResponse = {
     ],
   },
 };
+
+export const resetPasswordNoMfaResponse = {
+  status: 200,
+  body: {
+    mfaMethods: [],
+  },
+};
+
+export const successfulResetPasswordResponse = {
+  status: 204,
+};

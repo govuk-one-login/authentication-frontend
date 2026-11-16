@@ -57,3 +57,13 @@ export const incorrectPasswordLockoutResponse = {
     message: "Invalid password max attempts reached",
   },
 };
+
+export const partiallyRegisteredUserLoginResponse = {
+  status: 200,
+  body: {
+    latestTermsAndConditionsAccepted: true,
+    mfaMethodVerified: false,
+    passwordChangeRequired: false,
+    mfaMethods: [],
+  },
+};

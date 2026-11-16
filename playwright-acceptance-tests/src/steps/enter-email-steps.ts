@@ -3,7 +3,7 @@ import type { PlaywrightWorld } from "../support/world";
 import { requirePage } from "../support/utils";
 import { stub } from "../support/stub";
 import { EnterEmailPage } from "../pages/EnterEmailPage";
-import { EMAIL } from "../support/constants";
+import { EMAIL, INVALID_EMAIL } from "../support/constants";
 import {
   existingAccountUserExistsResponse,
   existingAccountWithPasskeyUserExistsResponse,
@@ -52,5 +52,14 @@ When(
     const page = requirePage(this);
     await page.getByRole("textbox").fill(EMAIL);
     await page.getByRole("button", { name: /parhau/i }).click();
+  }
+);
+
+When(
+  "the user enters an invalid email address and clicks continue",
+  async function (this: PlaywrightWorld): Promise<void> {
+    const page = requirePage(this);
+    await page.getByRole("textbox").fill(INVALID_EMAIL);
+    await page.getByRole("button", { name: /continue/i }).click();
   }
 );

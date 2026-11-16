@@ -7,3 +7,11 @@ export const successfulSignUpResponse = {
     consentRequired: false,
   },
 };
+
+export const commonPasswordSignUpResponse = {
+  status: 400,
+  body: {
+    code: 1040,
+    message: "Password is too common",
+  },
+};
