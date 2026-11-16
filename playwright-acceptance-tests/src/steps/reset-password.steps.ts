@@ -3,7 +3,6 @@ import type { PlaywrightWorld } from "../support/world";
 import { requirePage } from "../support/utils";
 import { stub } from "../support/stub";
 import { EnterPasswordPage } from "../pages/EnterPasswordPage";
-import { CheckYourEmailPage } from "../pages/CheckYourEmailPage";
 import { ResetPasswordPage } from "../pages/ResetPasswordPage";
 import { VALID_PASSWORD } from "../support/constants";
 import {
@@ -23,19 +22,18 @@ When(
 );
 
 When(
-  "the user resets their password using the forgotten password link",
-  async function (this: PlaywrightWorld): Promise<void> {
+  "the user clicks the forgotten password link and a password reset is permitted but the user has not set up mfa",
+  async function (this:PlaywrightWorld): Promise<void> {
     const page = requirePage(this);
-
     await stub.setResetPasswordRequestResponse(resetPasswordNoMfaResponse);
     await new EnterPasswordPage(page).clickForgottenPasswordLink();
+  }
+);
 
-    const checkYourEmailPage = new CheckYourEmailPage(page);
-    await checkYourEmailPage.assertLoaded(/check your email/i);
-    await stub.setVerifyCodeResponse(correctEmailCodeResponse);
-    await checkYourEmailPage.enterCodeAndContinue("123456");
-
-    const resetPasswordPage = new ResetPasswordPage(page);
+When(
+  "the partially registered user successfully resets their password",
+  async function (this:PlaywrightWorld): Promise<void> {
+    const resetPasswordPage = new ResetPasswordPage(requirePage(this));
     await resetPasswordPage.assertLoaded();
     await stub.setResetPasswordResponse(successfulResetPasswordResponse);
     await stub.setCorrectPasswordResponse(partiallyRegisteredUserLoginResponse);

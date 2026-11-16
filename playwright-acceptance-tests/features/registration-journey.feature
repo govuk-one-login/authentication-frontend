@@ -68,21 +68,15 @@ Feature: Registration Journey
   Scenario: Partial registered user is able to complete registration when they restart journey and select forgotten password for sms user
     Given a user does not have an authenticated session
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    When the user selects create an account
-    Then the user is taken to the "Enter your email address" page
-    When the user enters an email address of an account that does not exist
-    Then the user is taken to the "Check your email" page
-    When the user enters the correct six digit security code from their email
-    Then the user is taken to the "Create your password" page
-    When the user successfully creates a password
-    Then the user is taken to the "Choose how to get security codes" page
-    Given the user's session has ended
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
     When the user enters an email address of an existing account
     Then the user is taken to the "Enter your password" page
-    When the user resets their password using the forgotten password link
+    When the user clicks the forgotten password link and a password reset is permitted but the user has not set up mfa
+    Then the user is taken to the "Check your email" page
+    When the user enters the correct six digit security code from their email
+    Then the user is taken to the "Reset your password" page
+    When the partially registered user successfully resets their password
     Then the user is taken to the "Finish creating your GOV.UK One Login" page
     When the user chooses text message to get security codes
     Then the user is taken to the "Enter your mobile phone number" page

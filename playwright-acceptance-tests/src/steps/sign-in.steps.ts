@@ -1,7 +1,6 @@
 import { Given, When, Then } from "@cucumber/cucumber";
 import { expect, expectHeading } from "../support/expect";
 import type { PlaywrightWorld } from "../support/world";
-import { TestUserType } from "../support/world";
 
 import { EnterEmailPage } from "../pages/EnterEmailPage";
 import { EnterPasswordPage } from "../pages/EnterPasswordPage";
@@ -21,24 +20,6 @@ import {
   incorrectPasswordResponse,
 } from "../responses/login";
 import { accountLockedUserExistsResponse } from "../responses/user-exists";
-
-/* ---- Given: user setup (no-ops with stub) ---- */
-
-Given(
-  "a user with App MFA exists",
-  async function (this: PlaywrightWorld): Promise<void> {
-    // Sets email context to auth app user for subsequent steps
-    this.testUserType = TestUserType.AUTH_APP;
-  }
-);
-
-Given(
-  "a user does not yet exist",
-  async function (this: PlaywrightWorld): Promise<void> {
-    // Use new user email so user-exists returns doesUserExist: false
-    this.testUserType = TestUserType.NEW_USER;
-  }
-);
 
 /* ---- Stub relying party navigation ---- */
 
@@ -184,27 +165,6 @@ Then(
 );
 
 /* ---- User actions ---- */
-
-When(
-  "the user enters their email address",
-  async function (this: PlaywrightWorld): Promise<void> {
-    const emailByTestUserType: Record<TestUserType, string> = {
-      [TestUserType.NEW_USER]: TEST_EMAIL.NEW_USER,
-      [TestUserType.PASSKEY]: TEST_EMAIL.PASSKEY_USER,
-      [TestUserType.AUTH_APP]: TEST_EMAIL.AUTH_APP_USER,
-      [TestUserType.SMS]: TEST_EMAIL.SMS_USER,
-    };
-    const email = emailByTestUserType[this.testUserType];
-    const page = new EnterEmailPage(requirePage(this));
-    await page.enterEmail(email);
-    if (this.testUserType === TestUserType.PASSKEY) {
-      await requirePage(this)
-        .locator("#browserSupportsWebAuthn")
-        .evaluate((el: HTMLInputElement) => (el.value = "true"));
-    }
-    await page.clickContinue();
-  }
-);
 
 Then(
   "the user is returned to the service",

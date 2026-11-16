@@ -31,17 +31,9 @@ export async function closeBrowser(): Promise<void> {
   }
 }
 
-export enum TestUserType {
-  SMS = "sms",
-  AUTH_APP = "authApp",
-  PASSKEY = "passkey",
-  NEW_USER = "newUser",
-}
-
 export class PlaywrightWorld extends World {
   context?: BrowserContext;
   page?: Page;
-  testUserType: TestUserType = TestUserType.SMS;
 
   constructor(options: IWorldOptions) {
     super(options);
