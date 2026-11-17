@@ -69,6 +69,15 @@ describe("mfa reset with ipv controller", () => {
       expect(req.session.user.journey.nextPath).to.eq(PATH_NAMES.IPV_CALLBACK);
     });
 
+    it("should not mark the user as being on an account recovery journey before IPV has completed", async () => {
+      await mfaResetWithIpvGet(fakeMfaResetAuthorizeService(true))(
+        req as Request,
+        res as Response
+      );
+
+      expect(req.session.user.isAccountRecoveryJourney).to.be.undefined;
+    });
+
     it("should allow redirect to new guidance page when user has come from a strategic app journey", async () => {
       res.locals.isApp = true;
       await mfaResetWithIpvGet(fakeMfaResetAuthorizeService(true))(
