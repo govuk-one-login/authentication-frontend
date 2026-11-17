@@ -9,12 +9,6 @@ testStateRouter.delete("/", (_req, res) => {
   res.sendStatus(204);
 });
 
-
-//TODO remove this no longer does anything
-testStateRouter.delete("/session", (_req, res) => {
-  res.sendStatus(204);
-});
-
 /**
  * Router for setting API-call responses from tests. Mounted at
  * /test/responses.
