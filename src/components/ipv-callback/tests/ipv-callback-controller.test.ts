@@ -113,6 +113,7 @@ describe("ipv callback controller", () => {
       expect(res.redirect).to.have.been.calledWith(
         PATH_NAMES.GET_SECURITY_CODES
       );
+      expect(req.session.user.isAccountRecoveryJourney).to.equal(true);
     });
 
     it("get should raise error when reverification result is not successful", async () => {

@@ -82,6 +82,8 @@ export function ipvCallbackGet(
       return res.redirect(await getNextPathAndUpdateJourney(req, res, event));
     }
 
+    req.session.user.isAccountRecoveryJourney = true;
+
     res.redirect(
       await getNextPathAndUpdateJourney(
         req,

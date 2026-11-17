@@ -28,8 +28,6 @@ export function mfaResetWithIpvGet(
       return res.redirect(redirectPath);
     }
 
-    req.session.user.isAccountRecoveryJourney = true;
-
     const orchestrationRedirectUrl = req.session.client.redirectUri.concat(
       "?state=",
       req.session.client.state
