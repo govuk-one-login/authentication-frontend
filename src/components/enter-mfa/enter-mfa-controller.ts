@@ -1,5 +1,9 @@
 import type { Request, Response } from "express";
-import { NOTIFICATION_TYPE, PATH_NAMES } from "../../app.constants.js";
+import {
+  JOURNEY_TYPE,
+  NOTIFICATION_TYPE,
+  PATH_NAMES,
+} from "../../app.constants.js";
 import type { VerifyCodeInterface } from "../common/verify-code/types.js";
 import { codeService } from "../common/verify-code/verify-code-service.js";
 import { verifyCodePost } from "../common/verify-code/verify-code-controller.js";
@@ -65,6 +69,7 @@ export const enterMfaPost = (
         validationErrorCode: ERROR_CODES.INVALID_MFA_CODE,
         journeyType: getJourneyTypeFromUserSession(req.session.user, {
           includeReauthentication: true,
+          fallbackJourneyType: JOURNEY_TYPE.SIGN_IN,
         }),
         postValidationLocalsProvider: enterMfaTemplateParametersFromRequest,
       }

@@ -195,6 +195,7 @@ describe("enter mfa controller", () => {
         getJourneyTypeFromUserSessionSpy
       ).to.have.been.calledOnceWithExactly(req.session.user, {
         includeReauthentication: true,
+        fallbackJourneyType: JOURNEY_TYPE.SIGN_IN,
       });
       expect(getJourneyTypeFromUserSessionSpy.getCall(0).returnValue).to.equal(
         JOURNEY_TYPE.REAUTHENTICATION

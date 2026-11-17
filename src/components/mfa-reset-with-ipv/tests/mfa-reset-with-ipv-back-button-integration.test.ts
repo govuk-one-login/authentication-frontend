@@ -156,6 +156,7 @@ describe("Integration:: going back from IPV to the enter code page", () => {
       .expect(302);
 
     expect(verifyCodeRequest.isDone()).to.equal(true);
+    expect(requestBody?.journeyType).to.equal(JOURNEY_TYPE.SIGN_IN);
   });
 
   it("verifies an authenticator app code with a journeyType of SIGN_IN", async () => {
