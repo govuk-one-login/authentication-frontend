@@ -24,10 +24,3 @@ export enum ErrorCode {
   AUTH_APP_INVALID_CODE = 1043,
   ACCOUNT_LOCKED = 1045,
 }
-
-export const TEST_EMAIL = {
-  SMS_USER: "test@example.com",
-  AUTH_APP_USER: "authapp@example.com",
-  NEW_USER: "newuser@example.com",
-  PASSKEY_USER: "passkey@example.com",
-} as const;
