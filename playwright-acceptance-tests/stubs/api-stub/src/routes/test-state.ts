@@ -11,7 +11,6 @@ testStateRouter.delete("/", (_req, res) => {
 
 testStateRouter.delete("/session", (_req, res) => {
   state.authenticated = false;
-  state.authenticatedCredentialStrength = "";
   res.sendStatus(204);
 });
 

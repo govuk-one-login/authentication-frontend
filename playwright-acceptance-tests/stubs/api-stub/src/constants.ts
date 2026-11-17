@@ -3,11 +3,6 @@ export enum MfaMethodType {
   AUTH_APP = "AUTH_APP",
 }
 
-export enum CredentialStrength {
-  PASSWORD_ONLY = "Cl",
-  PASSWORD_AND_MFA = "Cl.Cm",
-}
-
 /**
  * API error codes — subset matching src/components/common/constants.ts in the
  * main frontend codebase.
