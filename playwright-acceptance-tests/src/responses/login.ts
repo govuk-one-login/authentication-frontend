@@ -1,3 +1,5 @@
+import type { LoginResponse } from "../../stubs/api-stub/src/responses/api-responses.type";
+
 export const correctPasswordSmsResponse = {
   status: 200,
   body: {
@@ -15,7 +17,7 @@ export const correctPasswordSmsResponse = {
       },
     ],
   },
-};
+} satisfies LoginResponse;
 
 export const correctPasswordSmsResponseWithOutdatedTerms = {
   status: 200,
@@ -23,7 +25,7 @@ export const correctPasswordSmsResponseWithOutdatedTerms = {
     ...correctPasswordSmsResponse.body,
     latestTermsAndConditionsAccepted: false,
   },
-};
+} satisfies LoginResponse;
 
 export const correctPasswordAuthAppResponse = {
   status: 200,
@@ -40,7 +42,7 @@ export const correctPasswordAuthAppResponse = {
       },
     ],
   },
-};
+} satisfies LoginResponse;
 
 export const incorrectPasswordResponse = {
   status: 400,
@@ -61,9 +63,10 @@ export const incorrectPasswordLockoutResponse = {
 export const partiallyRegisteredUserLoginResponse = {
   status: 200,
   body: {
+    mfaMethodType: "NONE",
     latestTermsAndConditionsAccepted: true,
     mfaMethodVerified: false,
     passwordChangeRequired: false,
     mfaMethods: [],
   },
-};
+} satisfies LoginResponse;

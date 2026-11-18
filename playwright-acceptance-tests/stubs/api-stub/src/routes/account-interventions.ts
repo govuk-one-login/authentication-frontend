@@ -6,6 +6,7 @@ const NO_INTERVENTIONS = {
   temporarilySuspended: false,
   reproveIdentity: false,
   passwordResetRequired: false,
+  appliedAt: 1700000000000,
 };
 
 export function accountInterventionsHandler(
