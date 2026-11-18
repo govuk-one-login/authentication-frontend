@@ -1,3 +1,5 @@
+import type { ResetPasswordRequestResponse } from "../../stubs/api-stub/src/responses/api-responses.type";
+
 export const resetPasswordSmsResponse = {
   status: 200,
   body: {
@@ -8,11 +10,11 @@ export const resetPasswordSmsResponse = {
         id: "stub-mfa-id",
         type: "SMS",
         priority: "DEFAULT",
-        phoneNumber: "07000000000",
+        redactedPhoneNumber: "****7890",
       },
     ],
   },
-};
+} satisfies ResetPasswordRequestResponse;
 
 export const resetPasswordAuthAppResponse = {
   status: 200,
@@ -27,14 +29,14 @@ export const resetPasswordAuthAppResponse = {
       },
     ],
   },
-};
+} satisfies ResetPasswordRequestResponse;
 
 export const resetPasswordNoMfaResponse = {
   status: 200,
   body: {
     mfaMethods: [],
   },
-};
+} satisfies ResetPasswordRequestResponse;
 
 export const successfulResetPasswordResponse = {
   status: 204,

@@ -1,6 +1,7 @@
 export enum MfaMethodType {
   SMS = "SMS",
   AUTH_APP = "AUTH_APP",
+  NONE = "NONE",
 }
 
 /**
