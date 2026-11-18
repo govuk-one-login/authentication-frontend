@@ -1,47 +1,16 @@
 import type { Request, Response } from "express";
-import { CredentialStrength, MfaMethodType } from "../constants.js";
 import { state } from "../state.js";
-
-interface StartRequest {
-  requested_credential_strength?: CredentialStrength;
-  authenticated?: boolean;
-}
 
 export function startHandler(req: Request, res: Response): void {
   const stubbed = state.stubbedApiResponses.startResponse;
-  if (stubbed) {
-    res.status(stubbed.status).json(stubbed.body);
+
+  if (!stubbed) {
+    res.status(500).json({
+      message: "No start response stubbed. The step must stub this response.",
+    });
     return;
   }
 
-  const { requested_credential_strength, authenticated } =
-    req.body as StartRequest;
-  const credStrength =
-    requested_credential_strength || CredentialStrength.PASSWORD_AND_MFA;
-  const mfaRequired = credStrength !== CredentialStrength.PASSWORD_ONLY;
-
-  if (requested_credential_strength) {
-    state.credentialStrength = requested_credential_strength;
-  }
-
-  const needsUplift =
-    state.authenticated &&
-    authenticated &&
-    mfaRequired &&
-    state.authenticatedCredentialStrength === CredentialStrength.PASSWORD_ONLY;
-
-  res.json({
-    sessionId: "session-123",
-    user: {
-      upliftRequired: needsUplift,
-      identityRequired: false,
-      authenticated: state.authenticated,
-      mfaMethodType: state.authenticated
-        ? state.userMfaMethodType
-        : MfaMethodType.SMS,
-      mfaRequired: needsUplift || (!state.authenticated && mfaRequired),
-      isBlockedForReauth: false,
-    },
-    featureFlags: {},
-  });
+  res.status(stubbed.status).json(stubbed.body);
+  return;
 }

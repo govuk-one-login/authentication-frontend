@@ -9,12 +9,6 @@ testStateRouter.delete("/", (_req, res) => {
   res.sendStatus(204);
 });
 
-testStateRouter.delete("/session", (_req, res) => {
-  state.authenticated = false;
-  state.authenticatedCredentialStrength = "";
-  res.sendStatus(204);
-});
-
 /**
  * Router for setting API-call responses from tests. Mounted at
  * /test/responses.
