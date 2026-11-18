@@ -21,7 +21,7 @@ jobs:
       contents: read
     steps:
       - name: Build and push service down page image
-        uses: govuk-one-login/devplatform-upload-action-ecr@3931602236c176dd4ec2c11dceb38002110b5d87 # v1.3.0
+        uses: govuk-one-login/devplatform-upload-action-ecr@4d3ad94bc62b7fa24b27192180a7384f5ad4cf8c # Auth managed Branch add-context-option
         with:
           role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
           container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY_ARN }}
@@ -56,7 +56,7 @@ jobs:
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Build, push and deploy frontend
-        uses: govuk-one-login/devplatform-upload-action-ecr@43159c282e7485a7ac9ff514227c1dd658ecd84b
+        uses: govuk-one-login/devplatform-upload-action-ecr@4d3ad94bc62b7fa24b27192180a7384f5ad4cf8c # Auth managed Branch add-context-option
         with:
           checkout-repo: "false"
           role-to-assume-arn: ${{ secrets.GH_ACTIONS_ROLE_ARN }}
