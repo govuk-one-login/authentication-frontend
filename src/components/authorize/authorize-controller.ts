@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
 import {
+  APP_ENV_NAME,
+  CHANNEL,
   COOKIE_CONSENT,
+  COOKIES_CHANNEL,
   COOKIES_PREFERENCES_SET,
   ERROR_LOG_LEVEL,
-  COOKIES_CHANNEL,
-  CHANNEL,
-  APP_ENV_NAME,
 } from "../../app.constants.js";
 import { ERROR_CODES } from "../common/constants.js";
 import { getNextPathAndUpdateJourney } from "../common/state-machine/state-machine-executor.js";
@@ -26,18 +26,19 @@ import { KmsDecryptionService } from "./kms-decryption-service.js";
 import { JwtService } from "./jwt-service.js";
 import { appendQueryParamIfHasValue } from "../../utils/url.js";
 import {
-  isValidChannel,
-  getDefaultChannel,
-  getOrchToAuthExpectedClientId,
-  supportReauthentication,
-  getOrchStubToAuthExpectedClientId,
   getAppEnv,
+  getDefaultChannel,
   getLocalEncryptionKey,
+  getOrchStubToAuthExpectedClientId,
+  getOrchToAuthExpectedClientId,
+  isValidChannel,
+  supportReauthentication,
 } from "../../config.js";
 import type { Claims } from "./claims-config.js";
 import { isReauth, isUpliftRequired } from "../../utils/request.js";
 import { LocalDecryptionService } from "./local-decryption-service.js";
 import { isInPasskeyPhasedRollout } from "../../utils/passkeys-helper.js";
+import { CloudwatchMetric, incrementCounter } from "../../utils/metrics.js";
 
 const decryptionService =
   getAppEnv() === APP_ENV_NAME.LOCAL && getLocalEncryptionKey()
@@ -123,6 +124,8 @@ export function authorizeGet(
       }
       throw startError;
     }
+
+    await incrementCounter(CloudwatchMetric.AUTH_JOURNEY_START);
 
     setSessionDataFromAuthResponse(req, startAuthResponse);
 

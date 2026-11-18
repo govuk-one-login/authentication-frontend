@@ -211,6 +211,10 @@ export function supportSelfServeAccountDeletion(): boolean {
   return process.env.SUPPORT_SELF_SERVE_ACCOUNT_DELETION === "1";
 }
 
+export function enableCloudwatchMetrics(): boolean {
+  return process.env.ENABLE_CLOUDWATCH_METRICS === "1";
+}
+
 export function getAuthJwksUrl(): string {
   return `${getApiBaseUrl()}/.well-known/auth-jwks.json`;
 }

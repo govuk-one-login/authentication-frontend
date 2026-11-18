@@ -92,6 +92,7 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             "SUPPORT_PASSKEY_REGISTRATION": 1,
             "ENABLE_PASSKEY_CONTACT_FORM": 1,
             "SUPPORT_NEW_INTERNATIONAL_SMS": 1,
+            "ENABLE_CLOUDWATCH_METRICS": 1,
         },
     },
     {
@@ -297,6 +298,7 @@ def get_static_variables(deployment_name: str) -> list[EnvFileSection]:
                     else f"https://oidc.{deployment_name}.account.gov.uk",
                 ),
                 "FRONTEND_API_BASE_URL": "http://localhost:8888",
+                "AWS_EMF_ENVIRONMENT": "Local",
             },
         },
         {
