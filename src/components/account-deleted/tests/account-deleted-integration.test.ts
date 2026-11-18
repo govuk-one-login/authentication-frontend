@@ -72,13 +72,13 @@ describe("Integration:: account deleted", () => {
       .expect(403);
   });
 
-  it("should redirect to orchestration with the SFAD error on post", async () => {
+  it("should redirect to orchestration with the account creation required error on post", async () => {
     await request(app)
       .post(PATH_NAMES.ACCOUNT_DELETED)
       .type("form")
       .set("Cookie", cookies)
       .send({ _csrf: token })
       .expect(302)
-      .expect("Location", `${REDIRECT_URI}?error=SFAD_ERROR`);
+      .expect("Location", `${REDIRECT_URI}?error=account_creation_required`);
   });
 });

@@ -11,7 +11,7 @@ export function accountDeletedPost(req: Request, res: Response): void {
   );
   res.redirect(
     req.session.client.redirectUri.concat(
-      `?error=${ORCHESTRATION_ERROR_CODES.SFAD_ERROR}`
+      `?error=${ORCHESTRATION_ERROR_CODES.ACCOUNT_CREATION_REQUIRED}`
     )
   );
 }

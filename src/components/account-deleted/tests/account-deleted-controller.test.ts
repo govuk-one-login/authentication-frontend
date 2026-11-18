@@ -35,13 +35,13 @@ describe("account deleted controller", () => {
   });
 
   describe("accountDeletedPost", () => {
-    it("should redirect to orchestration with the SFAD error", () => {
+    it("should redirect to orchestration with the account creation required error", () => {
       req.session.client.redirectUri = "https://orchestration.test/callback";
 
       accountDeletedPost(req as Request, res as Response);
 
       expect(res.redirect).to.have.been.calledWith(
-        "https://orchestration.test/callback?error=SFAD_ERROR"
+        "https://orchestration.test/callback?error=account_creation_required"
       );
     });
   });

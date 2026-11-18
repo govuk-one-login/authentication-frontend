@@ -302,7 +302,7 @@ export const OIDC_ERRORS = {
 };
 
 export const ORCHESTRATION_ERROR_CODES = {
-  SFAD_ERROR: "SFAD_ERROR",
+  ACCOUNT_CREATION_REQUIRED: "account_creation_required",
 };
 
 export const IPV_ERROR_CODES = {
