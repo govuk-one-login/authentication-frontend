@@ -103,7 +103,7 @@ export interface ResetPasswordRequestResponse {
     phoneNumberLastThree: string;
     mfaMethods: {
       id: string;
-      mfaMethodType: string;
+      type: string;
       priority: string;
       phoneNumber: string;
     }[];

@@ -11,11 +11,13 @@ import {
   successfulResetPasswordResponse,
 } from "../responses/reset-password";
 import { partiallyRegisteredUserLoginResponse } from "../responses/login";
+import { mfaCodeSentResponse } from "../responses/mfa";
 
 When(
   "the user clicks the forgotten password link and a password reset is permitted via SMS",
   async function (this: PlaywrightWorld): Promise<void> {
     await stub.setResetPasswordRequestResponse(resetPasswordSmsResponse);
+    await stub.setMfaResponse(mfaCodeSentResponse);
     await new EnterPasswordPage(requirePage(this)).clickForgottenPasswordLink();
   }
 );
