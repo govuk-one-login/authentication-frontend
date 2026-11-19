@@ -507,10 +507,10 @@
       "saveYourProgress": "Arbed eich cynnydd"
     },
     "accountDeleted": {
-      "title": "You’ve deleted your GOV.UK One Login",
-      "header": "You’ve deleted your GOV.UK One Login",
-      "paragraph1": "Next, you can create a new GOV.UK One Login. You can use the same email address.",
-      "createNewAccountButton": "Create a new GOV.UK One Login"
+      "title": "Rydych wedi dileu eich GOV.UK One Login",
+      "header": "Rydych wedi dileu eich GOV.UK One Login",
+      "paragraph1": "Nesaf, gallwch greu GOV.UK One Login newydd. Gallwch ddefnyddio’r un cyfeiriad e-bost.",
+      "createNewAccountButton": "Creu GOV.UK One Login newydd"
     },
     "checkYourEmail": {
       "title": "Gwiriwch eich e-bost",
@@ -761,13 +761,13 @@
       }
     },
     "cannotChangeSecurityCodesNoIdentity": {
-      "paragraph1": "You can only get security codes to sign in using a method you have already set up.",
+      "paragraph1": "Gallwch ond cael codau diogelwch i fewngofnodi drwy ddefnyddio dull rydych wedi’i sefydlu’n barod.",
       "radios": {
-        "header": "Choose an option",
-        "cannotUseMethodText": "You cannot use your current method anymore",
-        "cannotUseMethodHint": "For example, if you’ve permanently lost access to your phone",
-        "tryAgainText": "You want to try using your current method again",
-        "radioValidationError": "You must select an option to continue"
+        "header": "Dewiswch opsiwn",
+        "cannotUseMethodText": "Ni allwch ddefnyddio eich dull presennol mwyach",
+        "cannotUseMethodHint": "Er enghraifft, os ydych wedi colli mynediad i’ch ffôn yn barhaol",
+        "tryAgainText": "Rydych am geisio eto drwy ddefnyddio’ch dull presennol",
+        "radioValidationError": "Rhaid i chi ddewis opsiwn i barhau"
       }
     },
     "changeSecurityCodesConfirmation": {
