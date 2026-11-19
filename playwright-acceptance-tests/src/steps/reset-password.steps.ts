@@ -14,7 +14,7 @@ import {
 import {
   correctPasswordAuthAppResponse,
   correctPasswordSmsResponse,
-  partiallyRegisteredUserLoginResponse
+  partiallyRegisteredUserLoginResponse,
 } from "../responses/login";
 import { mfaCodeSentResponse } from "../responses/mfa";
 
