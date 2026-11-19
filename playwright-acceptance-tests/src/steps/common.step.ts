@@ -63,3 +63,12 @@ Then(
     await expect(errorSummary).toContainText(expectedText);
   }
 );
+
+Then(
+  "the text {string} is not present",
+  async function (this: PlaywrightWorld, linkText: string): Promise<void> {
+    await expect(
+      requirePage(this).getByText(linkText, { exact: true })
+    ).toHaveCount(0);
+  }
+);
