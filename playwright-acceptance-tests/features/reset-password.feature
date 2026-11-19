@@ -32,3 +32,21 @@ Feature: Reset password
     Then the user is taken to the "Reset your password" page
     When the user with Auth App MFA successfully resets their password
     Then the user is returned to the service
+
+  Scenario: User with SMS MFA can successfully reset their password
+    Given a user does not have an authenticated session
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters an email address of an existing account
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link and a password reset is permitted via SMS
+    Then the user is taken to the "Check your email" page
+    When the user enters the correct six digit security code from their email
+    Then the user is taken to the "Check your phone" page
+    When the user clicks details with text "Problems with the code?"
+    Then the text "change how you get security codes" is not present
+    When the user enters the correct six digit security code from their phone
+    Then the user is taken to the "Reset your password" page
+    When the user with SMS MFA successfully resets their password
+    Then the user is returned to the service

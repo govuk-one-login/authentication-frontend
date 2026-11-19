@@ -11,7 +11,11 @@ import {
   resetPasswordNoMfaResponse,
   successfulResetPasswordResponse,
 } from "../responses/reset-password";
-import {correctPasswordAuthAppResponse, partiallyRegisteredUserLoginResponse} from "../responses/login";
+import {
+  correctPasswordAuthAppResponse,
+  correctPasswordSmsResponse,
+  partiallyRegisteredUserLoginResponse
+} from "../responses/login";
 import { mfaCodeSentResponse } from "../responses/mfa";
 
 When(
@@ -58,6 +62,17 @@ When(
     await resetPasswordPage.assertLoaded();
     await stub.setResetPasswordResponse(successfulResetPasswordResponse);
     await stub.setCorrectPasswordResponse(correctPasswordAuthAppResponse);
+    await resetPasswordPage.resetPasswordAndContinue(VALID_PASSWORD);
+  }
+);
+
+When(
+  "the user with SMS MFA successfully resets their password",
+  async function (this: PlaywrightWorld): Promise<void> {
+    const resetPasswordPage = new ResetPasswordPage(requirePage(this));
+    await resetPasswordPage.assertLoaded();
+    await stub.setResetPasswordResponse(successfulResetPasswordResponse);
+    await stub.setCorrectPasswordResponse(correctPasswordSmsResponse);
     await resetPasswordPage.resetPasswordAndContinue(VALID_PASSWORD);
   }
 );
