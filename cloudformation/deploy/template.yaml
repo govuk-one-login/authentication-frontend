@@ -535,7 +535,7 @@ Mappings:
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmzWAucozlF6eykmgikXj2kI03O7V
         WwuA51+3Ak+stF2dddC60WXEKhrFumKBUnE5GhJNg4v0iN948Mwl+vz5Xw==
         -----END PUBLIC KEY-----
-      IsSplunkEnabled: "Yes"
+      IsSplunkEnabled: "No"
       SupportHTTPKeepAlive: "Yes"
       migratedDomain: signin.build.account.gov.uk
       ECSServiceCanaryPhasedDeploy: "Yes"
@@ -573,7 +573,7 @@ Mappings:
       passwordResetCodeEnteredWrongBlockedMinutes: 120
       reducedCodeBlockDurationMinutes: 15
       GA4Enabled: "true"
-      IsSplunkEnabled: "Yes"
+      IsSplunkEnabled: "No"
       SupportHTTPKeepAlive: "Yes"
       migratedDomain: signin.staging.account.gov.uk
       ECSServiceCanaryPhasedDeploy: "Yes"
@@ -606,7 +606,7 @@ Mappings:
       codeRequestBlockedMinutes: 120
       passwordResetCodeEnteredWrongBlockedMinutes: 120
       reducedCodeBlockDurationMinutes: 15
-      IsSplunkEnabled: "Yes"
+      IsSplunkEnabled: "No"
       SupportHTTPKeepAlive: "Yes"
       migratedDomain: signin.integration.account.gov.uk
       ECSServiceCanaryPhasedDeploy: "Yes"
@@ -641,7 +641,7 @@ Mappings:
       reducedCodeBlockDurationMinutes: 15
       GA4Enabled: "true"
       googleAnalytics4GTMContainerId: "GTM-K4PBJH3"
-      IsSplunkEnabled: "Yes"
+      IsSplunkEnabled: "No"
       SupportHTTPKeepAlive: "Yes"
       migratedDomain: signin.account.gov.uk
       ECSServiceCanaryPhasedDeploy: "Yes"
