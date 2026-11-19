@@ -1,3 +1,4 @@
+import type { UserExistsResponse } from "../../stubs/api-stub/src/responses/api-responses.type";
 import { EMAIL } from "../support/constants";
 
 export const existingAccountUserExistsResponse = {
@@ -7,7 +8,7 @@ export const existingAccountUserExistsResponse = {
     doesUserExist: true,
     hasActivePasskey: false,
   },
-};
+} satisfies UserExistsResponse;
 
 export const nonExistingAccountUserExistsResponse = {
   status: 200,
@@ -16,7 +17,7 @@ export const nonExistingAccountUserExistsResponse = {
     doesUserExist: false,
     hasActivePasskey: false,
   },
-};
+} satisfies UserExistsResponse;
 
 export const existingAccountWithPasskeyUserExistsResponse = {
   status: 200,
@@ -25,7 +26,7 @@ export const existingAccountWithPasskeyUserExistsResponse = {
     doesUserExist: true,
     hasActivePasskey: true,
   },
-};
+} satisfies UserExistsResponse;
 
 export const accountLockedUserExistsResponse = {
   status: 400,

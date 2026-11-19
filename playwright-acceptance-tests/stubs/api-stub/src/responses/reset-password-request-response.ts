@@ -4,9 +4,9 @@ export const defaultResetPasswordRequestResponse = {
   mfaMethods: [
     {
       id: "stub-mfa-id",
-      mfaMethodType: "SMS",
+      type: "SMS",
       priority: "DEFAULT",
-      phoneNumber: "07000000000",
+      redactedPhoneNumber: "****7890",
     },
   ],
 };

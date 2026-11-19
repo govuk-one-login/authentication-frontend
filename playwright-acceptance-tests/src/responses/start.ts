@@ -1,3 +1,5 @@
+import type { StartResponse } from "../../stubs/api-stub/src/responses/api-responses.type";
+
 export const unauthenticatedStartResponse = {
   status: 200,
   body: {
@@ -12,7 +14,7 @@ export const unauthenticatedStartResponse = {
     },
     featureFlags: {},
   },
-};
+} satisfies StartResponse;
 
 export const unauthenticatedStartResponseForSmsUserWithMfaNotRequired = {
   status: 200,
@@ -28,7 +30,7 @@ export const unauthenticatedStartResponseForSmsUserWithMfaNotRequired = {
     },
     featureFlags: {},
   },
-};
+} satisfies StartResponse;
 
 export const authenticatedStartResponseRequiringUpliftWithSMSMFA = {
   status: 200,
@@ -44,7 +46,7 @@ export const authenticatedStartResponseRequiringUpliftWithSMSMFA = {
     },
     featureFlags: {},
   },
-};
+} satisfies StartResponse;
 
 export const authenticatedStartResponseRequiringUpliftWithAuthApp = {
   status: 200,
@@ -60,7 +62,7 @@ export const authenticatedStartResponseRequiringUpliftWithAuthApp = {
     },
     featureFlags: {},
   },
-};
+} satisfies StartResponse;
 
 export const authenticatedStartResponse = {
   status: 200,
@@ -76,4 +78,4 @@ export const authenticatedStartResponse = {
     },
     featureFlags: {},
   },
-};
+} satisfies StartResponse;
