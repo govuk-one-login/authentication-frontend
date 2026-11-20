@@ -117,6 +117,9 @@ import { accountExistsWithPasskeyRouter } from "./components/account-exists-with
 import { cannotSignInPasskeyRouter } from "./components/cannot-sign-in-passkey/cannot-sign-in-passkey-routes.js";
 import { journeyRouter } from "./components/journey/journey-routes.js";
 import { resetPasswordResendCode2faRouter } from "./components/reset-password-resend-code-2fa-sms/reset-password-resend-code-2fa-sms-routes.js";
+import {
+  cannotChangeSecurityCodesRouter
+} from "./components/cannot-change-security-codes/cannot-change-security-codes-routes.js";
 
 const directory_name = dirname(fileURLToPath(import.meta.url));
 
@@ -176,6 +179,7 @@ function registerRoutes(app: express.Application) {
   app.use(cannotUseSecurityCodeRouter);
   app.use(changeSecurityCodesSignInRouter);
   app.use(wellKnownRouter);
+  app.use(cannotChangeSecurityCodesRouter)
   if (supportSelfServeAccountDeletion()) {
     app.use(cannotChangeSecurityCodesNoIdentityRouter);
     app.use(ssadAuthorizeRouter);
