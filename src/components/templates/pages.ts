@@ -433,7 +433,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES]: [
     {
       name: "default",
-      template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
+      template: "cannot-change-security-codes/index.njk",
       options: {
         identityFailed: false,
         onlyDeleteAccount: false,
@@ -441,7 +441,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
     },
     {
       name: "only-delete-account",
-      template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
+      template: "cannot-change-security-codes/index.njk",
       options: {
         identityFailed: false,
         onlyDeleteAccount: true,
@@ -451,7 +451,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
   [PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL]: [
     {
       name: "default",
-      template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
+      template: "cannot-change-security-codes/index.njk",
       options: {
         identityFailed: true,
         onlyDeleteAccount: false,
@@ -459,7 +459,7 @@ export const pages: Record<string, Page | PageVariant[]> = {
     },
     {
       name: "only-delete-account",
-      template: "ipv-callback/index-cannot-change-how-get-security-codes.njk",
+      template: "cannot-change-security-codes/index.njk",
       options: {
         identityFailed: true,
         onlyDeleteAccount: true,
