@@ -40,4 +40,19 @@ router.post(
   cannotChangeSecurityCodesPost
 );
 
+router.get(
+  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY_DELETE,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
+  cannotChangeSecurityCodesGet
+);
+
+router.post(
+  PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY_DELETE,
+  validateSessionMiddleware,
+  allowUserJourneyMiddleware,
+  validateCannotChangeHowGetSecurityCodesActionRequest(),
+  cannotChangeSecurityCodesPost
+);
+
 export { router as cannotChangeSecurityCodesRouter };

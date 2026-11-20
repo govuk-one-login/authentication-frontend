@@ -178,6 +178,27 @@ describe("Integration:: cannot change security codes", () => {
         .expect("Location", TEST_CONTACT_US_LINK_URL)
         .expect(302);
     });
+
+    it("should render the cannot-change-security-codes template from /cannot-change-security-codes-no-identity-delete", async () => {
+      const app = await stubMiddlewareAndCreateApp(
+        PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY_DELETE,
+        MFA_METHOD_TYPE.SMS
+      );
+
+      await request(app)
+        .get(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY_DELETE)
+        .expect(200)
+        .then((res) => {
+          const $ = cheerio.load(res.text);
+          expect($("h1").text()).to.contain(
+            "You cannot change how you get security codes"
+          );
+          const radioText = $(
+            "#radio-cannot-change-how-get-security-code-action"
+          ).text();
+          expect(radioText).to.contains("Get help to delete");
+          expect(radioText).to.contains("Try entering a security code again");
+    })})
 });
 
 const stubMiddlewareAndCreateApp = async (

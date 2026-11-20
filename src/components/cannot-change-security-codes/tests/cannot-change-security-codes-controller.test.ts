@@ -66,6 +66,16 @@ describe("cannot change security codes controller", () => {
       const renderCall = res.render.getCall(0);
       expect(renderCall.args[1].onlyDeleteAccount).to.equal(false);
     });
+
+    it("should render with identityFailed false when path is CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY_DELETE", () => {
+      req.path = PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY_DELETE;
+
+      cannotChangeSecurityCodesGet(req as Request, res as Response);
+
+      const renderCall = res.render.getCall(0);
+      expect(renderCall.args[1].formPostPath).to.equal(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY_DELETE);
+      expect(renderCall.args[1].identityFailed).to.equal(false);
+    })
   });
 
   describe("cannotChangeSecurityCodePost", () => {

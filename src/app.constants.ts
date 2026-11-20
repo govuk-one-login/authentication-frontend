@@ -66,6 +66,8 @@ export const PATH_NAMES = {
     "/cannot-change-security-codes-identity-fail",
   CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY:
     "/cannot-change-security-codes-no-identity",
+  CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY_DELETE:
+    "/cannot-change-security-codes-no-identity-delete",
   CHANGE_SECURITY_CODES_CONFIRMATION: "/change-codes-confirmed",
   PASSWORD_RESET_REQUIRED: "/password-reset-required",
   UNAVAILABLE_PERMANENT: "/unavailable-permanent",
