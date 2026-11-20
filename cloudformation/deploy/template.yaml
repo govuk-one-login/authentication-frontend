@@ -586,7 +586,7 @@ Mappings:
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
       EnablePasskeyContactForm: "Yes"
-      SupportSelfServeAccountDeletion: "No"
+      SupportSelfServeAccountDeletion: "Yes"
       EnableCloudwatchMetrics: "Yes"
       PasskeyPromptClientAllowList: "EB2EC91OpyzuhI7C2nw1aiEK2q8,3NKFv679oYlMdyrhKErrTGbzBy2h8rrd,nsR2wZ7EebJ2VOzE1LUa9iAVadunWQP3,EMGmY82k-92QSakDl_9keKDFmZY" # mobile sts, rp-stub, perf-test client, home client
       PasskeyPromptClientDenyList: ""
@@ -678,7 +678,7 @@ Mappings:
       tags: >-
         @UI and not (@under-development or @AccountInterventions or @EnvironmentWithIpvStubDeployed or
         @AcceptInternationalNumbers or @InternationalSmsSendingDisabled
-        or @EnvironmentWithAMCStubDeployed or @SelfServeAccountDeletionEnabled)
+        or @EnvironmentWithAMCStubDeployed or @SelfServeAccountDeletionDisabled)
 
 Globals:
   Function:
