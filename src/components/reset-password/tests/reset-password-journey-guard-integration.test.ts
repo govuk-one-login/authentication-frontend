@@ -21,7 +21,6 @@ describe("Integration::reset-password step rejects an off-journey enter-email PO
   const OTHER_EMAIL = "other@example.com";
 
   before(async () => {
-    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
 
     const { createApp } = await esmock(
       "../../../app.js",
@@ -63,7 +62,6 @@ describe("Integration::reset-password step rejects an off-journey enter-email PO
   after(() => {
     sinon.restore();
     app = undefined;
-    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
   });
 
   it("redirects the POST back to /reset-password and does not reach the backend", async () => {

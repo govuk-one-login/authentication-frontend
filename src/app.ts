@@ -22,7 +22,6 @@ import {
   getSessionExpiry,
   getSessionSecret,
   getVitalSignsIntervalSeconds,
-  supportAccountInterventions,
   supportAuthorizeController,
   supportPasskeyRegistration,
   supportPasskeyUsage,
@@ -168,11 +167,9 @@ function registerRoutes(app: express.Application) {
   app.use(cookiesRouter);
   app.use(errorPageRouter);
   app.use(sessionEndedRouter);
-  if (supportAccountInterventions()) {
-    app.use(accountInterventionRouter);
-    app.use(permanentlyBlockedRouter);
-    app.use(temporarilyBlockedRouter);
-  }
+  app.use(accountInterventionRouter);
+  app.use(permanentlyBlockedRouter);
+  app.use(temporarilyBlockedRouter);
   app.use(mfaResetWithIpvRouter);
   app.use(ipvCallbackRouter);
   app.use(cannotUseEmailAddressRouter);

@@ -1152,8 +1152,6 @@ Resources:
                   reducedCodeBlockDurationMinutes,
                   DefaultValue: "0.5",
                 ]
-            - Name: SUPPORT_ACCOUNT_INTERVENTIONS
-              Value: 1
             - Name: SUPPORT_REAUTHENTICATION
               Value: 1
             - Name: NO_PHOTO_ID_CONTACT_FORMS

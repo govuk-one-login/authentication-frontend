@@ -37,14 +37,9 @@ describe("accountInterventionsMiddleware", () => {
 
   afterEach(() => {
     sinon.restore();
-    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
   });
 
   describe("when supportAccountInterventions() returns false", function () {
-    beforeEach(() => {
-      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "0";
-    });
-
     it("should call next()", async () => {
       const fakeAccountInterventionService = accountInterventionsFakeHelper({
         passwordResetRequired: false,
@@ -66,10 +61,6 @@ describe("accountInterventionsMiddleware", () => {
   });
 
   describe("when supportAccountInterventions() returns true", function () {
-    beforeEach(() => {
-      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
-    });
-
     describe("when there are no account interventions", function () {
       let noAccountInterventionsService: AccountInterventionsInterface;
 

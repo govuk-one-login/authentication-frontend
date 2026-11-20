@@ -40,11 +40,9 @@ describe("enter password controller", () => {
     req = createMockRequest(PATH_NAMES.ENTER_PASSWORD);
     res = mockResponse();
     req.session.user = { email, isMfaRequired: true };
-    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
   });
 
   afterEach(() => {
-    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
     sinon.restore();
   });
 

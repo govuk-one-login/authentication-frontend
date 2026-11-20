@@ -21,7 +21,6 @@ import {
 import xss from "xss";
 import type { EnterEmailServiceInterface } from "../enter-email/types.js";
 import { enterEmailService } from "../enter-email/enter-email-service.js";
-import { supportAccountInterventions } from "../../config.js";
 import { getJourneyTypeFromUserSession } from "../common/journey/journey.js";
 import { accountInterventionService } from "../account-intervention/account-intervention-service.js";
 import type { AccountInterventionsInterface } from "../account-intervention/types.js";
@@ -245,7 +244,7 @@ export function enterPasswordPost(
     req: Request,
     res: Response
   ): Promise<string | null> {
-    if (!isPasswordChangeRequired || !supportAccountInterventions()) {
+    if (!isPasswordChangeRequired) {
       return null;
     }
 

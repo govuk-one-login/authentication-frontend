@@ -36,7 +36,6 @@ describe("reset password check email controller", () => {
   beforeEach(() => {
     req = createMockRequest(PATH_NAMES.RESET_PASSWORD_CHECK_EMAIL);
     res = mockResponse();
-    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     req.session.user = {
       email: "joe.bloggs@test.com",
     };
@@ -44,7 +43,6 @@ describe("reset password check email controller", () => {
 
   afterEach(() => {
     sinon.restore();
-    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
   });
 
   describe("resetPasswordCheckEmailGet", () => {

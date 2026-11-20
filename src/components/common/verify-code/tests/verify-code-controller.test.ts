@@ -27,13 +27,8 @@ describe("Verify code controller tests", () => {
 
   const EXAMPLE_REDIRECT_URI = "https://example.com/redirect";
   beforeEach(() => {
-    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     noInterventionsService = accountInterventionsFakeHelper(noInterventions);
     res = mockResponse();
-  });
-
-  afterEach(() => {
-    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
   });
 
   describe("verify email notification type", () => {

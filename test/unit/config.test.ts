@@ -3,7 +3,6 @@ import { expect, sinon } from "../utils/test-utils.js";
 import {
   supportAuthorizeController,
   supportNoPhotoIdContactForms,
-  supportAccountInterventions,
   supportReauthentication,
   getLanguageToggleEnabled,
   supportNewIpvSpinner,
@@ -28,7 +27,6 @@ describe("config", () => {
     sinon.restore();
     delete process.env.SUPPORT_AUTHORIZE_CONTROLLER;
     delete process.env.NO_PHOTO_ID_CONTACT_FORMS;
-    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
     delete process.env.SUPPORT_REAUTHENTICATION;
     delete process.env.LANGUAGE_TOGGLE_ENABLED;
     delete process.env.SUPPORT_NEW_IPV_SPINNER;
@@ -61,11 +59,6 @@ describe("config", () => {
         name: "supportNoPhotoIdContactForms",
         envVar: "NO_PHOTO_ID_CONTACT_FORMS",
         fn: supportNoPhotoIdContactForms,
-      },
-      {
-        name: "supportAccountInterventions",
-        envVar: "SUPPORT_ACCOUNT_INTERVENTIONS",
-        fn: supportAccountInterventions,
       },
       {
         name: "supportReauthentication",

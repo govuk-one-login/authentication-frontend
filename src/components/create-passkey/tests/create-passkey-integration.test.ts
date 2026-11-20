@@ -29,7 +29,6 @@ describe("Integration:: create passkey", () => {
 
   before(async () => {
     process.env.SUPPORT_PASSKEY_REGISTRATION = "1";
-    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
     const { createApp } = await esmock(
       "../../../app.js",
       {},

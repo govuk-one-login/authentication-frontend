@@ -53,8 +53,6 @@ describe("Integration::reset password check email ", () => {
       }
     );
 
-    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "0";
-
     app = await createApp();
     baseApi = process.env.FRONTEND_API_BASE_URL;
 

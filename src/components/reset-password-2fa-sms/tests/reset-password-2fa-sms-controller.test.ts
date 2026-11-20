@@ -28,7 +28,6 @@ describe("reset password 2fa SMS controller", () => {
   });
 
   afterEach(() => {
-    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
     sinon.restore();
   });
 
@@ -133,13 +132,19 @@ describe("reset password 2fa SMS controller", () => {
           success: true,
         }),
       } as unknown as VerifyCodeInterface;
+      const fakeInterventionsService = accountInterventionsFakeHelper({
+        blocked: false,
+        passwordResetRequired: false,
+        temporarilySuspended: false,
+        reproveIdentity: false,
+      });
       req.session.user = {
         email: "joe.bloggs@test.com",
       };
       req.session.user.mfaMethodType = "SMS";
       req.body.code = "123456";
 
-      await resetPassword2FASmsPost(fakeService)(
+      await resetPassword2FASmsPost(fakeService, fakeInterventionsService)(
         req as Request,
         res as Response
       );
@@ -171,7 +176,6 @@ describe("reset password 2fa SMS controller", () => {
     });
 
     it("should redirect to /unavailable-temporary when temporarilySuspended status applied to account and they try to reset their password", async () => {
-      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
       const fakeService = fakeVerifyCodeServiceHelper(true);
       const fakeInterventionsService = accountInterventionsFakeHelper({
         temporarilySuspended: true,
@@ -191,7 +195,6 @@ describe("reset password 2fa SMS controller", () => {
     });
 
     it("should redirect to /unavailable-permanent when bloced status applied to account and they try to reset their password", async () => {
-      process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
       const fakeService = fakeVerifyCodeServiceHelper(true);
       const fakeInterventionsService = accountInterventionsFakeHelper({
         blocked: true,

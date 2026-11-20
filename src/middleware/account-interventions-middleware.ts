@@ -3,7 +3,6 @@ import { getNextPathAndUpdateJourney } from "../components/common/state-machine/
 import { USER_JOURNEY_EVENTS } from "../components/common/state-machine/state-machine.js";
 import { accountInterventionService } from "../components/account-intervention/account-intervention-service.js";
 import type { ExpressRouteFunc } from "../types.js";
-import { supportAccountInterventions } from "../config.js";
 import {
   isSuspendedWithoutUserActions,
   passwordHasBeenResetMoreRecentlyThanInterventionApplied,
@@ -23,10 +22,6 @@ export function accountInterventionsMiddleware(
   service = accountInterventionService()
 ): ExpressRouteFunc {
   return async function (req: Request, res: Response, next: NextFunction) {
-    if (!supportAccountInterventions()) {
-      return next();
-    }
-
     const email = req.session.user.email.toLowerCase();
     const { sessionId, clientSessionId, persistentSessionId } = res.locals;
 

@@ -80,7 +80,6 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
         "variables": {
             "SUPPORT_MFA_OPTIONS": 1,
             "SUPPORT_AUTHORIZE_CONTROLLER": 1,
-            "SUPPORT_ACCOUNT_INTERVENTIONS": 1,
             "SUPPORT_REAUTHENTICATION": 1,
             "NO_PHOTO_ID_CONTACT_FORMS": 1,
             "LANGUAGE_TOGGLE_ENABLED": 1,

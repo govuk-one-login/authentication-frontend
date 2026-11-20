@@ -10,7 +10,6 @@ import type { VerifyCodeInterface } from "./types.js";
 import type { ExpressRouteFunc } from "../../../types.js";
 import { USER_JOURNEY_EVENTS } from "../state-machine/state-machine.js";
 import { JOURNEY_TYPE, NOTIFICATION_TYPE } from "../../../app.constants.js";
-import { supportAccountInterventions } from "../../../config.js";
 import type { AccountInterventionsInterface } from "../../account-intervention/types.js";
 import { isSuspendedWithoutUserActions } from "../../../utils/interventions.js";
 import { isReauth } from "../../../utils/request.js";
@@ -131,7 +130,6 @@ export function verifyCodePost(
         throw new Error("Unknown notification type");
     }
     if (
-      supportAccountInterventions() &&
       !req.session.user.withinForcedPasswordResetJourney
     ) {
       if (

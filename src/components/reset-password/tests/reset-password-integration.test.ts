@@ -24,7 +24,6 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
   const ENDPOINT = "/reset-password";
 
   before(async () => {
-    process.env.SUPPORT_ACCOUNT_INTERVENTIONS = "1";
 
     const { createApp } = await esmock(
       "../../../app.js",
@@ -65,7 +64,6 @@ describe("Integration::reset password (in 6 digit code flow)", () => {
   after(() => {
     sinon.restore();
     app = undefined;
-    delete process.env.SUPPORT_ACCOUNT_INTERVENTIONS;
   });
 
   it("should return reset password page when there are no interventions on a user", (done) => {
