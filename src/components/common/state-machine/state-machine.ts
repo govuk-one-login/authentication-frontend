@@ -85,6 +85,7 @@ const USER_JOURNEY_EVENTS = {
   PASSKEY_VERIFICATION_FAILED: "PASSKEY_VERIFICATION_FAILED",
   SIGN_IN_WITH_PASSKEY: "SIGN_IN_WITH_PASSKEY",
   SIGN_IN_WITHOUT_PASSKEY: "SIGN_IN_WITHOUT_PASSKEY",
+  NOT_ELIGIBLE_FOR_SSAD: "NOT_ELIGIBLE_FOR_SSAD"
 };
 
 export interface AuthStateContext {
@@ -823,7 +824,11 @@ const authStateMachine = createMachine<AuthStateContext>(
         },
       },
       [PATH_NAMES.SSAD_AUTHORIZE]: {
-        type: "final",
+        on: {
+          [USER_JOURNEY_EVENTS.NOT_ELIGIBLE_FOR_SSAD]: [
+            PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY_DELETE,
+          ],
+        },
         meta: {
           optionalPaths: [PATH_NAMES.SSAD_CALLBACK],
         },

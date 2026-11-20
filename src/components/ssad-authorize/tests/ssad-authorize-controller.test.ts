@@ -10,6 +10,7 @@ import type { Request, Response } from "express";
 import { BadRequestError } from "../../../utils/error.js";
 import { strict as assert } from "assert";
 import { describe } from "mocha";
+import { accountInterventionsFakeHelper } from "../../../../test/helpers/account-interventions-helpers.js";
 
 const SSAD_REDIRECT_URL = "https://test-amc-url.com/authorize?state=test-state";
 
@@ -42,24 +43,57 @@ describe("ssad authorize controller", () => {
   });
 
   describe("ssadAuthorizeGet", () => {
-    it("should redirect to SSAD URL when request is successful", async () => {
-      await ssadAuthorizeGet(fakeSsadAuthorizeService(true))(
-        req as Request,
-        res as Response
-      );
+    it("should redirect to SSAD URL when request is successful and no reset password intervention exists", async () => {
+      const fakeInterventionsService = accountInterventionsFakeHelper({
+        passwordResetRequired: false,
+        blocked: false,
+        temporarilySuspended: false,
+        reproveIdentity: false,
+      });
+
+      await ssadAuthorizeGet(
+        fakeSsadAuthorizeService(true),
+        fakeInterventionsService
+      )(req as Request, res as Response);
+
       expect(res.redirect).to.have.been.calledWith(SSAD_REDIRECT_URL);
     });
 
     it("should throw a BadRequestError when the request is not successful", async () => {
+      const fakeInterventionsService = accountInterventionsFakeHelper({
+        passwordResetRequired: false,
+        blocked: false,
+        temporarilySuspended: false,
+        reproveIdentity: false,
+      });
+
       await assert.rejects(
         async () =>
-          ssadAuthorizeGet(fakeSsadAuthorizeService(false))(
-            req as Request,
-            res as Response
-          ),
+          ssadAuthorizeGet(
+            fakeSsadAuthorizeService(false),
+            fakeInterventionsService
+          )(req as Request, res as Response),
         BadRequestError,
         "500:Test error message"
       );
     });
+
+    it("should redirect to /cannot-change-security-codes-no-identity-delete if user has reset password intervention", async () => {
+      const fakeInterventionsService = accountInterventionsFakeHelper({
+        passwordResetRequired: true,
+        blocked: false,
+        temporarilySuspended: false,
+        reproveIdentity: false,
+      });
+      const ssadAuthorizeService = fakeSsadAuthorizeService(true)
+
+      await ssadAuthorizeGet(ssadAuthorizeService, fakeInterventionsService)(
+        req as Request,
+        res as Response
+      );
+
+      expect(res.redirect).to.have.been.calledWith(PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_NO_IDENTITY_DELETE);
+      expect(ssadAuthorizeService.getRedirectUrl).to.not.have.been.called;
+    })
   });
 });
