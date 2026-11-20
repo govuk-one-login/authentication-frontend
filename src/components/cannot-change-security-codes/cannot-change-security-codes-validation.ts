@@ -16,7 +16,7 @@ export function validateCannotChangeHowGetSecurityCodesActionRequest(): Validati
         );
       }),
     validateBodyMiddleware(
-      "ipv-callback/index-cannot-change-how-get-security-codes.njk",
+      "cannot-change-security-codes/index.njk",
       (req) => ({
         identityFailed:
           req.path === PATH_NAMES.CANNOT_CHANGE_SECURITY_CODES_IDENTITY_FAIL,
