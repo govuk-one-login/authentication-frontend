@@ -16,6 +16,23 @@ import { testStateRouter, testResponsesRouter } from "./routes/test-state";
 const app = express();
 app.use(express.json());
 
+app.use((req, res, next) => {
+  let responseBody: unknown;
+  const originalJson = res.json.bind(res);
+  res.json = (body) => {
+    responseBody = body;
+    return originalJson(body);
+  };
+
+  res.on("finish", () => {
+    process.stdout.write(
+      `${req.method} ${req.originalUrl} -> ${res.statusCode} ` +
+        `req=${JSON.stringify(req.body)} ||| res=${JSON.stringify(responseBody)}\n`
+    );
+  });
+  next();
+});
+
 app.post("/start", startHandler);
 app.post("/login", loginHandler);
 app.post("/user-exists", checkUserExistsHandler);

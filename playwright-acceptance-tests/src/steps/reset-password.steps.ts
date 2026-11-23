@@ -7,15 +7,30 @@ import { ResetPasswordPage } from "../pages/ResetPasswordPage";
 import { VALID_PASSWORD } from "../support/constants";
 import {
   resetPasswordSmsResponse,
+  resetPasswordAuthAppResponse,
   resetPasswordNoMfaResponse,
   successfulResetPasswordResponse,
 } from "../responses/reset-password";
-import { partiallyRegisteredUserLoginResponse } from "../responses/login";
+import {
+  correctPasswordAuthAppResponse,
+  correctPasswordSmsResponse,
+  partiallyRegisteredUserLoginResponse,
+} from "../responses/login";
+import { mfaCodeSentResponse } from "../responses/mfa";
 
 When(
   "the user clicks the forgotten password link and a password reset is permitted via SMS",
   async function (this: PlaywrightWorld): Promise<void> {
     await stub.setResetPasswordRequestResponse(resetPasswordSmsResponse);
+    await stub.setMfaResponse(mfaCodeSentResponse);
+    await new EnterPasswordPage(requirePage(this)).clickForgottenPasswordLink();
+  }
+);
+
+When(
+  "the user clicks the forgotten password link and a password reset is permitted via their Auth App",
+  async function (this: PlaywrightWorld): Promise<void> {
+    await stub.setResetPasswordRequestResponse(resetPasswordAuthAppResponse);
     await new EnterPasswordPage(requirePage(this)).clickForgottenPasswordLink();
   }
 );
@@ -36,6 +51,28 @@ When(
     await resetPasswordPage.assertLoaded();
     await stub.setResetPasswordResponse(successfulResetPasswordResponse);
     await stub.setCorrectPasswordResponse(partiallyRegisteredUserLoginResponse);
+    await resetPasswordPage.resetPasswordAndContinue(VALID_PASSWORD);
+  }
+);
+
+When(
+  "the user with Auth App MFA successfully resets their password",
+  async function (this: PlaywrightWorld): Promise<void> {
+    const resetPasswordPage = new ResetPasswordPage(requirePage(this));
+    await resetPasswordPage.assertLoaded();
+    await stub.setResetPasswordResponse(successfulResetPasswordResponse);
+    await stub.setCorrectPasswordResponse(correctPasswordAuthAppResponse);
+    await resetPasswordPage.resetPasswordAndContinue(VALID_PASSWORD);
+  }
+);
+
+When(
+  "the user with SMS MFA successfully resets their password",
+  async function (this: PlaywrightWorld): Promise<void> {
+    const resetPasswordPage = new ResetPasswordPage(requirePage(this));
+    await resetPasswordPage.assertLoaded();
+    await stub.setResetPasswordResponse(successfulResetPasswordResponse);
+    await stub.setCorrectPasswordResponse(correctPasswordSmsResponse);
     await resetPasswordPage.resetPasswordAndContinue(VALID_PASSWORD);
   }
 );

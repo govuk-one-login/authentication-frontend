@@ -1,4 +1,6 @@
-import type { MfaMethodType } from "../constants.js";
+import type { MfaMethodType as MfaMethodTypeEnum } from "../constants.js";
+
+type MfaMethodType = `${MfaMethodTypeEnum}`;
 
 export interface StartResponse {
   status: number;
@@ -85,6 +87,7 @@ export interface AccountInterventionsResponse {
     blocked: boolean;
     temporarilySuspended: boolean;
     reproveIdentity: boolean;
+    appliedAt: number;
   };
 }
 
@@ -96,16 +99,18 @@ export interface ResetPasswordResponse {
   };
 }
 
+interface ResetPasswordRequestMfaMethod {
+  id: string;
+  type: MfaMethodType;
+  priority: string;
+  redactedPhoneNumber?: string;
+}
+
 export interface ResetPasswordRequestResponse {
   status: number;
   body: {
-    mfaMethodType: string;
-    phoneNumberLastThree: string;
-    mfaMethods: {
-      id: string;
-      mfaMethodType: string;
-      priority: string;
-      phoneNumber: string;
-    }[];
+    mfaMethodType?: MfaMethodType;
+    phoneNumberLastThree?: string;
+    mfaMethods: ResetPasswordRequestMfaMethod[];
   };
 }
