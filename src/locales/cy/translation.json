@@ -111,6 +111,35 @@
       "summary": "Sut i greu cyfrinair diogel",
       "threeRandomWordsParagraph": "Ffordd dda o greu cyfrinair diogel a chofiadwy yw defnyddio 3 gair ar hap. Gallwch ddefnyddio rhifau, symbolau a gofodau.",
       "uniqueParagraph": "Dylech ddefnyddio cyfrinair nad ydych yn ei ddefnyddio ar gyfer unrhyw beth arall."
+    },
+    "statusBanner": {
+      "smsDelays": {
+        "title": "TODO",
+        "paragraphs": [
+          "TODO",
+          "TODO"
+        ]
+      },
+      "emailDelays": {
+        "title": "TODO",
+        "paragraphs": [
+          "TODO",
+          "TODO"
+        ]
+      },
+      "passwordResetUnavailable": {
+        "title": "TODO",
+        "paragraphs": [
+          "TODO",
+          "TODO"
+        ]
+      },
+      "serviceIssues": {
+        "paragraphs": [
+          "TODO",
+          "TODO"
+        ]
+      }
     }
   },
   "mobileAppError": {

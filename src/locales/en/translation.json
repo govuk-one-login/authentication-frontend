@@ -111,6 +111,35 @@
       "summary": "How to create a secure password",
       "threeRandomWordsParagraph": "A good way to create a secure and memorable password is to use 3 random words. You can use numbers, symbols and spaces.",
       "uniqueParagraph": "You should use a password that you do not use for anything else."
+    },
+    "statusBanner": {
+      "smsDelays": {
+        "title": "Important",
+        "paragraphs": [
+          "[DEV TESTING] We are aware of issues where users may experience delays receiving their sign-in security code by text message. Where a code is delayed, it may have expired by the time it is received and will no longer be valid.",
+          "Repeated requests for new codes can result in the account being temporarily locked for up to 2 hours."
+        ]
+      },
+      "emailDelays": {
+        "title": "Important",
+        "paragraphs": [
+          "[DEV TESTING] We are aware of issues where users may experience delays receiving their security code by email. Where a code is delayed, it may have expired by the time it is received and will no longer be valid.",
+          "Repeated requests for new codes can result in the account being temporarily locked for up to 2 hours."
+        ]
+      },
+      "passwordResetUnavailable": {
+        "title": "Important",
+        "paragraphs": [
+          "[DEV TESTING] We are aware of issues where users may not be able to reset their password at the moment.",
+          "Try again later. If you know your password, you can still sign in."
+        ]
+      },
+      "serviceIssues": {
+        "paragraphs": [
+          "[DEV TESTING] We are aware of issues affecting GOV.UK One Login. Some users may have problems signing in or creating an account.",
+          "We are working to fix this."
+        ]
+      }
     }
   },
   "mobileAppError": {
