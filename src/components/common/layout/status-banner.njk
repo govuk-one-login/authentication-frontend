@@ -1,26 +1,33 @@
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
-{% if statusBanner %}
-    {% set statusBannerParagraphs = (statusBanner.translationKeyPrefix ~ '.paragraphs') | translate({ returnObjects: true }) %}
-    {% if statusBanner.component == "notification-banner" %}
-        {% set statusBannerHeading = (statusBanner.translationKeyPrefix ~ '.heading') | translate({ defaultValue: "" }) %}
+{% if statusBanners %}
+    {% set notificationBannerKeyPrefixes = statusBanners.notificationBannerKeyPrefixes %}
+    {% if notificationBannerKeyPrefixes | length %}
         {% set statusBannerHtml %}
-            {% if statusBannerHeading %}
-                <p class="govuk-notification-banner__heading">{{ statusBannerHeading }}</p>
-            {% endif %}
-            {% for paragraph in statusBannerParagraphs %}
-                <p class="govuk-body">{{ paragraph }}</p>
+            {% for keyPrefix in notificationBannerKeyPrefixes %}
+                {% if not loop.first %}
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                {% endif %}
+                {% set statusBannerHeading = (keyPrefix ~ '.heading') | translate({ defaultValue: "" }) %}
+                {% if statusBannerHeading %}
+                    <p class="govuk-notification-banner__heading">{{ statusBannerHeading }}</p>
+                {% endif %}
+                {% for paragraph in (keyPrefix ~ '.paragraphs') | translate({ returnObjects: true }) %}
+                    <p class="govuk-body">{{ paragraph }}</p>
+                {% endfor %}
             {% endfor %}
         {% endset %}
         {{ govukNotificationBanner({
-            titleText: (statusBanner.translationKeyPrefix ~ '.title') | translate,
+            titleText: (notificationBannerKeyPrefixes[0] ~ '.title') | translate,
             html: statusBannerHtml,
             attributes: { "data-test-id": "status-banner" }
         }) }}
-    {% elif statusBanner.component == "warning-text" %}
+    {% endif %}
+
+    {% for keyPrefix in statusBanners.warningTextKeyPrefixes %}
         {% set statusBannerHtml %}
-            {% for paragraph in statusBannerParagraphs %}
+            {% for paragraph in (keyPrefix ~ '.paragraphs') | translate({ returnObjects: true }) %}
                 {{ paragraph }}{% if not loop.last %}<br><br>{% endif %}
             {% endfor %}
         {% endset %}
@@ -29,5 +36,5 @@
             iconFallbackText: 'general.warning' | translate,
             attributes: { "data-test-id": "status-banner" }
         }) }}
-    {% endif %}
+    {% endfor %}
 {% endif %}

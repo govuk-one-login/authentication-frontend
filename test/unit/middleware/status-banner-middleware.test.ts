@@ -30,9 +30,9 @@ describe("status banner middleware", () => {
 
     run(PATH_NAMES.ENTER_MFA);
 
-    expect(res.locals.statusBanner).to.deep.equal({
-      component: "notification-banner",
-      translationKeyPrefix: "general.statusBanner.smsDelays",
+    expect(res.locals.statusBanners).to.deep.equal({
+      notificationBannerKeyPrefixes: ["general.statusBanner.smsDelays"],
+      warningTextKeyPrefixes: [],
     });
     expect(next).to.have.been.calledOnce;
   });
@@ -42,7 +42,7 @@ describe("status banner middleware", () => {
 
     run(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
 
-    expect(res.locals).to.not.have.property("statusBanner");
+    expect(res.locals).to.not.have.property("statusBanners");
     expect(next).to.have.been.calledOnce;
   });
 
@@ -51,9 +51,37 @@ describe("status banner middleware", () => {
 
     run(PATH_NAMES.ENTER_EMAIL_SIGN_IN);
 
-    expect(res.locals.statusBanner).to.deep.equal({
-      component: "warning-text",
-      translationKeyPrefix: "general.statusBanner.serviceIssues",
+    expect(res.locals.statusBanners).to.deep.equal({
+      notificationBannerKeyPrefixes: [],
+      warningTextKeyPrefixes: ["general.statusBanner.serviceIssues"],
+    });
+    expect(next).to.have.been.calledOnce;
+  });
+
+  it("should show every listed scenario that targets the page, in the order listed", () => {
+    process.env.STATUS_BANNER =
+      "password-reset-unavailable,email-delays,service-issues,sms-delays";
+
+    run(PATH_NAMES.RESET_PASSWORD_2FA_SMS);
+
+    expect(res.locals.statusBanners).to.deep.equal({
+      notificationBannerKeyPrefixes: [
+        "general.statusBanner.passwordResetUnavailable",
+        "general.statusBanner.smsDelays",
+      ],
+      warningTextKeyPrefixes: ["general.statusBanner.serviceIssues"],
+    });
+    expect(next).to.have.been.calledOnce;
+  });
+
+  it("should still show valid scenarios when another listed scenario is unknown", () => {
+    process.env.STATUS_BANNER = "sms-delayz,service-issues";
+
+    run(PATH_NAMES.ENTER_MFA);
+
+    expect(res.locals.statusBanners).to.deep.equal({
+      notificationBannerKeyPrefixes: [],
+      warningTextKeyPrefixes: ["general.statusBanner.serviceIssues"],
     });
     expect(next).to.have.been.calledOnce;
   });
@@ -63,14 +91,14 @@ describe("status banner middleware", () => {
 
     run(PATH_NAMES.ENTER_MFA);
 
-    expect(res.locals).to.not.have.property("statusBanner");
+    expect(res.locals).to.not.have.property("statusBanners");
     expect(next).to.have.been.calledOnce;
   });
 
   it("should not show a banner when STATUS_BANNER is not set", () => {
     run(PATH_NAMES.ENTER_MFA);
 
-    expect(res.locals).to.not.have.property("statusBanner");
+    expect(res.locals).to.not.have.property("statusBanners");
     expect(next).to.have.been.calledOnce;
   });
 });

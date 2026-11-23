@@ -205,6 +205,23 @@ describe("Integration:: enter mfa", () => {
         });
     });
 
+    it("should show every listed scenario that targets the page", async () => {
+      process.env.STATUS_BANNER = "sms-delays,service-issues";
+      await setupStubbedApp();
+      await request(app)
+        .get(PATH_NAMES.ENTER_MFA)
+        .expect(200)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect(
+            $(".govuk-notification-banner[data-test-id='status-banner']").length
+          ).to.equal(1);
+          expect(
+            $(".govuk-warning-text[data-test-id='status-banner']").length
+          ).to.equal(1);
+        });
+    });
+
     it("should not show a status banner when STATUS_BANNER is an unknown scenario", async () => {
       process.env.STATUS_BANNER = "not-a-scenario";
       await setupStubbedApp();

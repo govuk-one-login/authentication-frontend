@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { describe, it } from "mocha";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { STATUS_BANNER_SCENARIOS } from "../../../src/components/common/status-banner/scenarios.js";
+import { parseStatusBannerSetting } from "../../../src/components/common/status-banner/status-banner-setting.js";
 
 describe("deploy template StatusBanner values", () => {
   const template = readFileSync(
@@ -20,10 +20,12 @@ describe("deploy template StatusBanner values", () => {
     );
   });
 
-  it("should only use empty values or known scenario ids", () => {
-    const validValues = ["", ...Object.keys(STATUS_BANNER_SCENARIOS)];
+  it("should only contain valid status banner entries", () => {
     values.forEach((value) => {
-      expect(validValues, `unknown StatusBanner '${value}'`).to.include(value);
+      expect(
+        parseStatusBannerSetting(value).invalidEntries,
+        `invalid StatusBanner '${value}'`
+      ).to.be.empty;
     });
   });
 });

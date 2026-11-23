@@ -1,20 +1,23 @@
 import type { NextFunction, Request, Response } from "express";
 import { getStatusBanner } from "../config.js";
-import {
-  getStatusBannerScenario,
-  isShownOnPath,
-} from "../components/common/status-banner/scenarios.js";
+import { isShownOnPath } from "../components/common/status-banner/scenarios.js";
+import type { InvalidStatusBannerEntry } from "../components/common/status-banner/status-banner-setting.js";
+import { parseStatusBannerSetting } from "../components/common/status-banner/status-banner-setting.js";
 import { logger } from "../utils/logger.js";
 
-const alreadyReportedUnknownScenarioIds = new Set<string>();
+const alreadyReportedInvalidEntries = new Set<string>();
 
-function reportUnknownScenarioOnce(scenarioId: string): void {
-  if (alreadyReportedUnknownScenarioIds.has(scenarioId)) {
+function reportInvalidEntryOnce({
+  entry,
+  reason,
+}: InvalidStatusBannerEntry): void {
+  const reportKey = `${entry}: ${reason}`;
+  if (alreadyReportedInvalidEntries.has(reportKey)) {
     return;
   }
-  alreadyReportedUnknownScenarioIds.add(scenarioId);
+  alreadyReportedInvalidEntries.add(reportKey);
   logger.warn(
-    `STATUS_BANNER is set to unknown scenario '${scenarioId}', so no status banner will be shown`
+    `Ignoring STATUS_BANNER entry '${entry}' (${reason}), so it will not be shown`
   );
 }
 
@@ -23,17 +26,22 @@ export function statusBannerMiddleware(
   res: Response,
   next: NextFunction
 ): void {
-  const scenarioId = getStatusBanner();
-  const scenario = scenarioId ? getStatusBannerScenario(scenarioId) : undefined;
+  const { banners, invalidEntries } =
+    parseStatusBannerSetting(getStatusBanner());
+  invalidEntries.forEach(reportInvalidEntryOnce);
 
-  if (scenarioId && !scenario) {
-    reportUnknownScenarioOnce(scenarioId);
-  }
+  const scenariosForPage = banners
+    .map((banner) => banner.scenario)
+    .filter((scenario) => isShownOnPath(scenario, req.path));
 
-  if (scenario && isShownOnPath(scenario, req.path)) {
-    res.locals.statusBanner = {
-      component: scenario.component,
-      translationKeyPrefix: scenario.translationKeyPrefix,
+  if (scenariosForPage.length > 0) {
+    res.locals.statusBanners = {
+      notificationBannerKeyPrefixes: scenariosForPage
+        .filter((scenario) => scenario.component === "notification-banner")
+        .map((scenario) => scenario.translationKeyPrefix),
+      warningTextKeyPrefixes: scenariosForPage
+        .filter((scenario) => scenario.component === "warning-text")
+        .map((scenario) => scenario.translationKeyPrefix),
     };
   }
 
