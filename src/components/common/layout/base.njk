@@ -119,6 +119,7 @@
               role="main"{% if mainLang %} lang="{{ mainLang }}"{% endif %}>
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds {{ rowClasses }}">
+                    {% include 'common/layout/status-banner.njk' %}
                     {% block content %}{% endblock %}
                 </div>
             </div>

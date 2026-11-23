@@ -1,0 +1,33 @@
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% if statusBanner %}
+    {% set statusBannerParagraphs = (statusBanner.translationKeyPrefix ~ '.paragraphs') | translate({ returnObjects: true }) %}
+    {% if statusBanner.component == "notification-banner" %}
+        {% set statusBannerHeading = (statusBanner.translationKeyPrefix ~ '.heading') | translate({ defaultValue: "" }) %}
+        {% set statusBannerHtml %}
+            {% if statusBannerHeading %}
+                <p class="govuk-notification-banner__heading">{{ statusBannerHeading }}</p>
+            {% endif %}
+            {% for paragraph in statusBannerParagraphs %}
+                <p class="govuk-body">{{ paragraph }}</p>
+            {% endfor %}
+        {% endset %}
+        {{ govukNotificationBanner({
+            titleText: (statusBanner.translationKeyPrefix ~ '.title') | translate,
+            html: statusBannerHtml,
+            attributes: { "data-test-id": "status-banner" }
+        }) }}
+    {% elif statusBanner.component == "warning-text" %}
+        {% set statusBannerHtml %}
+            {% for paragraph in statusBannerParagraphs %}
+                {{ paragraph }}{% if not loop.last %}<br><br>{% endif %}
+            {% endfor %}
+        {% endset %}
+        {{ govukWarningText({
+            html: statusBannerHtml,
+            iconFallbackText: 'general.warning' | translate,
+            attributes: { "data-test-id": "status-banner" }
+        }) }}
+    {% endif %}
+{% endif %}
