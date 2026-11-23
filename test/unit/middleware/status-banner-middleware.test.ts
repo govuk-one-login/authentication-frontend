@@ -23,6 +23,8 @@ describe("status banner middleware", () => {
   afterEach(() => {
     sinon.restore();
     delete process.env.STATUS_BANNER;
+    delete process.env.STATUS_BANNER_SHOW_FROM;
+    delete process.env.STATUS_BANNER_SHOW_UNTIL;
   });
 
   it("should show the banner on a page the scenario targets", () => {
@@ -84,6 +86,48 @@ describe("status banner middleware", () => {
       warningTextKeyPrefixes: ["general.statusBanner.serviceIssues"],
     });
     expect(next).to.have.been.calledOnce;
+  });
+
+  describe("showing times", () => {
+    beforeEach(() => {
+      process.env.STATUS_BANNER = "sms-delays,service-issues";
+      process.env.STATUS_BANNER_SHOW_FROM = "2026-11-21T09:00Z";
+      process.env.STATUS_BANNER_SHOW_UNTIL = "2026-11-21T17:00Z";
+    });
+
+    [
+      { now: "2026-11-21T08:00Z", description: "before the start time" },
+      { now: "2026-11-21T17:00Z", description: "from the end time" },
+    ].forEach(({ now, description }) => {
+      it(`should not show any banners ${description}`, () => {
+        sinon.useFakeTimers({ now: new Date(now) });
+
+        run(PATH_NAMES.ENTER_MFA);
+
+        expect(res.locals).to.not.have.property("statusBanners");
+      });
+    });
+
+    it("should show every listed banner between the start and end times", () => {
+      sinon.useFakeTimers({ now: new Date("2026-11-21T12:00Z") });
+
+      run(PATH_NAMES.ENTER_MFA);
+
+      expect(res.locals.statusBanners).to.deep.equal({
+        notificationBannerKeyPrefixes: ["general.statusBanner.smsDelays"],
+        warningTextKeyPrefixes: ["general.statusBanner.serviceIssues"],
+      });
+    });
+
+    it("should not show any banners when a time is invalid", () => {
+      process.env.STATUS_BANNER_SHOW_UNTIL = "2026-11-21T17:00";
+      sinon.useFakeTimers({ now: new Date("2026-11-21T12:00Z") });
+
+      run(PATH_NAMES.ENTER_MFA);
+
+      expect(res.locals).to.not.have.property("statusBanners");
+      expect(next).to.have.been.calledOnce;
+    });
   });
 
   it("should not show a banner when the scenario id is unknown", () => {

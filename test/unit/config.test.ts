@@ -21,6 +21,8 @@ import {
   getPasskeyPromptClientDenyList,
   getPasskeyRolloutPercentage,
   getStatusBanner,
+  getStatusBannerShowFrom,
+  getStatusBannerShowUntil,
 } from "../../src/config.js";
 import { CHANNEL } from "../../src/app.constants.js";
 
@@ -46,6 +48,8 @@ describe("config", () => {
     delete process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST;
     delete process.env.PASSKEY_PROMPT_CLIENT_DENY_LIST;
     delete process.env.STATUS_BANNER;
+    delete process.env.STATUS_BANNER_SHOW_FROM;
+    delete process.env.STATUS_BANNER_SHOW_UNTIL;
   });
 
   describe("boolean flag methods", () => {
@@ -290,6 +294,37 @@ describe("config", () => {
 
     it("should return undefined when STATUS_BANNER is not set", () => {
       expect(getStatusBanner()).to.be.undefined;
+    });
+  });
+
+  [
+    {
+      name: "getStatusBannerShowFrom",
+      envVar: "STATUS_BANNER_SHOW_FROM",
+      fn: getStatusBannerShowFrom,
+    },
+    {
+      name: "getStatusBannerShowUntil",
+      envVar: "STATUS_BANNER_SHOW_UNTIL",
+      fn: getStatusBannerShowUntil,
+    },
+  ].forEach(({ name, envVar, fn }) => {
+    describe(name, () => {
+      it(`should return the trimmed time when ${envVar} is set`, () => {
+        process.env[envVar] = " 2026-11-21T09:00Z ";
+        expect(fn()).to.equal("2026-11-21T09:00Z");
+      });
+
+      ["", "   "].forEach((value) => {
+        it(`should return undefined when ${envVar} is '${value}'`, () => {
+          process.env[envVar] = value;
+          expect(fn()).to.be.undefined;
+        });
+      });
+
+      it(`should return undefined when ${envVar} is not set`, () => {
+        expect(fn()).to.be.undefined;
+      });
     });
   });
 });

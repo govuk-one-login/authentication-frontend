@@ -94,6 +94,8 @@ DEFAULT_USER_VARIABLES: list[EnvFileSection] = [
             "SUPPORT_NEW_INTERNATIONAL_SMS": 1,
             "ENABLE_CLOUDWATCH_METRICS": 1,
             "STATUS_BANNER": "",
+            "STATUS_BANNER_SHOW_FROM": "",
+            "STATUS_BANNER_SHOW_UNTIL": "",
         },
     },
     {

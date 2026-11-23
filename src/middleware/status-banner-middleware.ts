@@ -1,24 +1,25 @@
 import type { NextFunction, Request, Response } from "express";
-import { getStatusBanner } from "../config.js";
+import {
+  getStatusBanner,
+  getStatusBannerShowFrom,
+  getStatusBannerShowUntil,
+} from "../config.js";
 import { isShownOnPath } from "../components/common/status-banner/scenarios.js";
-import type { InvalidStatusBannerEntry } from "../components/common/status-banner/status-banner-setting.js";
 import { parseStatusBannerSetting } from "../components/common/status-banner/status-banner-setting.js";
+import {
+  isShowingAt,
+  parseStatusBannerShowingTimes,
+} from "../components/common/status-banner/status-banner-showing-times.js";
 import { logger } from "../utils/logger.js";
 
-const alreadyReportedInvalidEntries = new Set<string>();
+const alreadyReportedProblems = new Set<string>();
 
-function reportInvalidEntryOnce({
-  entry,
-  reason,
-}: InvalidStatusBannerEntry): void {
-  const reportKey = `${entry}: ${reason}`;
-  if (alreadyReportedInvalidEntries.has(reportKey)) {
+function reportProblemOnce(problem: string): void {
+  if (alreadyReportedProblems.has(problem)) {
     return;
   }
-  alreadyReportedInvalidEntries.add(reportKey);
-  logger.warn(
-    `Ignoring STATUS_BANNER entry '${entry}' (${reason}), so it will not be shown`
-  );
+  alreadyReportedProblems.add(problem);
+  logger.warn(`Status banner configuration problem: ${problem}`);
 }
 
 export function statusBannerMiddleware(
@@ -28,11 +29,25 @@ export function statusBannerMiddleware(
 ): void {
   const { banners, invalidEntries } =
     parseStatusBannerSetting(getStatusBanner());
-  invalidEntries.forEach(reportInvalidEntryOnce);
+  invalidEntries.forEach(({ entry, reason }) =>
+    reportProblemOnce(
+      `ignoring STATUS_BANNER entry '${entry}' because of ${reason}`
+    )
+  );
 
-  const scenariosForPage = banners
-    .map((banner) => banner.scenario)
-    .filter((scenario) => isShownOnPath(scenario, req.path));
+  const showingTimes = parseStatusBannerShowingTimes(
+    getStatusBannerShowFrom(),
+    getStatusBannerShowUntil()
+  );
+  showingTimes.problems.forEach((problem) =>
+    reportProblemOnce(`${problem}, so no status banner will be shown`)
+  );
+
+  const scenariosForPage = isShowingAt(showingTimes, new Date())
+    ? banners
+        .map((banner) => banner.scenario)
+        .filter((scenario) => isShownOnPath(scenario, req.path))
+    : [];
 
   if (scenariosForPage.length > 0) {
     res.locals.statusBanners = {
