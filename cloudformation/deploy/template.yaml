@@ -448,7 +448,7 @@ Mappings:
       PasskeyPromptClientAllowList: "skwdHH2y6ERjJWTPSoAFbSt8lX04OgtI"
       PasskeyRolloutPercentage: 100
       PasskeyPromptClientDenyList: ""
-      StatusBanner: ""
+      StatusBanner: "service-issues,sms-delays,email-delays"
       StatusBannerShowFrom: ""
       StatusBannerShowUntil: ""
     authdev2:
@@ -474,7 +474,7 @@ Mappings:
       PasskeyPromptClientAllowList: "rPEUe0hRrHqf0i0es1gYjKxE5ceGN7VK"
       PasskeyRolloutPercentage: 100
       PasskeyPromptClientDenyList: ""
-      StatusBanner: ""
+      StatusBanner: "service-issues,sms-delays,email-delays"
       StatusBannerShowFrom: ""
       StatusBannerShowUntil: ""
     authdev3:
@@ -495,7 +495,7 @@ Mappings:
       PasskeyPromptClientAllowList: ""
       PasskeyRolloutPercentage: 100
       PasskeyPromptClientDenyList: ""
-      StatusBanner: ""
+      StatusBanner: "service-issues,sms-delays,email-delays"
       StatusBannerShowFrom: ""
       StatusBannerShowUntil: ""
     dev:
@@ -528,7 +528,7 @@ Mappings:
       EnableCloudwatchMetrics: "Yes"
       PasskeyPromptClientAllowList: "J3tedNRsfssnsf4STuc2NNIV1C1gdxBB"
       PasskeyPromptClientDenyList: ""
-      StatusBanner: ""
+      StatusBanner: "service-issues,sms-delays,email-delays"
       StatusBannerShowFrom: ""
       StatusBannerShowUntil: ""
       serviceDownPageRegistry: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-w62weogzsdkb"
