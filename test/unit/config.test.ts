@@ -20,6 +20,7 @@ import {
   getPasskeyPromptClientAllowList,
   getPasskeyPromptClientDenyList,
   getPasskeyRolloutPercentage,
+  getStatusBanner,
 } from "../../src/config.js";
 import { CHANNEL } from "../../src/app.constants.js";
 
@@ -44,6 +45,7 @@ describe("config", () => {
     delete process.env.SERVICE_DOMAIN;
     delete process.env.PASSKEY_PROMPT_CLIENT_ALLOW_LIST;
     delete process.env.PASSKEY_PROMPT_CLIENT_DENY_LIST;
+    delete process.env.STATUS_BANNER;
   });
 
   describe("boolean flag methods", () => {
@@ -265,6 +267,29 @@ describe("config", () => {
     it("should return empty array when not set", () => {
       delete process.env.PASSKEY_PROMPT_CLIENT_DENY_LIST;
       expect(getPasskeyPromptClientDenyList()).to.deep.equal([]);
+    });
+  });
+
+  describe("getStatusBanner", () => {
+    it("should return the scenario id when STATUS_BANNER is set", () => {
+      process.env.STATUS_BANNER = "sms-delays";
+      expect(getStatusBanner()).to.equal("sms-delays");
+    });
+
+    it("should trim whitespace from the scenario id", () => {
+      process.env.STATUS_BANNER = " sms-delays ";
+      expect(getStatusBanner()).to.equal("sms-delays");
+    });
+
+    ["", "   "].forEach((value) => {
+      it(`should return undefined when STATUS_BANNER is '${value}'`, () => {
+        process.env.STATUS_BANNER = value;
+        expect(getStatusBanner()).to.be.undefined;
+      });
+    });
+
+    it("should return undefined when STATUS_BANNER is not set", () => {
+      expect(getStatusBanner()).to.be.undefined;
     });
   });
 });

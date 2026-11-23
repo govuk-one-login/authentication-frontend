@@ -242,3 +242,8 @@ export function getPasskeyPromptClientDenyList(): string[] {
   }
   return [];
 }
+
+export function getStatusBanner(): string | undefined {
+  const scenarioId = process.env.STATUS_BANNER?.trim();
+  return scenarioId ? scenarioId : undefined;
+}
