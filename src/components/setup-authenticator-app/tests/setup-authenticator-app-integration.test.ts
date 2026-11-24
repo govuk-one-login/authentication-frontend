@@ -12,6 +12,7 @@ import type { NextFunction, Request, Response } from "express";
 import { getPermittedJourneyForPath } from "../../../../test/helpers/session-helper.js";
 import { extractCsrfTokenAndCookies } from "../../../../test/helpers/csrf-helper.js";
 import esmock from "esmock";
+import { getAppEnv } from "../../../config.js";
 
 describe("Integration::setup-authenticator-app", () => {
   let token: string | string[];
@@ -19,6 +20,7 @@ describe("Integration::setup-authenticator-app", () => {
   let app: any;
   let baseApi: string;
   const AUTH_APP_SECRET: string = "MJRGA2KMETI7BEVNT33MOITMEQQUJMAQ";
+  const AUTH_APP_SETUP_LINK: string = `otpauth://totp/GOV.UK%20One%20Login%20-%20${getAppEnv()}:test%40test.com?secret=${AUTH_APP_SECRET}&period=30&digits=6&algorithm=SHA1&issuer=GOV.UK%20One%20Login%20-%20${getAppEnv()}`;
 
   before(async () => {
     const { createApp } = await esmock(
@@ -69,6 +71,21 @@ describe("Integration::setup-authenticator-app", () => {
   it("should return setup authenticator app page", async () => {
     await request(app)
       .get(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
+      .expect(200);
+  });
+
+  it("should include a link and a button that open the authenticator app", async () => {
+    await request(app)
+      .get(PATH_NAMES.CREATE_ACCOUNT_SETUP_AUTHENTICATOR_APP)
+      .expect(function (res) {
+        const $ = cheerio.load(res.text);
+        expect($("#auth-app-setup-link").attr("href")).to.equal(
+          AUTH_APP_SETUP_LINK
+        );
+        expect(
+          $("#auth-app-setup-button").attr("data-auth-app-setup-link")
+        ).to.equal(AUTH_APP_SETUP_LINK);
+      })
       .expect(200);
   });
 

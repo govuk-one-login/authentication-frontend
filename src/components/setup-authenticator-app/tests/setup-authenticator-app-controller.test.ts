@@ -46,6 +46,17 @@ describe("setup-authenticator-app controller", () => {
         "setup-authenticator-app/index.njk"
       );
     });
+
+    it("should pass the authenticator app setup link to the page", async () => {
+      req.session.user.authAppSecret = "testsecret";
+      req.session.user.email = "t@t.com";
+
+      await setupAuthenticatorAppGet(req as Request, res as Response);
+
+      expect(res.render.getCall(0).args[1].authAppSetupLink).to.match(
+        /^otpauth:\/\/totp\/.*t%40t\.com\?secret=testsecret&/
+      );
+    });
   });
 
   describe("setupAuthenticatorAppPost", () => {

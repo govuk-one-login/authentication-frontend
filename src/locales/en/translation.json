@@ -2213,6 +2213,10 @@
         "paragraph2": "Secret key: ",
         "paragraph3": "Some authenticator apps call the secret key a ‘code’."
       },
+      "setupLink": {
+        "linkText": "Open your authenticator app on this device (link)",
+        "buttonText": "Open your authenticator app on this device (JavaScript)"
+      },
       "step3": "The authenticator app will show a security code.",
       "code": {
         "label": "Enter the code.",

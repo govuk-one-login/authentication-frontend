@@ -45,6 +45,16 @@
               <img id="qr-code" src="{{ qrCode }}" alt="QR Code Image">
            </p>
 
+           {% if authAppSetupLink %}
+           <p class="govuk-body">
+              <a id="auth-app-setup-link" class="govuk-link" href="{{ authAppSetupLink }}">{{ 'pages.setupAuthenticatorApp.setupLink.linkText' | translate }}</a>
+           </p>
+
+           <p class="govuk-body">
+              <button id="auth-app-setup-button" type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-auth-app-setup-link="{{ authAppSetupLink }}">{{ 'pages.setupAuthenticatorApp.setupLink.buttonText' | translate }}</button>
+           </p>
+           {% endif %}
+
            {{ govukDetails({
                summaryText: 'pages.setupAuthenticatorApp.cannotScanDetails.summaryText' | translate,
                html: cannotScanInsetTextHtml
@@ -99,4 +109,5 @@
 
 {% block scripts %}
     <script defer type="text/javascript" src="/public/scripts/prevent-double-form-submit.js"></script>
+    <script defer type="text/javascript" src="/public/scripts/auth-app-setup-link.js"></script>
 {% endblock %}

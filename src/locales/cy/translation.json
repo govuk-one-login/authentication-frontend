@@ -2213,6 +2213,10 @@
         "paragraph2": "Allwedd gyfrinachol: ",
         "paragraph3": "Mae rhai apiau dilysydd yn galw’r allwedd gyfrinachol yn ‘cod’."
       },
+      "setupLink": {
+        "linkText": "Open your authenticator app on this device (link)",
+        "buttonText": "Open your authenticator app on this device (JavaScript)"
+      },
       "step3": "Bydd yr ap dilysydd yn dangos cod diogelwch.",
       "code": {
         "label": "Rhowch y cod.",

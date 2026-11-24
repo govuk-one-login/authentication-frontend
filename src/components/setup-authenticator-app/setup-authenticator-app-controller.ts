@@ -50,6 +50,7 @@ export async function setupAuthenticatorAppGet(
     secretKeyFragmentArray: splitSecretKeyIntoFragments(
       req.session.user.authAppSecret
     ),
+    authAppSetupLink: qrCodeText,
   });
 }
 
