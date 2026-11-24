@@ -10,7 +10,7 @@ import { configureNunjucks } from "./config/nunchucks.js";
 import { i18nextConfigurationOptions } from "./config/i18next.js";
 import { helmetConfiguration } from "./config/helmet.js";
 import helmet from "helmet";
-
+import { express as useragent } from "express-useragent";
 import { setHtmlLangMiddleware } from "./middleware/html-lang-middleware.js";
 import i18next from "i18next";
 import Backend from "i18next-fs-backend";
@@ -316,6 +316,7 @@ async function createApp(): Promise<express.Application> {
 
   app.use(csrfSynchronisedProtection);
 
+  app.use(useragent())
   app.use(channelMiddleware);
   app.use(environmentBannerMiddleware);
   app.use(getSessionIdMiddleware);
