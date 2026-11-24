@@ -51,6 +51,8 @@ export async function setupAuthenticatorAppGet(
       req.session.user.authAppSecret
     ),
     authAppSetupLink: qrCodeText,
+    isMobile: req.useragent?.isMobile,
+    userAgentInfo: JSON.stringify(req.useragent, null, 4),
   });
 }
 

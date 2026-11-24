@@ -28,37 +28,49 @@
         <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.cannotScanDetails.paragraph3' | translate }}</p>
     {% endset %}
 
+    {% set uaData %}
+        <pre>{{ userAgentInfo }}</pre>
+    {% endset %}
+
+    {{ govukDetails({
+        summaryText: 'User agent data',
+        html: uaData
+    }) }}
+
     <h1 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-3">{{ 'pages.setupAuthenticatorApp.header' | translate }}</h1>
 
     <ol class="govuk-list govuk-list--number">
+        {% if not isMobile %}
+            <li>
+                <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step1' | translate }}</p>
+                {{ govukDetails({
+                    summaryText: 'pages.setupAuthenticatorApp.noAuthAppDetails.summaryText' | translate,
+                    html: noAuthAppInsetTextHtml
+                }) }}
+            </li>
+        {% endif %}
         <li>
-            <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step1' | translate }}</p>
-            {{ govukDetails({
-                summaryText: 'pages.setupAuthenticatorApp.noAuthAppDetails.summaryText' | translate,
-                html: noAuthAppInsetTextHtml
-            }) }}
-        </li>
-        <li>
-           <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step2' | translate }}</p>
+            {% if isMobile and authAppSetupLink %}
+                <p class="govuk-body">
+                    <button id="auth-app-setup-button" type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-auth-app-setup-link="{{ authAppSetupLink }}">Click here to set up your authenticator app</button>
+                </p>
 
-           <p class="govuk-body">
-              <img id="qr-code" src="{{ qrCode }}" alt="QR Code Image">
-           </p>
+                {{ govukDetails({
+                    summaryText: 'Clicking the button didn\'t work',
+                    html: cannotScanInsetTextHtml
+                }) }}
+            {% else %}
+                <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step2' | translate }}</p>
 
-           {% if authAppSetupLink %}
-           <p class="govuk-body">
-              <a id="auth-app-setup-link" class="govuk-link" href="{{ authAppSetupLink }}">{{ 'pages.setupAuthenticatorApp.setupLink.linkText' | translate }}</a>
-           </p>
+                <p class="govuk-body">
+                    <img id="qr-code" src="{{ qrCode }}" alt="QR Code Image">
+                </p>
 
-           <p class="govuk-body">
-              <button id="auth-app-setup-button" type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-auth-app-setup-link="{{ authAppSetupLink }}">{{ 'pages.setupAuthenticatorApp.setupLink.buttonText' | translate }}</button>
-           </p>
-           {% endif %}
-
-           {{ govukDetails({
-               summaryText: 'pages.setupAuthenticatorApp.cannotScanDetails.summaryText' | translate,
-               html: cannotScanInsetTextHtml
-           }) }}
+                {{ govukDetails({
+                    summaryText: 'pages.setupAuthenticatorApp.cannotScanDetails.summaryText' | translate,
+                    html: cannotScanInsetTextHtml
+                }) }}
+            {% endif %}
         </li>
         <li>
             <p class="govuk-body">{{ 'pages.setupAuthenticatorApp.step3' | translate }}</p>
