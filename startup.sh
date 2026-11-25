@@ -136,7 +136,7 @@ elif [ "${ACTION_FULL_LOCAL:-0}" == "1" ]; then
     cd ..
     cd authentication-api/local-running
     docker compose restart aws
-    docker compose up --build -d authentication-api orchestration-stub
+    docker compose up --build -d authentication-api orchestration-stub ipv-stub
   )
   if [ "$(npm config get ignore-scripts)" = "false" ]; then
     echo "Error: ignore-scripts is set to false"
