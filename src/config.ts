@@ -242,3 +242,16 @@ export function getPasskeyPromptClientDenyList(): string[] {
   }
   return [];
 }
+
+export function getStatusBanner(): string | undefined {
+  const scenarioId = process.env.STATUS_BANNER?.trim();
+  return scenarioId ? scenarioId : undefined;
+}
+
+export function getStatusBannerShowFrom(): string | undefined {
+  return process.env.STATUS_BANNER_SHOW_FROM?.trim() || undefined;
+}
+
+export function getStatusBannerShowUntil(): string | undefined {
+  return process.env.STATUS_BANNER_SHOW_UNTIL?.trim() || undefined;
+}

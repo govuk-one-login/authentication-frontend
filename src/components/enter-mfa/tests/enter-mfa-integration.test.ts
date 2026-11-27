@@ -139,6 +139,102 @@ describe("Integration:: enter mfa", () => {
       });
   });
 
+  describe("status banner", () => {
+    afterEach(() => {
+      delete process.env.STATUS_BANNER;
+    });
+
+    it("should not show a status banner when STATUS_BANNER is not set", async () => {
+      await setupStubbedApp();
+      await request(app)
+        .get(PATH_NAMES.ENTER_MFA)
+        .expect(200)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("[data-test-id='status-banner']").length).to.equal(0);
+        });
+    });
+
+    it("should show the SMS delays notification banner before the page heading", async () => {
+      process.env.STATUS_BANNER = "sms-delays";
+      await setupStubbedApp();
+      await request(app)
+        .get(PATH_NAMES.ENTER_MFA)
+        .expect(200)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          const banner = $(
+            ".govuk-notification-banner[data-test-id='status-banner']"
+          );
+          expect(banner.length).to.equal(1);
+          expect(banner.find("p.govuk-body").length).to.equal(2);
+          expect(banner.text()).to.contain(
+            "delays receiving their sign-in security code by text message"
+          );
+          expect(res.text.indexOf("govuk-notification-banner")).to.be.lessThan(
+            res.text.indexOf("<h1")
+          );
+        });
+    });
+
+    it("should show the Welsh SMS delays notification banner", async () => {
+      process.env.STATUS_BANNER = "sms-delays";
+      await setupStubbedApp();
+      await request(app)
+        .get(`${PATH_NAMES.ENTER_MFA}?lng=cy`)
+        .expect(200)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          const banner = $("[data-test-id='status-banner']");
+          expect(banner.length).to.equal(1);
+          expect(banner.text()).to.not.contain("text message");
+        });
+    });
+
+    it("should show warning text for a scenario that targets all pages", async () => {
+      process.env.STATUS_BANNER = "service-issues";
+      await setupStubbedApp();
+      await request(app)
+        .get(PATH_NAMES.ENTER_MFA)
+        .expect(200)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect(
+            $(".govuk-warning-text[data-test-id='status-banner']").length
+          ).to.equal(1);
+        });
+    });
+
+    it("should show every listed scenario that targets the page", async () => {
+      process.env.STATUS_BANNER = "sms-delays,service-issues";
+      await setupStubbedApp();
+      await request(app)
+        .get(PATH_NAMES.ENTER_MFA)
+        .expect(200)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect(
+            $(".govuk-notification-banner[data-test-id='status-banner']").length
+          ).to.equal(1);
+          expect(
+            $(".govuk-warning-text[data-test-id='status-banner']").length
+          ).to.equal(1);
+        });
+    });
+
+    it("should not show a status banner when STATUS_BANNER is an unknown scenario", async () => {
+      process.env.STATUS_BANNER = "not-a-scenario";
+      await setupStubbedApp();
+      await request(app)
+        .get(PATH_NAMES.ENTER_MFA)
+        .expect(200)
+        .expect(function (res) {
+          const $ = cheerio.load(res.text);
+          expect($("[data-test-id='status-banner']").length).to.equal(0);
+        });
+    });
+  });
+
   [
     {
       partialMfaMethods: [

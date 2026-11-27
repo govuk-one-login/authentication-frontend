@@ -95,6 +95,7 @@ import { getAnalyticsPropertiesMiddleware } from "./middleware/get-analytics-pro
 import { ipvCallbackRouter } from "./components/ipv-callback/ipv-callback-routes.js";
 import { mfaResetWithIpvRouter } from "./components/mfa-reset-with-ipv/mfa-reset-with-ipv-routes.js";
 import { environmentBannerMiddleware } from "./middleware/environment-banner-middleware.js";
+import { statusBannerMiddleware } from "./middleware/status-banner-middleware.js";
 import UID from "uid-safe";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
@@ -318,6 +319,7 @@ async function createApp(): Promise<express.Application> {
 
   app.use(channelMiddleware);
   app.use(environmentBannerMiddleware);
+  app.use(statusBannerMiddleware);
   app.use(getSessionIdMiddleware);
   app.post("/*splat", sanitizeRequestMiddleware);
   app.use(csrfMiddleware);

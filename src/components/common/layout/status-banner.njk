@@ -1,0 +1,40 @@
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% if statusBanners %}
+    {% set notificationBannerKeyPrefixes = statusBanners.notificationBannerKeyPrefixes %}
+    {% if notificationBannerKeyPrefixes | length %}
+        {% set statusBannerHtml %}
+            {% for keyPrefix in notificationBannerKeyPrefixes %}
+                {% if not loop.first %}
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                {% endif %}
+                {% set statusBannerHeading = (keyPrefix ~ '.heading') | translate({ defaultValue: "" }) %}
+                {% if statusBannerHeading %}
+                    <p class="govuk-notification-banner__heading">{{ statusBannerHeading }}</p>
+                {% endif %}
+                {% for paragraph in (keyPrefix ~ '.paragraphs') | translate({ returnObjects: true }) %}
+                    <p class="govuk-body">{{ paragraph }}</p>
+                {% endfor %}
+            {% endfor %}
+        {% endset %}
+        {{ govukNotificationBanner({
+            titleText: (notificationBannerKeyPrefixes[0] ~ '.title') | translate,
+            html: statusBannerHtml,
+            attributes: { "data-test-id": "status-banner" }
+        }) }}
+    {% endif %}
+
+    {% for keyPrefix in statusBanners.warningTextKeyPrefixes %}
+        {% set statusBannerHtml %}
+            {% for paragraph in (keyPrefix ~ '.paragraphs') | translate({ returnObjects: true }) %}
+                {{ paragraph }}{% if not loop.last %}<br><br>{% endif %}
+            {% endfor %}
+        {% endset %}
+        {{ govukWarningText({
+            html: statusBannerHtml,
+            iconFallbackText: 'general.warning' | translate,
+            attributes: { "data-test-id": "status-banner" }
+        }) }}
+    {% endfor %}
+{% endif %}

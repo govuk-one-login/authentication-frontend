@@ -448,6 +448,9 @@ Mappings:
       PasskeyPromptClientAllowList: "skwdHH2y6ERjJWTPSoAFbSt8lX04OgtI"
       PasskeyRolloutPercentage: 100
       PasskeyPromptClientDenyList: ""
+      StatusBanner: "service-issues,sms-delays,email-delays"
+      StatusBannerShowFrom: ""
+      StatusBannerShowUntil: ""
     authdev2:
       cloudfrontDistributionStackName: "authdev2-cloudfront"
       frontendApiBaseUrl: https://nw0dah7bxk.execute-api.eu-west-2.amazonaws.com/authdev2/
@@ -471,6 +474,9 @@ Mappings:
       PasskeyPromptClientAllowList: "rPEUe0hRrHqf0i0es1gYjKxE5ceGN7VK"
       PasskeyRolloutPercentage: 100
       PasskeyPromptClientDenyList: ""
+      StatusBanner: "service-issues,sms-delays,email-delays"
+      StatusBannerShowFrom: ""
+      StatusBannerShowUntil: ""
     authdev3:
       cloudfrontDistributionStackName: "authdev3-cloudfront"
       frontendApiBaseUrl: https://y3s69ubaz5.execute-api.eu-west-2.amazonaws.com/authdev3/
@@ -489,6 +495,9 @@ Mappings:
       PasskeyPromptClientAllowList: ""
       PasskeyRolloutPercentage: 100
       PasskeyPromptClientDenyList: ""
+      StatusBanner: "service-issues,sms-delays,email-delays"
+      StatusBannerShowFrom: ""
+      StatusBannerShowUntil: ""
     dev:
       DeployServiceDownPage: "Yes"
       dynatraceSecretArn: arn:aws:secretsmanager:eu-west-2:216552277552:secret:DynatraceNonProductionVariables
@@ -519,6 +528,9 @@ Mappings:
       EnableCloudwatchMetrics: "Yes"
       PasskeyPromptClientAllowList: "J3tedNRsfssnsf4STuc2NNIV1C1gdxBB"
       PasskeyPromptClientDenyList: ""
+      StatusBanner: "service-issues,sms-delays,email-delays"
+      StatusBannerShowFrom: ""
+      StatusBannerShowUntil: ""
       serviceDownPageRegistry: "975050272416.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-w62weogzsdkb"
       PasskeyRolloutPercentage: 100
     build:
@@ -551,6 +563,9 @@ Mappings:
       EnableCloudwatchMetrics: "Yes"
       PasskeyPromptClientAllowList: "Ykg9fGyY76On4e8tPvFabK5BIl65EkGH"
       PasskeyPromptClientDenyList: ""
+      StatusBanner: ""
+      StatusBannerShowFrom: ""
+      StatusBannerShowUntil: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
       PasskeyRolloutPercentage: 100
     staging:
@@ -590,6 +605,9 @@ Mappings:
       EnableCloudwatchMetrics: "Yes"
       PasskeyPromptClientAllowList: "EB2EC91OpyzuhI7C2nw1aiEK2q8,3NKFv679oYlMdyrhKErrTGbzBy2h8rrd,nsR2wZ7EebJ2VOzE1LUa9iAVadunWQP3,EMGmY82k-92QSakDl_9keKDFmZY" # mobile sts, rp-stub, perf-test client, home client
       PasskeyPromptClientDenyList: ""
+      StatusBanner: ""
+      StatusBannerShowFrom: ""
+      StatusBannerShowUntil: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
       PasskeyRolloutPercentage: 100
     integration:
@@ -623,6 +641,9 @@ Mappings:
       EnableCloudwatchMetrics: "No"
       PasskeyPromptClientAllowList: ""
       PasskeyPromptClientDenyList: ""
+      StatusBanner: ""
+      StatusBannerShowFrom: ""
+      StatusBannerShowUntil: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
       PasskeyRolloutPercentage: 100
     production:
@@ -659,6 +680,9 @@ Mappings:
       EnableCloudwatchMetrics: "No"
       PasskeyPromptClientAllowList: ""
       PasskeyPromptClientDenyList: ""
+      StatusBanner: ""
+      StatusBannerShowFrom: ""
+      StatusBannerShowUntil: ""
       serviceDownPageRegistry: "058264536367.dkr.ecr.eu-west-2.amazonaws.com/service-down-page-image-repository-containerrepository-5mf9vzblyt5l"
       PasskeyRolloutPercentage: 100
 
@@ -1231,6 +1255,39 @@ Resources:
                     !Ref Environment,
                   ],
                   PasskeyRolloutPercentage,
+                ]
+            - Name: STATUS_BANNER
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !If [
+                    UseSubEnvironment,
+                    !Ref SubEnvironment,
+                    !Ref Environment,
+                  ],
+                  StatusBanner,
+                ]
+            - Name: STATUS_BANNER_SHOW_FROM
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !If [
+                    UseSubEnvironment,
+                    !Ref SubEnvironment,
+                    !Ref Environment,
+                  ],
+                  StatusBannerShowFrom,
+                ]
+            - Name: STATUS_BANNER_SHOW_UNTIL
+              Value:
+                !FindInMap [
+                  EnvironmentConfiguration,
+                  !If [
+                    UseSubEnvironment,
+                    !Ref SubEnvironment,
+                    !Ref Environment,
+                  ],
+                  StatusBannerShowUntil,
                 ]
 
           Secrets:
