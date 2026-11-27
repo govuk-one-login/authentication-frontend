@@ -9,7 +9,6 @@ import {
   supportNewIpvSpinner,
   supportHttpKeepAlive,
   getPrivacyNoticeRedirectEnabled,
-  useRebrand,
   supportPasskeyUsage,
   supportPasskeyRegistration,
   supportNewInternationalSms,
@@ -34,7 +33,6 @@ describe("config", () => {
     delete process.env.SUPPORT_NEW_IPV_SPINNER;
     delete process.env.SUPPORT_HTTP_KEEP_ALIVE;
     delete process.env.PRIVACY_NOTICE_REDIRECT_ENABLED;
-    delete process.env.USE_REBRAND;
     delete process.env.SUPPORT_PASSKEY_USAGE;
     delete process.env.SUPPORT_PASSKEY_REGISTRATION;
     delete process.env.SUPPORT_NEW_INTERNATIONAL_SMS;
@@ -91,11 +89,6 @@ describe("config", () => {
         name: "getPrivacyNoticeRedirectEnabled",
         envVar: "PRIVACY_NOTICE_REDIRECT_ENABLED",
         fn: getPrivacyNoticeRedirectEnabled,
-      },
-      {
-        name: "useRebrand",
-        envVar: "USE_REBRAND",
-        fn: useRebrand,
       },
       {
         name: "supportPasskeyUsage",
