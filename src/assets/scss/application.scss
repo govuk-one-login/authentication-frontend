@@ -4,27 +4,27 @@
 @import "objects/index";
 @import "overrides/index";
 
-@import "components/back-link/back-link";
-@import "components/button/button";
-@import "components/character-count/character-count";
-@import "components/checkboxes/checkboxes";
-@import "components/cookie-banner/cookie-banner";
-@import "components/details/details";
-@import "components/error-summary/error-summary";
-@import "components/footer/footer";
-@import "components/header/header";
-@import "components/input/input";
-@import "components/inset-text/inset-text";
-@import "components/notification-banner/notification-banner";
-@import "components/panel/panel";
-@import "components/phase-banner/phase-banner";
-@import "components/radios/radios";
-@import "components/select/select";
-@import "components/skip-link/skip-link";
-@import "components/summary-list/summary-list";
-@import "components/table/table";
-@import "components/warning-text/warning-text";
-@import "components/password-input/password-input";
+@import "components/back-link";
+@import "components/button";
+@import "components/character-count";
+@import "components/checkboxes";
+@import "components/cookie-banner";
+@import "components/details";
+@import "components/error-summary";
+@import "components/footer";
+@import "components/header";
+@import "components/input";
+@import "components/inset-text";
+@import "components/notification-banner";
+@import "components/panel";
+@import "components/phase-banner";
+@import "components/radios";
+@import "components/select";
+@import "components/skip-link";
+@import "components/summary-list";
+@import "components/table";
+@import "components/warning-text";
+@import "components/password-input";
 
 @import "../../../node_modules/@govuk-one-login/frontend-language-toggle/build/stylesheet/styles";
 @import "prove-identity-callback/spinner";
@@ -42,7 +42,7 @@
 }
 
 .govuk-panel--dark-grey {
-  background-color: govuk-colour("dark-grey");
+  background-color: govuk-colour("black", $variant: "tint-25");
 }
 
 .govuk-blue-text {
@@ -80,14 +80,14 @@
   outline: none;
   background: none;
   padding: 0;
-  color: $govuk-link-colour;
+  color: govuk-functional-colour(link);
   box-shadow: 0 1px #ffffff;
   margin: 0;
 }
 
 .govuk-btn-as-link:hover {
   background: none;
-  color: $govuk-link-visited-colour;
+  color: govuk-functional-colour(link-visited);
   text-decoration: underline;
 }
 
@@ -117,7 +117,7 @@
 }
 
 .govuk-input--disabled {
-  background-color: govuk-colour("light-grey", $legacy: "grey-3");
+  background-color: govuk-colour("black", $variant: "tint-95");
 }
 
 .ccms-loader {
@@ -168,14 +168,14 @@
 }
 
 .contact {
-  border-left: 1px solid $govuk-border-colour;
+  border-left: 1px solid govuk-functional-colour(border);
   padding-left: 15px;
   margin-bottom: 30px;
   margin-top: 30px;
 }
 
 .govuk-template__mobile {
-  background-color: $govuk-body-background-colour;
+  background-color: govuk-functional-colour(body-background);
 }
 
 .strategic-app-header {

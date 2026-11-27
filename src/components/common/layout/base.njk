@@ -39,16 +39,14 @@
 
 {% set phaseBannerClasses  = "test-banner" if showTestBanner %}
 
-{% block header %}
+{% block govukHeader %}
     {% if isApp %}
         {{ strategicAppHeader({
-            useTudorCrown: true,
             classes: phaseBannerClasses
         })}}
     {% else %}
         {{ govukHeader({
             homepageUrl: 'general.header.homepageHref' | translate,
-            useTudorCrown: true,
             classes: phaseBannerClasses
         })}}
     {% endif %}
@@ -75,10 +73,8 @@
 {% endset %}
 
 
-{% block main %}
-    <div class="govuk-width-container {{ containerClasses }}">
-        {% if isApp %}
-        {% else %}
+{% block headerEnd %}
+    {% if not isApp %}
         {{ govukPhaseBanner({
             tag: {
                 text: phaseBannerTagText
@@ -86,7 +82,11 @@
             html: phaseBannerText,
             classes: phaseBannerClasses
         }) }}
-        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block container %}
+    <div class="govuk-width-container {{ containerClasses }}">
         {% block beforeContent %}{% endblock %}
         {% if languageToggleEnabled %}
         {{ languageSelect({
@@ -126,7 +126,7 @@
     </div>
 {% endblock %}
 
-{% block footer %}
+{% block govukFooter %}
 {% if isApp %}
 
 {% else %}

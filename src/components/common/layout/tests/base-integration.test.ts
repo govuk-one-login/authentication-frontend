@@ -113,7 +113,7 @@ describe("Integration:: base page ", () => {
         );
       });
       it("should render the test phase header css", async () => {
-        expect($("a.govuk-header__link").length).to.equal(1);
+        expect($("a.govuk-header__homepage-link").length).to.equal(1);
         expect($(".strategic-app-header").length).to.equal(0);
         expect($(".govuk-header").hasClass("test-banner")).to.be.true;
       });
@@ -137,7 +137,7 @@ describe("Integration:: base page ", () => {
       it("should not render the test phase header css", async () => {
         expect($(".govuk-header").hasClass("test-banner")).to.be.false;
         expect($(".strategic-app-header").length).to.equal(0);
-        expect($("a.govuk-header__link").length).to.equal(1);
+        expect($("a.govuk-header__homepage-link").length).to.equal(1);
       });
     });
   });
@@ -155,7 +155,7 @@ describe("Integration:: base page ", () => {
       });
 
       it("should render the custom header with no links", async () => {
-        expect($("a.govuk-header__link").length).to.equal(0);
+        expect($("a.govuk-header__homepage-link").length).to.equal(0);
         expect($(".strategic-app-header").length).to.equal(1);
       });
 
@@ -191,7 +191,7 @@ describe("Integration:: base page ", () => {
       const response = await request(app).get(PATH_NAMES.SIGN_IN_OR_CREATE);
       expect(response.status).to.equal(200);
       const $ = cheerio.load(response.text);
-      expect($("a.govuk-header__link").length).to.equal(1);
+      expect($("a.govuk-header__homepage-link").length).to.equal(1);
     });
   });
 

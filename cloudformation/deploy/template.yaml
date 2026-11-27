@@ -253,29 +253,6 @@ Conditions:
                 ]
               - "Yes"
 
-  UseRebrand:
-    Fn::Or:
-      - Fn::And:
-          - !Condition UseSubEnvironment
-          - Fn::Equals:
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref SubEnvironment,
-                  UseRebrand,
-                  DefaultValue: "No",
-                ]
-              - "Yes"
-      - Fn::And:
-          - !Condition NotSubEnvironment
-          - Fn::Equals:
-              - !FindInMap [
-                  EnvironmentConfiguration,
-                  !Ref Environment,
-                  UseRebrand,
-                  DefaultValue: "No",
-                ]
-              - "Yes"
-
   SupportPasskeyUsage:
     Fn::Or:
       - Fn::And:
@@ -438,7 +415,6 @@ Mappings:
       SupportHTTPKeepAlive: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.authdev1.dev.account.gov.uk"
-      UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
@@ -461,7 +437,6 @@ Mappings:
       SupportHTTPKeepAlive: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.authdev2.dev.account.gov.uk"
-      UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
@@ -479,7 +454,6 @@ Mappings:
       Enableipvspinner: "No"
       DeviceIntelligenceEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.dev.account.gov.uk" # Note: Authdev3 is directly integrated with orch
-      UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
@@ -510,7 +484,6 @@ Mappings:
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.dev.account.gov.uk"
-      UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
@@ -542,7 +515,6 @@ Mappings:
       Enableipvspinner: "No"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.build.account.gov.uk"
-      UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
@@ -581,7 +553,6 @@ Mappings:
       UseAlarmActions: "Yes"
       PrivacyNoticeRedirectEnabled: "Yes"
       OrchApiBaseUrl: "https://oidc.staging.account.gov.uk"
-      UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
@@ -615,7 +586,6 @@ Mappings:
       UseAlarmActions: "Yes"
       OrchApiBaseUrl: "https://oidc.integration.account.gov.uk"
       PrivacyNoticeRedirectEnabled: "Yes"
-      UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
@@ -650,7 +620,6 @@ Mappings:
       UseAlarmActions: "Yes"
       OrchApiBaseUrl: "https://oidc.account.gov.uk"
       PrivacyNoticeRedirectEnabled: "Yes"
-      UseRebrand: "Yes"
       SupportPasskeyUsage: "Yes"
       SupportPasskeyRegistration: "Yes"
       SupportNewInternationalSms: "No"
@@ -1191,8 +1160,6 @@ Resources:
               Value: !If [SupportHTTPKeepAlive, "1", "0"]
             - Name: PRIVACY_NOTICE_REDIRECT_ENABLED
               Value: !If [PrivacyNoticeRedirectEnabled, "1", "0"]
-            - Name: USE_REBRAND
-              Value: !If [UseRebrand, "1", "0"]
             - Name: SUPPORT_PASSKEY_USAGE
               Value: !If [SupportPasskeyUsage, "1", "0"]
             - Name: SUPPORT_PASSKEY_REGISTRATION
